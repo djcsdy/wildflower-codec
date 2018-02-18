@@ -1,0 +1,6 @@
+[package]
+name = "rust-wildflower"
+version = "0.1.0"
+authors = ["Daniel Cassidy <mail@danielcassidy.me.uk>"]
+
+[dependencies]
