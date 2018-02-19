@@ -2,6 +2,7 @@
   <dictionary name="djc">
     <words>
       <w>bitflags</w>
+      <w>compositing</w>
     </words>
   </dictionary>
 </component>

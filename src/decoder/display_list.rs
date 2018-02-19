@@ -102,6 +102,159 @@ pub struct ClipActionRecord {
     pub actions: Vec<ActionRecord>,
 }
 
+/// Adds a character to the display list.
+///
+/// Equivalent to PlaceObject2Tag, but with extended functionality.
+pub struct PlaceObject3Tag {
+    /// Fields shared with PlaceObject2Tag.
+    pub place_object_2: PlaceObject2Tag,
+
+    /// True if the character has an opaque background.
+    pub opaque_background: bool,
+
+    /// The ActionScript 3 class name of the character to place.
+    ///
+    /// Used instead of character ID when the character was defined in an
+    /// external SWF and has not been imported into the character dictionary
+    /// of this SWF.
+    pub class_name: Option<String>,
+
+    /// List of filters applied to this character.
+    pub surface_filter_list: Option<Vec<Filter>>,
+
+    /// The blend mode to use when compositing the character onto the stage.
+    pub blend_mode: Option<BlendMode>,
+
+    /// True if the player should cache its rendering of the character as a
+    /// bitmap.
+    ///
+    /// This slows down initial rendering of the character, but allows the
+    /// player to render the character more quickly in subsequent redraws so
+    /// long as it remains unchanged.
+    pub bitmap_cache: Option<bool>,
+
+    /// True if the character should be visible. False if it should be hidden.
+    pub visible: Option<bool>,
+
+    pub background_color: Option<Rgba>,
+}
+
+pub enum BlendMode {
+    Normal = 1,
+    Layer = 2,
+    Multiply = 3,
+    Screen = 4,
+    Lighten = 5,
+    Darken = 6,
+    Difference = 7,
+    Add = 8,
+    Subtract = 9,
+    Invert = 10,
+    Alpha = 11,
+    Erase = 12,
+    Overlay = 13,
+    Hardlight = 14
+}
+
+pub enum Filter {
+    DropShadow(DropShadowFilter),
+    Blur(BlurFilter),
+    Glow(GlowFilter),
+    Bevel(BevelFilter),
+    GradientGlow(GradientGlowFilter),
+    Convolution(ConvolutionFilter),
+    ColorMatrix(ColorMatrixFilter),
+    GradientBevel(GradientBevelFilter),
+}
+
+pub struct ColorMatrixFilter {
+    pub matrix: [f32; 20]
+}
+
+pub struct ConvolutionFilter {
+    pub divisor: f32,
+    pub bias: f32,
+    pub matrix: Vec<Vec<f32>>,
+    pub default_color: Rgba,
+    pub clamp: bool,
+    pub preserve_alpha: bool,
+}
+
+pub struct BlurFilter {
+    pub blur_x: Fixed16,
+    pub blur_y: Fixed16,
+    pub passes: u8,
+}
+
+pub struct DropShadowFilter {
+    pub color: Rgba,
+    pub blur_x: Fixed16,
+    pub blur_y: Fixed16,
+    pub angle: Fixed16,
+    pub distance: Fixed16,
+    pub strength: Fixed8,
+    pub inner_shadow: bool,
+    pub knockout: bool,
+    pub composite_source: bool,
+    pub passes: u8,
+}
+
+pub struct GlowFilter {
+    pub color: Rgba,
+    pub blur_x: Fixed16,
+    pub blur_y: Fixed16,
+    pub strength: Fixed8,
+    pub inner_glow: bool,
+    pub knockout: bool,
+    pub composite_source: bool,
+    pub passes: u8,
+}
+
+pub struct BevelFilter {
+    pub shadow_color: Rgba,
+    pub highlight_color: Rgba,
+    pub blur_x: Fixed16,
+    pub blur_y: Fixed16,
+    pub angle: Fixed16,
+    pub distance: Fixed16,
+    pub strength: Fixed8,
+    pub inner_shadow: bool,
+    pub knockout: bool,
+    pub composite_source: bool,
+    pub on_top: bool,
+    pub passes: u8,
+}
+
+pub struct GradientGlowFilter {
+    pub colors: Vec<Rgba>,
+    pub ratio: Vec<u8>,
+    pub blur_x: Fixed16,
+    pub blur_y: Fixed16,
+    pub angle: Fixed16,
+    pub distance: Fixed16,
+    pub strength: Fixed8,
+    pub inner_shadow: bool,
+    pub knockout: bool,
+    pub composite_source: bool,
+    pub on_top: bool,
+    pub passes: u8,
+}
+
+pub struct GradientBevelFilter {
+    pub colors: Vec<Rgba>,
+    pub ratio: Vec<u8>,
+    pub blur_x: Fixed16,
+    pub blur_y: Fixed16,
+    pub angle: Fixed16,
+    pub distance: Fixed16,
+    pub strength: Fixed8,
+    pub inner_shadow: bool,
+    pub knockout: bool,
+    pub composite_source: bool,
+    pub on_top: bool,
+    pub passes: u8,
+}
+
 bitflags! {
     pub struct ClipEventFlags: u32 {
         const KEY_UP = 0x8000_0000;
