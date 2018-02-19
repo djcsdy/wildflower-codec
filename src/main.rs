@@ -1,3 +1,4 @@
+mod records;
 mod tags;
 
 fn main() {
