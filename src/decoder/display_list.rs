@@ -1,4 +1,5 @@
 use super::common::*;
+use super::actions::ActionRecord;
 
 /// A Tag with an unknown or unsupported tag code.
 pub struct UnknownTag {
@@ -94,7 +95,7 @@ pub struct ClipActions {
 pub struct ClipActionRecord {
     pub event_flags: ClipEventFlags,
     pub key_code: Option<u8>,
-    pub actions: Vec<super::actions::ActionRecord>,
+    pub actions: Vec<ActionRecord>,
 }
 
 bitflags! {
