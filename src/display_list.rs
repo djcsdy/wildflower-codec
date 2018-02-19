@@ -295,3 +295,10 @@ pub struct RemoveObject2Tag {
     /// Depth of character to remove.
     pub depth: u16
 }
+
+/// Instructs the player to display the contents of the display list.
+///
+/// The player will wait at least the duration of one frame before the next
+/// ShowFrame tag takes effect.
+pub struct ShowFrameTag {
+}
