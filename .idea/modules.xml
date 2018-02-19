@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/rust-wildflower.iml" filepath="$PROJECT_DIR$/rust-wildflower.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wildflower-codec.iml" filepath="$PROJECT_DIR$/wildflower-codec.iml" />
     </modules>
   </component>
 </project>
