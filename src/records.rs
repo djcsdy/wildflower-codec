@@ -42,3 +42,13 @@ struct Rectangle {
     pub y_min: i32,
     pub y_max: i32,
 }
+
+// A 2×3 matrix, used for 2D affine transformations.
+struct Matrix {
+    pub scale_x: Fixed16,
+    pub scale_y: Fixed16,
+    pub rotate_skew_0: Fixed16,
+    pub rotate_skew_1: Fixed16,
+    pub translate_x: i32,
+    pub translate_y: i32,
+}
