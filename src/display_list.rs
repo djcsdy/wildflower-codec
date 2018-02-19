@@ -153,7 +153,7 @@ pub enum BlendMode {
     Alpha = 11,
     Erase = 12,
     Overlay = 13,
-    Hardlight = 14
+    Hardlight = 14,
 }
 
 pub enum Filter {
@@ -278,4 +278,20 @@ bitflags! {
         const DRAG_OUT = 0x0000_0100;
         const RESERVED = 0x0000_f8ff;
     }
+}
+
+/// Removes the specified character at the specified depth from the display
+/// list.
+pub struct RemoveObjectTag {
+    /// ID of character to remove.
+    pub character_id: u16,
+
+    /// Depth of character to remove.
+    pub depth: u16,
+}
+
+/// Removes the character at the specified depth from the display list.
+pub struct RemoveObject2Tag {
+    /// Depth of character to remove.
+    pub depth: u16
 }
