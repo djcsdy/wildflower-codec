@@ -35,7 +35,7 @@ struct Rgba {
     pub alpha: u8,
 }
 
-// An axis-aligned rectangle.
+/// An axis-aligned rectangle.
 struct Rectangle {
     pub x_min: i32,
     pub x_max: i32,
@@ -43,7 +43,7 @@ struct Rectangle {
     pub y_max: i32,
 }
 
-// A 2×3 matrix, used for 2D affine transformations.
+/// A 2×3 matrix, used for 2D affine transformations.
 struct Matrix {
     pub scale_x: Fixed16,
     pub scale_y: Fixed16,
