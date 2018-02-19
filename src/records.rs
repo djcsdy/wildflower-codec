@@ -21,8 +21,6 @@ struct Fixed8(i16);
 struct String([u8]);
 
 /// An RGB color.
-///
-/// Consists of red, green, and blue components, each 8 bits wide.
 struct Rgb {
     pub red: u8,
     pub green: u8,
