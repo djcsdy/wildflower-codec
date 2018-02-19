@@ -4,3 +4,4 @@ version = "0.1.0"
 authors = ["Daniel Cassidy <mail@danielcassidy.me.uk>"]
 
 [dependencies]
+bitflags = "1.0"
