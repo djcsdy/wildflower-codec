@@ -43,22 +43,26 @@ pub struct PlaceObjectTag {
 ///
 /// Equivalent to PlaceObjectTag, but with extended functionality.
 pub struct PlaceObject2Tag {
+    /// If true, then this tag modifies or replaces an existing character at
+    /// the specified depth.
+    ///
+    /// If false, then this tag creates a new character at the specified depth.
+    /// There must not be an existing character at the specified depth.
+    ///
+    /// Called `PlaceFlagMove` in the SWF Specification.
+    pub modify: bool,
+
     /// Depth of the character.
     ///
     /// Characters with higher depth values appear above characters with lower
     /// depth values.
-    ///
-    /// If there is already a character with this depth then the existing
-    /// character is modified or replaced.
     pub depth: u16,
 
     /// The ID of the character to place.
     ///
     /// The character must have previously been defined by another tag.
     ///
-    /// If no character ID is specified, then there must be an existing
-    /// character at `depth`, which will be modified by the properties of
-    /// this tag.
+    /// Required if `modify` is false, otherwise optional.
     pub character_id: Option<u16>,
 
     /// Affine transformation matrix applied to the character.
