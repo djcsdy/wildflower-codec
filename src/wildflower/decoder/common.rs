@@ -18,7 +18,7 @@ pub struct Fixed8(i16);
 ///
 /// No matter the encoding, the sequence of bytes are not guaranteed to be
 /// valid according to that encoding.
-pub struct String([u8]);
+pub struct String(Vec<u8>);
 
 /// An RGB color.
 pub struct Rgb {
