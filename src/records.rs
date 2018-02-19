@@ -19,3 +19,10 @@ struct Fixed8(i16);
 /// No matter the encoding, the sequence of bytes are not guaranteed to be
 /// valid according to that encoding.
 struct String([u8]);
+
+/// An RGB color, consisting of red, green, and blue parts, each 8 bits wide.
+struct Rgb {
+    pub red: u8,
+    pub green: u8,
+    pub blue: u8,
+}
