@@ -37,3 +37,11 @@ pub struct PortableCharacterRecord {
     character_id: u16,
     name: String,
 }
+
+pub struct EnableDebuggerTag {
+    password_md5: Vec<u8>
+}
+
+pub struct EnableDebugger2Tag {
+    password_md5: Vec<u8>
+}
