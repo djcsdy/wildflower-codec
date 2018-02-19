@@ -17,5 +17,23 @@ pub struct ProtectTag {
 }
 
 /// Marks the end of a SWF file or of a sprite definition.
-pub struct EndTag {
+pub struct EndTag {}
+
+/// Makes portions of the SWF file available for import by other SWF files
+/// using `ImportAssetsTag`.
+pub struct ExportAssetsTag {
+    pub exports: Vec<PortableCharacterRecord>
+}
+
+/// Imports characters from another SWF file.
+pub struct ImportAssetsTag {
+    /// URL of the source SWF file.
+    pub url: String,
+
+    pub imports: Vec<PortableCharacterRecord>,
+}
+
+pub struct PortableCharacterRecord {
+    character_id: u16,
+    name: String,
 }
