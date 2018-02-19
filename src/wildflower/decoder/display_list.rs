@@ -1,4 +1,4 @@
-use records::*;
+use super::common::*;
 
 /// A Tag with an unknown or unsupported tag code.
 pub struct UnknownTag {
