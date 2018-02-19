@@ -26,6 +26,9 @@ pub struct PlaceObjectTag {
     ///
     /// Characters with higher depth values appear above characters with lower
     /// depth values.
+    ///
+    /// If there is already a character with this depth then the existing
+    /// character is replaced.
     pub depth: u16,
 
     /// Affine transformation matrix applied to the character.
