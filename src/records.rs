@@ -1,10 +1,10 @@
 /// A fixed-point number consisting of a 16-bit whole part plus a 16-bit
 /// fractional part.
-struct Fixed16(i32);
+pub struct Fixed16(i32);
 
 /// A fixed-point number consisting of a 8-bit whole part plus an 8-bit
 /// fractional part.
-struct Fixed8(i16);
+pub struct Fixed8(i16);
 
 /// A sequence of bytes representing a character string.
 ///
@@ -18,17 +18,17 @@ struct Fixed8(i16);
 ///
 /// No matter the encoding, the sequence of bytes are not guaranteed to be
 /// valid according to that encoding.
-struct String([u8]);
+pub struct String([u8]);
 
 /// An RGB color.
-struct Rgb {
+pub struct Rgb {
     pub red: u8,
     pub green: u8,
     pub blue: u8,
 }
 
 /// An RGB color with an alpha component.
-struct Rgba {
+pub struct Rgba {
     pub red: u8,
     pub green: u8,
     pub blue: u8,
@@ -36,7 +36,7 @@ struct Rgba {
 }
 
 /// An axis-aligned rectangle.
-struct Rectangle {
+pub struct Rectangle {
     pub x_min: i32,
     pub x_max: i32,
     pub y_min: i32,
@@ -44,7 +44,7 @@ struct Rectangle {
 }
 
 /// A 2×3 matrix, used for 2D affine transformations.
-struct Matrix {
+pub struct Matrix {
     pub scale_x: Fixed16,
     pub scale_y: Fixed16,
     pub rotate_skew_0: Fixed16,
