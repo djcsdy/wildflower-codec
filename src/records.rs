@@ -52,3 +52,13 @@ pub struct Matrix {
     pub translate_x: i32,
     pub translate_y: i32,
 }
+
+/// A simple color transformation.
+pub struct ColorTransform {
+    pub red_multiplication_term: Fixed8,
+    pub green_multiplication_term: Fixed8,
+    pub blue_multiplication_term: Fixed8,
+    pub red_addition_term: i16,
+    pub green_addition_term: i16,
+    pub blue_addition_term: i16,
+}
