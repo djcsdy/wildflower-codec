@@ -11,3 +11,7 @@ pub struct FrameLabelTag {
 
     named_anchor: bool,
 }
+
+pub struct ProtectTag {
+    password_md5: Vec<u8>
+}
