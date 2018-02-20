@@ -45,3 +45,9 @@ pub struct EnableDebuggerTag {
 pub struct EnableDebugger2Tag {
     password_md5: Vec<u8>
 }
+
+/// Overrides the default limits for AVM scripts.
+pub struct ScriptLimitsTag {
+    max_recursion_depth: u16,
+    script_timeout_seconds: u16,
+}
