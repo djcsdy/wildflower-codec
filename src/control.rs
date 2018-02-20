@@ -105,3 +105,18 @@ pub struct DefineScalingGridTag {
     pub character_id: u16,
     pub splitter: Rectangle,
 }
+
+pub struct DefineSceneAndFrameLabelDataTag {
+    pub scenes: Vec<SceneRecord>,
+    pub frame_labels: Vec<FrameLabelRecord>,
+}
+
+pub struct SceneRecord {
+    pub offset: u32,
+    pub name: String,
+}
+
+pub struct FrameLabelRecord {
+    pub frame_num: u32,
+    pub frame_label: String,
+}
