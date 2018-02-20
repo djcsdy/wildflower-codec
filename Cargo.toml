@@ -1,6 +1,6 @@
 [package]
 name = "wildflower-codec"
-version = "0.1.0"
+version = "0.0.1"
 authors = ["Daniel Cassidy <mail@danielcassidy.me.uk>"]
 
 [dependencies]
