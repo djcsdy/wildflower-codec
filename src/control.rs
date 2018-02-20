@@ -51,3 +51,9 @@ pub struct ScriptLimitsTag {
     max_recursion_depth: u16,
     script_timeout_seconds: u16,
 }
+
+/// Sets the tab ordering of the character at the specified depth.
+pub struct SetTabIndexTag {
+    depth: u16,
+    tab_index: u16,
+}
