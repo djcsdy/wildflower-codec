@@ -2,14 +2,14 @@ use super::common::*;
 
 /// Sets the background color of the display.
 pub struct SetBackgroundColorTag {
-    color: Rgb
+    pub color: Rgb
 }
 
 /// Labels the current frame with the specified name.
 pub struct FrameLabelTag {
-    name: String,
+    pub name: String,
 
-    named_anchor: bool,
+    pub named_anchor: bool,
 }
 
 pub struct ProtectTag {
@@ -34,28 +34,28 @@ pub struct ImportAssetsTag {
 }
 
 pub struct PortableCharacterRecord {
-    character_id: u16,
-    name: String,
+    pub character_id: u16,
+    pub name: String,
 }
 
 pub struct EnableDebuggerTag {
-    password_md5: Vec<u8>
+    pub password_md5: Vec<u8>
 }
 
 pub struct EnableDebugger2Tag {
-    password_md5: Vec<u8>
+    pub password_md5: Vec<u8>
 }
 
 /// Overrides the default limits for AVM scripts.
 pub struct ScriptLimitsTag {
-    max_recursion_depth: u16,
-    script_timeout_seconds: u16,
+    pub max_recursion_depth: u16,
+    pub script_timeout_seconds: u16,
 }
 
 /// Sets the tab ordering of the character at the specified depth.
 pub struct SetTabIndexTag {
-    depth: u16,
-    tab_index: u16,
+    pub depth: u16,
+    pub tab_index: u16,
 }
 
 pub struct FileAttributesTag {
