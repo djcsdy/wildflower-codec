@@ -13,7 +13,7 @@ pub struct FrameLabelTag {
 }
 
 pub struct ProtectTag {
-    password_md5: Vec<u8>
+    pub password_md5: Vec<u8>
 }
 
 /// Marks the end of a SWF file or of a sprite definition.
