@@ -59,7 +59,7 @@ pub struct SetTabIndexTag {
 }
 
 pub struct FileAttributesTag {
-    pub flags: FileAttributesFlag
+    pub flags: FileAttributesFlags
 }
 
 bitflags! {
