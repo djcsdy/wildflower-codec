@@ -94,3 +94,7 @@ pub struct SymbolClassRecord {
     /// The fully-qualified name of the ActionScript 3 class to be associated.
     pub class_name: String,
 }
+
+pub struct MetadataTag {
+    pub metadata: String
+}
