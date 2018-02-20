@@ -79,3 +79,18 @@ pub struct ImportAssets2Tag {
     pub reserved_b: u8,
     pub imports: Vec<PortableCharacterRecord>,
 }
+
+/// Creates associations between characters in the SWF file and ActionScript 3
+/// classes.
+pub struct SymbolClassTag {
+    pub records: Vec<SymbolClassRecord>
+}
+
+/// Associates an ActionScript 3 class with a character.
+pub struct SymbolClassRecord {
+    /// The character ID to be associated.
+    pub character_id: u16,
+
+    /// The fully-qualified name of the ActionScript 3 class to be associated.
+    pub class_name: String,
+}
