@@ -1,6 +1,4 @@
 /Cargo.lock
 /target/
 **/*.rs.bk
-/.idea/workspace.xml
-/.idea/tasks.xml
-/.idea/misc.xml
+/.history

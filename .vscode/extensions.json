@@ -1,0 +1,15 @@
+{
+    "recommendations": [
+        "bungcip.better-toml",
+        "panicbit.cargo",
+        "cargo-inspect-vscode.cargo-inspect",
+        "streetsidesoftware.code-spell-checker",
+        "vadimcn.vscode-lldb",
+        "serayuzgur.crates",
+        "rust-lang.rust",
+        "swellaby.vscode-rust-test-adapter",
+        "belfz.search-crates-io",
+        "hbenl.vscode-test-explorer",
+        "polypus74.trusty-rusty-snippets"
+    ]
+}
