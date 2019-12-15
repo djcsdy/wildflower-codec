@@ -95,7 +95,12 @@ pub enum ActionRecord {
     PushDuplicate,
     Return,
     StackSwap,
-    StoreRegister(StoreRegister)
+    StoreRegister(StoreRegister),
+    InstanceOf,
+    Enumerate2,
+    StrictEquals,
+    Greater,
+    StringGreater
 }
 
 pub struct GoToFrame {
