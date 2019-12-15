@@ -2,6 +2,11 @@ pub struct DoActionTag {
     pub actions: Vec<ActionRecord>
 }
 
+pub struct DoInitActionTag {
+    pub sprite_id: u16,
+    pub actions: Vec<ActionRecord>
+}
+
 pub enum ActionRecord {
     GoToFrame(GoToFrame),
     GetUrl(GetUrl),
