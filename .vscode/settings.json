@@ -3,6 +3,7 @@
         "RGBA",
         "bitflags",
         "blit",
+        "deblock",
         "softwareventures"
     ]
 }
