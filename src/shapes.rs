@@ -36,7 +36,7 @@ pub struct Shape<TColor, TLineStyle> {
 pub struct ShapeWithStyle<TColor, TLineStyle> {
     pub fill_styles: Vec<FillStyle<TColor>>,
     pub line_styles: Vec<TLineStyle>,
-    pub shape_records: Vec<ShapeRecord<TColor, TLineStyle>
+    pub shape_records: Vec<ShapeRecord<TColor, TLineStyle>>
 }
 
 pub enum ShapeRecord<TColor, TLineStyle> {
