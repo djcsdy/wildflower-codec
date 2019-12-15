@@ -1,5 +1,5 @@
 use super::common::{Rectangle, Rgb, Rgba};
-use super::styles::{FillStyle, LineStyle};
+use super::styles::{FillStyle, LineStyle, LineStyle2};
 
 pub struct DefineShapeTag {
     pub shape_id: u16,
@@ -17,6 +17,16 @@ pub struct DefineShape3Tag {
     pub shape_id: u16,
     pub shape_bounds: Rectangle,
     pub shape: ShapeWithStyle<Rgba, LineStyle<Rgba>>
+}
+
+pub struct DefineShape4Tag {
+    pub shape_id: u16,
+    pub shape_bounds: Rectangle,
+    pub edge_bounds: Rectangle,
+    pub uses_fill_winding_rule: bool,
+    pub uses_non_scaling_strokes: bool,
+    pub uses_scaling_strokes: bool,
+    pub shape: ShapeWithStyle<Rgba, LineStyle2>
 }
 
 pub struct Shape<TColor, TLineStyle> {
