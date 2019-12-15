@@ -1,8 +1,9 @@
 {
     "cSpell.words": [
-        "blit",
         "RGBA",
-        "bitflags"
+        "bitflags",
+        "blit",
+        "softwareventures"
     ],
     "terminal.integrated.shell.windows": "C:\\Windows\\System32\\cmd.exe"
 }
