@@ -1,4 +1,4 @@
-use super::common::Rgb;
+use super::common::{Rgb, Rgba};
 
 pub struct DefineBitsTag {
     pub character_id: u16,
@@ -24,16 +24,23 @@ pub struct DefineBitsLosslessTag {
     pub character_id: u16,
     pub bitmap_width: u16,
     pub bitmap_height: u16,
-    pub bitmap_data: BitmapData
+    pub bitmap_data: BitmapData<Rgb>,
 }
 
-pub enum BitmapData {
-    ColorMap8(ColorMapData),
-    Rgb15(Vec<Rgb>),
-    Rgb24(Vec<Rgb>)
+pub struct DefineBitsLossless2Tag {
+    pub character_id: u16,
+    pub bitmap_width: u16,
+    pub bitmap_height: u16,
+    pub bitmap_data: BitmapData<Rgba>,
 }
 
-pub struct ColorMapData {
-    pub color_table_rgb: Vec<Rgb>,
-    pub pixel_data: Vec<u8>
+pub enum BitmapData<TColor> {
+    ColorMap8(ColorMapData<TColor>),
+    Rgb15(Vec<TColor>),
+    Rgb24(Vec<TColor>),
+}
+
+pub struct ColorMapData<TColor> {
+    pub color_table: Vec<TColor>,
+    pub pixel_data: Vec<u8>,
 }
