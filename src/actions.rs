@@ -174,5 +174,5 @@ pub struct DefineFunction {
 }
 
 pub struct StoreRegister {
-    register_number: u8
+    pub register_number: u8
 }
