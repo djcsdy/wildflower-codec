@@ -54,7 +54,43 @@ pub enum ActionRecord {
     WaitForFrame2(WaitForFrame2),
     Trace,
     GetTime,
-    RandomNumber
+    RandomNumber,
+    CallFunction,
+    CallMethod,
+    ConstantPool(ConstantPool),
+    DefineFunction(DefineFunction),
+    DefineLocal,
+    DefineLocal2,
+    Delete,
+    Delete2,
+    Enumerate,
+    Equals2,
+    GetMember,
+    InitArray,
+    InitObject,
+    NewMethod,
+    NewObject,
+    SetMember,
+    TargetPath,
+    With,
+    ToNumber,
+    ToString,
+    TypeOf,
+    Add2,
+    Less2,
+    Modulo,
+    BitAnd,
+    BitLShift,
+    BitOr,
+    BitRShift,
+    BitURShift,
+    BitXor,
+    Decrement,
+    Increment,
+    PushDuplicate,
+    Return,
+    StackSwap,
+    StoreRegister(StoreRegister)
 }
 
 pub struct GoToFrame {
@@ -125,4 +161,18 @@ pub struct GoToFrame2 {
 
 pub struct WaitForFrame2 {
     pub skip_count: u8
+}
+
+pub struct ConstantPool {
+    pub constant_pool: Vec<String>
+}
+
+pub struct DefineFunction {
+    pub function_name: String,
+    pub params: Vec<String>,
+    pub body: Vec<ActionRecord>
+}
+
+pub struct StoreRegister {
+    register_number: u8
 }
