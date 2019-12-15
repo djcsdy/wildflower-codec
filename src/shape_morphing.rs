@@ -1,5 +1,6 @@
 use super::common::{Matrix, Rectangle, Rgba};
 use super::shapes::Shape;
+use super::styles::{CapStyle, FillStyle, JoinStyle};
 
 pub struct DefineMorphShapeTag {
     pub character_id: u16,
@@ -7,6 +8,20 @@ pub struct DefineMorphShapeTag {
     pub end_bounds: Rectangle,
     pub morph_fill_styles: Vec<MorphFillStyle>,
     pub morph_line_styles: Vec<MorphLineStyle>,
+    pub start_edges: Shape<(), ()>,
+    pub end_edges: Shape<(), ()>,
+}
+
+pub struct DefineMorphShape2Tag {
+    pub character_id: u16,
+    pub start_bounds: Rectangle,
+    pub end_bounds: Rectangle,
+    pub start_edge_bounds: Rectangle,
+    pub end_edge_bounds: Rectangle,
+    pub uses_non_scaling_strokes: bool,
+    pub uses_scaling_strokes: bool,
+    pub morph_fill_styles: Vec<MorphFillStyle>,
+    pub morph_line_styles: Vec<MorphLineStyle2>,
     pub start_edges: Shape<(), ()>,
     pub end_edges: Shape<(), ()>,
 }
@@ -69,4 +84,17 @@ pub struct MorphLineStyle {
     pub end_width: u16,
     pub start_color: Rgba,
     pub end_color: Rgba,
+}
+
+pub struct MorphLineStyle2 {
+    pub start_width: u16,
+    pub end_width: u16,
+    pub start_cap_style: CapStyle,
+    pub join_style: JoinStyle,
+    pub no_h_scale: bool,
+    pub no_v_scale: bool,
+    pub pixel_hinting: bool,
+    pub no_close: bool,
+    pub end_cap_style: CapStyle,
+    pub fill_style: FillStyle<Rgba>,
 }
