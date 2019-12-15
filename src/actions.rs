@@ -100,7 +100,13 @@ pub enum ActionRecord {
     Enumerate2,
     StrictEquals,
     Greater,
-    StringGreater
+    StringGreater,
+    DefineFunction2(DefineFunction2),
+    Extends,
+    CastOp,
+    ImplementsOp,
+    Try(Try),
+    Throw
 }
 
 pub struct GoToFrame {
@@ -185,4 +191,32 @@ pub struct DefineFunction {
 
 pub struct StoreRegister {
     pub register_number: u8
+}
+
+pub struct DefineFunction2 {
+    pub function_name: String,
+    pub register_count: u8,
+    pub preload_parent: bool,
+    pub preload_root: bool,
+    pub suppress_super: bool,
+    pub preload_super: bool,
+    pub suppress_arguments: bool,
+    pub preload_arguments: bool,
+    pub suppress_this: bool,
+    pub preload_this: bool,
+    pub preload_global: bool,
+    pub parameters: Vec<RegisterParam>,
+    pub body: Vec<ActionRecord>
+}
+
+pub enum RegisterParam {
+    Register(u8),
+    Name(String)
+}
+
+pub struct Try {
+    pub catch_parameter: RegisterParam,
+    pub try_body: Vec<ActionRecord>,
+    pub catch_body: Option<Vec<ActionRecord>>,
+    pub finally_body: Option<Vec<ActionRecord>>
 }
