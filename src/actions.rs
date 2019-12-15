@@ -7,6 +7,12 @@ pub struct DoInitActionTag {
     pub actions: Vec<ActionRecord>
 }
 
+pub struct DoAbcTag {
+    pub flags: u32,
+    pub name: String,
+    pub abc_data: Vec<u8>
+}
+
 pub enum ActionRecord {
     GoToFrame(GoToFrame),
     GetUrl(GetUrl),
