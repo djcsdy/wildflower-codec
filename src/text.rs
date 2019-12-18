@@ -1,10 +1,17 @@
-use super::common::{Matrix, Rectangle, Rgb};
+use super::common::{Matrix, Rectangle, Rgb, Rgba};
 
 pub struct DefineTextTag {
     pub character_id: u16,
     pub text_bounds: Rectangle,
     pub text_matrix: Matrix,
     pub text_records: Vec<TextRecord<Rgb>>,
+}
+
+pub struct DefineText2Tag {
+    pub character_id: u16,
+    pub text_bounds: Rectangle,
+    pub text_matrix: Matrix,
+    pub text_records: Vec<TextRecord<Rgba>>,
 }
 
 pub struct TextRecord<TColor> {
