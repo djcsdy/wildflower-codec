@@ -63,19 +63,19 @@ pub struct SoundEnvelopePoint {
 pub struct SoundStreamHeadTag {
     pub playback_sound_rate: SamplingRate,
     pub playback_channels: SoundChannels,
-    pub stream_sound_compression: StreamSoundCompression,
+    pub stream_sound_compression: SoundStreamCompression,
     pub stream_sound_rate: SamplingRate,
     pub stream_sound_channels: SoundChannels,
     pub stream_sound_sample_count: u16,
     pub latency_seek: i16,
 }
 
-pub enum StreamSoundCompression {
+pub enum SoundStreamCompression {
     Adpcm = 1,
     Mp3 = 2
 }
 
-pub struct StreamSoundHead2Tag {
+pub struct SoundStreamHead2Tag {
     pub playback_sound_rate: SamplingRate,
     pub playback_channels: SoundChannels,
     pub stream_sound_compression: SoundFormat,
