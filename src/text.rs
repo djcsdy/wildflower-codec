@@ -52,7 +52,7 @@ pub struct DefineEditTextTag {
     pub indent: u16,
     pub leading: i16,
     pub variable_name: String,
-    pub initial_text: String
+    pub initial_text: String,
 }
 
 pub enum Align {
@@ -60,4 +60,23 @@ pub enum Align {
     Right = 1,
     Center = 2,
     Justify = 3,
+}
+
+pub struct CsmTextSettingsTag {
+    pub text_id: u16,
+    pub text_renderer: TextRenderer,
+    pub grid_fit: GridFit,
+    pub thickness: f32,
+    pub sharpness: f32,
+}
+
+pub enum TextRenderer {
+    Standard = 0,
+    Advanced = 1,
+}
+
+pub enum GridFit {
+    None = 0,
+    PixelFit = 1,
+    SubPixelFit = 2,
 }
