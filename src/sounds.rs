@@ -34,3 +34,28 @@ pub enum SoundChannels {
     Mono = 0,
     Stereo = 1,
 }
+
+pub struct StartSoundTag {
+    pub sound_id: u16,
+    pub sound_info: SoundInfo,
+}
+
+pub struct StartSound2Tag {
+    pub sound_class_name: String,
+    pub sound_info: SoundInfo,
+}
+
+pub struct SoundInfo {
+    pub sync_stop: bool,
+    pub sync_no_multiple: bool,
+    pub in_point: u32,
+    pub out_point: u32,
+    pub loop_count: u16,
+    pub envelope_points: SoundEnvelopePoint,
+}
+
+pub struct SoundEnvelopePoint {
+    pub pos_samples_44: u32,
+    pub left_level: u16,
+    pub right_level: u16,
+}
