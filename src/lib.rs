@@ -10,3 +10,4 @@ pub mod fonts;
 pub mod shape_morphing;
 pub mod shapes;
 pub mod styles;
+pub mod text;
