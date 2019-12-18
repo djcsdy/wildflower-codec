@@ -117,5 +117,11 @@ pub struct AlignZoneRecord {
 
 pub struct ZoneData {
     pub alignment_coordinate: Float16,
-    pub range: Float16
+    pub range: Float16,
+}
+
+pub struct DefineFontNameTag {
+    pub font_id: u16,
+    pub font_name: String,
+    pub font_copyright: String,
 }
