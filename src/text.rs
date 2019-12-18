@@ -11,7 +11,7 @@ pub struct DefineFont2Tag {
     pub small_text: bool,
     pub italic: bool,
     pub bold: bool,
-    pub language_code: LanguageCode,
+    pub language_code: Option<LanguageCode>,
     pub font_name: String,
     pub glyph_shapes: Vec<Shape<(), ()>>,
     pub code_table: CodeTableWithKernings,
