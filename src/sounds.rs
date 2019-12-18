@@ -72,7 +72,7 @@ pub struct SoundStreamHeadTag {
 
 pub enum SoundStreamCompression {
     Adpcm = 1,
-    Mp3 = 2
+    Mp3 = 2,
 }
 
 pub struct SoundStreamHead2Tag {
@@ -84,4 +84,8 @@ pub struct SoundStreamHead2Tag {
     pub stream_sound_channels: SoundChannels,
     pub stream_sound_sample_count: u16,
     pub latency_seek: i16,
+}
+
+pub struct SoundStreamBlockTag {
+    pub stream_sound_data: Vec<u8>,
 }
