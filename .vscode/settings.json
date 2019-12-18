@@ -5,6 +5,7 @@
         "blit",
         "deblock",
         "kernings",
+        "multiline",
         "softwareventures"
     ]
 }
