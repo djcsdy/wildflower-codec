@@ -1,4 +1,4 @@
-use super::common::Rectangle;
+use super::common::{Float16, Rectangle};
 use super::shapes::Shape;
 
 pub struct DefineFontTag {
@@ -95,4 +95,27 @@ pub struct Kerning<T> {
     pub left_character_code: T,
     pub right_character_code: T,
     pub kerning_adjustment: i16,
+}
+
+pub struct DefineFontAlignZonesTag {
+    pub font_id: u16,
+    pub csm_table_hint: CsmTableHint,
+    pub zones: Vec<AlignZoneRecord>,
+}
+
+pub enum CsmTableHint {
+    Thin = 0,
+    Medium = 1,
+    Thick = 2,
+}
+
+pub struct AlignZoneRecord {
+    pub zone_data: Vec<ZoneData>,
+    pub zone_mask_y: bool,
+    pub zone_mask_x: bool,
+}
+
+pub struct ZoneData {
+    pub alignment_coordinate: Float16,
+    pub range: Float16
 }

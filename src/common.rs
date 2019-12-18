@@ -6,6 +6,12 @@ pub struct Fixed16(i32);
 /// fractional part.
 pub struct Fixed8(i16);
 
+/// A half-precision (16-bit) IEEE 754 floating point number.
+/// TODO: The SWF Specification states that the exponent bias is 16.
+/// This contradicts IEEE 754 which states that the exponent bias is 15.
+/// It is not clear if this contradiction is intentional.
+pub struct Float16(u16);
+
 /// A sequence of bytes representing a character string.
 ///
 /// In SWF 6 and later, the string is encoded using UTF-8.
