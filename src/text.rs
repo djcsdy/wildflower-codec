@@ -1,4 +1,4 @@
-use super::shapes::Shape
+use super::shapes::Shape;
 
 pub struct DefineFontTag {
     pub font_id: u16,
