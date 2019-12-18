@@ -74,3 +74,14 @@ pub enum StreamSoundCompression {
     Adpcm = 1,
     Mp3 = 2
 }
+
+pub struct StreamSoundHead2Tag {
+    pub playback_sound_rate: SamplingRate,
+    pub playback_channels: SoundChannels,
+    pub stream_sound_compression: SoundFormat,
+    pub stream_sound_rate: SamplingRate,
+    pub stream_sound_bits: SamplingBits,
+    pub stream_sound_channels: SoundChannels,
+    pub stream_sound_sample_count: u16,
+    pub latency_seek: i16,
+}
