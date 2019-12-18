@@ -9,5 +9,6 @@ pub mod display_list;
 pub mod fonts;
 pub mod shape_morphing;
 pub mod shapes;
+pub mod sounds;
 pub mod styles;
 pub mod text;
