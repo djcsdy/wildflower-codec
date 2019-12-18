@@ -4,6 +4,7 @@
         "bitflags",
         "blit",
         "deblock",
+        "kernings",
         "softwareventures"
     ]
 }
