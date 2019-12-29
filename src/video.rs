@@ -23,3 +23,9 @@ pub enum Codec {
     Vp6 = 4,
     Vp6WithAlpha = 5,
 }
+
+pub struct VideoFrameTag {
+    pub stream_id: u16,
+    pub frame_num: u16,
+    pub video_data: Vec<u8>,
+}
