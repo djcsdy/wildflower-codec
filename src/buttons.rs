@@ -1,5 +1,5 @@
 use super::actions::ActionRecord;
-use super::common::{ColorTransformWithAlpha, Matrix};
+use super::common::{ColorTransform, ColorTransformWithAlpha, Matrix};
 use super::display_list::{BlendMode, Filter};
 
 pub struct DefineButtonTag {
@@ -44,4 +44,9 @@ pub struct ButtonConditionActionRecord {
     pub condition_key_press: u8,
     pub condition_over_down_to_idle: bool,
     pub actions: Vec<ActionRecord>,
+}
+
+pub struct DefineButtonColorTransformTag {
+    pub button_id: u16,
+    pub button_color_transform: ColorTransform,
 }
