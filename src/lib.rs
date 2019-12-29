@@ -14,3 +14,4 @@ pub mod sounds;
 pub mod sprites;
 pub mod styles;
 pub mod text;
+pub mod video;
