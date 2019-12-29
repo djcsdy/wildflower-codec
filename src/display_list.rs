@@ -69,7 +69,7 @@ pub struct PlaceObject2Tag {
     pub matrix: Option<Matrix>,
 
     /// Color transformation applied to the character.
-    pub color_transform: Option<ColorTransformationWithAlpha>,
+    pub color_transform: Option<ColorTransformWithAlpha>,
 
     pub ratio: Option<u16>,
 

@@ -70,7 +70,7 @@ pub struct ColorTransform {
 }
 
 /// A simple transformation of an RGBA color-with-alpha.
-pub struct ColorTransformationWithAlpha {
+pub struct ColorTransformWithAlpha {
     pub red_multiplication_term: Fixed8,
     pub green_multiplication_term: Fixed8,
     pub blue_multiplication_term: Fixed8,
