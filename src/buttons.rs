@@ -1,5 +1,12 @@
+use super::actions::ActionRecord;
 use super::common::{ColorTransformWithAlpha, Matrix};
 use super::display_list::{BlendMode, Filter};
+
+pub struct DefineButtonTag {
+    pub button_id: u16,
+    pub characters: Vec<ButtonRecord>,
+    pub actions: Vec<ActionRecord>,
+}
 
 pub struct ButtonRecord {
     pub button_state_hit_test: bool,
