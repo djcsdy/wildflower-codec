@@ -1,6 +1,7 @@
 use super::actions::ActionRecord;
 use super::common::{ColorTransform, ColorTransformWithAlpha, Matrix};
 use super::display_list::{BlendMode, Filter};
+use super::sounds::SoundInfo;
 
 pub struct DefineButtonTag {
     pub button_id: u16,
@@ -49,4 +50,17 @@ pub struct ButtonConditionActionRecord {
 pub struct DefineButtonColorTransformTag {
     pub button_id: u16,
     pub button_color_transform: ColorTransform,
+}
+
+pub struct DefineButtonSoundTag {
+    pub button_id: u16,
+    pub button_sound_0: Option<ButtonSound>,
+    pub button_sound_1: Option<ButtonSound>,
+    pub button_sound_2: Option<ButtonSound>,
+    pub button_sound_3: Option<ButtonSound>,
+}
+
+pub struct ButtonSound {
+    pub sound_id: u16,
+    pub sound_info: SoundInfo,
 }
