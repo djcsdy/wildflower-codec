@@ -3,6 +3,7 @@ extern crate bitflags;
 
 pub mod actions;
 pub mod bitmaps;
+pub mod buttons;
 pub mod common;
 pub mod control;
 pub mod display_list;
