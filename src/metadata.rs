@@ -7,3 +7,7 @@ pub struct FileAttributesTag {
 pub struct EnableTelemetryTag {
     pub password_hash: [u8; 32],
 }
+
+pub struct DefineBinaryDataTag {
+    pub data: Vec<u8>,
+}
