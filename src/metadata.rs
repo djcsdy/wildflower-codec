@@ -3,3 +3,7 @@ pub struct FileAttributesTag {
     pub no_cross_domain_cache: bool,
     pub use_network: bool,
 }
+
+pub struct EnableTelemetryTag {
+    pub password_hash: [u8; 32],
+}
