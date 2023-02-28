@@ -7,6 +7,8 @@ use std::path::Path;
 
 pub struct SwfBitReader<R: Read> {
     inner: BufReader<R>,
+    partial_byte: u8,
+    partial_bits: u8,
 }
 
 impl SwfBitReader<File> {
@@ -19,6 +21,8 @@ impl<R: Read> SwfBitReader<R> {
     pub fn new(inner: R) -> SwfBitReader<R> {
         SwfBitReader {
             inner: BufReader::new(inner),
+            partial_byte: 0,
+            partial_bits: 0,
         }
     }
 
