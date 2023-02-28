@@ -144,6 +144,29 @@ impl<R: Read> SwfBitReader<R> {
         }
         Ok(value)
     }
+
+    pub fn read_ub(&mut self, bits: u8) -> Result<u32> {
+        if bits > 32 {
+            panic!();
+        }
+
+        if bits <= self.partial_bits {
+            self.partial_bits = self.partial_bits - bits;
+            Ok((self.partial_byte as u32) >> self.partial_bits)
+        } else {
+            let mut result = self.partial_byte as u32;
+            let mut bits_remaining = bits - self.partial_bits;
+            while bits_remaining > 8 {
+                result = (result << 8) | self.read_u8()? as u32;
+                bits_remaining = bits_remaining - 8;
+            }
+
+            self.partial_byte = self.read_u8()?;
+            self.partial_bits = 8 - bits_remaining;
+
+            Ok((result << bits_remaining) | ((self.partial_byte as u32) >> self.partial_bits))
+        }
+    }
 }
 
 impl<R: Read> From<R> for SwfBitReader<R> {
