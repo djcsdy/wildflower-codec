@@ -47,6 +47,12 @@ impl Float16 {
 /// valid according to that encoding.
 pub struct String(Vec<u8>);
 
+impl String {
+    pub fn from_bytes<I: Into<Vec<u8>>>(buf: I) -> String {
+        String(buf.into())
+    }
+}
+
 /// An RGB color.
 pub struct Rgb {
     pub red: u8,
