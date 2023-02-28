@@ -1,4 +1,4 @@
-use byteorder::ReadBytesExt;
+use byteorder::{LittleEndian, ReadBytesExt};
 use std::fs::File;
 use std::io::{BufReader, Read, Result};
 use std::path::Path;
@@ -26,6 +26,10 @@ impl<R: Read> SwfBitReader<R> {
 
     pub fn read_i8(&mut self) -> Result<i8> {
         self.inner.read_i8()
+    }
+
+    pub fn read_i16(&mut self) -> Result<i16> {
+        self.inner.read_i16::<LittleEndian>()
     }
 
     pub fn read_u8(&mut self) -> Result<u8> {
