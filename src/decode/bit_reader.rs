@@ -131,6 +131,19 @@ impl<R: Read> SwfBitReader<R> {
         self.align_byte();
         self.inner.read_f64::<LittleEndian>()
     }
+
+    pub fn read_encoded_u32(&mut self) -> Result<u32> {
+        self.align_byte();
+        let mut count = 1;
+        let mut byte = self.read_u8()?;
+        let mut value = (byte as u32) & 0x7f;
+        while count < 5 && (byte & 0x80) == 0x80 {
+            byte = self.read_u8()?;
+            value = value | (((byte as u32) & 0x7f).wrapping_shl(7 * count));
+            count = count + 1
+        }
+        Ok(value)
+    }
 }
 
 impl<R: Read> From<R> for SwfBitReader<R> {
