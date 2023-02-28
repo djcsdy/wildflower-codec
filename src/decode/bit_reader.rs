@@ -1,4 +1,4 @@
-use crate::ast::common::Fixed16;
+use crate::ast::common::{Fixed16, Fixed8};
 use byteorder::{LittleEndian, ReadBytesExt};
 use std::fs::File;
 use std::io::{BufReader, Read, Result};
@@ -82,6 +82,12 @@ impl<R: Read> SwfBitReader<R> {
         let mut buf = [0u8; 4];
         self.inner.read_exact(&mut buf)?;
         Ok(Fixed16::from_bytes(&buf))
+    }
+
+    pub fn read_fixed8(&mut self) -> Result<Fixed8> {
+        let mut buf = [0u8; 2];
+        self.inner.read_exact(&mut buf)?;
+        Ok(Fixed8::from_bytes(&buf))
     }
 }
 
