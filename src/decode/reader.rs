@@ -15,6 +15,8 @@ impl SwfReader<File> {
 
 impl<R: Read> SwfReader<R> {
     pub fn new<I: Into<SwfBitReader<R>>>(bit_reader: I) -> SwfReader<R> {
-        SwfReader { bit_reader: bit_reader.into() }
+        SwfReader {
+            bit_reader: bit_reader.into(),
+        }
     }
 }
