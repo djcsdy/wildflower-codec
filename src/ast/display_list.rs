@@ -1,5 +1,5 @@
-use super::common::*;
 use super::actions::ActionRecord;
+use super::common::*;
 
 /// A Tag with an unknown or unsupported tag code.
 pub struct UnknownTag {
@@ -168,7 +168,7 @@ pub enum Filter {
 }
 
 pub struct ColorMatrixFilter {
-    pub matrix: [f32; 20]
+    pub matrix: [f32; 20],
 }
 
 pub struct ConvolutionFilter {
@@ -293,12 +293,11 @@ pub struct RemoveObjectTag {
 /// Removes the character at the specified depth from the display list.
 pub struct RemoveObject2Tag {
     /// Depth of character to remove.
-    pub depth: u16
+    pub depth: u16,
 }
 
 /// Instructs the player to display the contents of the display list.
 ///
 /// The player will wait at least the duration of one frame before the next
 /// ShowFrame tag takes effect.
-pub struct ShowFrameTag {
-}
+pub struct ShowFrameTag {}

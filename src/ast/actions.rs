@@ -1,16 +1,16 @@
 pub struct DoActionTag {
-    pub actions: Vec<ActionRecord>
+    pub actions: Vec<ActionRecord>,
 }
 
 pub struct DoInitActionTag {
     pub sprite_id: u16,
-    pub actions: Vec<ActionRecord>
+    pub actions: Vec<ActionRecord>,
 }
 
 pub struct DoAbcTag {
     pub flags: u32,
     pub name: String,
-    pub abc_data: Vec<u8>
+    pub abc_data: Vec<u8>,
 }
 
 pub enum ActionRecord {
@@ -112,33 +112,33 @@ pub enum ActionRecord {
     CastOp,
     ImplementsOp,
     Try(Try),
-    Throw
+    Throw,
 }
 
 pub struct GoToFrame {
-    pub frame: u16
+    pub frame: u16,
 }
 
 pub struct GetUrl {
     pub url: String,
-    pub target: String
+    pub target: String,
 }
 
 pub struct WaitForFrame {
     pub frame: u16,
-    pub skip_count: u8
+    pub skip_count: u8,
 }
 
 pub struct SetTarget {
-    pub target_name: String
+    pub target_name: String,
 }
 
 pub struct GoToLabel {
-    pub label: String
+    pub label: String,
 }
 
 pub struct Push {
-    pub value: PushValue
+    pub value: PushValue,
 }
 
 pub enum PushValue {
@@ -148,55 +148,55 @@ pub enum PushValue {
     Boolean(bool),
     Double(f64),
     Integer(u32),
-    Constant(u16)
+    Constant(u16),
 }
 
 pub struct Jump {
-    pub offset: i16
+    pub offset: i16,
 }
 
 pub struct If {
-    pub offset: i16
+    pub offset: i16,
 }
 
 pub struct GetUrl2 {
     pub send_vars_method: SendVarsMethod,
     pub load_target: LoadTarget,
-    pub load_variables: bool
+    pub load_variables: bool,
 }
 
 pub enum SendVarsMethod {
     None = 0,
     Get = 1,
-    Post = 2
+    Post = 2,
 }
 
 pub enum LoadTarget {
     BrowserWindow = 0,
-    PathToSprite = 1
+    PathToSprite = 1,
 }
 
 pub struct GoToFrame2 {
     pub play: bool,
-    pub scene_bias: u16
+    pub scene_bias: u16,
 }
 
 pub struct WaitForFrame2 {
-    pub skip_count: u8
+    pub skip_count: u8,
 }
 
 pub struct ConstantPool {
-    pub constant_pool: Vec<String>
+    pub constant_pool: Vec<String>,
 }
 
 pub struct DefineFunction {
     pub function_name: String,
     pub params: Vec<String>,
-    pub body: Vec<ActionRecord>
+    pub body: Vec<ActionRecord>,
 }
 
 pub struct StoreRegister {
-    pub register_number: u8
+    pub register_number: u8,
 }
 
 pub struct DefineFunction2 {
@@ -212,17 +212,17 @@ pub struct DefineFunction2 {
     pub preload_this: bool,
     pub preload_global: bool,
     pub parameters: Vec<RegisterParam>,
-    pub body: Vec<ActionRecord>
+    pub body: Vec<ActionRecord>,
 }
 
 pub enum RegisterParam {
     Register(u8),
-    Name(String)
+    Name(String),
 }
 
 pub struct Try {
     pub catch_parameter: RegisterParam,
     pub try_body: Vec<ActionRecord>,
     pub catch_body: Option<Vec<ActionRecord>>,
-    pub finally_body: Option<Vec<ActionRecord>>
+    pub finally_body: Option<Vec<ActionRecord>>,
 }

@@ -2,7 +2,7 @@ use super::common::*;
 
 /// Sets the background color of the display.
 pub struct SetBackgroundColorTag {
-    pub color: Rgb
+    pub color: Rgb,
 }
 
 /// Labels the current frame with the specified name.
@@ -13,7 +13,7 @@ pub struct FrameLabelTag {
 }
 
 pub struct ProtectTag {
-    pub password_md5: Vec<u8>
+    pub password_md5: Vec<u8>,
 }
 
 /// Marks the end of a SWF file or of a sprite definition.
@@ -22,7 +22,7 @@ pub struct EndTag {}
 /// Makes portions of the SWF file available for import by other SWF files
 /// using `ImportAssetsTag`.
 pub struct ExportAssetsTag {
-    pub exports: Vec<PortableCharacterRecord>
+    pub exports: Vec<PortableCharacterRecord>,
 }
 
 /// Imports characters from another SWF file.
@@ -39,11 +39,11 @@ pub struct PortableCharacterRecord {
 }
 
 pub struct EnableDebuggerTag {
-    pub password_md5: Vec<u8>
+    pub password_md5: Vec<u8>,
 }
 
 pub struct EnableDebugger2Tag {
-    pub password_md5: Vec<u8>
+    pub password_md5: Vec<u8>,
 }
 
 /// Overrides the default limits for AVM scripts.
@@ -59,7 +59,7 @@ pub struct SetTabIndexTag {
 }
 
 pub struct FileAttributesTag {
-    pub flags: FileAttributesFlags
+    pub flags: FileAttributesFlags,
 }
 
 bitflags! {
@@ -83,7 +83,7 @@ pub struct ImportAssets2Tag {
 /// Creates associations between characters in the SWF file and ActionScript 3
 /// classes.
 pub struct SymbolClassTag {
-    pub records: Vec<SymbolClassRecord>
+    pub records: Vec<SymbolClassRecord>,
 }
 
 /// Associates an ActionScript 3 class with a character.
@@ -96,7 +96,7 @@ pub struct SymbolClassRecord {
 }
 
 pub struct MetadataTag {
-    pub metadata: String
+    pub metadata: String,
 }
 
 /// Defines a 9-slice grid that should be applied when scaling the specified

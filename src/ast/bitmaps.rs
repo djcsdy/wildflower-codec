@@ -24,7 +24,7 @@ pub struct DefineBitsJpeg4Tag {
     pub character_id: u16,
     pub deblock_param: Fixed8,
     pub image_data: Vec<u8>,
-    pub bitmap_alpha_data: Vec<u8>
+    pub bitmap_alpha_data: Vec<u8>,
 }
 
 pub struct DefineBitsLosslessTag {
