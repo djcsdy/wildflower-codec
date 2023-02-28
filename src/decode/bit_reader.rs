@@ -22,6 +22,12 @@ impl<R: Read> SwfBitReader<R> {
     pub fn read_bytes(&mut self, buf: &mut [u8]) -> Result<()> {
         self.inner.read_exact(buf)
     }
+
+    pub fn read_u8(&mut self) -> Result<u8> {
+        let mut buf = [0u8; 1];
+        self.inner.read_exact(&mut buf)?;
+        Ok(buf[0])
+    }
 }
 
 impl<R: Read> From<R> for SwfBitReader<R> {
