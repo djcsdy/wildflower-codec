@@ -68,6 +68,10 @@ impl<R: Read> SwfBitReader<R> {
         }
         Ok(())
     }
+
+    pub fn read_u32_into(&mut self, buf: &mut [u32]) -> Result<()> {
+        self.inner.read_u32_into::<LittleEndian>(buf)
+    }
 }
 
 impl<R: Read> From<R> for SwfBitReader<R> {
