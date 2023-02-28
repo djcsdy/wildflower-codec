@@ -26,6 +26,11 @@ impl<R: Read> SwfBitReader<R> {
         }
     }
 
+    pub fn align_byte(&mut self) {
+        self.partial_byte = 0;
+        self.partial_bits = 0;
+    }
+
     pub fn read_i8(&mut self) -> Result<i8> {
         self.inner.read_i8()
     }
