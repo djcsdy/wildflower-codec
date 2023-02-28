@@ -18,6 +18,10 @@ impl<R: Read> SwfBitReader<R> {
             inner: BufReader::new(inner),
         }
     }
+
+    pub fn read_bytes(&mut self, buf: &mut [u8]) -> Result<()> {
+        self.inner.read_exact(buf)
+    }
 }
 
 impl<R: Read> From<R> for SwfBitReader<R> {
