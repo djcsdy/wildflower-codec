@@ -167,6 +167,19 @@ impl<R: Read> SwfBitReader<R> {
             Ok((result << bits_remaining) | ((self.partial_byte as u32) >> self.partial_bits))
         }
     }
+
+    pub fn read_sb(&mut self, bits: u8) -> Result<i32> {
+        Ok(Self::extend_sign(self.read_ub(bits)?, bits))
+    }
+
+    fn extend_sign(value: u32, bits: u8) -> i32 {
+        let sign = 1u32 << (bits - 1);
+        if (value & sign) == 0 {
+            value as i32
+        } else {
+            (value as i32) | -(sign as i32)
+        }
+    }
 }
 
 impl<R: Read> From<R> for SwfBitReader<R> {
