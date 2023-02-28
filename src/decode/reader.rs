@@ -8,6 +8,12 @@ pub struct SwfReader<R: Read> {
 
 impl SwfReader<File> {
     pub fn open<P: AsRef<Path>>(path: P) -> Result<SwfReader<File>> {
-        File::open(path).map(|inner| SwfReader { inner })
+        File::open(path).map(|file| SwfReader::new(file))
+    }
+}
+
+impl<R: Read> SwfReader<R> {
+    pub fn new(inner: R) -> SwfReader<R> {
+        SwfReader { inner }
     }
 }
