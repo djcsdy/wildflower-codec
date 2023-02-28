@@ -14,6 +14,12 @@ impl Fixed16 {
 /// fractional part.
 pub struct Fixed8(i16);
 
+impl Fixed8 {
+    pub fn from_bytes(buf: &[u8; 2]) -> Fixed8 {
+        Fixed8(LittleEndian::read_i16(buf))
+    }
+}
+
 /// A half-precision (16-bit) IEEE 754 floating point number.
 /// TODO: The SWF Specification states that the exponent bias is 16.
 /// This contradicts IEEE 754 which states that the exponent bias is 15.
