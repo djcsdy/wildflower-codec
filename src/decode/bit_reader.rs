@@ -1,5 +1,5 @@
 use crate::ast::actions::PushValue::Float;
-use crate::ast::common::{Fixed16, Fixed8, Float16, Rgb, String};
+use crate::ast::common::{Fixed16, Fixed8, Float16, Rgb, Rgba, String};
 use byteorder::{LittleEndian, ReadBytesExt};
 use std::fs::File;
 use std::io::{BufReader, Read, Result};
@@ -198,6 +198,17 @@ impl<R: Read> SwfBitReader<R> {
             red: buf[0],
             green: buf[1],
             blue: buf[2],
+        })
+    }
+
+    pub fn read_rgba(&mut self) -> Result<Rgba> {
+        let mut buf = [0u8; 4];
+        self.read_u8_into(&mut buf)?;
+        Ok(Rgba {
+            red: buf[0],
+            green: buf[1],
+            blue: buf[2],
+            alpha: buf[3],
         })
     }
 }
