@@ -27,6 +27,12 @@ impl Fixed8 {
 /// It is not clear if this contradiction is intentional.
 pub struct Float16(u16);
 
+impl Float16 {
+    pub fn from_bytes(buf: &[u8; 2]) -> Float16 {
+        Float16(LittleEndian::read_u16(buf))
+    }
+}
+
 /// A sequence of bytes representing a character string.
 ///
 /// In SWF 6 and later, the string is encoded using UTF-8.
