@@ -19,3 +19,9 @@ impl<R: Read> SwfReader<R> {
         }
     }
 }
+
+impl<R: Read> From<R> for SwfReader<R> {
+    fn from(value: R) -> Self {
+        SwfReader::new(value)
+    }
+}
