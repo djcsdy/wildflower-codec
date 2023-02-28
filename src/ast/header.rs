@@ -1,4 +1,4 @@
-use ast::common::{Fixed8, Rectangle};
+use crate::ast::common::{Fixed8, Rectangle};
 
 pub enum Compression {
     None,

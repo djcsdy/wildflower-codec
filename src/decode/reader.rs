@@ -1,4 +1,4 @@
-use decode::bit_reader::SwfBitReader;
+use crate::decode::bit_reader::SwfBitReader;
 use std::fs::File;
 use std::io::{Read, Result};
 use std::path::Path;
@@ -15,6 +15,6 @@ impl SwfReader<File> {
 
 impl<R: Read> SwfReader<R> {
     pub fn new<I: Into<SwfBitReader<R>>>(bit_reader: I) -> SwfReader<R> {
-        SwfReader { bit_reader }
+        SwfReader { bit_reader: bit_reader.into() }
     }
 }
