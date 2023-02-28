@@ -1,6 +1,14 @@
+use byteorder::{ByteOrder, LittleEndian};
+
 /// A fixed-point number consisting of a 16-bit whole part plus a 16-bit
 /// fractional part.
 pub struct Fixed16(i32);
+
+impl Fixed16 {
+    pub fn from_bytes(buf: &[u8; 4]) -> Fixed16 {
+        Fixed16(LittleEndian::read_i32(buf))
+    }
+}
 
 /// A fixed-point number consisting of a 8-bit whole part plus an 8-bit
 /// fractional part.
