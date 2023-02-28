@@ -21,6 +21,7 @@ impl Fixed8 {
 }
 
 /// A half-precision (16-bit) IEEE 754 floating point number.
+///
 /// TODO: The SWF Specification states that the exponent bias is 16.
 /// This contradicts IEEE 754 which states that the exponent bias is 15.
 /// It is not clear if this contradiction is intentional.
