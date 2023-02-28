@@ -3,7 +3,7 @@ use std::io::{BufReader, Read, Result};
 use std::path::Path;
 
 pub struct SwfReader<R: Read> {
-    inner: R,
+    inner: BufReader<R>,
 }
 
 impl SwfReader<File> {
@@ -14,6 +14,8 @@ impl SwfReader<File> {
 
 impl<R: Read> SwfReader<R> {
     pub fn new(inner: R) -> SwfReader<R> {
-        SwfReader { inner }
+        SwfReader {
+            inner: BufReader::new(inner),
+        }
     }
 }
