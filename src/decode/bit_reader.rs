@@ -36,6 +36,10 @@ impl<R: Read> SwfBitReader<R> {
         self.inner.read_i32::<LittleEndian>()
     }
 
+    pub fn read_i8_into(&mut self, buf: &mut [i8]) -> Result<()> {
+        self.inner.read_i8_into(buf)
+    }
+
     pub fn read_u8(&mut self) -> Result<u8> {
         self.inner.read_u8()
     }
