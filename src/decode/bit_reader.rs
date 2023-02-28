@@ -1,3 +1,4 @@
+use byteorder::ReadBytesExt;
 use std::fs::File;
 use std::io::{BufReader, Read, Result};
 use std::path::Path;
@@ -24,9 +25,7 @@ impl<R: Read> SwfBitReader<R> {
     }
 
     pub fn read_u8(&mut self) -> Result<u8> {
-        let mut buf = [0u8; 1];
-        self.inner.read_exact(&mut buf)?;
-        Ok(buf[0])
+        self.inner.read_u8()
     }
 }
 
