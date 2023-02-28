@@ -96,6 +96,10 @@ impl<R: Read> SwfBitReader<R> {
         self.inner.read_exact(&mut buf)?;
         Ok(Float16::from_bytes(&buf))
     }
+
+    pub fn read_f32(&mut self) -> Result<f32> {
+        self.inner.read_f32::<LittleEndian>()
+    }
 }
 
 impl<R: Read> From<R> for SwfBitReader<R> {
