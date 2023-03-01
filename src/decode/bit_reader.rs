@@ -1,6 +1,6 @@
 use crate::ast::actions::PushValue::Float;
 use crate::ast::common::{Fixed16, Fixed8, Float16, Rectangle, Rgb, Rgba, String};
-use byteorder::{LittleEndian, ReadBytesExt};
+use byteorder::{ByteOrder, LittleEndian, ReadBytesExt};
 use std::fs::File;
 use std::io::{BufReader, Read, Result};
 use std::path::Path;
@@ -191,6 +191,12 @@ impl<R: Read> SwfBitReader<R> {
         } else {
             (value as i32) | -(sign as i32)
         }
+    }
+
+    pub fn read_fb(&mut self, bits: u8) -> Result<Fixed16> {
+        let mut buf = [0u8; 4];
+        LittleEndian::write_u32(&mut buf, self.read_ub(bits)?);
+        Ok(Fixed16::from_bytes(&buf))
     }
 
     pub fn read_string(&mut self) -> Result<String> {
