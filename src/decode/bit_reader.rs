@@ -207,6 +207,12 @@ impl<R: Read> SwfBitReader<R> {
         Ok(Fixed16::from_bytes(&buf))
     }
 
+    pub fn read_fixed8_bits(&mut self, bits: u8) -> Result<Fixed8> {
+        let mut buf = [0u8; 2];
+        LittleEndian::write_u16(&mut buf, self.read_ub16(bits)?);
+        Ok(Fixed8::from_bytes(&buf))
+    }
+
     pub fn read_string(&mut self) -> Result<String> {
         let mut bytes = Vec::new();
         let mut byte = self.read_u8()?;
