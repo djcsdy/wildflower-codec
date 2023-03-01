@@ -145,6 +145,14 @@ impl<R: Read> SwfBitReader<R> {
         Ok(value)
     }
 
+    pub fn read_ub8(&mut self, bits: u8) -> Result<u8> {
+        if bits > 8 {
+            panic!();
+        }
+
+        Ok(self.read_ub(bits)? as u8)
+    }
+
     pub fn read_ub(&mut self, bits: u8) -> Result<u32> {
         if bits > 32 {
             panic!();
