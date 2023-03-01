@@ -211,6 +211,17 @@ impl<R: Read> SwfBitReader<R> {
             alpha: buf[3],
         })
     }
+
+    pub fn read_argb(&mut self) -> Result<Rgba> {
+        let mut buf = [0u8; 4];
+        self.read_u8_into(&mut buf)?;
+        Ok(Rgba {
+            red: buf[1],
+            green: buf[2],
+            blue: buf[3],
+            alpha: buf[0],
+        })
+    }
 }
 
 impl<R: Read> From<R> for SwfBitReader<R> {
