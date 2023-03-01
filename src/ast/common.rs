@@ -5,6 +5,9 @@ use byteorder::{ByteOrder, LittleEndian};
 pub struct Fixed16(i32);
 
 impl Fixed16 {
+    pub const ZERO: Fixed16 = Fixed16(0);
+    pub const ONE: Fixed16 = Fixed16(0x10000);
+
     pub fn from_bytes(buf: &[u8; 4]) -> Fixed16 {
         Fixed16(LittleEndian::read_i32(buf))
     }
