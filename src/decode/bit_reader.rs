@@ -193,7 +193,7 @@ impl<R: Read> SwfBitReader<R> {
         }
     }
 
-    pub fn read_fb(&mut self, bits: u8) -> Result<Fixed16> {
+    pub fn read_fixed16_bits(&mut self, bits: u8) -> Result<Fixed16> {
         let mut buf = [0u8; 4];
         LittleEndian::write_u32(&mut buf, self.read_ub(bits)?);
         Ok(Fixed16::from_bytes(&buf))
@@ -261,24 +261,24 @@ impl<R: Read> SwfBitReader<R> {
         let has_scale = self.read_bit()?;
         let scale_bits = if has_scale { self.read_ub8(5)? } else { 0 };
         let scale_x = if has_scale {
-            self.read_fb(scale_bits)?
+            self.read_fixed16_bits(scale_bits)?
         } else {
             Fixed16::ONE
         };
         let scale_y = if has_scale {
-            self.read_fb(scale_bits)?
+            self.read_fixed16_bits(scale_bits)?
         } else {
             Fixed16::ONE
         };
         let has_rotate = self.read_bit()?;
         let rotate_bits = if has_rotate { self.read_ub8(5)? } else { 0 };
         let rotate_skew_0 = if has_rotate {
-            self.read_fb(rotate_bits)?
+            self.read_fixed16_bits(rotate_bits)?
         } else {
             Fixed16::ZERO
         };
         let rotate_skew_1 = if has_rotate {
-            self.read_fb(rotate_bits)?
+            self.read_fixed16_bits(rotate_bits)?
         } else {
             Fixed16::ZERO
         };
