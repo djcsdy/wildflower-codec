@@ -1,5 +1,5 @@
 use crate::ast::actions::PushValue::Float;
-use crate::ast::common::{Fixed16, Fixed8, Float16, Rectangle, Rgb, Rgba, String};
+use crate::ast::common::{Fixed16, Fixed8, Float16, Matrix, Rectangle, Rgb, Rgba, String};
 use byteorder::{ByteOrder, LittleEndian, ReadBytesExt};
 use std::fs::File;
 use std::io::{BufReader, Read, Result};
@@ -253,6 +253,45 @@ impl<R: Read> SwfBitReader<R> {
             x_max,
             y_min,
             y_max,
+        })
+    }
+
+    pub fn read_matrix(&mut self) -> Result<Matrix> {
+        self.align_byte();
+        let has_scale = self.read_bit()?;
+        let scale_bits = if has_scale { self.read_ub8(5)? } else { 0 };
+        let scale_x = if has_scale {
+            self.read_fb(scale_bits)?
+        } else {
+            Fixed16::ONE
+        };
+        let scale_y = if has_scale {
+            self.read_fb(scale_bits)?
+        } else {
+            Fixed16::ONE
+        };
+        let has_rotate = self.read_bit()?;
+        let rotate_bits = if has_rotate { self.read_ub8(5)? } else { 0 };
+        let rotate_skew_0 = if has_rotate {
+            self.read_fb(rotate_bits)?
+        } else {
+            Fixed16::ZERO
+        };
+        let rotate_skew_1 = if has_rotate {
+            self.read_fb(rotate_bits)?
+        } else {
+            Fixed16::ZERO
+        };
+        let translate_bits = self.read_ub8(5)?;
+        let translate_x = self.read_sb(translate_bits)?;
+        let translate_y = self.read_sb(translate_bits)?;
+        Ok(Matrix {
+            scale_x,
+            scale_y,
+            rotate_skew_0,
+            rotate_skew_1,
+            translate_x,
+            translate_y,
         })
     }
 }
