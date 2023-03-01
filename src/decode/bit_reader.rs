@@ -1,5 +1,5 @@
 use crate::ast::actions::PushValue::Float;
-use crate::ast::common::{Fixed16, Fixed8, Float16, Rgb, Rgba, String};
+use crate::ast::common::{Fixed16, Fixed8, Float16, Rectangle, Rgb, Rgba, String};
 use byteorder::{LittleEndian, ReadBytesExt};
 use std::fs::File;
 use std::io::{BufReader, Read, Result};
@@ -228,6 +228,21 @@ impl<R: Read> SwfBitReader<R> {
             green: buf[2],
             blue: buf[3],
             alpha: buf[0],
+        })
+    }
+
+    pub fn read_rectangle(&mut self) -> Result<Rectangle> {
+        self.align_byte();
+        let bits = self.read_ub8(5)?;
+        let x_min = self.read_sb(bits)?;
+        let x_max = self.read_sb(bits)?;
+        let y_min = self.read_sb(bits)?;
+        let y_max = self.read_sb(bits)?;
+        Ok(Rectangle {
+            x_min,
+            x_max,
+            y_min,
+            y_max,
         })
     }
 }
