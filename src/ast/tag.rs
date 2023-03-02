@@ -1,34 +1,34 @@
-use crate::ast::actions::{DoAbcTag, DoActionTag, DoInitActionTag};
-use crate::ast::bitmaps::{
+use super::actions::{DoAbcTag, DoActionTag, DoInitActionTag};
+use super::bitmaps::{
     DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsJpeg4Tag, DefineBitsLossless2Tag,
     DefineBitsLosslessTag, DefineBitsTag, JpegTablesTag,
 };
-use crate::ast::buttons::{
+use super::buttons::{
     DefineButton2Tag, DefineButtonColorTransformTag, DefineButtonSoundTag, DefineButtonTag,
 };
-use crate::ast::control::{
+use super::control::{
     DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, EnableDebugger2Tag, EnableDebuggerTag,
     EndTag, ExportAssetsTag, FrameLabelTag, ImportAssets2Tag, ImportAssetsTag, MetadataTag,
     ProtectTag, ScriptLimitsTag, SetBackgroundColorTag, SetTabIndexTag, SymbolClassTag,
 };
-use crate::ast::display_list::{
+use super::display_list::{
     PlaceObject2Tag, PlaceObject3Tag, PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag,
     ShowFrameTag,
 };
-use crate::ast::fonts::{
+use super::fonts::{
     DefineFont2Tag, DefineFont3Tag, DefineFont4Tag, DefineFontAlignZonesTag, DefineFontInfo2Tag,
     DefineFontInfoTag, DefineFontNameTag, DefineFontTag,
 };
-use crate::ast::metadata::{DefineBinaryDataTag, EnableTelemetryTag, FileAttributesTag};
-use crate::ast::shape_morphing::{DefineMorphShape2Tag, DefineMorphShapeTag};
-use crate::ast::shapes::{DefineShape2Tag, DefineShape3Tag, DefineShape4Tag, DefineShapeTag};
-use crate::ast::sounds::{
+use super::metadata::{DefineBinaryDataTag, EnableTelemetryTag, FileAttributesTag};
+use super::shape_morphing::{DefineMorphShape2Tag, DefineMorphShapeTag};
+use super::shapes::{DefineShape2Tag, DefineShape3Tag, DefineShape4Tag, DefineShapeTag};
+use super::sounds::{
     DefineSoundTag, SoundStreamBlockTag, SoundStreamHead2Tag, SoundStreamHeadTag, StartSound2Tag,
     StartSoundTag,
 };
-use crate::ast::sprites::DefineSpriteTag;
-use crate::ast::text::{CsmTextSettingsTag, DefineEditTextTag, DefineText2Tag, DefineTextTag};
-use crate::ast::video::DefineVideoStreamTag;
+use super::sprites::DefineSpriteTag;
+use super::text::{CsmTextSettingsTag, DefineEditTextTag, DefineText2Tag, DefineTextTag};
+use super::video::DefineVideoStreamTag;
 
 pub enum Tag {
     PlaceObject(PlaceObjectTag),
