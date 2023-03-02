@@ -8,10 +8,8 @@ use std::io::{BufRead, Error, Result};
 pub fn read_header<R: BufRead>(
     mut reader: R,
 ) -> Result<(Header, SwfFieldReader<DecompressingReader<R>>)> {
-    let mut uncompressed_field_reader = SwfFieldReader::new(reader);
-
     let mut signature = [0u8; 3];
-    uncompressed_field_reader.read_u8_into(&mut signature)?;
+    reader.read_u8_into(&mut signature)?;
 
     let compression = match signature {
         [0x46, 0x57, 0x54] => Ok(Compression::None),
@@ -20,10 +18,9 @@ pub fn read_header<R: BufRead>(
         _ => Err(Error::from(InvalidData)),
     }?;
 
-    let version = uncompressed_field_reader.read_u8()?;
-    let file_length = uncompressed_field_reader.read_u32()?;
+    let version = reader.read_u8()?;
+    let file_length = reader.read_u32()?;
 
-    reader = uncompressed_field_reader.into_inner();
     let mut compressed_field_reader = SwfFieldReader::new(match compression {
         Compression::None => DecompressingReader::uncompressed(reader),
         Compression::Zlib => DecompressingReader::deflate(reader),
