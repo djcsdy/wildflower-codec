@@ -86,7 +86,7 @@ pub enum ActionRecord {
     NewObject,
     SetMember,
     TargetPath,
-    With,
+    With(With),
     ToNumber,
     ToString,
     TypeOf,
@@ -201,6 +201,10 @@ pub struct ConstantPool {
 pub struct DefineFunction {
     pub function_name: String,
     pub params: Vec<String>,
+    pub body: Vec<ActionRecord>,
+}
+
+pub struct With {
     pub body: Vec<ActionRecord>,
 }
 
