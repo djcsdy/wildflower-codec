@@ -1,9 +1,22 @@
+use crate::decode::transparent_decompressing_reader::TransparentDecompressingReader::{
+    Deflate, Uncompressed,
+};
 use inflate::DeflateDecoderBuf;
 use std::io::{BufRead, IoSliceMut, Read};
 
 pub enum TransparentDecompressingReader<R: BufRead> {
     Uncompressed(R),
     Deflate(DeflateDecoderBuf<R>),
+}
+
+impl<R: BufRead> TransparentDecompressingReader<R> {
+    pub fn uncompressed(inner: R) -> TransparentDecompressingReader<R> {
+        Uncompressed(inner)
+    }
+
+    pub fn deflate(inner: R) -> TransparentDecompressingReader<R> {
+        Deflate(DeflateDecoderBuf::new(inner))
+    }
 }
 
 impl<R: BufRead> Read for TransparentDecompressingReader<R> {
