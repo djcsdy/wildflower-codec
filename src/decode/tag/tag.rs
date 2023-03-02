@@ -1,9 +1,9 @@
 use crate::ast::tag::Tag;
-use crate::decode::bit_reader::SwfBitReader;
+use crate::decode::field_reader::SwfFieldReader;
 use crate::decode::read_ext::SwfTypesReadExt;
 use std::io::{Read, Result};
 
-pub fn read_tag<R: Read>(reader: &mut SwfBitReader<R>) -> Result<Tag> {
+pub fn read_tag<R: Read>(reader: &mut SwfFieldReader<R>) -> Result<Tag> {
     let tag_code_and_length = reader.read_u16()?;
     let tag_code = tag_code_and_length >> 6;
     let mut length = (tag_code_and_length & 0x3f) as u32;
