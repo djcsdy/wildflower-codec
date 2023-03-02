@@ -9,6 +9,10 @@ impl<R: Read> CountingReader<R> {
     pub fn new(inner: R) -> CountingReader<R> {
         CountingReader { inner, count: 0 }
     }
+
+    pub fn into_inner(self) -> R {
+        self.inner
+    }
 }
 
 impl<R: Read> Read for CountingReader<R> {
