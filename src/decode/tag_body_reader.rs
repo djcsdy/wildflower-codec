@@ -6,15 +6,15 @@ use crate::decode::read_ext::SwfTypesReadExt;
 use byteorder::{ByteOrder, LittleEndian};
 use std::io::{IoSliceMut, Read, Result};
 
-pub struct SwfFieldReader<R: Read> {
+pub struct SwfTagBodyReader<R: Read> {
     inner: MaxLengthReader<R>,
     partial_byte: u8,
     partial_bits: u8,
 }
 
-impl<R: Read> SwfFieldReader<R> {
-    pub fn new(inner: R, max_length: usize) -> SwfFieldReader<R> {
-        SwfFieldReader {
+impl<R: Read> SwfTagBodyReader<R> {
+    pub fn new(inner: R, max_length: usize) -> SwfTagBodyReader<R> {
+        SwfTagBodyReader {
             inner: MaxLengthReader::new(inner, max_length),
             partial_byte: 0,
             partial_bits: 0,
@@ -315,7 +315,7 @@ impl<R: Read> SwfFieldReader<R> {
     }
 }
 
-impl<R: Read> Read for SwfFieldReader<R> {
+impl<R: Read> Read for SwfTagBodyReader<R> {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
         self.align_byte();
         self.inner.read(buf)

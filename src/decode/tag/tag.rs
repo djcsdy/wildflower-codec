@@ -1,7 +1,7 @@
 use crate::ast::tag::Tag;
-use crate::decode::field_reader::SwfFieldReader;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag::display_list::read_place_object_tag;
+use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};
 
 pub fn read_tag<R: Read>(reader: &mut R) -> Result<Tag> {
@@ -12,12 +12,12 @@ pub fn read_tag<R: Read>(reader: &mut R) -> Result<Tag> {
         length = reader.read_u32()?
     };
 
-    let mut field_reader = SwfFieldReader::new(reader, length as usize);
+    let mut tag_body_reader = SwfTagBodyReader::new(reader, length as usize);
     let tag = match tag_code {
-        4 => Tag::PlaceObject(read_place_object_tag(&mut field_reader)?),
+        4 => Tag::PlaceObject(read_place_object_tag(&mut tag_body_reader)?),
         _ => todo!(),
     };
-    field_reader.skip_to_end()?;
+    tag_body_reader.skip_to_end()?;
 
     Ok(tag)
 }

@@ -1,7 +1,7 @@
 use crate::ast::header::{Compression, Header};
 use crate::decode::decompressing_reader::DecompressingReader;
-use crate::decode::field_reader::SwfFieldReader;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::ErrorKind::InvalidData;
 use std::io::{BufRead, Error, Result};
 
@@ -19,7 +19,7 @@ pub fn read_header<R: BufRead>(mut reader: R) -> Result<(Header, DecompressingRe
     let version = reader.read_u8()?;
     let file_length = reader.read_u32()?;
 
-    let mut decompressing_field_reader = SwfFieldReader::new(
+    let mut decompressing_tag_body_reader = SwfTagBodyReader::new(
         match compression {
             Compression::None => DecompressingReader::uncompressed(reader),
             Compression::Zlib => DecompressingReader::deflate(reader),
@@ -28,9 +28,9 @@ pub fn read_header<R: BufRead>(mut reader: R) -> Result<(Header, DecompressingRe
         29,
     );
 
-    let frame_size = decompressing_field_reader.read_rectangle()?;
-    let frame_rate = decompressing_field_reader.read_fixed8()?; // FIXME May use a different byte order than Fixed8
-    let frame_count = decompressing_field_reader.read_u16()?;
+    let frame_size = decompressing_tag_body_reader.read_rectangle()?;
+    let frame_rate = decompressing_tag_body_reader.read_fixed8()?; // FIXME May use a different byte order than Fixed8
+    let frame_count = decompressing_tag_body_reader.read_u16()?;
 
     Ok((
         Header {
@@ -41,6 +41,6 @@ pub fn read_header<R: BufRead>(mut reader: R) -> Result<(Header, DecompressingRe
             frame_rate,
             frame_count,
         },
-        decompressing_field_reader.into_inner(),
+        decompressing_tag_body_reader.into_inner(),
     ))
 }

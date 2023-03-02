@@ -1,9 +1,9 @@
 use crate::ast::display_list::PlaceObjectTag;
-use crate::decode::field_reader::SwfFieldReader;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};
 
-pub fn read_place_object_tag<R: Read>(reader: &mut SwfFieldReader<R>) -> Result<PlaceObjectTag> {
+pub fn read_place_object_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<PlaceObjectTag> {
     let character_id = reader.read_u16()?;
     let depth = reader.read_u16()?;
     let matrix = reader.read_matrix()?;
