@@ -1,5 +1,6 @@
 use crate::ast::actions::{
-    GetUrl, GetUrl2, GoToFrame, GoToLabel, If, Jump, Push, PushValue, SetTarget, WaitForFrame,
+    GetUrl, GetUrl2, GoToFrame, GoToFrame2, GoToLabel, If, Jump, Push, PushValue, SetTarget,
+    WaitForFrame,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
@@ -77,4 +78,16 @@ fn read_get_url2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GetUrl2> {
         load_target,
         load_variables,
     })
+}
+
+fn read_go_to_frame2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GoToFrame2> {
+    reader.read_ub8(6)?;
+    let scene_bias_flag = reader.read_bit()?;
+    let play = reader.read_bit()?;
+    let scene_bias = if scene_bias_flag {
+        reader.read_u16()?
+    } else {
+        0
+    };
+    Ok(GoToFrame2 { play, scene_bias })
 }
