@@ -1,6 +1,6 @@
 use crate::ast::actions::{
     ActionRecord, ConstantPool, DefineFunction, DefineFunction2, GetUrl, GetUrl2, GoToFrame,
-    GoToFrame2, GoToLabel, If, Jump, Push, PushValue, RegisterParam, SetTarget, StoreRegister,
+    GoToFrame2, GoToLabel, If, Jump, Push, PushValue, RegisterParam, SetTarget, StoreRegister, Try,
     WaitForFrame, WaitForFrame2, With,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
@@ -300,5 +300,41 @@ fn read_register_param<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Regi
         RegisterParam::Name(name)
     } else {
         RegisterParam::Register(register)
+    })
+}
+
+fn read_try<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Try> {
+    reader.read_ub8(5)?;
+    let catch_in_register = reader.read_bit()?;
+    let has_finally_block = reader.read_bit()?;
+    let has_catch_block = reader.read_bit()?;
+    let try_size = reader.read_u16()?;
+    let catch_size = reader.read_u16()?;
+    let finally_size = reader.read_u16()?;
+    let catch_parameter = if catch_in_register {
+        RegisterParam::Register(reader.read_u8()?)
+    } else {
+        RegisterParam::Name(reader.read_string()?)
+    };
+    let try_body = read_action_records(&mut reader.with_max_length(try_size as usize))?;
+    let catch_body = if has_catch_block {
+        Some(read_action_records(
+            &mut reader.with_max_length(catch_size as usize),
+        )?)
+    } else {
+        None
+    };
+    let finally_body = if has_finally_block {
+        Some(read_action_records(
+            &mut reader.with_max_length(finally_size as usize),
+        )?)
+    } else {
+        None
+    };
+    Ok(Try {
+        catch_parameter,
+        try_body,
+        catch_body,
+        finally_body,
     })
 }
