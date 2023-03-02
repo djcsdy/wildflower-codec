@@ -18,6 +18,9 @@ impl Fixed16 {
 pub struct Fixed8(i16);
 
 impl Fixed8 {
+    pub const ZERO: Fixed8 = Fixed8(0);
+    pub const ONE: Fixed8 = Fixed8(0x100);
+
     pub fn from_bytes(buf: &[u8; 2]) -> Fixed8 {
         Fixed8(LittleEndian::read_i16(buf))
     }
