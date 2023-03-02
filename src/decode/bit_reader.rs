@@ -3,7 +3,7 @@ use crate::ast::common::{
     Rgba, String,
 };
 use byteorder::{ByteOrder, LittleEndian, ReadBytesExt};
-use std::io::{Read, Result};
+use std::io::{IoSliceMut, Read, Result};
 
 pub struct SwfBitReader<R: Read> {
     inner: R,
@@ -413,6 +413,18 @@ impl<R: Read> SwfBitReader<R> {
             blue_addition_term,
             alpha_addition_term,
         })
+    }
+}
+
+impl<R: Read> Read for SwfBitReader<R> {
+    fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
+        self.align_byte();
+        self.inner.read(buf)
+    }
+
+    fn read_vectored(&mut self, bufs: &mut [IoSliceMut<'_>]) -> Result<usize> {
+        self.align_byte();
+        self.inner.read_vectored(bufs)
     }
 }
 
