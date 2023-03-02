@@ -9,6 +9,7 @@ pub enum Compression {
 pub struct Header {
     pub compression: Compression,
     pub version: u8,
+    pub file_length: u32,
     pub frame_size: Rectangle,
     pub frame_rate: Fixed8,
     pub frame_count: u16,

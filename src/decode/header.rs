@@ -19,6 +19,7 @@ pub fn read_header<R: Read, I: Into<SwfBitReader<R>>>(
     }?;
 
     let version = r.read_u8()?;
+    let file_length = r.read_u32()?;
     let frame_size = r.read_rectangle()?;
     let frame_rate = r.read_fixed8()?; // FIXME May use a different byte order than Fixed8
     let frame_count = r.read_u16()?;
@@ -27,6 +28,7 @@ pub fn read_header<R: Read, I: Into<SwfBitReader<R>>>(
         Header {
             compression,
             version,
+            file_length,
             frame_size,
             frame_rate,
             frame_count,
