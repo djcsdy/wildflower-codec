@@ -188,6 +188,14 @@ impl<R: Read> SwfBitReader<R> {
         }
     }
 
+    pub fn read_sb16(&mut self, bits: u8) -> Result<i16> {
+        if bits > 16 {
+            panic!();
+        }
+
+        Ok(self.read_sb(bits)? as i16)
+    }
+
     pub fn read_sb(&mut self, bits: u8) -> Result<i32> {
         Ok(Self::extend_sign(self.read_ub(bits)?, bits))
     }
