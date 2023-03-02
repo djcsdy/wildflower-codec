@@ -1,6 +1,5 @@
 use crate::ast::header::Header;
 use crate::decode::decompressing_reader::DecompressingReader;
-use crate::decode::field_reader::SwfFieldReader;
 use crate::decode::header::read_header;
 use std::fs::File;
 use std::io::{BufRead, BufReader, Result};
@@ -8,7 +7,7 @@ use std::path::Path;
 
 pub struct SwfReader<R: BufRead> {
     header: Header,
-    field_reader: SwfFieldReader<DecompressingReader<R>>,
+    inner: DecompressingReader<R>,
 }
 
 impl SwfReader<BufReader<File>> {
@@ -19,10 +18,7 @@ impl SwfReader<BufReader<File>> {
 
 impl<R: BufRead> SwfReader<R> {
     pub fn read_from(reader: R) -> Result<SwfReader<R>> {
-        read_header(reader).map(|(header, field_reader)| SwfReader {
-            header,
-            field_reader,
-        })
+        read_header(reader).map(|(header, inner)| SwfReader { header, inner })
     }
 
     pub fn header(&self) -> &Header {
