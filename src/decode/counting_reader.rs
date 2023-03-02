@@ -5,6 +5,12 @@ pub struct CountingReader<R: Read> {
     count: usize,
 }
 
+impl<R: Read> CountingReader<R> {
+    pub fn new(inner: R) -> CountingReader<R> {
+        CountingReader { inner, count: 0 }
+    }
+}
+
 impl<R: Read> Read for CountingReader<R> {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
         let size = self.inner.read(buf)?;
