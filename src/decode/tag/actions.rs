@@ -122,6 +122,14 @@ pub fn read_action_record<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<A
     Ok(action_record)
 }
 
+pub fn read_action_records<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Vec<ActionRecord>> {
+    let mut actions = Vec::new();
+    while reader.remaining() > 0 {
+        actions.push(read_action_record(reader)?);
+    }
+    Ok(actions)
+}
+
 fn read_go_to_frame<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GoToFrame> {
     let frame = reader.read_u16()?;
     Ok(GoToFrame { frame })
@@ -229,11 +237,7 @@ fn read_define_function<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Def
         params.push(reader.read_string()?);
     }
     let code_size = reader.read_u16()?;
-    let mut body = Vec::new();
-    let mut code_reader = reader.with_max_length(code_size as usize);
-    while code_reader.remaining() > 0 {
-        body.push(read_action_record(&mut code_reader)?);
-    }
+    let body = read_action_records(&mut reader.with_max_length(code_size as usize))?;
     Ok(DefineFunction {
         function_name,
         params,
@@ -243,11 +247,7 @@ fn read_define_function<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Def
 
 fn read_with<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<With> {
     let size = reader.read_u16()?;
-    let mut body = Vec::new();
-    let mut code_reader = reader.with_max_length(size as usize);
-    while code_reader.remaining() > 0 {
-        body.push(read_action_record(&mut code_reader)?);
-    }
+    let body = read_action_records(&mut reader.with_max_length(size as usize))?;
     Ok(With { body })
 }
 
@@ -275,11 +275,7 @@ fn read_define_function2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<De
         parameters.push(read_register_param(reader)?);
     }
     let code_size = reader.read_u16()?;
-    let mut body = Vec::new();
-    let mut code_reader = reader.with_max_length(code_size as usize);
-    while code_reader.remaining() > 0 {
-        body.push(read_action_record(&mut code_reader)?);
-    }
+    let body = read_action_records(&mut reader.with_max_length(code_size as usize))?;
     Ok(DefineFunction2 {
         function_name,
         register_count,
