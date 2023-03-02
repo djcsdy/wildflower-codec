@@ -15,14 +15,14 @@ pub struct SwfBitReader<R: Read> {
 
 impl SwfBitReader<File> {
     pub fn open<P: AsRef<Path>>(path: P) -> Result<SwfBitReader<File>> {
-        File::open(path).map(|file| SwfBitReader::new(file))
+        File::open(path).map(|file| SwfBitReader::new(BufReader::new(file)))
     }
 }
 
 impl<R: Read> SwfBitReader<R> {
-    pub fn new(inner: R) -> SwfBitReader<R> {
+    pub fn new(inner: BufReader<R>) -> SwfBitReader<R> {
         SwfBitReader {
-            inner: BufReader::new(inner),
+            inner,
             partial_byte: 0,
             partial_bits: 0,
         }
@@ -420,8 +420,8 @@ impl<R: Read> SwfBitReader<R> {
     }
 }
 
-impl<R: Read> From<R> for SwfBitReader<R> {
-    fn from(value: R) -> Self {
+impl<R: Read> From<BufReader<R>> for SwfBitReader<R> {
+    fn from(value: BufReader<R>) -> Self {
         SwfBitReader::new(value)
     }
 }
