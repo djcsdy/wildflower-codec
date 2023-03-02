@@ -50,6 +50,7 @@ pub fn read_action_record<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<A
         0x27 => ActionRecord::StartDrag,
         0x28 => ActionRecord::EndDrag,
         0x29 => ActionRecord::StringLess,
+        0x2a => ActionRecord::Throw,
         0x2b => ActionRecord::CastOp,
         0x2c => ActionRecord::ImplementsOp,
         0x30 => ActionRecord::RandomNumber,
@@ -107,6 +108,7 @@ pub fn read_action_record<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<A
         0x8c => ActionRecord::GoToLabel(read_go_to_label(&mut body_reader)?),
         0x8d => ActionRecord::WaitForFrame2(read_wait_for_frame2(&mut body_reader)?),
         0x8e => ActionRecord::DefineFunction2(read_define_function2(&mut body_reader)?),
+        0x8f => ActionRecord::Try(read_try(&mut body_reader)?),
         0x94 => ActionRecord::With(read_with(&mut body_reader)?),
         0x96 => ActionRecord::Push(read_push(&mut body_reader)?),
         0x99 => ActionRecord::Jump(read_jump(&mut body_reader)?),
@@ -115,7 +117,7 @@ pub fn read_action_record<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<A
         0x9d => ActionRecord::If(read_if(&mut body_reader)?),
         0x9e => ActionRecord::Call,
         0x9f => ActionRecord::GoToFrame2(read_go_to_frame2(&mut body_reader)?),
-        _ => todo!(),
+        _ => return Err(Error::from(InvalidData)),
     };
     body_reader.skip_to_end()?;
 
