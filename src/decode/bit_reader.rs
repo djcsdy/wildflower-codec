@@ -1,6 +1,7 @@
 use crate::ast::actions::PushValue::Float;
 use crate::ast::common::{
-    ColorTransform, Fixed16, Fixed8, Float16, Matrix, Rectangle, Rgb, Rgba, String,
+    ColorTransform, ColorTransformWithAlpha, Fixed16, Fixed8, Float16, Matrix, Rectangle, Rgb,
+    Rgba, String,
 };
 use byteorder::{ByteOrder, LittleEndian, ReadBytesExt};
 use std::fs::File;
@@ -360,6 +361,62 @@ impl<R: Read> SwfBitReader<R> {
             red_addition_term,
             green_addition_term,
             blue_addition_term,
+        })
+    }
+
+    pub fn read_color_transform_with_alpha(&mut self) -> Result<ColorTransformWithAlpha> {
+        let has_add_terms = self.read_bit()?;
+        let has_mult_terms = self.read_bit()?;
+        let bits = self.read_ub8(4)?;
+        let red_multiplication_term = if has_mult_terms {
+            self.read_fixed8_bits(bits)?
+        } else {
+            Fixed8::ONE
+        };
+        let green_multiplication_term = if has_mult_terms {
+            self.read_fixed8_bits(bits)?
+        } else {
+            Fixed8::ONE
+        };
+        let blue_multiplication_term = if has_mult_terms {
+            self.read_fixed8_bits(bits)?
+        } else {
+            Fixed8::ONE
+        };
+        let alpha_multiplication_term = if has_mult_terms {
+            self.read_fixed8_bits(bits)?
+        } else {
+            Fixed8::ONE
+        };
+        let red_addition_term = if has_add_terms {
+            self.read_sb16(bits)?
+        } else {
+            0
+        };
+        let green_addition_term = if has_add_terms {
+            self.read_sb16(bits)?
+        } else {
+            0
+        };
+        let blue_addition_term = if has_add_terms {
+            self.read_sb16(bits)?
+        } else {
+            0
+        };
+        let alpha_addition_term = if has_add_terms {
+            self.read_sb16(bits)?
+        } else {
+            0
+        };
+        Ok(ColorTransformWithAlpha {
+            red_multiplication_term,
+            green_multiplication_term,
+            blue_multiplication_term,
+            alpha_multiplication_term,
+            red_addition_term,
+            green_addition_term,
+            blue_addition_term,
+            alpha_addition_term,
         })
     }
 }
