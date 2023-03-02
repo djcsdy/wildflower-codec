@@ -18,8 +18,8 @@ impl SwfReader<BufReader<File>> {
 }
 
 impl<R: BufRead> SwfReader<R> {
-    pub fn read_from(bit_reader: R) -> Result<SwfReader<R>> {
-        read_header(bit_reader).map(|(header, bit_reader)| SwfReader { header, bit_reader })
+    pub fn read_from(reader: R) -> Result<SwfReader<R>> {
+        read_header(reader).map(|(header, bit_reader)| SwfReader { header, bit_reader })
     }
 
     pub fn header(&self) -> &Header {
