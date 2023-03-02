@@ -1,3 +1,4 @@
+use num_enum::{IntoPrimitive, TryFromPrimitive};
 use super::common::*;
 
 pub struct DoActionTag {
@@ -169,6 +170,8 @@ pub struct GetUrl2 {
     pub load_variables: bool,
 }
 
+#[derive(IntoPrimitive, TryFromPrimitive)]
+#[repr(u8)]
 pub enum SendVarsMethod {
     None = 0,
     Get = 1,
