@@ -1,6 +1,6 @@
 use crate::ast::actions::{
-    ActionRecord, ConstantPool, GetUrl, GetUrl2, GoToFrame, GoToFrame2, GoToLabel, If, Jump, Push,
-    PushValue, SetTarget, WaitForFrame, WaitForFrame2,
+    ActionRecord, ConstantPool, DefineFunction, GetUrl, GetUrl2, GoToFrame, GoToFrame2, GoToLabel,
+    If, Jump, Push, PushValue, SetTarget, WaitForFrame, WaitForFrame2,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
@@ -176,4 +176,24 @@ fn read_constant_pool<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Const
         constant_pool.push(reader.read_string()?);
     }
     Ok(ConstantPool { constant_pool })
+}
+
+fn read_define_function<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<DefineFunction> {
+    let function_name = reader.read_string()?;
+    let num_params = reader.read_u16()?;
+    let mut params = Vec::with_capacity(num_params as usize);
+    for _ in 0..num_params {
+        params.push(reader.read_string()?);
+    }
+    let code_size = reader.read_u16()?;
+    let mut body = Vec::new();
+    let mut code_reader = reader.with_max_length(code_size as usize);
+    while code_reader.remaining() > 0 {
+        body.push(read_action_record(&mut code_reader)?);
+    }
+    Ok(DefineFunction {
+        function_name,
+        params,
+        body,
+    })
 }
