@@ -8,7 +8,7 @@ use std::path::Path;
 
 pub struct SwfReader<R: BufRead> {
     header: Header,
-    bit_reader: SwfFieldReader<DecompressingReader<R>>,
+    field_reader: SwfFieldReader<DecompressingReader<R>>,
 }
 
 impl SwfReader<BufReader<File>> {
@@ -19,7 +19,10 @@ impl SwfReader<BufReader<File>> {
 
 impl<R: BufRead> SwfReader<R> {
     pub fn read_from(reader: R) -> Result<SwfReader<R>> {
-        read_header(reader).map(|(header, bit_reader)| SwfReader { header, bit_reader })
+        read_header(reader).map(|(header, field_reader)| SwfReader {
+            header,
+            field_reader,
+        })
     }
 
     pub fn header(&self) -> &Header {
