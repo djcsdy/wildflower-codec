@@ -1,29 +1,21 @@
 use crate::ast::common::{
     ColorTransform, ColorTransformWithAlpha, Fixed16, Fixed8, Matrix, Rectangle, Rgb, Rgba, String,
 };
-use crate::decode::counting_reader::CountingReader;
+use crate::decode::max_length_reader::MaxLengthReader;
 use crate::decode::read_ext::SwfTypesReadExt;
 use byteorder::{ByteOrder, LittleEndian};
 use std::io::{IoSliceMut, Read, Result};
 
 pub struct SwfFieldReader<R: Read> {
-    inner: CountingReader<R>,
+    inner: MaxLengthReader<R>,
     partial_byte: u8,
     partial_bits: u8,
 }
 
 impl<R: Read> SwfFieldReader<R> {
-    pub fn new(inner: R) -> SwfFieldReader<R> {
+    pub fn new(inner: R, max_length: usize) -> SwfFieldReader<R> {
         SwfFieldReader {
-            inner: CountingReader::new(inner),
-            partial_byte: 0,
-            partial_bits: 0,
-        }
-    }
-
-    pub fn take(inner: R, max_length: usize) -> SwfFieldReader<R> {
-        SwfFieldReader {
-            inner: CountingReader::take(inner, max_length),
+            inner: MaxLengthReader::new(inner, max_length),
             partial_byte: 0,
             partial_bits: 0,
         }
@@ -33,7 +25,7 @@ impl<R: Read> SwfFieldReader<R> {
         self.inner.into_inner()
     }
 
-    pub fn remaining(&self) -> Option<usize> {
+    pub fn remaining(&self) -> usize {
         self.inner.remaining()
     }
 
@@ -324,11 +316,5 @@ impl<R: Read> Read for SwfFieldReader<R> {
     fn read_vectored(&mut self, bufs: &mut [IoSliceMut<'_>]) -> Result<usize> {
         self.align_byte();
         self.inner.read_vectored(bufs)
-    }
-}
-
-impl<R: Read> From<R> for SwfFieldReader<R> {
-    fn from(value: R) -> Self {
-        SwfFieldReader::new(value)
     }
 }

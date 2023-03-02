@@ -19,11 +19,14 @@ pub fn read_header<R: BufRead>(mut reader: R) -> Result<(Header, DecompressingRe
     let version = reader.read_u8()?;
     let file_length = reader.read_u32()?;
 
-    let mut decompressing_field_reader = SwfFieldReader::new(match compression {
-        Compression::None => DecompressingReader::uncompressed(reader),
-        Compression::Zlib => DecompressingReader::deflate(reader),
-        Compression::Lzma => return Err(Error::from(InvalidData)),
-    });
+    let mut decompressing_field_reader = SwfFieldReader::new(
+        match compression {
+            Compression::None => DecompressingReader::uncompressed(reader),
+            Compression::Zlib => DecompressingReader::deflate(reader),
+            Compression::Lzma => return Err(Error::from(InvalidData)),
+        },
+        29,
+    );
 
     let frame_size = decompressing_field_reader.read_rectangle()?;
     let frame_rate = decompressing_field_reader.read_fixed8()?; // FIXME May use a different byte order than Fixed8
