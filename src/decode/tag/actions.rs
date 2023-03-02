@@ -1,6 +1,6 @@
 use crate::ast::actions::{
     ActionRecord, ConstantPool, DefineFunction, GetUrl, GetUrl2, GoToFrame, GoToFrame2, GoToLabel,
-    If, Jump, Push, PushValue, SetTarget, WaitForFrame, WaitForFrame2, With,
+    If, Jump, Push, PushValue, SetTarget, StoreRegister, WaitForFrame, WaitForFrame2, With,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
@@ -238,4 +238,9 @@ fn read_with<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<With> {
         body.push(read_action_record(&mut code_reader)?);
     }
     Ok(With { body })
+}
+
+fn read_store_register<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<StoreRegister> {
+    let register_number = reader.read_u8()?;
+    Ok(StoreRegister { register_number })
 }
