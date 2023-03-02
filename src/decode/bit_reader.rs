@@ -84,7 +84,7 @@ impl<R: Read> SwfBitReader<R> {
         for i in 0..buf.len() {
             let mut buf2 = [0u8; 3];
             self.inner.read_exact(&mut buf2)?;
-            buf[i] = (buf2[0] as u32) & ((buf2[1] as u32) << 8) & ((buf2[2] as u32) << 16);
+            buf[i] = (buf2[0] as u32) | ((buf2[1] as u32) << 8) | ((buf2[2] as u32) << 16);
         }
         Ok(())
     }
