@@ -1,7 +1,8 @@
-use crate::ast::actions::{GetUrl, GoToFrame, GoToLabel, SetTarget, WaitForFrame};
+use crate::ast::actions::{GetUrl, GoToFrame, GoToLabel, Push, PushValue, SetTarget, WaitForFrame};
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
-use std::io::{Read, Result};
+use std::io::ErrorKind::InvalidData;
+use std::io::{Error, Read, Result};
 
 fn read_go_to_frame<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GoToFrame> {
     let frame = reader.read_u16()?;
@@ -28,4 +29,22 @@ fn read_set_target<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<SetTarge
 fn read_go_to_label<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GoToLabel> {
     let label = reader.read_string()?;
     Ok(GoToLabel { label })
+}
+
+fn read_push<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Push> {
+    let value_type = reader.read_u8()?;
+    let value = match value_type {
+        0 => PushValue::String(reader.read_string()?),
+        1 => PushValue::Float(reader.read_f32()?),
+        2 => PushValue::Null,
+        3 => PushValue::Undefined,
+        4 => PushValue::RegisterNumber(reader.read_u8()?),
+        5 => PushValue::Boolean(reader.read_u8()? != 0),
+        6 => PushValue::Double(reader.read_f64()?),
+        7 => PushValue::Integer(reader.read_u32()?),
+        8 => PushValue::Constant(reader.read_u8()? as u16),
+        9 => PushValue::Constant(reader.read_u16()?),
+        _ => return Err(Error::from(InvalidData)),
+    };
+    Ok(Push { value })
 }
