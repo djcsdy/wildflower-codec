@@ -8,14 +8,16 @@ use std::io::{IoSliceMut, Read, Result};
 
 pub struct SwfTagBodyReader<R: Read> {
     inner: MaxLengthReader<R>,
+    swf_version: u8,
     partial_byte: u8,
     partial_bits: u8,
 }
 
 impl<R: Read> SwfTagBodyReader<R> {
-    pub fn new(inner: R, max_length: usize) -> SwfTagBodyReader<R> {
+    pub fn new(inner: R, swf_version: u8, max_length: usize) -> SwfTagBodyReader<R> {
         SwfTagBodyReader {
             inner: MaxLengthReader::new(inner, max_length),
+            swf_version,
             partial_byte: 0,
             partial_bits: 0,
         }
@@ -23,6 +25,10 @@ impl<R: Read> SwfTagBodyReader<R> {
 
     pub fn into_inner(self) -> R {
         self.inner.into_inner()
+    }
+
+    pub fn swf_version(&self) -> u8 {
+        self.swf_version
     }
 
     pub fn remaining(&self) -> usize {

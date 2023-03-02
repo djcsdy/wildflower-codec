@@ -25,6 +25,7 @@ pub fn read_header<R: BufRead>(mut reader: R) -> Result<(Header, DecompressingRe
             Compression::Zlib => DecompressingReader::deflate(reader),
             Compression::Lzma => return Err(Error::from(InvalidData)),
         },
+        version,
         29,
     );
 
