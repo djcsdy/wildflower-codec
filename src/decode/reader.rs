@@ -6,25 +6,32 @@ use std::io::{Error, Read, Result};
 use std::path::Path;
 
 pub struct SwfReader<R: Read> {
+    header: Header,
     bit_reader: SwfBitReader<R>,
 }
 
 impl SwfReader<File> {
     pub fn open<P: AsRef<Path>>(path: P) -> Result<SwfReader<File>> {
-        SwfBitReader::open(path).map(|bit_reader| SwfReader::new(bit_reader))
+        SwfBitReader::open(path).and_then(|bit_reader| SwfReader::read_from(bit_reader))
     }
 }
 
 impl<R: Read> SwfReader<R> {
-    pub fn new<I: Into<SwfBitReader<R>>>(bit_reader: I) -> SwfReader<R> {
-        SwfReader {
-            bit_reader: bit_reader.into(),
-        }
+    pub fn read_from<I: Into<SwfBitReader<R>>>(bit_reader: I) -> Result<SwfReader<R>> {
+        let mut r = bit_reader.into();
+        Self::read_header(&mut r).map(|header| SwfReader {
+            header,
+            bit_reader: r,
+        })
     }
 
-    pub fn read_header(&mut self) -> Result<Header> {
+    pub fn header(&self) -> &Header {
+        &self.header
+    }
+
+    fn read_header(bit_reader: &mut SwfBitReader<R>) -> Result<Header> {
         let mut signature = [0u8; 3];
-        self.bit_reader.read_u8_into(&mut signature)?;
+        bit_reader.read_u8_into(&mut signature)?;
 
         let compression = match signature {
             [0x46, 0x57, 0x54] => Ok(Compression::None),
@@ -33,10 +40,10 @@ impl<R: Read> SwfReader<R> {
             _ => Err(Error::from(InvalidData)),
         }?;
 
-        let version = self.bit_reader.read_u8()?;
-        let frame_size = self.bit_reader.read_rectangle()?;
-        let frame_rate = self.bit_reader.read_fixed8()?; // FIXME May use a different byte order than Fixed8
-        let frame_count = self.bit_reader.read_u16()?;
+        let version = bit_reader.read_u8()?;
+        let frame_size = bit_reader.read_rectangle()?;
+        let frame_rate = bit_reader.read_fixed8()?; // FIXME May use a different byte order than Fixed8
+        let frame_count = bit_reader.read_u16()?;
 
         Ok(Header {
             compression,
