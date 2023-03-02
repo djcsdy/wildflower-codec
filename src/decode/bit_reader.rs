@@ -3,20 +3,12 @@ use crate::ast::common::{
     Rgba, String,
 };
 use byteorder::{ByteOrder, LittleEndian, ReadBytesExt};
-use std::fs::File;
-use std::io::{BufReader, Read, Result};
-use std::path::Path;
+use std::io::{Read, Result};
 
 pub struct SwfBitReader<R: Read> {
     inner: R,
     partial_byte: u8,
     partial_bits: u8,
-}
-
-impl SwfBitReader<BufReader<File>> {
-    pub fn open<P: AsRef<Path>>(path: P) -> Result<SwfBitReader<BufReader<File>>> {
-        File::open(path).map(|file| SwfBitReader::new(BufReader::new(file)))
-    }
 }
 
 impl<R: Read> SwfBitReader<R> {

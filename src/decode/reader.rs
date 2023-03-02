@@ -12,7 +12,7 @@ pub struct SwfReader<R: BufRead> {
 
 impl SwfReader<BufReader<File>> {
     pub fn open<P: AsRef<Path>>(path: P) -> Result<SwfReader<BufReader<File>>> {
-        SwfBitReader::open(path).and_then(|bit_reader| SwfReader::read_from(bit_reader))
+        SwfReader::read_from(BufReader::new(File::open(path)?))
     }
 }
 
