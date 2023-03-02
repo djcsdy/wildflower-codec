@@ -1,5 +1,5 @@
-use num_enum::{IntoPrimitive, TryFromPrimitive};
 use super::common::*;
+use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 pub struct DoActionTag {
     pub actions: Vec<ActionRecord>,
@@ -178,6 +178,8 @@ pub enum SendVarsMethod {
     Post = 2,
 }
 
+#[derive(IntoPrimitive, TryFromPrimitive)]
+#[repr(u8)]
 pub enum LoadTarget {
     BrowserWindow = 0,
     PathToSprite = 1,
