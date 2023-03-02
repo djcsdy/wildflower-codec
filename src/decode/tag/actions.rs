@@ -1,6 +1,6 @@
 use crate::ast::actions::{
-    GetUrl, GetUrl2, GoToFrame, GoToFrame2, GoToLabel, If, Jump, Push, PushValue, SetTarget,
-    WaitForFrame, WaitForFrame2,
+    ConstantPool, GetUrl, GetUrl2, GoToFrame, GoToFrame2, GoToLabel, If, Jump, Push, PushValue,
+    SetTarget, WaitForFrame, WaitForFrame2,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
@@ -95,4 +95,13 @@ fn read_go_to_frame2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GoToFr
 fn read_wait_for_frame2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<WaitForFrame2> {
     let skip_count = reader.read_u8()?;
     Ok(WaitForFrame2 { skip_count })
+}
+
+fn read_constant_pool<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<ConstantPool> {
+    let count = reader.read_u16()?;
+    let mut constant_pool = Vec::with_capacity(count as usize);
+    for _ in 0..count {
+        constant_pool.push(reader.read_string()?);
+    }
+    Ok(ConstantPool { constant_pool })
 }
