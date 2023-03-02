@@ -1,8 +1,11 @@
-use crate::ast::actions::{GetUrl, GoToFrame, GoToLabel, Push, PushValue, SetTarget, WaitForFrame};
+use crate::ast::actions::{
+    GetUrl, GoToFrame, GoToLabel, Jump, Push, PushValue, SetTarget, WaitForFrame,
+};
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Read, Result};
+use std::ops::Not;
 
 fn read_go_to_frame<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GoToFrame> {
     let frame = reader.read_u16()?;
@@ -47,4 +50,9 @@ fn read_push<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Push> {
         _ => return Err(Error::from(InvalidData)),
     };
     Ok(Push { value })
+}
+
+fn read_jump<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Jump> {
+    let offset = reader.read_i16()?;
+    Ok(Jump { offset })
 }
