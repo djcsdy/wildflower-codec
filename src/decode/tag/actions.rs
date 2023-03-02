@@ -1,5 +1,5 @@
 use crate::ast::actions::{
-    GetUrl, GoToFrame, GoToLabel, If, Jump, Push, PushValue, SetTarget, WaitForFrame,
+    GetUrl, GetUrl2, GoToFrame, GoToLabel, If, Jump, Push, PushValue, SetTarget, WaitForFrame,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
@@ -59,4 +59,22 @@ fn read_jump<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Jump> {
 fn read_if<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<If> {
     let offset = reader.read_i16()?;
     Ok(If { offset })
+}
+
+fn read_get_url2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GetUrl2> {
+    let send_vars_method = reader
+        .read_ub8(2)?
+        .try_into()
+        .map_err(|_| Error::from(InvalidData))?;
+    reader.read_ub8(4)?;
+    let load_target = reader
+        .read_ub8(1)?
+        .try_into()
+        .map_err(|_| Error::from(InvalidData))?;
+    let load_variables = reader.read_bit()?;
+    Ok(GetUrl2 {
+        send_vars_method,
+        load_target,
+        load_variables,
+    })
 }
