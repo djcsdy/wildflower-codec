@@ -1,5 +1,6 @@
 use crate::ast::tag::Tag;
 use crate::decode::bit_reader::SwfBitReader;
+use crate::decode::read_ext::SwfTypesReadExt;
 use std::io::{Read, Result};
 
 pub fn read_tag<R: Read>(reader: &mut SwfBitReader<R>) -> Result<Tag> {
