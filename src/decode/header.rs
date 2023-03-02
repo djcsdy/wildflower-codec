@@ -1,12 +1,12 @@
 use crate::ast::header::{Compression, Header};
 use crate::decode::bit_reader::SwfBitReader;
-use crate::decode::transparent_decompressing_reader::TransparentDecompressingReader;
+use crate::decode::decompressing_reader::DecompressingReader;
 use std::io::ErrorKind::InvalidData;
 use std::io::{BufRead, Error, Result};
 
 pub fn read_header<R: BufRead>(
     mut reader: R,
-) -> Result<(Header, SwfBitReader<TransparentDecompressingReader<R>>)> {
+) -> Result<(Header, SwfBitReader<DecompressingReader<R>>)> {
     let mut uncompressed_bit_reader = SwfBitReader::new(reader);
 
     let mut signature = [0u8; 3];
@@ -24,8 +24,8 @@ pub fn read_header<R: BufRead>(
 
     reader = uncompressed_bit_reader.into_inner();
     let mut compressed_bit_reader = SwfBitReader::new(match compression {
-        Compression::None => TransparentDecompressingReader::uncompressed(reader),
-        Compression::Zlib => TransparentDecompressingReader::deflate(reader),
+        Compression::None => DecompressingReader::uncompressed(reader),
+        Compression::Zlib => DecompressingReader::deflate(reader),
         Compression::Lzma => return Err(Error::from(InvalidData)),
     });
 
