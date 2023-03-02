@@ -1,15 +1,16 @@
 use crate::ast::header::{Compression, Header};
 use crate::decode::bit_reader::SwfBitReader;
+use crate::decode::transparent_decompressing_reader::TransparentDecompressingReader;
 use std::io::ErrorKind::InvalidData;
 use std::io::{BufRead, Error, Result};
 
-pub fn read_header<R: BufRead, I: Into<SwfBitReader<R>>>(
-    bit_reader: I,
-) -> Result<(Header, SwfBitReader<R>)> {
-    let mut r = bit_reader.into();
+pub fn read_header<R: BufRead>(
+    mut reader: R,
+) -> Result<(Header, SwfBitReader<TransparentDecompressingReader<R>>)> {
+    let mut uncompressed_bit_reader = SwfBitReader::new(reader);
 
     let mut signature = [0u8; 3];
-    r.read_u8_into(&mut signature)?;
+    uncompressed_bit_reader.read_u8_into(&mut signature)?;
 
     let compression = match signature {
         [0x46, 0x57, 0x54] => Ok(Compression::None),
@@ -18,11 +19,19 @@ pub fn read_header<R: BufRead, I: Into<SwfBitReader<R>>>(
         _ => Err(Error::from(InvalidData)),
     }?;
 
-    let version = r.read_u8()?;
-    let file_length = r.read_u32()?;
-    let frame_size = r.read_rectangle()?;
-    let frame_rate = r.read_fixed8()?; // FIXME May use a different byte order than Fixed8
-    let frame_count = r.read_u16()?;
+    let version = uncompressed_bit_reader.read_u8()?;
+    let file_length = uncompressed_bit_reader.read_u32()?;
+
+    reader = uncompressed_bit_reader.into_inner();
+    let mut compressed_bit_reader = SwfBitReader::new(match compression {
+        Compression::None => TransparentDecompressingReader::uncompressed(reader),
+        Compression::Zlib => TransparentDecompressingReader::deflate(reader),
+        Compression::Lzma => return Err(Error::from(InvalidData)),
+    });
+
+    let frame_size = compressed_bit_reader.read_rectangle()?;
+    let frame_rate = compressed_bit_reader.read_fixed8()?; // FIXME May use a different byte order than Fixed8
+    let frame_count = compressed_bit_reader.read_u16()?;
 
     Ok((
         Header {
@@ -33,6 +42,6 @@ pub fn read_header<R: BufRead, I: Into<SwfBitReader<R>>>(
             frame_rate,
             frame_count,
         },
-        r,
+        compressed_bit_reader,
     ))
 }
