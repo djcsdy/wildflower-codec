@@ -1,9 +1,9 @@
 use crate::ast::header::{Compression, Header};
 use crate::decode::bit_reader::SwfBitReader;
 use std::io::ErrorKind::InvalidData;
-use std::io::{Error, Read, Result};
+use std::io::{BufRead, Error, Result};
 
-pub fn read_header<R: Read, I: Into<SwfBitReader<R>>>(
+pub fn read_header<R: BufRead, I: Into<SwfBitReader<R>>>(
     bit_reader: I,
 ) -> Result<(Header, SwfBitReader<R>)> {
     let mut r = bit_reader.into();

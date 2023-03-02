@@ -4,23 +4,23 @@ use crate::ast::common::{
 };
 use byteorder::{ByteOrder, LittleEndian, ReadBytesExt};
 use std::fs::File;
-use std::io::{BufReader, Read, Result};
+use std::io::{BufRead, BufReader, Result};
 use std::path::Path;
 
-pub struct SwfBitReader<R: Read> {
-    inner: BufReader<R>,
+pub struct SwfBitReader<R: BufRead> {
+    inner: R,
     partial_byte: u8,
     partial_bits: u8,
 }
 
-impl SwfBitReader<File> {
-    pub fn open<P: AsRef<Path>>(path: P) -> Result<SwfBitReader<File>> {
+impl SwfBitReader<BufReader<File>> {
+    pub fn open<P: AsRef<Path>>(path: P) -> Result<SwfBitReader<BufReader<File>>> {
         File::open(path).map(|file| SwfBitReader::new(BufReader::new(file)))
     }
 }
 
-impl<R: Read> SwfBitReader<R> {
-    pub fn new(inner: BufReader<R>) -> SwfBitReader<R> {
+impl<R: BufRead> SwfBitReader<R> {
+    pub fn new(inner: R) -> SwfBitReader<R> {
         SwfBitReader {
             inner,
             partial_byte: 0,
@@ -420,8 +420,8 @@ impl<R: Read> SwfBitReader<R> {
     }
 }
 
-impl<R: Read> From<BufReader<R>> for SwfBitReader<R> {
-    fn from(value: BufReader<R>) -> Self {
+impl<R: BufRead> From<R> for SwfBitReader<R> {
+    fn from(value: R) -> Self {
         SwfBitReader::new(value)
     }
 }
