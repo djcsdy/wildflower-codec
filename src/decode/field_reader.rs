@@ -29,6 +29,14 @@ impl<R: Read> SwfFieldReader<R> {
         self.inner.remaining()
     }
 
+    pub fn skip_to_end(&mut self) -> Result<()> {
+        let mut buf = [0; 4096];
+        while self.remaining() > 0 {
+            self.read(&mut buf)?;
+        }
+        Ok(())
+    }
+
     pub fn align_byte(&mut self) {
         self.partial_byte = 0;
         self.partial_bits = 0;
