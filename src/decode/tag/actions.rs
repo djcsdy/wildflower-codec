@@ -1,6 +1,7 @@
 use crate::ast::actions::{
-    ActionRecord, ConstantPool, DefineFunction, GetUrl, GetUrl2, GoToFrame, GoToFrame2, GoToLabel,
-    If, Jump, Push, PushValue, SetTarget, StoreRegister, WaitForFrame, WaitForFrame2, With,
+    ActionRecord, ConstantPool, DefineFunction, DefineFunction2, GetUrl, GetUrl2, GoToFrame,
+    GoToFrame2, GoToLabel, If, Jump, Push, PushValue, RegisterParam, SetTarget, StoreRegister,
+    WaitForFrame, WaitForFrame2, With,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
@@ -249,4 +250,55 @@ fn read_with<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<With> {
 fn read_store_register<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<StoreRegister> {
     let register_number = reader.read_u8()?;
     Ok(StoreRegister { register_number })
+}
+
+fn read_define_function2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<DefineFunction2> {
+    let function_name = reader.read_string()?;
+    let num_params = reader.read_u16()?;
+    let register_count = reader.read_u8()?;
+    let preload_parent = reader.read_bit()?;
+    let preload_root = reader.read_bit()?;
+    let suppress_super = reader.read_bit()?;
+    let preload_super = reader.read_bit()?;
+    let suppress_arguments = reader.read_bit()?;
+    let preload_arguments = reader.read_bit()?;
+    let suppress_this = reader.read_bit()?;
+    let preload_this = reader.read_bit()?;
+    reader.read_ub8(7)?;
+    let preload_global = reader.read_bit()?;
+    let mut parameters = Vec::with_capacity(num_params as usize);
+    for _ in 0..num_params {
+        parameters.push(read_register_param(reader)?);
+    }
+    let code_size = reader.read_u16()?;
+    let mut body = Vec::new();
+    let mut code_reader = reader.with_max_length(code_size as usize);
+    while code_reader.remaining() > 0 {
+        body.push(read_action_record(&mut code_reader)?);
+    }
+    Ok(DefineFunction2 {
+        function_name,
+        register_count,
+        preload_parent,
+        preload_root,
+        suppress_super,
+        preload_super,
+        suppress_arguments,
+        preload_arguments,
+        suppress_this,
+        preload_this,
+        preload_global,
+        parameters,
+        body,
+    })
+}
+
+fn read_register_param<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<RegisterParam> {
+    let register = reader.read_u8()?;
+    let name = reader.read_string()?;
+    Ok(if register == 0 {
+        RegisterParam::Name(name)
+    } else {
+        RegisterParam::Register(register)
+    })
 }
