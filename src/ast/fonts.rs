@@ -1,4 +1,4 @@
-use super::common::{Float16, Rectangle};
+use super::common::*;
 use super::shapes::Shape;
 
 pub struct DefineFontTag {

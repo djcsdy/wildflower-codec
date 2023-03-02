@@ -1,3 +1,5 @@
+use super::common::*;
+
 pub struct DefineSoundTag {
     pub sound_id: u16,
     pub sound_format: SoundFormat,

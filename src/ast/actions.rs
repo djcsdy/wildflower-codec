@@ -1,3 +1,5 @@
+use super::common::*;
+
 pub struct DoActionTag {
     pub actions: Vec<ActionRecord>,
 }

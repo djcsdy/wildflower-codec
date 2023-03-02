@@ -1,4 +1,4 @@
-use super::common::{Fixed8, Rgb, Rgba};
+use super::common::*;
 
 pub struct DefineBitsTag {
     pub character_id: u16,

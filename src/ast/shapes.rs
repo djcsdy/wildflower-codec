@@ -1,4 +1,4 @@
-use super::common::{Rectangle, Rgb, Rgba};
+use super::common::*;
 use super::styles::{FillStyle, LineStyle, LineStyle2};
 
 pub struct DefineShapeTag {

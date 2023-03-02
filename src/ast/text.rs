@@ -1,4 +1,4 @@
-use super::common::{Matrix, Rectangle, Rgb, Rgba};
+use super::common::*;
 
 pub struct DefineTextTag {
     pub character_id: u16,

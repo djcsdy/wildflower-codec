@@ -1,4 +1,4 @@
-use super::common::{Matrix, Rectangle, Rgba};
+use super::common::*;
 use super::shapes::Shape;
 use super::styles::{CapStyle, FillStyle, JoinStyle};
 

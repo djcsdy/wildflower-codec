@@ -1,4 +1,4 @@
-use super::common::{Fixed8, Matrix, Rgba};
+use super::common::*;
 
 pub enum FillStyle<TColor> {
     Solid(TColor),
