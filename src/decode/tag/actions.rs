@@ -1,4 +1,4 @@
-use crate::ast::actions::{GetUrl, GoToFrame, SetTarget, WaitForFrame};
+use crate::ast::actions::{GetUrl, GoToFrame, GoToLabel, SetTarget, WaitForFrame};
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};
@@ -23,4 +23,9 @@ fn read_wait_for_frame<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Wait
 fn read_set_target<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<SetTarget> {
     let target_name = reader.read_string()?;
     Ok(SetTarget { target_name })
+}
+
+fn read_go_to_label<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GoToLabel> {
+    let label = reader.read_string()?;
+    Ok(GoToLabel { label })
 }
