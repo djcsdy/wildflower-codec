@@ -20,6 +20,10 @@ impl<R: Read> SwfBitReader<R> {
         }
     }
 
+    pub fn into_inner(self) -> R {
+        self.inner
+    }
+
     pub fn align_byte(&mut self) {
         self.partial_byte = 0;
         self.partial_bits = 0;
