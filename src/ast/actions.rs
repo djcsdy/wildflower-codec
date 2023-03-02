@@ -146,6 +146,8 @@ pub struct Push {
 pub enum PushValue {
     String(String),
     Float(f32),
+    Null,
+    Undefined,
     RegisterNumber(u8),
     Boolean(bool),
     Double(f64),
