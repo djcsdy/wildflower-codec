@@ -16,6 +16,25 @@ pub fn read_fill_style_array<R: Read>(
     Ok(fill_styles)
 }
 
+pub fn read_extended_fill_style_array<
+    R: Read,
+    Color,
+    ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>,
+>(
+    reader: &mut SwfTagBodyReader<R>,
+    read_color: ReadColor,
+) -> Result<Vec<FillStyle<Color>>> {
+    let mut fill_style_count = reader.read_u8()? as u16;
+    if fill_style_count == 0xff {
+        fill_style_count = reader.read_u16()?;
+    }
+    let mut fill_styles = Vec::with_capacity(fill_style_count as usize);
+    for _ in 0..fill_style_count {
+        fill_styles.push(read_fill_style(reader, &read_color)?);
+    }
+    Ok(fill_styles)
+}
+
 pub fn read_fill_style<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>>(
     reader: &mut SwfTagBodyReader<R>,
     read_color: ReadColor,
