@@ -1,5 +1,5 @@
 use crate::ast::common::Rgb;
-use crate::ast::styles::{FillStyle, FocalGradient, Gradient, GradientRecord};
+use crate::ast::styles::{FillStyle, FocalGradient, Gradient, GradientRecord, LineStyle};
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::ErrorKind::InvalidData;
@@ -79,6 +79,15 @@ pub fn read_fill_style<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -
         }
         _ => return Err(Error::from(InvalidData)),
     })
+}
+
+pub fn read_line_style<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>>(
+    reader: &mut SwfTagBodyReader<R>,
+    read_color: ReadColor,
+) -> Result<LineStyle<Color>> {
+    let width = reader.read_u16()?;
+    let color = read_color(reader)?;
+    Ok(LineStyle { width, color })
 }
 
 pub fn read_gradient<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>>(
