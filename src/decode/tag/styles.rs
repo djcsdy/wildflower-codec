@@ -1,8 +1,20 @@
+use crate::ast::common::Rgb;
 use crate::ast::styles::{FillStyle, FocalGradient, Gradient, GradientRecord};
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Read, Result};
+
+pub fn read_fill_style_array<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<Vec<FillStyle<Rgb>>> {
+    let fill_style_count = reader.read_u8()?;
+    let mut fill_styles = Vec::with_capacity(fill_style_count as usize);
+    for _ in 0..fill_style_count {
+        fill_styles.push(read_fill_style(reader, &SwfTagBodyReader::read_rgb)?);
+    }
+    Ok(fill_styles)
+}
 
 pub fn read_fill_style<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>>(
     reader: &mut SwfTagBodyReader<R>,
