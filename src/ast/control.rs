@@ -75,8 +75,6 @@ bitflags! {
 
 pub struct ImportAssets2Tag {
     pub url: String,
-    pub reserved_a: u8,
-    pub reserved_b: u8,
     pub imports: Vec<PortableCharacterRecord>,
 }
 
