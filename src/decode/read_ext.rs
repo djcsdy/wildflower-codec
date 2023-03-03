@@ -21,6 +21,7 @@ pub trait SwfTypesReadExt {
     fn read_float16(&mut self) -> Result<Float16>;
     fn read_f32(&mut self) -> Result<f32>;
     fn read_f64(&mut self) -> Result<f64>;
+    fn read_f32_into(&mut self, buf: &mut [f32]) -> Result<()>;
     fn read_encoded_u32(&mut self) -> Result<u32>;
 }
 
@@ -106,6 +107,10 @@ impl<R: Read + ?Sized> SwfTypesReadExt for R {
 
     fn read_f64(&mut self) -> Result<f64> {
         ReadBytesExt::read_f64::<LittleEndian>(self)
+    }
+
+    fn read_f32_into(&mut self, buf: &mut [f32]) -> Result<()> {
+        ReadBytesExt::read_f32_into::<LittleEndian>(self, buf)
     }
 
     fn read_encoded_u32(&mut self) -> Result<u32> {
