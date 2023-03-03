@@ -128,14 +128,18 @@ impl<R: Read> SwfTagBodyReader<R> {
         Ok(Fixed8::from_bytes(&buf))
     }
 
-    pub fn read_string(&mut self) -> Result<String> {
+    pub fn read_null_terminated_bytes(&mut self) -> Result<Vec<u8>> {
         let mut bytes = Vec::new();
         let mut byte = self.read_u8()?;
         while byte != 0 {
             bytes.push(byte);
             byte = self.read_u8()?;
         }
-        Ok(String::from_bytes(bytes))
+        Ok(bytes)
+    }
+
+    pub fn read_string(&mut self) -> Result<String> {
+        Ok(String::from_bytes(self.read_null_terminated_bytes()?))
     }
 
     pub fn read_rgb(&mut self) -> Result<Rgb> {
