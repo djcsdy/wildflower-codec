@@ -1,6 +1,6 @@
 use crate::ast::control::{
-    ExportAssetsTag, FrameLabelTag, ImportAssetsTag, PortableCharacterRecord, ProtectTag,
-    SetBackgroundColorTag,
+    EnableDebuggerTag, ExportAssetsTag, FrameLabelTag, ImportAssetsTag, PortableCharacterRecord,
+    ProtectTag, SetBackgroundColorTag,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
@@ -48,4 +48,11 @@ fn read_portable_character_record<R: Read>(
     let character_id = reader.read_u16()?;
     let name = reader.read_string()?;
     Ok(PortableCharacterRecord { character_id, name })
+}
+
+pub fn read_enable_debugger_tag<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<EnableDebuggerTag> {
+    let password_md5 = reader.read_null_terminated_bytes()?;
+    Ok(EnableDebuggerTag { password_md5 })
 }
