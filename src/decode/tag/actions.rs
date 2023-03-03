@@ -1,7 +1,7 @@
 use crate::ast::actions::{
-    ActionRecord, ConstantPool, DefineFunction, DefineFunction2, DoActionTag, DoInitActionTag,
-    GetUrl, GetUrl2, GoToFrame, GoToFrame2, GoToLabel, If, Jump, Push, PushValue, RegisterParam,
-    SetTarget, StoreRegister, Try, WaitForFrame, WaitForFrame2, With,
+    ActionRecord, ConstantPool, DefineFunction, DefineFunction2, DoAbcTag, DoActionTag,
+    DoInitActionTag, GetUrl, GetUrl2, GoToFrame, GoToFrame2, GoToLabel, If, Jump, Push, PushValue,
+    RegisterParam, SetTarget, StoreRegister, Try, WaitForFrame, WaitForFrame2, With,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
@@ -351,5 +351,17 @@ fn read_try<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Try> {
         try_body,
         catch_body,
         finally_body,
+    })
+}
+
+pub fn read_do_abc_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<DoAbcTag> {
+    let flags = reader.read_u32()?;
+    let name = reader.read_string()?;
+    let mut abc_data = Vec::new();
+    reader.read_to_end(&mut abc_data)?;
+    Ok(DoAbcTag {
+        flags,
+        name,
+        abc_data,
     })
 }
