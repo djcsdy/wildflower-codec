@@ -1,7 +1,8 @@
 use crate::ast::display_list::{
     BevelFilter, BlurFilter, ClipActionRecord, ClipActions, ClipEventFlags, ColorMatrixFilter,
     ConvolutionFilter, DropShadowFilter, Filter, GlowFilter, GradientBevelFilter,
-    GradientGlowFilter, PlaceObject2Tag, PlaceObject3Tag, PlaceObjectTag, RemoveObjectTag,
+    GradientGlowFilter, PlaceObject2Tag, PlaceObject3Tag, PlaceObjectTag, RemoveObject2Tag,
+    RemoveObjectTag,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag::actions::read_action_records;
@@ -472,4 +473,11 @@ pub fn read_remove_object_tag<R: Read>(
         character_id,
         depth,
     })
+}
+
+pub fn read_remove_object2_tag<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<RemoveObject2Tag> {
+    let depth = reader.read_u16()?;
+    Ok(RemoveObject2Tag { depth })
 }
