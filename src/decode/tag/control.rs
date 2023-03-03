@@ -1,6 +1,6 @@
 use crate::ast::control::{
     EnableDebugger2Tag, EnableDebuggerTag, ExportAssetsTag, FrameLabelTag, ImportAssetsTag,
-    PortableCharacterRecord, ProtectTag, SetBackgroundColorTag,
+    PortableCharacterRecord, ProtectTag, ScriptLimitsTag, SetBackgroundColorTag,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
@@ -63,4 +63,15 @@ pub fn read_enable_debugger2_tag<R: Read>(
     reader.read_u16()?;
     let password_md5 = reader.read_null_terminated_bytes()?;
     Ok(EnableDebugger2Tag { password_md5 })
+}
+
+pub fn read_script_limits_tag<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<ScriptLimitsTag> {
+    let max_recursion_depth = reader.read_u16()?;
+    let script_timeout_seconds = reader.read_u16()?;
+    Ok(ScriptLimitsTag {
+        max_recursion_depth,
+        script_timeout_seconds,
+    })
 }
