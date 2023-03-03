@@ -1,8 +1,8 @@
 use crate::ast::control::{
-    EnableDebugger2Tag, EnableDebuggerTag, ExportAssetsTag, FileAttributesFlags, FileAttributesTag,
-    FrameLabelTag, ImportAssets2Tag, ImportAssetsTag, MetadataTag, PortableCharacterRecord,
-    ProtectTag, ScriptLimitsTag, SetBackgroundColorTag, SetTabIndexTag, SymbolClassRecord,
-    SymbolClassTag,
+    DefineScalingGridTag, EnableDebugger2Tag, EnableDebuggerTag, ExportAssetsTag,
+    FileAttributesFlags, FileAttributesTag, FrameLabelTag, ImportAssets2Tag, ImportAssetsTag,
+    MetadataTag, PortableCharacterRecord, ProtectTag, ScriptLimitsTag, SetBackgroundColorTag,
+    SetTabIndexTag, SymbolClassRecord, SymbolClassTag,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
@@ -128,4 +128,15 @@ fn read_symbol_class_record<R: Read>(
 pub fn read_metadata_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<MetadataTag> {
     let metadata = reader.read_string()?;
     Ok(MetadataTag { metadata })
+}
+
+pub fn read_define_scaling_grid_tag<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<DefineScalingGridTag> {
+    let character_id = reader.read_u16()?;
+    let splitter = reader.read_rectangle()?;
+    Ok(DefineScalingGridTag {
+        character_id,
+        splitter,
+    })
 }
