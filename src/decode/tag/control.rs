@@ -1,8 +1,9 @@
 use crate::ast::control::{
-    DefineScalingGridTag, EnableDebugger2Tag, EnableDebuggerTag, ExportAssetsTag,
-    FileAttributesFlags, FileAttributesTag, FrameLabelTag, ImportAssets2Tag, ImportAssetsTag,
-    MetadataTag, PortableCharacterRecord, ProtectTag, ScriptLimitsTag, SetBackgroundColorTag,
-    SetTabIndexTag, SymbolClassRecord, SymbolClassTag,
+    DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, EnableDebugger2Tag, EnableDebuggerTag,
+    ExportAssetsTag, FileAttributesFlags, FileAttributesTag, FrameLabelRecord, FrameLabelTag,
+    ImportAssets2Tag, ImportAssetsTag, MetadataTag, PortableCharacterRecord, ProtectTag,
+    SceneRecord, ScriptLimitsTag, SetBackgroundColorTag, SetTabIndexTag, SymbolClassRecord,
+    SymbolClassTag,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
@@ -138,5 +139,39 @@ pub fn read_define_scaling_grid_tag<R: Read>(
     Ok(DefineScalingGridTag {
         character_id,
         splitter,
+    })
+}
+
+pub fn read_define_scene_and_frame_label_data_tag<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<DefineSceneAndFrameLabelDataTag> {
+    let scene_count = reader.read_encoded_u32()?;
+    let mut scenes = Vec::with_capacity(scene_count as usize);
+    for _ in 0..scene_count {
+        scenes.push(read_scene_record(reader)?);
+    }
+    let frame_label_count = reader.read_encoded_u32()?;
+    let mut frame_labels = Vec::with_capacity(frame_label_count as usize);
+    for _ in 0..frame_label_count {
+        frame_labels.push(read_frame_label_record(reader)?);
+    }
+    Ok(DefineSceneAndFrameLabelDataTag {
+        scenes,
+        frame_labels,
+    })
+}
+
+fn read_scene_record<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<SceneRecord> {
+    let offset = reader.read_encoded_u32()?;
+    let name = reader.read_string()?;
+    Ok(SceneRecord { offset, name })
+}
+
+fn read_frame_label_record<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<FrameLabelRecord> {
+    let frame_num = reader.read_encoded_u32()?;
+    let frame_label = reader.read_string()?;
+    Ok(FrameLabelRecord {
+        frame_num,
+        frame_label,
     })
 }
