@@ -1,10 +1,12 @@
 use crate::ast::control::{
-    EnableDebugger2Tag, EnableDebuggerTag, ExportAssetsTag, FrameLabelTag, ImportAssetsTag,
-    PortableCharacterRecord, ProtectTag, ScriptLimitsTag, SetBackgroundColorTag, SetTabIndexTag,
+    EnableDebugger2Tag, EnableDebuggerTag, ExportAssetsTag, FileAttributesFlags, FileAttributesTag,
+    FrameLabelTag, ImportAssetsTag, PortableCharacterRecord, ProtectTag, ScriptLimitsTag,
+    SetBackgroundColorTag, SetTabIndexTag,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
-use std::io::{Read, Result};
+use std::io::ErrorKind::InvalidData;
+use std::io::{Error, Read, Result};
 
 pub fn read_set_background_color_tag<R: Read>(
     reader: &mut SwfTagBodyReader<R>,
@@ -80,4 +82,11 @@ pub fn read_set_tab_index_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Resu
     let depth = reader.read_u16()?;
     let tab_index = reader.read_u16()?;
     Ok(SetTabIndexTag { depth, tab_index })
+}
+
+pub fn read_file_attributes_tag<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<FileAttributesTag> {
+    let flags = FileAttributesFlags::from_bits_truncate(reader.read_u32()?);
+    Ok(FileAttributesTag { flags })
 }
