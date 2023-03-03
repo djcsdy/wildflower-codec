@@ -1,7 +1,8 @@
 use crate::ast::control::{
     EnableDebugger2Tag, EnableDebuggerTag, ExportAssetsTag, FileAttributesFlags, FileAttributesTag,
-    FrameLabelTag, ImportAssets2Tag, ImportAssetsTag, PortableCharacterRecord, ProtectTag,
-    ScriptLimitsTag, SetBackgroundColorTag, SetTabIndexTag, SymbolClassRecord, SymbolClassTag,
+    FrameLabelTag, ImportAssets2Tag, ImportAssetsTag, MetadataTag, PortableCharacterRecord,
+    ProtectTag, ScriptLimitsTag, SetBackgroundColorTag, SetTabIndexTag, SymbolClassRecord,
+    SymbolClassTag,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
@@ -122,4 +123,9 @@ fn read_symbol_class_record<R: Read>(
         character_id,
         class_name,
     })
+}
+
+pub fn read_metadata_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<MetadataTag> {
+    let metadata = reader.read_string()?;
+    Ok(MetadataTag { metadata })
 }
