@@ -1,7 +1,7 @@
 use crate::ast::control::{
     EnableDebugger2Tag, EnableDebuggerTag, ExportAssetsTag, FileAttributesFlags, FileAttributesTag,
     FrameLabelTag, ImportAssets2Tag, ImportAssetsTag, PortableCharacterRecord, ProtectTag,
-    ScriptLimitsTag, SetBackgroundColorTag, SetTabIndexTag,
+    ScriptLimitsTag, SetBackgroundColorTag, SetTabIndexTag, SymbolClassRecord, SymbolClassTag,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
@@ -91,7 +91,9 @@ pub fn read_file_attributes_tag<R: Read>(
     Ok(FileAttributesTag { flags })
 }
 
-pub fn read_import_assets2_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<ImportAssets2Tag> {
+pub fn read_import_assets2_tag<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<ImportAssets2Tag> {
     let url = reader.read_string()?;
     reader.read_u16()?;
     let count = reader.read_u16()?;
@@ -100,4 +102,24 @@ pub fn read_import_assets2_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Res
         imports.push(read_portable_character_record(reader)?);
     }
     Ok(ImportAssets2Tag { url, imports })
+}
+
+pub fn read_symbol_class_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<SymbolClassTag> {
+    let num_symbols = reader.read_u16()?;
+    let mut records = Vec::with_capacity(num_symbols as usize);
+    for _ in 0..num_symbols {
+        records.push(read_symbol_class_record(reader)?);
+    }
+    Ok(SymbolClassTag { records })
+}
+
+fn read_symbol_class_record<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<SymbolClassRecord> {
+    let character_id = reader.read_u16()?;
+    let class_name = reader.read_string()?;
+    Ok(SymbolClassRecord {
+        character_id,
+        class_name,
+    })
 }
