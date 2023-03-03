@@ -1,7 +1,7 @@
 use crate::ast::control::{
     EnableDebugger2Tag, EnableDebuggerTag, ExportAssetsTag, FileAttributesFlags, FileAttributesTag,
-    FrameLabelTag, ImportAssetsTag, PortableCharacterRecord, ProtectTag, ScriptLimitsTag,
-    SetBackgroundColorTag, SetTabIndexTag,
+    FrameLabelTag, ImportAssets2Tag, ImportAssetsTag, PortableCharacterRecord, ProtectTag,
+    ScriptLimitsTag, SetBackgroundColorTag, SetTabIndexTag,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
@@ -89,4 +89,15 @@ pub fn read_file_attributes_tag<R: Read>(
 ) -> Result<FileAttributesTag> {
     let flags = FileAttributesFlags::from_bits_truncate(reader.read_u32()?);
     Ok(FileAttributesTag { flags })
+}
+
+pub fn read_import_assets2_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<ImportAssets2Tag> {
+    let url = reader.read_string()?;
+    reader.read_u16()?;
+    let count = reader.read_u16()?;
+    let mut imports = Vec::with_capacity(count as usize);
+    for _ in 0..count {
+        imports.push(read_portable_character_record(reader)?);
+    }
+    Ok(ImportAssets2Tag { url, imports })
 }
