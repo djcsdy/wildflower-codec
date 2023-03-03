@@ -1,4 +1,5 @@
 use super::common::*;
+use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 pub enum FillStyle<TColor> {
     Solid(TColor),
@@ -62,6 +63,8 @@ pub struct FocalGradient<TColor> {
     pub focal_point: Fixed8,
 }
 
+#[derive(IntoPrimitive, TryFromPrimitive)]
+#[repr(u8)]
 pub enum SpreadMode {
     Pad,
     Reflect,
