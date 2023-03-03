@@ -1,7 +1,7 @@
 use crate::ast::actions::{
-    ActionRecord, ConstantPool, DefineFunction, DefineFunction2, DoActionTag, GetUrl, GetUrl2,
-    GoToFrame, GoToFrame2, GoToLabel, If, Jump, Push, PushValue, RegisterParam, SetTarget,
-    StoreRegister, Try, WaitForFrame, WaitForFrame2, With,
+    ActionRecord, ConstantPool, DefineFunction, DefineFunction2, DoActionTag, DoInitActionTag,
+    GetUrl, GetUrl2, GoToFrame, GoToFrame2, GoToLabel, If, Jump, Push, PushValue, RegisterParam,
+    SetTarget, StoreRegister, Try, WaitForFrame, WaitForFrame2, With,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
@@ -261,6 +261,14 @@ fn read_with<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<With> {
 fn read_store_register<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<StoreRegister> {
     let register_number = reader.read_u8()?;
     Ok(StoreRegister { register_number })
+}
+
+pub fn read_do_init_action_tag<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<DoInitActionTag> {
+    let sprite_id = reader.read_u16()?;
+    let actions = read_action_records(reader)?;
+    Ok(DoInitActionTag { sprite_id, actions })
 }
 
 fn read_define_function2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<DefineFunction2> {
