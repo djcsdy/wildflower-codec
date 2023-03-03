@@ -71,6 +71,8 @@ pub enum SpreadMode {
     Repeat,
 }
 
+#[derive(IntoPrimitive, TryFromPrimitive)]
+#[repr(u8)]
 pub enum InterpolationMode {
     Gamma,
     Linear,
