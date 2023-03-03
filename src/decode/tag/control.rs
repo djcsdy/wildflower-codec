@@ -1,6 +1,6 @@
 use crate::ast::control::{
-    EnableDebuggerTag, ExportAssetsTag, FrameLabelTag, ImportAssetsTag, PortableCharacterRecord,
-    ProtectTag, SetBackgroundColorTag,
+    EnableDebugger2Tag, EnableDebuggerTag, ExportAssetsTag, FrameLabelTag, ImportAssetsTag,
+    PortableCharacterRecord, ProtectTag, SetBackgroundColorTag,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
@@ -55,4 +55,12 @@ pub fn read_enable_debugger_tag<R: Read>(
 ) -> Result<EnableDebuggerTag> {
     let password_md5 = reader.read_null_terminated_bytes()?;
     Ok(EnableDebuggerTag { password_md5 })
+}
+
+pub fn read_enable_debugger2_tag<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<EnableDebugger2Tag> {
+    reader.read_u16()?;
+    let password_md5 = reader.read_null_terminated_bytes()?;
+    Ok(EnableDebugger2Tag { password_md5 })
 }
