@@ -1,5 +1,6 @@
 use super::actions::ActionRecord;
 use super::common::*;
+use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 /// A Tag with an unknown or unsupported tag code.
 pub struct UnknownTag {
@@ -139,6 +140,8 @@ pub struct PlaceObject3Tag {
     pub background_color: Option<Rgba>,
 }
 
+#[derive(IntoPrimitive, TryFromPrimitive)]
+#[repr(u8)]
 pub enum BlendMode {
     Normal = 1,
     Layer = 2,
