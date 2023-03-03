@@ -1,4 +1,4 @@
-use crate::ast::styles::{Gradient, GradientRecord, SpreadMode};
+use crate::ast::styles::{FocalGradient, Gradient, GradientRecord, SpreadMode};
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::ErrorKind::InvalidData;
@@ -25,6 +25,24 @@ pub fn read_gradient<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> 
         spread_mode,
         interpolation_mode,
         gradient_records,
+    })
+}
+
+pub fn read_focal_gradient<
+    R: Read,
+    Color,
+    ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>,
+>(
+    reader: &mut SwfTagBodyReader<R>,
+    read_color: ReadColor,
+) -> Result<FocalGradient<Color>> {
+    let gradient = read_gradient(reader, read_color)?;
+    let focal_point = reader.read_fixed8()?;
+    Ok(FocalGradient {
+        spread_mode: gradient.spread_mode,
+        interpolation_mode: gradient.interpolation_mode,
+        gradient_records: gradient.gradient_records,
+        focal_point,
     })
 }
 
