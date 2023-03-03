@@ -35,7 +35,7 @@ pub fn read_import_assets_tag<R: Read>(
 ) -> Result<ImportAssetsTag> {
     let url = reader.read_string()?;
     let count = reader.read_u16()?;
-    let mut imports = Vec::with_capacity(count);
+    let mut imports = Vec::with_capacity(count as usize);
     for _ in 0..count {
         imports.push(read_portable_character_record(reader)?);
     }
