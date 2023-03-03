@@ -1,12 +1,17 @@
 use crate::ast::actions::{
-    ActionRecord, ConstantPool, DefineFunction, DefineFunction2, GetUrl, GetUrl2, GoToFrame,
-    GoToFrame2, GoToLabel, If, Jump, Push, PushValue, RegisterParam, SetTarget, StoreRegister, Try,
-    WaitForFrame, WaitForFrame2, With,
+    ActionRecord, ConstantPool, DefineFunction, DefineFunction2, DoActionTag, GetUrl, GetUrl2,
+    GoToFrame, GoToFrame2, GoToLabel, If, Jump, Push, PushValue, RegisterParam, SetTarget,
+    StoreRegister, Try, WaitForFrame, WaitForFrame2, With,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Read, Result};
+
+pub fn read_do_action_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<DoActionTag> {
+    let actions = read_action_records(reader)?;
+    Ok(DoActionTag { actions })
+}
 
 pub fn read_action_record<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<ActionRecord> {
     let action_code = reader.read_u8()?;
