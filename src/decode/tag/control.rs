@@ -1,5 +1,6 @@
 use crate::ast::control::{
-    ExportAssetsTag, FrameLabelTag, PortableCharacterRecord, ProtectTag, SetBackgroundColorTag,
+    ExportAssetsTag, FrameLabelTag, ImportAssetsTag, PortableCharacterRecord, ProtectTag,
+    SetBackgroundColorTag,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
@@ -27,6 +28,18 @@ pub fn read_export_assets_tag<R: Read>(
         exports.push(read_portable_character_record(reader)?);
     }
     Ok(ExportAssetsTag { exports })
+}
+
+pub fn read_import_assets_tag<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<ImportAssetsTag> {
+    let url = reader.read_string()?;
+    let count = reader.read_u16()?;
+    let mut imports = Vec::with_capacity(count);
+    for _ in 0..count {
+        imports.push(read_portable_character_record(reader)?);
+    }
+    Ok(ImportAssetsTag { url, imports })
 }
 
 fn read_portable_character_record<R: Read>(
