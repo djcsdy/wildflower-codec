@@ -1,7 +1,32 @@
-use crate::ast::styles::GradientRecord;
+use crate::ast::styles::{Gradient, GradientRecord, SpreadMode};
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
-use std::io::{Read, Result};
+use std::io::ErrorKind::InvalidData;
+use std::io::{Error, Read, Result};
+
+pub fn read_gradient<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>>(
+    reader: &mut SwfTagBodyReader<R>,
+    read_color: ReadColor,
+) -> Result<Gradient<Color>> {
+    let spread_mode = reader
+        .read_ub8(2)?
+        .try_into()
+        .map_err(|_| Error::from(InvalidData))?;
+    let interpolation_mode = reader
+        .read_ub8(2)?
+        .try_into()
+        .map_err(|_| Error::from(InvalidData))?;
+    let num_gradients = reader.read_ub8(4)?;
+    let mut gradient_records = Vec::with_capacity(num_gradients as usize);
+    for _ in 0..num_gradients {
+        gradient_records.push(read_gradient_record(reader, &read_color)?);
+    }
+    Ok(Gradient {
+        spread_mode,
+        interpolation_mode,
+        gradient_records,
+    })
+}
 
 fn read_gradient_record<
     R: Read,
