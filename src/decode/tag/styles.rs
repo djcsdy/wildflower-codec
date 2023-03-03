@@ -1,4 +1,4 @@
-use crate::ast::styles::{FocalGradient, Gradient, GradientRecord, SpreadMode};
+use crate::ast::styles::{FocalGradient, Gradient, GradientRecord};
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::ErrorKind::InvalidData;
