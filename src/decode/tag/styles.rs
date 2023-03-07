@@ -1,5 +1,7 @@
 use crate::ast::common::Rgb;
-use crate::ast::styles::{FillStyle, FocalGradient, Gradient, GradientRecord, LineStyle};
+use crate::ast::styles::{
+    FillStyle, FocalGradient, Gradient, GradientRecord, JoinStyle, LineStyle, LineStyle2,
+};
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::ErrorKind::InvalidData;
@@ -107,6 +109,53 @@ pub fn read_line_style<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -
     let width = reader.read_u16()?;
     let color = read_color(reader)?;
     Ok(LineStyle { width, color })
+}
+
+pub fn read_line_style2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<LineStyle2> {
+    let width = reader.read_u16()?;
+    let start_cap_style = reader
+        .read_ub8(2)?
+        .try_into()
+        .map_err(|_| Error::from(InvalidData))?;
+    let join_style = reader.read_ub8(2)?;
+    let has_fill = reader.read_bit()?;
+    let no_h_scale = reader.read_bit()?;
+    let no_v_scale = reader.read_bit()?;
+    let pixel_hinting = reader.read_bit()?;
+    reader.read_ub8(5)?;
+    let no_close = reader.read_bit()?;
+    let end_cap_style = reader
+        .read_ub8(2)?
+        .try_into()
+        .map_err(|_| Error::from(InvalidData))?;
+    let miter_limit_factor = if join_style == 2 {
+        Some(reader.read_fixed8()?)
+    } else {
+        None
+    };
+    let fill_style = if has_fill {
+        read_fill_style(reader, &SwfTagBodyReader::read_rgba)?
+    } else {
+        FillStyle::Solid(reader.read_rgba()?)
+    };
+    Ok(LineStyle2 {
+        width,
+        start_cap_style,
+        join_style: match join_style {
+            0 => JoinStyle::Round,
+            1 => JoinStyle::Bevel,
+            2 => JoinStyle::Miter {
+                miter_limit_factor: miter_limit_factor.unwrap(),
+            },
+            _ => return Err(Error::from(InvalidData)),
+        },
+        no_h_scale,
+        no_v_scale,
+        pixel_hinting,
+        no_close,
+        end_cap_style,
+        fill_style,
+    })
 }
 
 pub fn read_gradient<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>>(
