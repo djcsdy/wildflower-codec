@@ -1,14 +1,12 @@
 use crate::ast::control::{
     DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, EnableDebugger2Tag, EnableDebuggerTag,
     ExportAssetsTag, FileAttributesFlags, FileAttributesTag, FrameLabelRecord, FrameLabelTag,
-    ImportAssets2Tag, ImportAssetsTag, MetadataTag, PortableCharacterRecord, ProtectTag,
-    SceneRecord, ScriptLimitsTag, SetBackgroundColorTag, SetTabIndexTag, SymbolClassRecord,
-    SymbolClassTag,
+    ImportAssets2Tag, ImportAssetsTag, MetadataTag, PortableCharacterRecord, SceneRecord,
+    ScriptLimitsTag, SetBackgroundColorTag, SetTabIndexTag, SymbolClassRecord, SymbolClassTag,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
-use std::io::ErrorKind::InvalidData;
-use std::io::{Error, Read, Result};
+use std::io::{Read, Result};
 
 pub fn read_set_background_color_tag<R: Read>(
     reader: &mut SwfTagBodyReader<R>,
