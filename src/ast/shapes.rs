@@ -51,8 +51,8 @@ pub struct StyleChangeRecord<TColor, TLineStyle> {
     pub fill_style_0: u16,
     pub fill_style_1: u16,
     pub line_style: u16,
-    pub fill_styles: Vec<FillStyle<TColor>>,
-    pub line_styles: Vec<TLineStyle>,
+    pub fill_styles: Option<Vec<FillStyle<TColor>>>,
+    pub line_styles: Option<Vec<TLineStyle>>,
 }
 
 pub struct StraightEdgeRecord {
