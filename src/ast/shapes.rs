@@ -47,7 +47,7 @@ pub enum ShapeRecord<TColor, TLineStyle> {
 }
 
 pub struct StyleChangeRecord<TColor, TLineStyle> {
-    pub move_delta: (i32, i32),
+    pub move_delta: (i16, i16),
     pub fill_style_0: u16,
     pub fill_style_1: u16,
     pub line_style: u16,
