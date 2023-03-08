@@ -1,4 +1,4 @@
-use crate::ast::shapes::StyleChangeRecord;
+use crate::ast::shapes::{CurvedEdgeRecord, StraightEdgeRecord, StyleChangeRecord};
 use crate::ast::styles::FillStyle;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};
@@ -80,4 +80,27 @@ pub fn read_non_edge_record<
         num_fill_bits,
         num_line_bits,
     })
+}
+
+pub fn read_straight_edge_record<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<StraightEdgeRecord> {
+    let num_bits = reader.read_ub8(4)? + 2;
+    let is_general_line = reader.read_bit()?;
+    let is_vertical_line = if is_general_line {
+        false
+    } else {
+        reader.read_bit()?
+    };
+    let delta_x = if is_general_line || !is_vertical_line {
+        reader.read_sb(num_bits)?
+    } else {
+        0
+    };
+    let delta_y = if is_general_line || is_vertical_line {
+        reader.read_sb(num_bits)?
+    } else {
+        0
+    };
+    Ok(StraightEdgeRecord { delta_x, delta_y })
 }
