@@ -1,7 +1,40 @@
-use crate::ast::shapes::{CurvedEdgeRecord, StraightEdgeRecord, StyleChangeRecord};
+use crate::ast::shapes::{
+    CurvedEdgeRecord, Shape, ShapeRecord, StraightEdgeRecord, StyleChangeRecord,
+};
 use crate::ast::styles::FillStyle;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};
+
+pub fn read_shape<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Shape<(), ()>> {
+    let mut num_fill_bits = reader.read_ub8(4)?;
+    let mut num_line_bits = reader.read_ub8(4)?;
+    let mut shape_records = Vec::new();
+    while reader.remaining() > 0 {
+        shape_records.push(
+            match read_shape_record(ReadShapeRecordOptions {
+                reader,
+                num_fill_bits,
+                num_line_bits,
+                read_line_style_array: |_| Ok(vec![]),
+                read_fill_style_array: |_| Ok(vec![]),
+            })? {
+                InternalShapeRecord::EndShape => ShapeRecord::EndShape,
+                InternalShapeRecord::StyleChange {
+                    style_change_record,
+                    num_fill_bits: new_num_fill_bits,
+                    num_line_bits: new_num_line_bits,
+                } => {
+                    num_fill_bits = new_num_fill_bits;
+                    num_line_bits = new_num_line_bits;
+                    ShapeRecord::StyleChange(style_change_record)
+                }
+                InternalShapeRecord::StraightEdge(edge) => ShapeRecord::StraightEdge(edge),
+                InternalShapeRecord::CurvedEdge(edge) => ShapeRecord::CurvedEdge(edge),
+            },
+        );
+    }
+    Ok(Shape { shape_records })
+}
 
 pub struct ReadShapeRecordOptions<
     'read_shape_record,
