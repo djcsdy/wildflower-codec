@@ -18,6 +18,48 @@ pub struct ReadShapeRecordOptions<
     pub read_fill_style_array: ReadFillStyleArray,
 }
 
+pub enum InternalShapeRecord<Color, LineStyle> {
+    EndShape,
+    StyleChange {
+        style_change_record: StyleChangeRecord<Color, LineStyle>,
+        num_fill_bits: u8,
+        num_line_bits: u8,
+    },
+    StraightEdge(StraightEdgeRecord),
+    CurvedEdge(CurvedEdgeRecord),
+}
+
+pub fn read_shape_record<
+    R: Read,
+    Color,
+    LineStyle,
+    ReadLineStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<LineStyle>>,
+    ReadFillStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<FillStyle<Color>>>,
+>(
+    options: ReadShapeRecordOptions<R, Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
+) -> Result<InternalShapeRecord<Color, LineStyle>> {
+    let is_edge = options.reader.read_bit()?;
+    if is_edge {
+        Ok(match read_edge_record(options.reader)? {
+            EdgeRecord::StraightEdge(edge) => InternalShapeRecord::StraightEdge(edge),
+            EdgeRecord::CurvedEdge(edge) => InternalShapeRecord::CurvedEdge(edge),
+        })
+    } else {
+        Ok(match read_non_edge_record(options)? {
+            NonEdgeRecord::EndShape => InternalShapeRecord::EndShape,
+            NonEdgeRecord::StyleChange {
+                style_change_record,
+                num_fill_bits,
+                num_line_bits,
+            } => InternalShapeRecord::StyleChange {
+                style_change_record,
+                num_fill_bits,
+                num_line_bits,
+            },
+        })
+    }
+}
+
 pub enum NonEdgeRecord<Color, LineStyle> {
     EndShape,
     StyleChange {
