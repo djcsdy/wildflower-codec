@@ -1,4 +1,4 @@
-use crate::ast::bitmaps::DefineBitsTag;
+use crate::ast::bitmaps::{DefineBitsTag, JpegTablesTag};
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};
@@ -11,4 +11,10 @@ pub fn read_define_bits_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result
         character_id,
         jpeg_data,
     })
+}
+
+pub fn read_jpeg_tables_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<JpegTablesTag> {
+    let mut jpeg_data = Vec::new();
+    reader.read_to_end(&mut jpeg_data)?;
+    Ok(JpegTablesTag { jpeg_data })
 }
