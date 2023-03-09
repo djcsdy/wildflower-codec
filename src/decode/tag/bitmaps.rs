@@ -1,5 +1,5 @@
 use crate::ast::bitmaps::{
-    ColorMapData, DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsTag, JpegTablesTag,
+    BitmapData, ColorMapData, DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsTag, JpegTablesTag,
 };
 use crate::ast::common::Rgb;
 use crate::decode::read_ext::SwfTypesReadExt;
@@ -81,6 +81,35 @@ fn read_colormap_data<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) ->
         color_table,
         pixel_data,
     })
+}
+
+struct ReadBitmapDataOptions<
+    'read_bitmap_data,
+    R: Read,
+    Color,
+    ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>,
+> {
+    reader: &'read_bitmap_data mut SwfTagBodyReader<R>,
+    read_color: ReadColor,
+    bitmap_width: u16,
+    bitmap_height: u16,
+}
+
+fn read_bitmap_data<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>>(
+    options: ReadBitmapDataOptions<R, Color, ReadColor>,
+) -> Result<BitmapData<Color>> {
+    let start = options.reader.count();
+    let mut pixel_data =
+        Vec::with_capacity((options.bitmap_height as usize) * (options.bitmap_width as usize));
+    for _ in 0..options.bitmap_height {
+        for _ in 0..options.bitmap_width {
+            pixel_data.push((options.read_color)(options.reader)?);
+        }
+        while (options.reader.count() - start) & 4 != 0 {
+            options.reader.read_u8()?;
+        }
+    }
+    Ok(BitmapData::Rgb(pixel_data))
 }
 
 fn read_pix15<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Rgb> {
