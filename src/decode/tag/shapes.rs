@@ -1,39 +1,65 @@
 use crate::ast::shapes::{
-    CurvedEdgeRecord, Shape, ShapeRecord, StraightEdgeRecord, StyleChangeRecord,
+    CurvedEdgeRecord, Shape, ShapeRecord, ShapeWithStyle, StraightEdgeRecord, StyleChangeRecord,
 };
 use crate::ast::styles::FillStyle;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};
 
 pub fn read_shape<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Shape<(), ()>> {
-    let mut num_fill_bits = reader.read_ub8(4)?;
-    let mut num_line_bits = reader.read_ub8(4)?;
-    let mut shape_records = Vec::new();
-    while reader.remaining() > 0 {
-        shape_records.push(
-            match read_shape_record(ReadShapeRecordOptions {
-                reader,
-                num_fill_bits,
-                num_line_bits,
-                read_line_style_array: |_| Ok(vec![]),
-                read_fill_style_array: |_| Ok(vec![]),
-            })? {
-                InternalShapeRecord::EndShape => ShapeRecord::EndShape,
-                InternalShapeRecord::StyleChange {
-                    style_change_record,
-                    num_fill_bits: new_num_fill_bits,
-                    num_line_bits: new_num_line_bits,
-                } => {
-                    num_fill_bits = new_num_fill_bits;
-                    num_line_bits = new_num_line_bits;
-                    ShapeRecord::StyleChange(style_change_record)
-                }
-                InternalShapeRecord::StraightEdge(edge) => ShapeRecord::StraightEdge(edge),
-                InternalShapeRecord::CurvedEdge(edge) => ShapeRecord::CurvedEdge(edge),
-            },
-        );
-    }
+    let num_fill_bits = reader.read_ub8(4)?;
+    let num_line_bits = reader.read_ub8(4)?;
+    let shape_records = read_shape_records(ReadShapeRecordOptions {
+        reader,
+        num_fill_bits,
+        num_line_bits,
+        read_line_style_array: |_| Ok(vec![]),
+        read_fill_style_array: |_| Ok(vec![]),
+    })?;
     Ok(Shape { shape_records })
+}
+
+pub struct ReadShapeWithStyleOptions<
+    'read_shape_with_style,
+    R: Read,
+    Color,
+    LineStyle,
+    ReadLineStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<LineStyle>>,
+    ReadFillStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<FillStyle<Color>>>,
+> {
+    pub reader: &'read_shape_with_style mut SwfTagBodyReader<R>,
+    pub read_line_style_array: ReadLineStyleArray,
+    pub read_fill_style_array: ReadFillStyleArray,
+}
+
+pub fn read_shape_with_style<
+    R: Read,
+    Color,
+    LineStyle,
+    ReadLineStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<LineStyle>>,
+    ReadFillStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<FillStyle<Color>>>,
+>(
+    ReadShapeWithStyleOptions {
+        reader,
+        read_line_style_array,
+        read_fill_style_array,
+    }: ReadShapeWithStyleOptions<R, Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
+) -> Result<ShapeWithStyle<Color, LineStyle>> {
+    let fill_styles = (read_fill_style_array)(reader)?;
+    let line_styles = (read_line_style_array)(reader)?;
+    let num_fill_bits = reader.read_ub8(4)?;
+    let num_line_bits = reader.read_ub8(4)?;
+    let shape_records = read_shape_records(ReadShapeRecordOptions {
+        reader,
+        num_fill_bits,
+        num_line_bits,
+        read_line_style_array,
+        read_fill_style_array,
+    })?;
+    Ok(ShapeWithStyle {
+        fill_styles,
+        line_styles,
+        shape_records,
+    })
 }
 
 pub struct ReadShapeRecordOptions<
@@ -49,6 +75,49 @@ pub struct ReadShapeRecordOptions<
     pub num_line_bits: u8,
     pub read_line_style_array: ReadLineStyleArray,
     pub read_fill_style_array: ReadFillStyleArray,
+}
+
+fn read_shape_records<
+    R: Read,
+    Color,
+    LineStyle,
+    ReadLineStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<LineStyle>>,
+    ReadFillStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<FillStyle<Color>>>,
+>(
+    mut options: ReadShapeRecordOptions<
+        R,
+        Color,
+        LineStyle,
+        ReadLineStyleArray,
+        ReadFillStyleArray,
+    >,
+) -> Result<Vec<ShapeRecord<Color, LineStyle>>> {
+    let mut shape_records = Vec::new();
+    while options.reader.remaining() > 0 {
+        shape_records.push(
+            match read_shape_record(ReadShapeRecordOptions {
+                reader: options.reader,
+                num_fill_bits: options.num_fill_bits,
+                num_line_bits: options.num_line_bits,
+                read_line_style_array: &options.read_line_style_array,
+                read_fill_style_array: &options.read_fill_style_array,
+            })? {
+                InternalShapeRecord::EndShape => ShapeRecord::EndShape,
+                InternalShapeRecord::StyleChange {
+                    style_change_record,
+                    num_fill_bits,
+                    num_line_bits,
+                } => {
+                    options.num_fill_bits = num_fill_bits;
+                    options.num_line_bits = num_line_bits;
+                    ShapeRecord::StyleChange(style_change_record)
+                }
+                InternalShapeRecord::StraightEdge(edge) => ShapeRecord::StraightEdge(edge),
+                InternalShapeRecord::CurvedEdge(edge) => ShapeRecord::CurvedEdge(edge),
+            },
+        );
+    }
+    Ok(shape_records)
 }
 
 pub enum InternalShapeRecord<Color, LineStyle> {
