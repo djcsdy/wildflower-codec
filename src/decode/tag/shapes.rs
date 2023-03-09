@@ -82,6 +82,20 @@ pub fn read_non_edge_record<
     })
 }
 
+pub enum EdgeRecord {
+    StraightEdge(StraightEdgeRecord),
+    CurvedEdge(CurvedEdgeRecord),
+}
+
+pub fn read_edge_record<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<EdgeRecord> {
+    let is_straight = reader.read_bit()?;
+    if is_straight {
+        Ok(EdgeRecord::StraightEdge(read_straight_edge_record(reader)?))
+    } else {
+        Ok(EdgeRecord::CurvedEdge(read_curved_edge_record(reader)?))
+    }
+}
+
 pub fn read_straight_edge_record<R: Read>(
     reader: &mut SwfTagBodyReader<R>,
 ) -> Result<StraightEdgeRecord> {
