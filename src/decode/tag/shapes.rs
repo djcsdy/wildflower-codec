@@ -1,10 +1,12 @@
 use crate::ast::shapes::{
-    CurvedEdgeRecord, DefineShapeTag, Shape, ShapeRecord, ShapeWithStyle, StraightEdgeRecord,
-    StyleChangeRecord,
+    CurvedEdgeRecord, DefineShape2Tag, DefineShapeTag, Shape, ShapeRecord, ShapeWithStyle,
+    StraightEdgeRecord, StyleChangeRecord,
 };
 use crate::ast::styles::FillStyle;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::tag::styles::{read_fill_style_array, read_line_style, read_line_style_array};
+use crate::decode::tag::styles::{
+    read_extended_fill_style_array, read_fill_style_array, read_line_style, read_line_style_array,
+};
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};
 
@@ -295,6 +297,29 @@ pub fn read_define_shape_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Resul
         read_fill_style_array: &read_fill_style_array,
     })?;
     Ok(DefineShapeTag {
+        shape_id,
+        shape_bounds,
+        shape,
+    })
+}
+
+pub fn read_define_shape2_tag<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<DefineShape2Tag> {
+    let shape_id = reader.read_u16()?;
+    let shape_bounds = reader.read_rectangle()?;
+    let shape = read_shape_with_style(ReadShapeWithStyleOptions {
+        reader,
+        read_line_style_array: |reader| {
+            read_line_style_array(reader, |reader| {
+                read_line_style(reader, &SwfTagBodyReader::read_rgb)
+            })
+        },
+        read_fill_style_array: |reader| {
+            read_extended_fill_style_array(reader, &SwfTagBodyReader::read_rgb)
+        },
+    })?;
+    Ok(DefineShape2Tag {
         shape_id,
         shape_bounds,
         shape,
