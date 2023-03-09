@@ -1,11 +1,12 @@
 use crate::ast::shapes::{
-    CurvedEdgeRecord, DefineShape2Tag, DefineShape3Tag, DefineShapeTag, Shape, ShapeRecord,
-    ShapeWithStyle, StraightEdgeRecord, StyleChangeRecord,
+    CurvedEdgeRecord, DefineShape2Tag, DefineShape3Tag, DefineShape4Tag, DefineShapeTag, Shape,
+    ShapeRecord, ShapeWithStyle, StraightEdgeRecord, StyleChangeRecord,
 };
 use crate::ast::styles::FillStyle;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag::styles::{
-    read_extended_fill_style_array, read_fill_style_array, read_line_style, read_line_style_array,
+    read_extended_fill_style_array, read_fill_style_array, read_line_style, read_line_style2,
+    read_line_style_array,
 };
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};
@@ -345,6 +346,34 @@ pub fn read_define_shape3_tag<R: Read>(
     Ok(DefineShape3Tag {
         shape_id,
         shape_bounds,
+        shape,
+    })
+}
+
+pub fn read_define_shape4_tag<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<DefineShape4Tag> {
+    let shape_id = reader.read_u16()?;
+    let shape_bounds = reader.read_rectangle()?;
+    let edge_bounds = reader.read_rectangle()?;
+    reader.read_ub8(5)?;
+    let uses_fill_winding_rule = reader.read_bit()?;
+    let uses_non_scaling_strokes = reader.read_bit()?;
+    let uses_scaling_strokes = reader.read_bit()?;
+    let shape = read_shape_with_style(ReadShapeWithStyleOptions {
+        reader,
+        read_line_style_array: |reader| read_line_style_array(reader, &read_line_style2),
+        read_fill_style_array: |reader| {
+            read_extended_fill_style_array(reader, &SwfTagBodyReader::read_rgba)
+        },
+    })?;
+    Ok(DefineShape4Tag {
+        shape_id,
+        shape_bounds,
+        edge_bounds,
+        uses_fill_winding_rule,
+        uses_non_scaling_strokes,
+        uses_scaling_strokes,
         shape,
     })
 }
