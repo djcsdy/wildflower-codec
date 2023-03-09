@@ -43,8 +43,7 @@ pub struct DefineBitsLossless2Tag {
 
 pub enum BitmapData<TColor> {
     ColorMap8(ColorMapData<TColor>),
-    Rgb15(Vec<TColor>),
-    Rgb24(Vec<TColor>),
+    Rgb(Vec<TColor>),
 }
 
 pub struct ColorMapData<TColor> {
