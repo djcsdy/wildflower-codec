@@ -104,3 +104,19 @@ pub fn read_straight_edge_record<R: Read>(
     };
     Ok(StraightEdgeRecord { delta_x, delta_y })
 }
+
+pub fn read_curved_edge_record<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<CurvedEdgeRecord> {
+    let num_bits = reader.read_ub8(4)? + 2;
+    let control_delta_x = reader.read_sb(num_bits)?;
+    let control_delta_y = reader.read_sb(num_bits)?;
+    let anchor_delta_x = reader.read_sb(num_bits)?;
+    let anchor_delta_y = reader.read_sb(num_bits)?;
+    Ok(CurvedEdgeRecord {
+        control_delta_x,
+        control_delta_y,
+        anchor_delta_x,
+        anchor_delta_y,
+    })
+}
