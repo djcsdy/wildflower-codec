@@ -1,4 +1,6 @@
-use crate::ast::bitmaps::{DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsTag, JpegTablesTag};
+use crate::ast::bitmaps::{
+    ColorMapData, DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsTag, JpegTablesTag,
+};
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};
@@ -44,5 +46,38 @@ pub fn read_define_bits_jpeg3_tag<R: Read>(
         character_id,
         image_data,
         bitmap_alpha_data,
+    })
+}
+
+struct ReadColorMapDataOptions<
+    'read_color_map_data,
+    R: Read,
+    Color,
+    ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>,
+> {
+    reader: &'read_color_map_data mut SwfTagBodyReader<R>,
+    read_color: ReadColor,
+    color_table_size: usize,
+    bitmap_width: u16,
+    bitmap_height: u16,
+}
+
+fn read_colormap_data<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>>(
+    options: ReadColorMapDataOptions<R, Color, ReadColor>,
+) -> Result<ColorMapData<Color>> {
+    let mut color_table = Vec::with_capacity(options.color_table_size);
+    for _ in 0..options.color_table_size {
+        color_table.push((options.read_color)(options.reader)?);
+    }
+    let mut pixel_data =
+        Vec::with_capacity((options.bitmap_width as usize) * (options.bitmap_height as usize));
+    for _ in 0..options.bitmap_height {
+        for _ in 0..((options.bitmap_width + 3) & 4) {
+            pixel_data.push(options.reader.read_u8()?);
+        }
+    }
+    Ok(ColorMapData {
+        color_table,
+        pixel_data,
     })
 }
