@@ -90,3 +90,11 @@ fn read_pix15<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Rgb> {
     let blue = reader.read_ub8(5)? << 3;
     Ok(Rgb { red, green, blue })
 }
+
+fn read_pix24<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Rgb> {
+    reader.read_u8()?;
+    let red = reader.read_u8()?;
+    let green = reader.read_u8()?;
+    let blue = reader.read_u8()?;
+    Ok(Rgb { red, green, blue })
+}
