@@ -31,6 +31,10 @@ impl<R: Read> SwfTagBodyReader<R> {
         self.swf_version
     }
 
+    pub fn count(&self) -> usize {
+        self.inner.count()
+    }
+
     pub fn remaining(&self) -> usize {
         self.inner.remaining()
     }
