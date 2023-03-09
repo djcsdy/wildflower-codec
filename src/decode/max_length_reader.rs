@@ -16,6 +16,10 @@ impl<R: Read> MaxLengthReader<R> {
         }
     }
 
+    pub fn count(&self) -> usize {
+        self.count
+    }
+
     pub fn remaining(&self) -> usize {
         self.max_length - self.count
     }
