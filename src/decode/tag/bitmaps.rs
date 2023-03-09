@@ -1,6 +1,7 @@
 use crate::ast::bitmaps::{
     ColorMapData, DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsTag, JpegTablesTag,
 };
+use crate::ast::common::Rgb;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};
@@ -80,4 +81,12 @@ fn read_colormap_data<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) ->
         color_table,
         pixel_data,
     })
+}
+
+fn read_pix15<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Rgb> {
+    reader.read_bit()?;
+    let red = reader.read_ub8(5)? << 3;
+    let green = reader.read_ub8(5)? << 3;
+    let blue = reader.read_ub8(5)? << 3;
+    Ok(Rgb { red, green, blue })
 }
