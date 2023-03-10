@@ -187,7 +187,7 @@ pub enum SendVarsMethod {
     Post = 2,
 }
 
-#[derive(IntoPrimitive, TryFromPrimitive)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
 #[repr(u8)]
 pub enum LoadTarget {
     BrowserWindow = 0,
