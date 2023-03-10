@@ -129,6 +129,7 @@ pub struct GetUrl {
     pub target: String,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct WaitForFrame {
     pub frame: u16,
     pub skip_count: u8,
