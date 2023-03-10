@@ -1,6 +1,7 @@
 use super::common::*;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DoActionTag {
     pub actions: Vec<ActionRecord>,
 }
