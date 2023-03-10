@@ -145,6 +145,7 @@ pub struct GoToLabel {
     pub label: String,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct Push {
     pub value: PushValue,
 }
