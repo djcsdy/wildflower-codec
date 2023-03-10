@@ -12,6 +12,7 @@ pub struct DoInitActionTag {
     pub actions: Vec<ActionRecord>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DoAbcTag {
     pub flags: u32,
     pub name: String,
