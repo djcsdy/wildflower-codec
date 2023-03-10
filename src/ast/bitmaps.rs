@@ -6,6 +6,7 @@ pub struct DefineBitsTag {
     pub jpeg_data: Vec<u8>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct JpegTablesTag {
     pub jpeg_data: Vec<u8>,
 }
