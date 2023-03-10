@@ -179,7 +179,7 @@ pub struct GetUrl2 {
     pub load_variables: bool,
 }
 
-#[derive(IntoPrimitive, TryFromPrimitive)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
 #[repr(u8)]
 pub enum SendVarsMethod {
     None = 0,
