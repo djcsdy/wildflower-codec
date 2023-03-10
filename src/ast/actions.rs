@@ -135,6 +135,7 @@ pub struct WaitForFrame {
     pub skip_count: u8,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct SetTarget {
     pub target_name: String,
 }
