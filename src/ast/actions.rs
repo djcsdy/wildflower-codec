@@ -168,6 +168,7 @@ pub struct Jump {
     pub offset: i16,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct If {
     pub offset: i16,
 }
