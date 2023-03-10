@@ -123,6 +123,7 @@ pub struct GoToFrame {
     pub frame: u16,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct GetUrl {
     pub url: String,
     pub target: String,
