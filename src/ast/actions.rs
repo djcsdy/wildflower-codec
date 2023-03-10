@@ -173,6 +173,7 @@ pub struct If {
     pub offset: i16,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct GetUrl2 {
     pub send_vars_method: SendVarsMethod,
     pub load_target: LoadTarget,
