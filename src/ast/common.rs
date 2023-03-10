@@ -69,6 +69,7 @@ pub struct Rgb {
 }
 
 /// An RGB color with an alpha component.
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash)]
 pub struct Rgba {
     pub red: u8,
     pub green: u8,
