@@ -206,6 +206,7 @@ pub struct WaitForFrame2 {
     pub skip_count: u8,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct ConstantPool {
     pub constant_pool: Vec<String>,
 }
