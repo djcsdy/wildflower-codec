@@ -201,6 +201,7 @@ pub struct GoToFrame2 {
     pub scene_bias: u16,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct WaitForFrame2 {
     pub skip_count: u8,
 }
