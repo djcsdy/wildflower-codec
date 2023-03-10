@@ -242,6 +242,7 @@ pub struct DefineFunction2 {
     pub body: Vec<ActionRecord>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub enum RegisterParam {
     Register(u8),
     Name(String),
