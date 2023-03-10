@@ -221,6 +221,7 @@ pub struct With {
     pub body: Vec<ActionRecord>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct StoreRegister {
     pub register_number: u8,
 }
