@@ -195,6 +195,7 @@ pub enum LoadTarget {
     PathToSprite = 1,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct GoToFrame2 {
     pub play: bool,
     pub scene_bias: u16,
