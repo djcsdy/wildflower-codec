@@ -51,6 +51,7 @@ impl Float16 {
 ///
 /// No matter the encoding, the sequence of bytes are not guaranteed to be
 /// valid according to that encoding.
+#[derive(Clone, PartialEq, PartialOrd, Eq, Ord, Debug, Hash)]
 pub struct String(Vec<u8>);
 
 impl String {
