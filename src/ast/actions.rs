@@ -16,6 +16,7 @@ pub struct DoAbcTag {
     pub abc_data: Vec<u8>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub enum ActionRecord {
     GoToFrame(GoToFrame),
     GetUrl(GetUrl),
@@ -211,12 +212,14 @@ pub struct ConstantPool {
     pub constant_pool: Vec<String>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineFunction {
     pub function_name: String,
     pub params: Vec<String>,
     pub body: Vec<ActionRecord>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct With {
     pub body: Vec<ActionRecord>,
 }
@@ -226,6 +229,7 @@ pub struct StoreRegister {
     pub register_number: u8,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineFunction2 {
     pub function_name: String,
     pub register_count: u8,
@@ -248,6 +252,7 @@ pub enum RegisterParam {
     Name(String),
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct Try {
     pub catch_parameter: RegisterParam,
     pub try_body: Vec<ActionRecord>,
