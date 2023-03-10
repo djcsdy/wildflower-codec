@@ -149,6 +149,7 @@ pub struct Push {
     pub value: PushValue,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub enum PushValue {
     String(String),
     Float(f32),
