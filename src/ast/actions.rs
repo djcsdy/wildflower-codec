@@ -163,6 +163,7 @@ pub enum PushValue {
     Constant(u16),
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct Jump {
     pub offset: i16,
 }
