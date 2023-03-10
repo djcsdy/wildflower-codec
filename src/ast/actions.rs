@@ -6,6 +6,7 @@ pub struct DoActionTag {
     pub actions: Vec<ActionRecord>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DoInitActionTag {
     pub sprite_id: u16,
     pub actions: Vec<ActionRecord>,
