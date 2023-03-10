@@ -140,6 +140,7 @@ pub struct SetTarget {
     pub target_name: String,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct GoToLabel {
     pub label: String,
 }
