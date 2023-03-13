@@ -185,6 +185,7 @@ pub struct ConvolutionFilter {
     pub preserve_alpha: bool,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct BlurFilter {
     pub blur_x: Fixed16,
     pub blur_y: Fixed16,
