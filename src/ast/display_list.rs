@@ -206,6 +206,7 @@ pub struct DropShadowFilter {
     pub passes: u8,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct GlowFilter {
     pub color: Rgba,
     pub blur_x: Fixed16,
