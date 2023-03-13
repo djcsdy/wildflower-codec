@@ -126,6 +126,7 @@ pub struct DefineSceneAndFrameLabelDataTag {
     pub frame_labels: Vec<FrameLabelRecord>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct SceneRecord {
     pub offset: u32,
     pub name: String,
