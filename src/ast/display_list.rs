@@ -3,6 +3,7 @@ use super::common::*;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 /// Adds a character to the display list.
+#[derive(Clone, PartialEq, Debug)]
 pub struct PlaceObjectTag {
     /// The ID of the character to place.
     ///
