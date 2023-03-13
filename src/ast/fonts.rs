@@ -42,6 +42,7 @@ pub struct DefineFont3Tag {
     pub bounds: Vec<Rectangle>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineFontInfoTag {
     pub font_id: u16,
     pub font_name: String,
