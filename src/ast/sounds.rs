@@ -39,6 +39,8 @@ pub enum SamplingBits {
     Bits16 = 1,
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
+#[repr(u8)]
 pub enum SoundChannels {
     Mono = 0,
     Stereo = 1,
