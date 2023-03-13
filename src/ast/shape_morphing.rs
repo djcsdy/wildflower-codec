@@ -13,6 +13,7 @@ pub struct DefineMorphShapeTag {
     pub end_edges: Shape<(), ()>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineMorphShape2Tag {
     pub character_id: u16,
     pub start_bounds: Rectangle,
