@@ -108,6 +108,7 @@ pub struct SymbolClassRecord {
     pub class_name: String,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct MetadataTag {
     pub metadata: String,
 }
