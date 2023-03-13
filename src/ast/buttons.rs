@@ -58,6 +58,7 @@ pub struct DefineButtonColorTransformTag {
     pub button_color_transform: ColorTransform,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineButtonSoundTag {
     pub button_id: u16,
     pub button_sound_0: Option<ButtonSound>,
