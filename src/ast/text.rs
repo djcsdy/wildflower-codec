@@ -1,4 +1,5 @@
 use super::common::*;
+use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineTextTag {
@@ -59,6 +60,8 @@ pub struct DefineEditTextTag {
     pub initial_text: String,
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
+#[repr(u8)]
 pub enum Align {
     Left = 0,
     Right = 1,
