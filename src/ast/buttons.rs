@@ -10,6 +10,7 @@ pub struct DefineButtonTag {
     pub actions: Vec<ActionRecord>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineButton2Tag {
     pub button_id: u16,
     pub track_as_menu: bool,
