@@ -34,6 +34,7 @@ pub struct Shape<TColor, TLineStyle> {
     pub shape_records: Vec<ShapeRecord<TColor, TLineStyle>>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct ShapeWithStyle<TColor, TLineStyle> {
     pub fill_styles: Vec<FillStyle<TColor>>,
     pub line_styles: Vec<TLineStyle>,
