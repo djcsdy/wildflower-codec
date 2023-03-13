@@ -31,6 +31,7 @@ pub struct ExportAssetsTag {
 }
 
 /// Imports characters from another SWF file.
+#[derive(Clone, PartialEq, Debug)]
 pub struct ImportAssetsTag {
     /// URL of the source SWF file.
     pub url: String,
