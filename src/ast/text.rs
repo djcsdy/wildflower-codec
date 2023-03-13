@@ -33,6 +33,7 @@ pub struct GlyphEntry {
     pub glyph_advance: i32,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineEditTextTag {
     pub character_id: u16,
     pub bounds: Rectangle,
