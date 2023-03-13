@@ -78,6 +78,8 @@ pub struct CsmTextSettingsTag {
     pub sharpness: f32,
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
+#[repr(u8)]
 pub enum TextRenderer {
     Standard = 0,
     Advanced = 1,
