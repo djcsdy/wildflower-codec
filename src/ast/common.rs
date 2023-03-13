@@ -167,6 +167,7 @@ pub struct Rectangle {
 }
 
 /// A 2×3 matrix, used for 2D affine transformations.
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash)]
 pub struct Matrix {
     pub scale_x: Fixed16,
     pub scale_y: Fixed16,
