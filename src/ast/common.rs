@@ -47,6 +47,7 @@ impl Debug for Fixed16 {
 
 /// A fixed-point number consisting of a 8-bit whole part plus an 8-bit
 /// fractional part.
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Fixed8(i16);
 
 impl Fixed8 {
