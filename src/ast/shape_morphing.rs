@@ -72,6 +72,7 @@ pub struct MorphGradient {
     pub gradient_records: Vec<MorphGradientRecord>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct MorphGradientRecord {
     pub start_ratio: u8,
     pub start_color: Rgba,
