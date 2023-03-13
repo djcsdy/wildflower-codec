@@ -137,6 +137,7 @@ pub struct ZoneData {
     pub range: f16,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineFontNameTag {
     pub font_id: u16,
     pub font_name: String,
