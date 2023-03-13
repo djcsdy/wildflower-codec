@@ -85,6 +85,8 @@ pub enum TextRenderer {
     Advanced = 1,
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
+#[repr(u8)]
 pub enum GridFit {
     None = 0,
     PixelFit = 1,
