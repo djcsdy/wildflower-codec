@@ -218,6 +218,7 @@ pub struct GlowFilter {
     pub passes: u8,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct BevelFilter {
     pub shadow_color: Rgba,
     pub highlight_color: Rgba,
