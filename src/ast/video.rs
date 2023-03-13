@@ -1,5 +1,6 @@
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineVideoStreamTag {
     pub character_id: u16,
     pub num_frames: u16,
