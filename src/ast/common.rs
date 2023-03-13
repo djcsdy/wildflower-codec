@@ -81,6 +81,12 @@ impl Display for Fixed8 {
     }
 }
 
+impl Debug for Fixed8 {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        Display::fmt(self, f)
+    }
+}
+
 /// A half-precision (16-bit) IEEE 754 floating point number.
 ///
 /// TODO: The SWF Specification states that the exponent bias is 16.
