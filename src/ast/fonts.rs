@@ -1,5 +1,6 @@
 use super::common::*;
 use super::shapes::Shape;
+use half::f16;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 #[derive(Clone, PartialEq, Debug)]
@@ -129,8 +130,8 @@ pub struct AlignZoneRecord {
 }
 
 pub struct ZoneData {
-    pub alignment_coordinate: Float16,
-    pub range: Float16,
+    pub alignment_coordinate: f16,
+    pub range: f16,
 }
 
 pub struct DefineFontNameTag {

@@ -1,5 +1,6 @@
-use crate::ast::common::{Fixed16, Fixed8, Float16};
+use crate::ast::common::{Fixed16, Fixed8};
 use byteorder::{LittleEndian, ReadBytesExt};
+use half::f16;
 use std::io::{Read, Result};
 
 pub trait SwfTypesReadExt {
@@ -18,7 +19,7 @@ pub trait SwfTypesReadExt {
     fn read_u64_into(&mut self, buf: &mut [u64]) -> Result<()>;
     fn read_fixed16(&mut self) -> Result<Fixed16>;
     fn read_fixed8(&mut self) -> Result<Fixed8>;
-    fn read_float16(&mut self) -> Result<Float16>;
+    fn read_f16(&mut self) -> Result<f16>;
     fn read_f32(&mut self) -> Result<f32>;
     fn read_f64(&mut self) -> Result<f64>;
     fn read_f32_into(&mut self, buf: &mut [f32]) -> Result<()>;
@@ -95,10 +96,10 @@ impl<R: Read + ?Sized> SwfTypesReadExt for R {
         Ok(Fixed8::from_bytes(&buf))
     }
 
-    fn read_float16(&mut self) -> Result<Float16> {
+    fn read_f16(&mut self) -> Result<f16> {
         let mut buf = [0u8; 2];
         self.read_exact(&mut buf)?;
-        Ok(Float16::from_bytes(&buf))
+        Ok(f16::from_le_bytes(buf))
     }
 
     fn read_f32(&mut self) -> Result<f32> {
