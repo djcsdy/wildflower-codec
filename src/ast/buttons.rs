@@ -36,6 +36,7 @@ pub struct ButtonRecord2 {
     pub blend_mode: BlendMode,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct ButtonConditionActionRecord {
     pub condition_idle_to_over_down: bool,
     pub condition_out_down_to_idle: bool,
