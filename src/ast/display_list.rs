@@ -250,6 +250,7 @@ pub struct GradientGlowFilter {
     pub passes: u8,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct GradientBevelFilter {
     pub colors: Vec<Rgba>,
     pub ratio: Vec<u8>,
