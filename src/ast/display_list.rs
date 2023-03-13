@@ -95,6 +95,7 @@ pub struct ClipActionRecord {
 /// Adds a character to the display list.
 ///
 /// Equivalent to PlaceObject2Tag, but with extended functionality.
+#[derive(Clone, PartialEq, Debug)]
 pub struct PlaceObject3Tag {
     /// Fields shared with PlaceObject2Tag.
     pub place_object_2: PlaceObject2Tag,
