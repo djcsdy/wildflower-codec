@@ -82,6 +82,7 @@ pub struct MorphGradientRecord {
     pub end_color: Rgba,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct MorphLineStyle {
     pub start_width: u16,
     pub end_width: u16,
