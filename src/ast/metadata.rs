@@ -1,3 +1,4 @@
+#[derive(Clone, PartialEq, Debug)]
 pub struct FileAttributesTag {
     pub use_direct_blit: bool,
     pub use_gpu: bool,
