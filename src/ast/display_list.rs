@@ -175,6 +175,7 @@ pub struct ColorMatrixFilter {
     pub matrix: [f32; 20],
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct ConvolutionFilter {
     pub divisor: f32,
     pub bias: f32,
