@@ -92,6 +92,7 @@ pub enum CapStyle {
     Square,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub enum JoinStyle {
     Round,
     Bevel,
