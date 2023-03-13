@@ -14,6 +14,7 @@ pub struct DefineText2Tag {
     pub text_records: Vec<TextRecord<Rgba>>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct TextRecord<TColor> {
     pub font_id: u16,
     pub text_color: Option<TColor>,
