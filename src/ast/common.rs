@@ -178,6 +178,7 @@ pub struct Matrix {
 }
 
 /// A simple color transformation.
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash)]
 pub struct ColorTransform {
     pub red_multiplication_term: Fixed8,
     pub green_multiplication_term: Fixed8,
