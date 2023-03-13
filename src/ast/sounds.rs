@@ -86,6 +86,8 @@ pub struct SoundStreamHeadTag {
     pub latency_seek: i16,
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
+#[repr(u8)]
 pub enum SoundStreamCompression {
     Adpcm = 1,
     Mp3 = 2,
