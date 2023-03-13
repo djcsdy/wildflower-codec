@@ -109,6 +109,7 @@ pub struct Kerning<T> {
     pub kerning_adjustment: i16,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineFontAlignZonesTag {
     pub font_id: u16,
     pub csm_table_hint: CsmTableHint,
