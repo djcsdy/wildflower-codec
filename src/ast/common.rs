@@ -51,6 +51,30 @@ impl Fixed8 {
     }
 }
 
+impl Display for Fixed8 {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let whole = self.0 >> 8;
+        let mut fraction = self.0 & 0xff;
+        write!(f, "{}", whole)?;
+        if let Some(precision) = f.precision() {
+            write!(f, ".")?;
+            for _ in 0..precision {
+                fraction *= 10;
+                write!(f, "{}", fraction >> 8)?;
+                fraction &= 0xff;
+            }
+        } else if fraction > 0 {
+            write!(f, ".")?;
+            while fraction > 0 {
+                fraction *= 10;
+                write!(f, "{}", fraction >> 8)?;
+                fraction &= 0xff;
+            }
+        }
+        Ok(())
+    }
+}
+
 /// A half-precision (16-bit) IEEE 754 floating point number.
 ///
 /// TODO: The SWF Specification states that the exponent bias is 16.
