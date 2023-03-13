@@ -144,6 +144,7 @@ pub struct DefineFontNameTag {
     pub font_copyright: String,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineFont4Tag {
     pub font_id: u16,
     pub italic: bool,
