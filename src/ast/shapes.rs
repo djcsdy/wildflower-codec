@@ -39,6 +39,7 @@ pub struct ShapeWithStyle<TColor, TLineStyle> {
     pub shape_records: Vec<ShapeRecord<TColor, TLineStyle>>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub enum ShapeRecord<TColor, TLineStyle> {
     EndShape,
     StyleChange(StyleChangeRecord<TColor, TLineStyle>),
