@@ -1,6 +1,6 @@
 use crate::ast::bitmaps::{
-    BitmapData, ColorMapData, DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsLosslessTag,
-    DefineBitsTag, JpegTablesTag,
+    BitmapData, ColorMapData, DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsLossless2Tag,
+    DefineBitsLosslessTag, DefineBitsTag, JpegTablesTag,
 };
 use crate::ast::common::Rgb;
 use crate::decode::read_ext::SwfTypesReadExt;
@@ -187,4 +187,48 @@ fn read_pix24<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Rgb> {
     let green = reader.read_u8()?;
     let blue = reader.read_u8()?;
     Ok(Rgb { red, green, blue })
+}
+
+pub fn read_define_bits_lossless2_tag<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<DefineBitsLossless2Tag> {
+    let character_id = reader.read_u16()?;
+    let bitmap_format = reader
+        .read_u8()?
+        .try_into()
+        .map_err(|_| Error::from(InvalidData))?;
+    let bitmap_width = reader.read_u16()?;
+    let bitmap_height = reader.read_u16()?;
+    let color_table_size = if bitmap_format == BitmapFormat::ColorMap8 {
+        (reader.read_u8()? as usize) + 1
+    } else {
+        0
+    };
+    let swf_version = reader.swf_version();
+    let mut zlib_reader =
+        SwfTagBodyReader::new(DeflateDecoder::from_zlib(reader), swf_version, usize::MAX);
+    let bitmap_data = match bitmap_format {
+        BitmapFormat::ColorMap8 => {
+            BitmapData::ColorMap8(read_colormap_data(ReadColorMapDataOptions {
+                reader: &mut zlib_reader,
+                read_color: &SwfTagBodyReader::read_rgba,
+                color_table_size,
+                bitmap_width,
+                bitmap_height,
+            })?)
+        }
+        BitmapFormat::Rgb15 => return Err(Error::from(InvalidData)),
+        BitmapFormat::Rgb24 => read_bitmap_data(ReadBitmapDataOptions {
+            reader: &mut zlib_reader,
+            read_color: SwfTagBodyReader::read_argb,
+            bitmap_width,
+            bitmap_height,
+        })?,
+    };
+    Ok(DefineBitsLossless2Tag {
+        character_id,
+        bitmap_width,
+        bitmap_height,
+        bitmap_data,
+    })
 }
