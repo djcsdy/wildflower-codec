@@ -26,6 +26,7 @@ pub struct DefineMorphShape2Tag {
     pub end_edges: Shape<(), ()>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub enum MorphFillStyle {
     Solid {
         start_color: Rgba,
