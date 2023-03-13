@@ -1,10 +1,14 @@
 use crate::ast::bitmaps::{
-    BitmapData, ColorMapData, DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsTag, JpegTablesTag,
+    BitmapData, ColorMapData, DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsLosslessTag,
+    DefineBitsTag, JpegTablesTag,
 };
 use crate::ast::common::Rgb;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
-use std::io::{Read, Result};
+use inflate::DeflateDecoder;
+use num_enum::{IntoPrimitive, TryFromPrimitive};
+use std::io::ErrorKind::InvalidData;
+use std::io::{Error, Read, Result};
 
 pub fn read_define_bits_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<DefineBitsTag> {
     let character_id = reader.read_u16()?;
@@ -47,6 +51,63 @@ pub fn read_define_bits_jpeg3_tag<R: Read>(
         character_id,
         image_data,
         bitmap_alpha_data,
+    })
+}
+
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
+#[repr(u8)]
+enum BitmapFormat {
+    ColorMap8 = 3,
+    Rgb15 = 4,
+    Rgb24 = 5,
+}
+
+pub fn read_define_bits_lossless_tag<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<DefineBitsLosslessTag> {
+    let character_id = reader.read_u16()?;
+    let bitmap_format = reader
+        .read_u8()?
+        .try_into()
+        .map_err(|_| Error::from(InvalidData))?;
+    let bitmap_width = reader.read_u16()?;
+    let bitmap_height = reader.read_u16()?;
+    let color_table_size = if bitmap_format == BitmapFormat::ColorMap8 {
+        (reader.read_u8()? as usize) + 1
+    } else {
+        0
+    };
+    let swf_version = reader.swf_version();
+    let mut zlib_reader =
+        SwfTagBodyReader::new(DeflateDecoder::from_zlib(reader), swf_version, usize::MAX);
+    let bitmap_data = match bitmap_format {
+        BitmapFormat::ColorMap8 => {
+            BitmapData::ColorMap8(read_colormap_data(ReadColorMapDataOptions {
+                reader: &mut zlib_reader,
+                read_color: &SwfTagBodyReader::read_rgb,
+                color_table_size,
+                bitmap_width,
+                bitmap_height,
+            })?)
+        }
+        BitmapFormat::Rgb15 => read_bitmap_data(ReadBitmapDataOptions {
+            reader: &mut zlib_reader,
+            read_color: &read_pix15,
+            bitmap_width,
+            bitmap_height,
+        })?,
+        BitmapFormat::Rgb24 => read_bitmap_data(ReadBitmapDataOptions {
+            reader: &mut zlib_reader,
+            read_color: &read_pix24,
+            bitmap_width,
+            bitmap_height,
+        })?,
+    };
+    Ok(DefineBitsLosslessTag {
+        character_id,
+        bitmap_width,
+        bitmap_height,
+        bitmap_data,
     })
 }
 
