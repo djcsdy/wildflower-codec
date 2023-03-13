@@ -33,6 +33,7 @@ pub enum FillStyle<TColor> {
     },
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct LineStyle<TColor> {
     pub width: u16,
     pub color: TColor,
