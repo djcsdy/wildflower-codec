@@ -58,6 +58,7 @@ pub struct Gradient<TColor> {
     pub gradient_records: Vec<GradientRecord<TColor>>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct FocalGradient<TColor> {
     pub spread_mode: SpreadMode,
     pub interpolation_mode: InterpolationMode,
