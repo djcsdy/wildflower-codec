@@ -30,6 +30,7 @@ use super::sprites::DefineSpriteTag;
 use super::text::{CsmTextSettingsTag, DefineEditTextTag, DefineText2Tag, DefineTextTag};
 use super::video::DefineVideoStreamTag;
 
+#[derive(Clone, PartialEq, Debug)]
 pub enum Tag {
     PlaceObject(PlaceObjectTag),
     PlaceObject2(PlaceObject2Tag),
