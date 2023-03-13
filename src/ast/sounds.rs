@@ -32,6 +32,8 @@ pub enum SamplingRate {
     Khz44 = 3,
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
+#[repr(u8)]
 pub enum SamplingBits {
     Bits8 = 0,
     Bits16 = 1,
