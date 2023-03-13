@@ -28,6 +28,7 @@ pub struct ButtonRecord {
     pub place_matrix: Matrix,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct ButtonRecord2 {
     pub button_record: ButtonRecord,
     pub color_transform: ColorTransformWithAlpha,
