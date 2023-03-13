@@ -98,6 +98,7 @@ pub struct SymbolClassTag {
 }
 
 /// Associates an ActionScript 3 class with a character.
+#[derive(Clone, PartialEq, Debug)]
 pub struct SymbolClassRecord {
     /// The character ID to be associated.
     pub character_id: u16,
