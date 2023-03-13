@@ -69,6 +69,7 @@ pub struct SetTabIndexTag {
     pub tab_index: u16,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct FileAttributesTag {
     pub flags: FileAttributesFlags,
 }
