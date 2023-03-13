@@ -1,3 +1,5 @@
+use num_enum::{IntoPrimitive, TryFromPrimitive};
+
 pub struct DefineVideoStreamTag {
     pub character_id: u16,
     pub num_frames: u16,
@@ -8,6 +10,8 @@ pub struct DefineVideoStreamTag {
     pub codec: Codec,
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
+#[repr(u8)]
 pub enum Deblocking {
     VideoPacket = 0b000,
     Off = 0b001,
