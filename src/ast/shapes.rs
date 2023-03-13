@@ -46,6 +46,7 @@ pub enum ShapeRecord<TColor, TLineStyle> {
     CurvedEdge(CurvedEdgeRecord),
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct StyleChangeRecord<TColor, TLineStyle> {
     pub move_delta: (i16, i16),
     pub fill_style_0: u16,
