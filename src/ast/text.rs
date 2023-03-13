@@ -70,6 +70,7 @@ pub enum Align {
     Justify = 3,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct CsmTextSettingsTag {
     pub text_id: u16,
     pub text_renderer: TextRenderer,
