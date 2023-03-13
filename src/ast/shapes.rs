@@ -1,6 +1,7 @@
 use super::common::*;
 use super::styles::{FillStyle, LineStyle, LineStyle2};
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineShapeTag {
     pub shape_id: u16,
     pub shape_bounds: Rectangle,
