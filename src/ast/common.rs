@@ -1,5 +1,5 @@
 use byteorder::{ByteOrder, LittleEndian};
-use std::fmt::{Display, Formatter};
+use std::fmt::{Debug, Display, Formatter};
 
 /// A fixed-point number consisting of a 16-bit whole part plus a 16-bit
 /// fractional part.
@@ -100,12 +100,29 @@ impl Float16 {
 ///
 /// No matter the encoding, the sequence of bytes are not guaranteed to be
 /// valid according to that encoding.
-#[derive(Clone, PartialEq, PartialOrd, Eq, Ord, Debug, Hash)]
+#[derive(Clone, PartialEq, PartialOrd, Eq, Ord, Hash)]
 pub struct String(Vec<u8>);
 
 impl String {
     pub fn from_bytes<I: Into<Vec<u8>>>(buf: I) -> String {
         String(buf.into())
+    }
+}
+
+impl Debug for String {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "\"")?;
+        for c in &self.0 {
+            if *c == '\\' as u8 {
+                write!(f, "\\\\")?;
+            } else if c.is_ascii() && !c.is_ascii_control() {
+                write!(f, "{}", c)?;
+            } else {
+                write!(f, "\\x{:X}", c)?;
+            }
+        }
+        write!(f, "\"")?;
+        Ok(())
     }
 }
 
