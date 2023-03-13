@@ -10,5 +10,5 @@ pub struct UnknownTag {
 /// to parse it even using known workarounds.
 pub struct InvalidTag {
     pub tag_code: u16,
-    pub data: [u8],
+    pub data: Vec<u8>,
 }
