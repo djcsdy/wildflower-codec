@@ -29,6 +29,7 @@ pub struct DefineShape4Tag {
     pub shape: ShapeWithStyle<Rgba, LineStyle2>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct Shape<TColor, TLineStyle> {
     pub shape_records: Vec<ShapeRecord<TColor, TLineStyle>>,
 }
