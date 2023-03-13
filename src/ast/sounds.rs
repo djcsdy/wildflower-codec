@@ -47,6 +47,7 @@ pub enum SoundChannels {
     Stereo = 1,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct StartSoundTag {
     pub sound_id: u16,
     pub sound_info: SoundInfo,
