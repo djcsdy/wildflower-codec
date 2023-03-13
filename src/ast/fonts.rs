@@ -123,6 +123,7 @@ pub enum CsmTableHint {
     Thick = 2,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct AlignZoneRecord {
     pub zone_data: Vec<ZoneData>,
     pub zone_mask_y: bool,
