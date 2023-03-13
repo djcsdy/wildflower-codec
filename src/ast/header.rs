@@ -7,6 +7,7 @@ pub enum Compression {
     Lzma,
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash)]
 pub struct Header {
     pub compression: Compression,
     pub version: u8,
