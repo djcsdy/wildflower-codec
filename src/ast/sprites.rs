@@ -5,6 +5,7 @@ use super::display_list::{
 };
 use super::sounds::{SoundStreamBlockTag, SoundStreamHead2Tag, SoundStreamHeadTag, StartSoundTag};
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineSpriteTag {
     pub sprite_id: u16,
     pub frame_count: u16,
