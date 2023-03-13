@@ -76,6 +76,7 @@ pub struct SoundEnvelopePoint {
     pub right_level: u16,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct SoundStreamHeadTag {
     pub playback_sound_rate: SamplingRate,
     pub playback_channels: SoundChannels,
