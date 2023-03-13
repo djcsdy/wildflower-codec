@@ -40,6 +40,7 @@ pub struct LineStyle<TColor> {
     pub color: TColor,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct LineStyle2 {
     pub width: u16,
     pub start_cap_style: CapStyle,
