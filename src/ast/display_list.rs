@@ -83,6 +83,7 @@ pub struct ClipActions {
     pub clip_action_records: Vec<ClipActionRecord>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct ClipActionRecord {
     pub event_flags: ClipEventFlags,
     pub key_code: Option<u8>,
