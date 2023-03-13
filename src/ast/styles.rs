@@ -51,6 +51,7 @@ pub struct LineStyle2 {
     pub fill_style: FillStyle<Rgba>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct Gradient<TColor> {
     pub spread_mode: SpreadMode,
     pub interpolation_mode: InterpolationMode,
