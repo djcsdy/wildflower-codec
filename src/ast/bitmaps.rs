@@ -32,6 +32,7 @@ pub struct DefineBitsJpeg4Tag {
     pub bitmap_alpha_data: Vec<u8>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineBitsLosslessTag {
     pub character_id: u16,
     pub bitmap_width: u16,
