@@ -8,6 +8,7 @@ pub struct DefineFontTag {
     pub glyph_shapes: Vec<Shape<(), ()>>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineFont2Tag {
     pub font_id: u16,
     pub small_text: bool,
