@@ -1,5 +1,6 @@
 use super::common::*;
 use super::shapes::Shape;
+use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFontTag {
@@ -58,6 +59,8 @@ pub struct DefineFontInfo2Tag {
     pub code_table: CodeTable,
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
+#[repr(u8)]
 pub enum LanguageCode {
     Latin = 1,
     Japanese = 2,
