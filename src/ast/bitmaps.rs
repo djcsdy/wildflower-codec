@@ -40,6 +40,7 @@ pub struct DefineBitsLosslessTag {
     pub bitmap_data: BitmapData<Rgb>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineBitsLossless2Tag {
     pub character_id: u16,
     pub bitmap_width: u16,
