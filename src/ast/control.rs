@@ -7,6 +7,7 @@ pub struct SetBackgroundColorTag {
 }
 
 /// Labels the current frame with the specified name.
+#[derive(Clone, PartialEq, Debug)]
 pub struct FrameLabelTag {
     pub name: String,
 
