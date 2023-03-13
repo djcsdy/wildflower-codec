@@ -129,6 +129,7 @@ pub struct AlignZoneRecord {
     pub zone_mask_x: bool,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct ZoneData {
     pub alignment_coordinate: f16,
     pub range: f16,
