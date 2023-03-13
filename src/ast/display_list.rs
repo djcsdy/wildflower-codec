@@ -129,7 +129,7 @@ pub struct PlaceObject3Tag {
     pub background_color: Option<Rgba>,
 }
 
-#[derive(IntoPrimitive, TryFromPrimitive)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
 #[repr(u8)]
 pub enum BlendMode {
     Normal = 1,
