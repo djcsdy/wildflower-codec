@@ -1,4 +1,5 @@
 /// A Tag with an unknown or unsupported tag code.
+#[derive(Clone, PartialEq, Debug)]
 pub struct UnknownTag {
     pub tag_code: u16,
     pub data: Vec<u8>,
