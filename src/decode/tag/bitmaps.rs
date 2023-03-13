@@ -1,6 +1,6 @@
 use crate::ast::bitmaps::{
-    BitmapData, ColorMapData, DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsLossless2Tag,
-    DefineBitsLosslessTag, DefineBitsTag, JpegTablesTag,
+    BitmapData, ColorMapData, DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsJpeg4Tag,
+    DefineBitsLossless2Tag, DefineBitsLosslessTag, DefineBitsTag, JpegTablesTag,
 };
 use crate::ast::common::Rgb;
 use crate::decode::read_ext::SwfTypesReadExt;
@@ -230,5 +230,23 @@ pub fn read_define_bits_lossless2_tag<R: Read>(
         bitmap_width,
         bitmap_height,
         bitmap_data,
+    })
+}
+
+pub fn read_define_bits_jpeg4_tag<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<DefineBitsJpeg4Tag> {
+    let character_id = reader.read_u16()?;
+    let alpha_data_offset = reader.read_u32()? as usize;
+    let deblock_param = reader.read_fixed8()?;
+    let mut image_data = vec![0u8; alpha_data_offset];
+    reader.read_exact(&mut image_data)?;
+    let mut bitmap_alpha_data = Vec::new();
+    reader.read_to_end(&mut bitmap_alpha_data)?;
+    Ok(DefineBitsJpeg4Tag {
+        character_id,
+        deblock_param,
+        image_data,
+        bitmap_alpha_data,
     })
 }
