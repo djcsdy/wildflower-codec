@@ -79,6 +79,7 @@ pub enum InterpolationMode {
     Linear,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct GradientRecord<TColor> {
     pub ratio: u8,
     pub color: TColor,
