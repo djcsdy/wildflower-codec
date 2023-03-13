@@ -11,6 +11,7 @@ pub struct DefineSpriteTag {
     pub control_tags: Vec<ControlTag>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub enum ControlTag {
     ShowFrame(ShowFrameTag),
     PlaceObject(PlaceObjectTag),
