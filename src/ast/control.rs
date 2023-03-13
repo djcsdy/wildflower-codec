@@ -85,6 +85,7 @@ bitflags! {
     }
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct ImportAssets2Tag {
     pub url: String,
     pub imports: Vec<PortableCharacterRecord>,
