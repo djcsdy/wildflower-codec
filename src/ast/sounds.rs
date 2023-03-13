@@ -47,6 +47,7 @@ pub struct StartSound2Tag {
     pub sound_info: SoundInfo,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct SoundInfo {
     pub sync_stop: bool,
     pub sync_no_multiple: bool,
