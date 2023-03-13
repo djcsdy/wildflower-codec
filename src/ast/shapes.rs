@@ -22,6 +22,7 @@ pub struct DefineShape3Tag {
     pub shape: ShapeWithStyle<Rgba, LineStyle<Rgba>>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineShape4Tag {
     pub shape_id: u16,
     pub shape_bounds: Rectangle,
