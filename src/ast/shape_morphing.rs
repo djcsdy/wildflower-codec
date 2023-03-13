@@ -68,6 +68,7 @@ pub enum MorphFillStyle {
     },
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct MorphGradient {
     pub gradient_records: Vec<MorphGradientRecord>,
 }
