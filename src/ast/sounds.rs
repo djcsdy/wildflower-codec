@@ -1,6 +1,7 @@
 use super::common::*;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineSoundTag {
     pub sound_id: u16,
     pub sound_format: SoundFormat,
