@@ -1,7 +1,7 @@
 /// A Tag with an unknown or unsupported tag code.
 pub struct UnknownTag {
     pub tag_code: u16,
-    pub data: [u8],
+    pub data: Vec<u8>,
 }
 
 /// A tag with a supported tag code but invalid data.
