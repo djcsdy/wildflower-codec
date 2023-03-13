@@ -76,6 +76,7 @@ pub enum CodeTable {
     Ucs2(Vec<u16>),
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub enum CodeTableWithKernings {
     Windows1252 {
         character_codes: Vec<u8>,
