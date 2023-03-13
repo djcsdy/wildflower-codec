@@ -95,6 +95,7 @@ pub enum CodeTableWithKernings {
     },
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct Kerning<T> {
     pub left_character_code: T,
     pub right_character_code: T,
