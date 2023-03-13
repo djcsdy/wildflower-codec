@@ -1,6 +1,7 @@
 use super::common::*;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
+#[derive(Clone, PartialEq, Debug)]
 pub enum FillStyle<TColor> {
     Solid(TColor),
     LinearGradient {
