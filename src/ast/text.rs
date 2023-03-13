@@ -1,5 +1,6 @@
 use super::common::*;
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineTextTag {
     pub character_id: u16,
     pub text_bounds: Rectangle,
