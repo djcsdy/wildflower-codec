@@ -24,6 +24,7 @@ pub struct DefineBitsJpeg3Tag {
     pub bitmap_alpha_data: Vec<u8>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineBitsJpeg4Tag {
     pub character_id: u16,
     pub deblock_param: Fixed8,
