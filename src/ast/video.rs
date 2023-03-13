@@ -31,6 +31,7 @@ pub enum Codec {
     Vp6WithAlpha = 5,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct VideoFrameTag {
     pub stream_id: u16,
     pub frame_num: u16,
