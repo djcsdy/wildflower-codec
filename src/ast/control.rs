@@ -20,6 +20,7 @@ pub struct ProtectTag {
 }
 
 /// Marks the end of a SWF file or of a sprite definition.
+#[derive(Clone, PartialEq, Debug)]
 pub struct EndTag {}
 
 /// Makes portions of the SWF file available for import by other SWF files
