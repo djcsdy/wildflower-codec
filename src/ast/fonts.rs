@@ -52,6 +52,7 @@ pub struct DefineFontInfoTag {
     pub code_table: CodeTable,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineFontInfo2Tag {
     pub font_id: u16,
     pub font_name: String,
