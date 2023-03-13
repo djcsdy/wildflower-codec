@@ -38,6 +38,12 @@ impl Display for Fixed16 {
     }
 }
 
+impl Debug for Fixed16 {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        Display::fmt(self, f)
+    }
+}
+
 /// A fixed-point number consisting of a 8-bit whole part plus an 8-bit
 /// fractional part.
 pub struct Fixed8(i16);
