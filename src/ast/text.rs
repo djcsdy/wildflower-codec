@@ -8,6 +8,7 @@ pub struct DefineTextTag {
     pub text_records: Vec<TextRecord<Rgb>>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineText2Tag {
     pub character_id: u16,
     pub text_bounds: Rectangle,
