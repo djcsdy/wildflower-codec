@@ -29,6 +29,7 @@ pub struct PlaceObjectTag {
 /// Adds a character to the display list.
 ///
 /// Equivalent to PlaceObjectTag, but with extended functionality.
+#[derive(Clone, PartialEq, Debug)]
 pub struct PlaceObject2Tag {
     /// If true, then this tag modifies or replaces an existing character at
     /// the specified depth.
