@@ -148,6 +148,7 @@ pub enum BlendMode {
     Hardlight = 14,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub enum Filter {
     DropShadow(DropShadowFilter),
     Blur(BlurFilter),
