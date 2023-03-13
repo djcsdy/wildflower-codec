@@ -2,6 +2,7 @@ use super::common::*;
 use super::shapes::Shape;
 use super::styles::{CapStyle, FillStyle, JoinStyle};
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineMorphShapeTag {
     pub character_id: u16,
     pub start_bounds: Rectangle,
