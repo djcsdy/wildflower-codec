@@ -16,6 +16,7 @@ pub struct DefineButton2Tag {
     pub actions: Vec<ButtonConditionActionRecord>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct ButtonRecord {
     pub button_state_hit_test: bool,
     pub button_state_down: bool,
