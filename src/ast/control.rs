@@ -37,6 +37,7 @@ pub struct ImportAssetsTag {
     pub imports: Vec<PortableCharacterRecord>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct PortableCharacterRecord {
     pub character_id: u16,
     pub name: String,
