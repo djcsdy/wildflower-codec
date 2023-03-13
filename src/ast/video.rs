@@ -21,6 +21,8 @@ pub enum Deblocking {
     Level4 = 0b101,
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
+#[repr(u8)]
 pub enum Codec {
     SorensonH263 = 2,
     ScreenVideo = 3,
