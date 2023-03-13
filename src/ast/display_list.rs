@@ -304,4 +304,5 @@ pub struct RemoveObject2Tag {
 ///
 /// The player will wait at least the duration of one frame before the next
 /// ShowFrame tag takes effect.
+#[derive(Clone, PartialEq, Debug)]
 pub struct ShowFrameTag {}
