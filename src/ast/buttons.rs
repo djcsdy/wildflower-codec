@@ -3,6 +3,7 @@ use super::common::*;
 use super::display_list::{BlendMode, Filter};
 use super::sounds::SoundInfo;
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineButtonTag {
     pub button_id: u16,
     pub characters: Vec<ButtonRecord>,
