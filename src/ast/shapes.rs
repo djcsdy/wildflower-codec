@@ -8,6 +8,7 @@ pub struct DefineShapeTag {
     pub shape: ShapeWithStyle<Rgb, LineStyle<Rgb>>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct DefineShape2Tag {
     pub shape_id: u16,
     pub shape_bounds: Rectangle,
