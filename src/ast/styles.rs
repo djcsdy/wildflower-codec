@@ -64,7 +64,7 @@ pub struct FocalGradient<TColor> {
     pub focal_point: Fixed8,
 }
 
-#[derive(IntoPrimitive, TryFromPrimitive)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
 #[repr(u8)]
 pub enum SpreadMode {
     Pad,
