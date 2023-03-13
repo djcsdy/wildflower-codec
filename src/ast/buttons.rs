@@ -66,6 +66,7 @@ pub struct DefineButtonSoundTag {
     pub button_sound_3: Option<ButtonSound>,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct ButtonSound {
     pub sound_id: u16,
     pub sound_info: SoundInfo,
