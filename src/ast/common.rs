@@ -3,6 +3,7 @@ use std::fmt::{Debug, Display, Formatter};
 
 /// A fixed-point number consisting of a 16-bit whole part plus a 16-bit
 /// fractional part.
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Fixed16(i32);
 
 impl Fixed16 {
