@@ -132,6 +132,7 @@ pub struct SceneRecord {
     pub name: String,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct FrameLabelRecord {
     pub frame_num: u32,
     pub frame_label: String,
