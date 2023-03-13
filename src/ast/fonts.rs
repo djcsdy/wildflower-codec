@@ -114,6 +114,8 @@ pub struct DefineFontAlignZonesTag {
     pub zones: Vec<AlignZoneRecord>,
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
+#[repr(u8)]
 pub enum CsmTableHint {
     Thin = 0,
     Medium = 1,
