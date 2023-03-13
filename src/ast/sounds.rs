@@ -94,6 +94,7 @@ pub enum SoundStreamCompression {
     Mp3 = 2,
 }
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct SoundStreamHead2Tag {
     pub playback_sound_rate: SamplingRate,
     pub playback_channels: SoundChannels,
