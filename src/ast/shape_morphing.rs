@@ -1,6 +1,6 @@
 use super::common::*;
 use super::shapes::Shape;
-use super::styles::{CapStyle, FillStyle, JoinStyle};
+use super::styles::{CapStyle, JoinStyle};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineMorphShapeTag {
