@@ -146,6 +146,12 @@ impl<R: Read> SwfTagBodyReader<R> {
         Ok(String::from_bytes(self.read_null_terminated_bytes()?))
     }
 
+    pub fn read_fixed_string(&mut self, byte_length: usize) -> Result<String> {
+        let mut buffer = vec![0u8; byte_length];
+        self.read_exact(&mut buffer)?;
+        Ok(String::from_bytes(buffer))
+    }
+
     pub fn read_u8_to_end(&mut self) -> Result<Vec<u8>> {
         let mut buffer = Vec::new();
         self.read_to_end(&mut buffer)?;
