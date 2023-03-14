@@ -7,7 +7,7 @@ pub struct DefineMorphShapeTag {
     pub character_id: u16,
     pub start_bounds: Rectangle,
     pub end_bounds: Rectangle,
-    pub morph_fill_styles: Vec<MorphFillStyle>,
+    pub fill_styles: Vec<MorphFillStyle>,
     pub morph_line_styles: Vec<MorphLineStyle>,
     pub start_edges: Shape<(), ()>,
     pub end_edges: Shape<(), ()>,
