@@ -38,27 +38,11 @@ pub fn read_extended_fill_style_array<
     Ok(fill_styles)
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
-#[repr(u8)]
-pub enum FillStyleType {
-    Solid = 0x00,
-    LinearGradient = 0x10,
-    RadialGradient = 0x12,
-    FocalRadialGradient = 0x13,
-    RepeatingBitmap = 0x40,
-    ClippedBitmap = 0x41,
-    NonSmoothedRepeatingBitmap = 0x42,
-    NonSmoothedClippedBitmap = 0x43,
-}
-
 pub fn read_fill_style<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>>(
     reader: &mut SwfTagBodyReader<R>,
     read_color: ReadColor,
 ) -> Result<FillStyle<Color>> {
-    let fill_style_type = reader
-        .read_u8()?
-        .try_into()
-        .map_err(|_| Error::from(InvalidData))?;
+    let fill_style_type = read_fill_style_type(reader)?;
     Ok(match fill_style_type {
         FillStyleType::Solid => FillStyle::Solid(read_color(reader)?),
         FillStyleType::LinearGradient => {
@@ -97,6 +81,26 @@ pub fn read_fill_style<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -
             FillStyle::NonSmoothedClippedBitmap { bitmap_id, matrix }
         }
     })
+}
+
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
+#[repr(u8)]
+pub enum FillStyleType {
+    Solid = 0x00,
+    LinearGradient = 0x10,
+    RadialGradient = 0x12,
+    FocalRadialGradient = 0x13,
+    RepeatingBitmap = 0x40,
+    ClippedBitmap = 0x41,
+    NonSmoothedRepeatingBitmap = 0x42,
+    NonSmoothedClippedBitmap = 0x43,
+}
+
+pub fn read_fill_style_type<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<FillStyleType> {
+    reader
+        .read_u8()?
+        .try_into()
+        .map_err(|_| Error::from(InvalidData))
 }
 
 pub fn read_line_style_array<
