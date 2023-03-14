@@ -110,5 +110,5 @@ pub struct MorphLineStyle2 {
     pub pixel_hinting: bool,
     pub no_close: bool,
     pub end_cap_style: CapStyle,
-    pub fill_style: FillStyle<Rgba>,
+    pub fill_style: MorphFillStyle,
 }
