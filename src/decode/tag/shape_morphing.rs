@@ -6,6 +6,20 @@ use crate::decode::tag::styles::{read_fill_style_type, FillStyleType};
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};
 
+fn read_morph_fill_style_array<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<Vec<MorphFillStyle>> {
+    let mut count = reader.read_u8()? as usize;
+    if count == 0xff {
+        count = reader.read_u16()? as usize
+    }
+    let mut fill_styles = Vec::with_capacity(count);
+    for _ in 0..count {
+        fill_styles.push(read_morph_fill_style(reader)?);
+    }
+    Ok(fill_styles)
+}
+
 fn read_morph_fill_style<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<MorphFillStyle> {
     let fill_style_type = read_fill_style_type(reader)?;
     Ok(match fill_style_type {
