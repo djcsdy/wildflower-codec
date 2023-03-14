@@ -1,12 +1,16 @@
 use crate::ast::shape_morphing::{
     DefineMorphShapeTag, MorphFillStyle, MorphFocalGradient, MorphGradient, MorphGradientRecord,
-    MorphLineStyle,
+    MorphLineStyle, MorphLineStyle2,
 };
+use crate::ast::styles::JoinStyle;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag::shapes::read_shape;
-use crate::decode::tag::styles::{read_fill_style_type, read_line_style_array, FillStyleType};
+use crate::decode::tag::styles::{
+    read_cap_style, read_fill_style_type, read_line_style_array, FillStyleType,
+};
 use crate::decode::tag_body_reader::SwfTagBodyReader;
-use std::io::{Read, Result};
+use std::io::ErrorKind::InvalidData;
+use std::io::{Error, Read, Result};
 
 pub fn read_define_morph_shape_tag<R: Read>(
     reader: &mut SwfTagBodyReader<R>,
@@ -175,5 +179,53 @@ fn read_morph_line_style<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Mo
         end_width,
         start_color,
         end_color,
+    })
+}
+
+fn read_morph_line_style2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<MorphLineStyle2> {
+    let start_width = reader.read_u16()?;
+    let end_width = reader.read_u16()?;
+    let start_cap_style = read_cap_style(reader)?;
+    let join_style = reader.read_ub8(2)?;
+    let has_fill = reader.read_bit()?;
+    let no_h_scale = reader.read_bit()?;
+    let no_v_scale = reader.read_bit()?;
+    let pixel_hinting = reader.read_bit()?;
+    reader.read_ub8(5)?;
+    let no_close = reader.read_bit()?;
+    let end_cap_style = read_cap_style(reader)?;
+    let miter_limit_factor = if join_style == 2 {
+        Some(reader.read_fixed8()?)
+    } else {
+        None
+    };
+    let fill_style = if has_fill {
+        read_morph_fill_style(reader)?
+    } else {
+        let start_color = reader.read_rgba()?;
+        let end_color = reader.read_rgba()?;
+        MorphFillStyle::Solid {
+            start_color,
+            end_color,
+        }
+    };
+    Ok(MorphLineStyle2 {
+        start_width,
+        end_width,
+        start_cap_style,
+        join_style: match join_style {
+            0 => JoinStyle::Round,
+            1 => JoinStyle::Bevel,
+            2 => JoinStyle::Miter {
+                miter_limit_factor: miter_limit_factor.unwrap(),
+            },
+            _ => return Err(Error::from(InvalidData)),
+        },
+        no_h_scale,
+        no_v_scale,
+        pixel_hinting,
+        no_close,
+        end_cap_style,
+        fill_style,
     })
 }
