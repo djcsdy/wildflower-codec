@@ -1,6 +1,6 @@
 use crate::ast::common::Rgb;
 use crate::ast::styles::{
-    FillStyle, FocalGradient, Gradient, GradientRecord, JoinStyle, LineStyle, LineStyle2,
+    CapStyle, FillStyle, FocalGradient, Gradient, GradientRecord, JoinStyle, LineStyle, LineStyle2,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
@@ -133,10 +133,7 @@ pub fn read_line_style<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -
 
 pub fn read_line_style2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<LineStyle2> {
     let width = reader.read_u16()?;
-    let start_cap_style = reader
-        .read_ub8(2)?
-        .try_into()
-        .map_err(|_| Error::from(InvalidData))?;
+    let start_cap_style = read_cap_style(reader)?;
     let join_style = reader.read_ub8(2)?;
     let has_fill = reader.read_bit()?;
     let no_h_scale = reader.read_bit()?;
@@ -144,10 +141,7 @@ pub fn read_line_style2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Lin
     let pixel_hinting = reader.read_bit()?;
     reader.read_ub8(5)?;
     let no_close = reader.read_bit()?;
-    let end_cap_style = reader
-        .read_ub8(2)?
-        .try_into()
-        .map_err(|_| Error::from(InvalidData))?;
+    let end_cap_style = read_cap_style(reader)?;
     let miter_limit_factor = if join_style == 2 {
         Some(reader.read_fixed8()?)
     } else {
@@ -176,6 +170,10 @@ pub fn read_line_style2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Lin
         end_cap_style,
         fill_style,
     })
+}
+
+pub fn read_cap_style<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<CapStyle> {
+    CapStyle::try_from(reader.read_ub8(2)?).map_err(|_| Error::from(InvalidData))
 }
 
 pub fn read_gradient<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>>(
