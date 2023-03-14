@@ -1,5 +1,5 @@
 use crate::ast::shape_morphing::{
-    MorphFillStyle, MorphFocalGradient, MorphGradient, MorphGradientRecord,
+    MorphFillStyle, MorphFocalGradient, MorphGradient, MorphGradientRecord, MorphLineStyle,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag::styles::{read_fill_style_type, FillStyleType};
@@ -137,6 +137,19 @@ fn read_morph_gradient_record<R: Read>(
         start_ratio,
         start_color,
         end_ratio,
+        end_color,
+    })
+}
+
+fn read_morph_line_style<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<MorphLineStyle> {
+    let start_width = reader.read_u16()?;
+    let end_width = reader.read_u16()?;
+    let start_color = reader.read_rgba()?;
+    let end_color = reader.read_rgba()?;
+    Ok(MorphLineStyle {
+        start_width,
+        end_width,
+        start_color,
         end_color,
     })
 }
