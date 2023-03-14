@@ -357,8 +357,7 @@ fn read_try<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Try> {
 pub fn read_do_abc_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<DoAbcTag> {
     let flags = reader.read_u32()?;
     let name = reader.read_string()?;
-    let mut abc_data = Vec::new();
-    reader.read_to_end(&mut abc_data)?;
+    let abc_data = reader.read_u8_to_end()?;
     Ok(DoAbcTag {
         flags,
         name,
