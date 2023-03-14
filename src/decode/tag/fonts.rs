@@ -1,4 +1,4 @@
-use crate::ast::fonts::{CodeTable, DefineFontInfoTag, DefineFontTag};
+use crate::ast::fonts::{CodeTable, DefineFontInfoTag, DefineFontTag, LanguageCode};
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag::shapes::read_shape;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
@@ -65,4 +65,8 @@ pub fn read_define_font_info_tag<R: Read>(
         bold,
         code_table,
     })
+}
+
+fn read_language_code<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<LanguageCode> {
+    LanguageCode::try_from(reader.read_u8()?).map_err(|_| Error::from(InvalidData))
 }
