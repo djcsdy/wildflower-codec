@@ -22,7 +22,7 @@ pub struct DefineMorphShape2Tag {
     pub end_edge_bounds: Rectangle,
     pub uses_non_scaling_strokes: bool,
     pub uses_scaling_strokes: bool,
-    pub morph_fill_styles: Vec<MorphFillStyle>,
+    pub fill_styles: Vec<MorphFillStyle>,
     pub morph_line_styles: Vec<MorphLineStyle2>,
     pub start_edges: Shape<(), ()>,
     pub end_edges: Shape<(), ()>,
