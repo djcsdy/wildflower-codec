@@ -1,4 +1,4 @@
-use crate::ast::shape_morphing::{MorphGradient, MorphGradientRecord};
+use crate::ast::shape_morphing::{MorphFocalGradient, MorphGradient, MorphGradientRecord};
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};
@@ -10,6 +10,19 @@ fn read_morph_gradient<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Morp
         gradient_records.push(read_morph_gradient_record(reader)?);
     }
     Ok(MorphGradient { gradient_records })
+}
+
+fn read_morph_focal_gradient<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<MorphFocalGradient> {
+    let morph_gradient = read_morph_gradient(reader)?;
+    let start_focal_point = reader.read_fixed8()?;
+    let end_focal_point = reader.read_fixed8()?;
+    Ok(MorphFocalGradient {
+        gradient_records: morph_gradient.gradient_records,
+        start_focal_point,
+        end_focal_point,
+    })
 }
 
 fn read_morph_gradient_record<R: Read>(
