@@ -92,9 +92,9 @@ pub struct GradientRecord<TColor> {
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
 #[repr(u8)]
 pub enum CapStyle {
-    Round,
-    None,
-    Square,
+    Round = 0,
+    None = 1,
+    Square = 2,
 }
 
 #[derive(Clone, PartialEq, Debug)]
