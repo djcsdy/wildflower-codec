@@ -47,7 +47,7 @@ pub enum MorphFillStyle {
     FocalRadialGradient {
         start_matrix: Matrix,
         end_matrix: Matrix,
-        gradient: MorphGradient,
+        gradient: MorphFocalGradient,
     },
     RepeatingBitmap {
         bitmap_id: u16,
@@ -74,6 +74,13 @@ pub enum MorphFillStyle {
 #[derive(Clone, PartialEq, Debug)]
 pub struct MorphGradient {
     pub gradient_records: Vec<MorphGradientRecord>,
+}
+
+#[derive(Clone, PartialEq, Debug)]
+pub struct MorphFocalGradient {
+    pub gradient_records: Vec<MorphGradientRecord>,
+    pub start_focal_point: Fixed8,
+    pub end_focal_point: Fixed8,
 }
 
 #[derive(Clone, PartialEq, Debug)]
