@@ -1,7 +1,94 @@
-use crate::ast::shape_morphing::{MorphFocalGradient, MorphGradient, MorphGradientRecord};
+use crate::ast::shape_morphing::{
+    MorphFillStyle, MorphFocalGradient, MorphGradient, MorphGradientRecord,
+};
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::tag::styles::{read_fill_style_type, FillStyleType};
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};
+
+fn read_morph_fill_style<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<MorphFillStyle> {
+    let fill_style_type = read_fill_style_type(reader)?;
+    Ok(match fill_style_type {
+        FillStyleType::Solid => {
+            let start_color = reader.read_rgba()?;
+            let end_color = reader.read_rgba()?;
+            MorphFillStyle::Solid {
+                start_color,
+                end_color,
+            }
+        }
+        FillStyleType::LinearGradient => {
+            let start_matrix = reader.read_matrix()?;
+            let end_matrix = reader.read_matrix()?;
+            let gradient = read_morph_gradient(reader)?;
+            MorphFillStyle::LinearGradient {
+                start_matrix,
+                end_matrix,
+                gradient,
+            }
+        }
+        FillStyleType::RadialGradient => {
+            let start_matrix = reader.read_matrix()?;
+            let end_matrix = reader.read_matrix()?;
+            let gradient = read_morph_gradient(reader)?;
+            MorphFillStyle::RadialGradient {
+                start_matrix,
+                end_matrix,
+                gradient,
+            }
+        }
+        FillStyleType::FocalRadialGradient => {
+            let start_matrix = reader.read_matrix()?;
+            let end_matrix = reader.read_matrix()?;
+            let gradient = read_morph_focal_gradient(reader)?;
+            MorphFillStyle::FocalRadialGradient {
+                start_matrix,
+                end_matrix,
+                gradient,
+            }
+        }
+        FillStyleType::RepeatingBitmap => {
+            let bitmap_id = reader.read_u16()?;
+            let start_matrix = reader.read_matrix()?;
+            let end_matrix = reader.read_matrix()?;
+            MorphFillStyle::RepeatingBitmap {
+                bitmap_id,
+                start_matrix,
+                end_matrix,
+            }
+        }
+        FillStyleType::ClippedBitmap => {
+            let bitmap_id = reader.read_u16()?;
+            let start_matrix = reader.read_matrix()?;
+            let end_matrix = reader.read_matrix()?;
+            MorphFillStyle::ClippedBitmap {
+                bitmap_id,
+                start_matrix,
+                end_matrix,
+            }
+        }
+        FillStyleType::NonSmoothedRepeatingBitmap => {
+            let bitmap_id = reader.read_u16()?;
+            let start_matrix = reader.read_matrix()?;
+            let end_matrix = reader.read_matrix()?;
+            MorphFillStyle::NonSmoothedRepeatingBitmap {
+                bitmap_id,
+                start_matrix,
+                end_matrix,
+            }
+        }
+        FillStyleType::NonSmoothedClippedBitmap => {
+            let bitmap_id = reader.read_u16()?;
+            let start_matrix = reader.read_matrix()?;
+            let end_matrix = reader.read_matrix()?;
+            MorphFillStyle::NonSmoothedClippedBitmap {
+                bitmap_id,
+                start_matrix,
+                end_matrix,
+            }
+        }
+    })
+}
 
 fn read_morph_gradient<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<MorphGradient> {
     let num_gradients = reader.read_u8()? as usize;
