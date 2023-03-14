@@ -1,10 +1,34 @@
 use crate::ast::shape_morphing::{
-    MorphFillStyle, MorphFocalGradient, MorphGradient, MorphGradientRecord, MorphLineStyle,
+    DefineMorphShapeTag, MorphFillStyle, MorphFocalGradient, MorphGradient, MorphGradientRecord,
+    MorphLineStyle,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::tag::styles::{read_fill_style_type, FillStyleType};
+use crate::decode::tag::shapes::read_shape;
+use crate::decode::tag::styles::{read_fill_style_type, read_line_style_array, FillStyleType};
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};
+
+pub fn read_define_morph_shape_tag<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<DefineMorphShapeTag> {
+    let character_id = reader.read_u16()?;
+    let start_bounds = reader.read_rectangle()?;
+    let end_bounds = reader.read_rectangle()?;
+    let offset = reader.read_u32()? as usize;
+    let fill_styles = read_morph_fill_style_array(reader)?;
+    let line_styles = read_line_style_array(reader, &read_morph_line_style)?;
+    let start_edges = read_shape(&mut reader.with_max_length(offset))?;
+    let end_edges = read_shape(reader)?;
+    Ok(DefineMorphShapeTag {
+        character_id,
+        start_bounds,
+        end_bounds,
+        fill_styles,
+        line_styles,
+        start_edges,
+        end_edges,
+    })
+}
 
 fn read_morph_fill_style_array<R: Read>(
     reader: &mut SwfTagBodyReader<R>,
