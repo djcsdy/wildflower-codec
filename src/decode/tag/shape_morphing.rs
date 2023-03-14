@@ -1,6 +1,6 @@
 use crate::ast::shape_morphing::{
-    DefineMorphShapeTag, MorphFillStyle, MorphFocalGradient, MorphGradient, MorphGradientRecord,
-    MorphLineStyle, MorphLineStyle2,
+    DefineMorphShape2Tag, DefineMorphShapeTag, MorphFillStyle, MorphFocalGradient, MorphGradient,
+    MorphGradientRecord, MorphLineStyle, MorphLineStyle2,
 };
 use crate::ast::styles::JoinStyle;
 use crate::decode::read_ext::SwfTypesReadExt;
@@ -27,6 +27,37 @@ pub fn read_define_morph_shape_tag<R: Read>(
         character_id,
         start_bounds,
         end_bounds,
+        fill_styles,
+        line_styles,
+        start_edges,
+        end_edges,
+    })
+}
+
+pub fn read_define_morph_shape2_tag<R: Read>(
+    reader: &mut SwfTagBodyReader<R>,
+) -> Result<DefineMorphShape2Tag> {
+    let character_id = reader.read_u16()?;
+    let start_bounds = reader.read_rectangle()?;
+    let end_bounds = reader.read_rectangle()?;
+    let start_edge_bounds = reader.read_rectangle()?;
+    let end_edge_bounds = reader.read_rectangle()?;
+    reader.read_ub8(6)?;
+    let uses_non_scaling_strokes = reader.read_bit()?;
+    let uses_scaling_strokes = reader.read_bit()?;
+    let offset = reader.read_u32()? as usize;
+    let fill_styles = read_morph_fill_style_array(reader)?;
+    let line_styles = read_line_style_array(reader, &read_morph_line_style2)?;
+    let start_edges = read_shape(&mut reader.with_max_length(offset))?;
+    let end_edges = read_shape(reader)?;
+    Ok(DefineMorphShape2Tag {
+        character_id,
+        start_bounds,
+        end_bounds,
+        start_edge_bounds,
+        end_edge_bounds,
+        uses_non_scaling_strokes,
+        uses_scaling_strokes,
         fill_styles,
         line_styles,
         start_edges,
