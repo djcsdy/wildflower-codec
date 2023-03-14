@@ -4,6 +4,7 @@ use crate::ast::styles::{
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
+use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Read, Result};
 
@@ -37,49 +38,64 @@ pub fn read_extended_fill_style_array<
     Ok(fill_styles)
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
+#[repr(u8)]
+pub enum FillStyleType {
+    Solid = 0x00,
+    LinearGradient = 0x10,
+    RadialGradient = 0x12,
+    FocalRadialGradient = 0x13,
+    RepeatingBitmap = 0x40,
+    ClippedBitmap = 0x41,
+    NonSmoothedRepeatingBitmap = 0x42,
+    NonSmoothedClippedBitmap = 0x43,
+}
+
 pub fn read_fill_style<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>>(
     reader: &mut SwfTagBodyReader<R>,
     read_color: ReadColor,
 ) -> Result<FillStyle<Color>> {
-    let fill_style_type = reader.read_u8()?;
+    let fill_style_type = reader
+        .read_u8()?
+        .try_into()
+        .map_err(|_| Error::from(InvalidData))?;
     Ok(match fill_style_type {
-        0x00 => FillStyle::Solid(read_color(reader)?),
-        0x10 => {
+        FillStyleType::Solid => FillStyle::Solid(read_color(reader)?),
+        FillStyleType::LinearGradient => {
             let matrix = reader.read_matrix()?;
             let gradient = read_gradient(reader, read_color)?;
             FillStyle::LinearGradient { matrix, gradient }
         }
-        0x12 => {
+        FillStyleType::RadialGradient => {
             let matrix = reader.read_matrix()?;
             let gradient = read_gradient(reader, read_color)?;
             FillStyle::RadialGradient { matrix, gradient }
         }
-        0x13 => {
+        FillStyleType::FocalRadialGradient => {
             let matrix = reader.read_matrix()?;
             let gradient = read_focal_gradient(reader, read_color)?;
             FillStyle::FocalRadialGradient { matrix, gradient }
         }
-        0x40 => {
+        FillStyleType::RepeatingBitmap => {
             let bitmap_id = reader.read_u16()?;
             let matrix = reader.read_matrix()?;
             FillStyle::RepeatingBitmap { bitmap_id, matrix }
         }
-        0x41 => {
+        FillStyleType::ClippedBitmap => {
             let bitmap_id = reader.read_u16()?;
             let matrix = reader.read_matrix()?;
             FillStyle::ClippedBitmap { bitmap_id, matrix }
         }
-        0x42 => {
+        FillStyleType::NonSmoothedRepeatingBitmap => {
             let bitmap_id = reader.read_u16()?;
             let matrix = reader.read_matrix()?;
             FillStyle::NonSmoothedRepeatingBitmap { bitmap_id, matrix }
         }
-        0x43 => {
+        FillStyleType::NonSmoothedClippedBitmap => {
             let bitmap_id = reader.read_u16()?;
             let matrix = reader.read_matrix()?;
             FillStyle::NonSmoothedClippedBitmap { bitmap_id, matrix }
         }
-        _ => return Err(Error::from(InvalidData)),
     })
 }
 
