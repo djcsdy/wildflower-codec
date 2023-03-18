@@ -4,7 +4,7 @@ use crate::ast::shapes::{
 };
 use crate::ast::styles::FillStyle;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::tag::common::read_rgb;
+use crate::decode::tag::common::{read_rgb, read_rgba};
 use crate::decode::tag::styles::{
     read_extended_fill_style_array, read_fill_style_array, read_line_style, read_line_style2,
     read_line_style_array,
@@ -330,13 +330,9 @@ pub fn read_define_shape3_tag<R: Read>(
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
         read_line_style_array: |reader| {
-            read_line_style_array(reader, |reader| {
-                read_line_style(reader, &SwfTagBodyReader::read_rgba)
-            })
+            read_line_style_array(reader, |reader| read_line_style(reader, &read_rgba))
         },
-        read_fill_style_array: |reader| {
-            read_extended_fill_style_array(reader, &SwfTagBodyReader::read_rgba)
-        },
+        read_fill_style_array: |reader| read_extended_fill_style_array(reader, &read_rgba),
     })?;
     Ok(DefineShape3Tag {
         shape_id,
@@ -358,9 +354,7 @@ pub fn read_define_shape4_tag<R: Read>(
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
         read_line_style_array: |reader| read_line_style_array(reader, &read_line_style2),
-        read_fill_style_array: |reader| {
-            read_extended_fill_style_array(reader, &SwfTagBodyReader::read_rgba)
-        },
+        read_fill_style_array: |reader| read_extended_fill_style_array(reader, &read_rgba),
     })?;
     Ok(DefineShape4Tag {
         shape_id,

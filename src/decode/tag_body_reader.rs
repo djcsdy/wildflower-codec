@@ -166,17 +166,6 @@ impl<R: Read> SwfTagBodyReader<R> {
         Ok(buffer)
     }
 
-    pub fn read_rgba(&mut self) -> Result<Rgba> {
-        let mut buf = [0u8; 4];
-        self.read_u8_into(&mut buf)?;
-        Ok(Rgba {
-            red: buf[0],
-            green: buf[1],
-            blue: buf[2],
-            alpha: buf[3],
-        })
-    }
-
     pub fn read_argb(&mut self) -> Result<Rgba> {
         let mut buf = [0u8; 4];
         self.read_u8_into(&mut buf)?;

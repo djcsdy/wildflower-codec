@@ -3,7 +3,7 @@ use crate::ast::styles::{
     CapStyle, FillStyle, FocalGradient, Gradient, GradientRecord, JoinStyle, LineStyle, LineStyle2,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::tag::common::read_rgb;
+use crate::decode::tag::common::{read_rgb, read_rgba};
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::io::ErrorKind::InvalidData;
@@ -149,9 +149,9 @@ pub fn read_line_style2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Lin
         None
     };
     let fill_style = if has_fill {
-        read_fill_style(reader, &SwfTagBodyReader::read_rgba)?
+        read_fill_style(reader, &read_rgba)?
     } else {
-        FillStyle::Solid(reader.read_rgba()?)
+        FillStyle::Solid(read_rgba(reader)?)
     };
     Ok(LineStyle2 {
         width,

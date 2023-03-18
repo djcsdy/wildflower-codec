@@ -4,6 +4,7 @@ use crate::ast::shape_morphing::{
 };
 use crate::ast::styles::JoinStyle;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::tag::common::read_rgba;
 use crate::decode::tag::shapes::read_shape;
 use crate::decode::tag::styles::{
     read_cap_style, read_fill_style_type, read_line_style_array, FillStyleType,
@@ -83,8 +84,8 @@ fn read_morph_fill_style<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Mo
     let fill_style_type = read_fill_style_type(reader)?;
     Ok(match fill_style_type {
         FillStyleType::Solid => {
-            let start_color = reader.read_rgba()?;
-            let end_color = reader.read_rgba()?;
+            let start_color = read_rgba(reader)?;
+            let end_color = read_rgba(reader)?;
             MorphFillStyle::Solid {
                 start_color,
                 end_color,
@@ -189,9 +190,9 @@ fn read_morph_gradient_record<R: Read>(
     reader: &mut SwfTagBodyReader<R>,
 ) -> Result<MorphGradientRecord> {
     let start_ratio = reader.read_u8()?;
-    let start_color = reader.read_rgba()?;
+    let start_color = read_rgba(reader)?;
     let end_ratio = reader.read_u8()?;
-    let end_color = reader.read_rgba()?;
+    let end_color = read_rgba(reader)?;
     Ok(MorphGradientRecord {
         start_ratio,
         start_color,
@@ -203,8 +204,8 @@ fn read_morph_gradient_record<R: Read>(
 fn read_morph_line_style<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<MorphLineStyle> {
     let start_width = reader.read_u16()?;
     let end_width = reader.read_u16()?;
-    let start_color = reader.read_rgba()?;
-    let end_color = reader.read_rgba()?;
+    let start_color = read_rgba(reader)?;
+    let end_color = read_rgba(reader)?;
     Ok(MorphLineStyle {
         start_width,
         end_width,
@@ -233,8 +234,8 @@ fn read_morph_line_style2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<M
     let fill_style = if has_fill {
         read_morph_fill_style(reader)?
     } else {
-        let start_color = reader.read_rgba()?;
-        let end_color = reader.read_rgba()?;
+        let start_color = read_rgba(reader)?;
+        let end_color = read_rgba(reader)?;
         MorphFillStyle::Solid {
             start_color,
             end_color,

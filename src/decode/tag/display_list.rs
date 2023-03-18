@@ -6,6 +6,7 @@ use crate::ast::display_list::{
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag::actions::read_action_records;
+use crate::decode::tag::common::read_rgba;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Read, Result};
@@ -214,7 +215,7 @@ pub fn read_place_object3_tag<R: Read>(
         None
     };
     let background_color = if has_visible {
-        Some(reader.read_rgba()?)
+        Some(read_rgba(reader)?)
     } else {
         None
     };
@@ -284,7 +285,7 @@ fn read_convolution_filter<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<
     let bias = reader.read_f32()?;
     let mut matrix = vec![0f32; (matrix_x as usize) * (matrix_y as usize)];
     reader.read_f32_into(&mut matrix)?;
-    let default_color = reader.read_rgba()?;
+    let default_color = read_rgba(reader)?;
     reader.read_ub8(6)?;
     let clamp = reader.read_bit()?;
     let preserve_alpha = reader.read_bit()?;
@@ -314,7 +315,7 @@ fn read_blur_filter<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<BlurFil
 }
 
 fn read_drop_shadow_filter<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<DropShadowFilter> {
-    let color = reader.read_rgba()?;
+    let color = read_rgba(reader)?;
     let blur_x = reader.read_fixed16()?;
     let blur_y = reader.read_fixed16()?;
     let angle = reader.read_fixed16()?;
@@ -339,7 +340,7 @@ fn read_drop_shadow_filter<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<
 }
 
 fn read_glow_filter<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GlowFilter> {
-    let color = reader.read_rgba()?;
+    let color = read_rgba(reader)?;
     let blur_x = reader.read_fixed16()?;
     let blur_y = reader.read_fixed16()?;
     let strength = reader.read_fixed8()?;
@@ -360,8 +361,8 @@ fn read_glow_filter<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GlowFil
 }
 
 fn read_bevel_filter<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<BevelFilter> {
-    let shadow_color = reader.read_rgba()?;
-    let highlight_color = reader.read_rgba()?;
+    let shadow_color = read_rgba(reader)?;
+    let highlight_color = read_rgba(reader)?;
     let blur_x = reader.read_fixed16()?;
     let blur_y = reader.read_fixed16()?;
     let angle = reader.read_fixed16()?;
@@ -394,7 +395,7 @@ fn read_gradient_glow_filter<R: Read>(
     let num_colors = reader.read_u8()?;
     let mut colors = Vec::with_capacity(num_colors as usize);
     for _ in 0..num_colors {
-        colors.push(reader.read_rgba()?);
+        colors.push(read_rgba(reader)?);
     }
     let mut ratio = Vec::with_capacity(num_colors as usize);
     for _ in 0..num_colors {
@@ -432,7 +433,7 @@ fn read_gradient_bevel_filter<R: Read>(
     let num_colors = reader.read_u8()?;
     let mut colors = Vec::with_capacity(num_colors as usize);
     for _ in 0..num_colors {
-        colors.push(reader.read_rgba()?);
+        colors.push(read_rgba(reader)?);
     }
     let mut ratio = Vec::with_capacity(num_colors as usize);
     for _ in 0..num_colors {
