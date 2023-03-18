@@ -92,7 +92,7 @@ pub fn read_matrix<R: BitRead>(reader: &mut R) -> Result<Matrix> {
     })
 }
 
-pub fn read_color_transform<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<ColorTransform> {
+pub fn read_color_transform<R: BitRead>(reader: &mut R) -> Result<ColorTransform> {
     let has_add_terms = reader.read_bit()?;
     let has_mult_terms = reader.read_bit()?;
     let bits = reader.read_ub8(4)?;
