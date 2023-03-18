@@ -38,7 +38,7 @@ pub fn read_argb<R: Read>(reader: &mut R) -> Result<Rgba> {
     })
 }
 
-pub fn read_rectangle<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Rectangle> {
+pub fn read_rectangle<R: BitRead>(reader: &mut R) -> Result<Rectangle> {
     reader.align_byte();
     let bits = reader.read_ub8(5)?;
     let x_min = reader.read_sb(bits)?;
