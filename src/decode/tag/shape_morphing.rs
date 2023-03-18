@@ -4,7 +4,7 @@ use crate::ast::shape_morphing::{
 };
 use crate::ast::styles::JoinStyle;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::tag::common::{read_rectangle, read_rgba};
+use crate::decode::tag::common::{read_matrix, read_rectangle, read_rgba};
 use crate::decode::tag::shapes::read_shape;
 use crate::decode::tag::styles::{
     read_cap_style, read_fill_style_type, read_line_style_array, FillStyleType,
@@ -92,8 +92,8 @@ fn read_morph_fill_style<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Mo
             }
         }
         FillStyleType::LinearGradient => {
-            let start_matrix = reader.read_matrix()?;
-            let end_matrix = reader.read_matrix()?;
+            let start_matrix = read_matrix(reader)?;
+            let end_matrix = read_matrix(reader)?;
             let gradient = read_morph_gradient(reader)?;
             MorphFillStyle::LinearGradient {
                 start_matrix,
@@ -102,8 +102,8 @@ fn read_morph_fill_style<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Mo
             }
         }
         FillStyleType::RadialGradient => {
-            let start_matrix = reader.read_matrix()?;
-            let end_matrix = reader.read_matrix()?;
+            let start_matrix = read_matrix(reader)?;
+            let end_matrix = read_matrix(reader)?;
             let gradient = read_morph_gradient(reader)?;
             MorphFillStyle::RadialGradient {
                 start_matrix,
@@ -112,8 +112,8 @@ fn read_morph_fill_style<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Mo
             }
         }
         FillStyleType::FocalRadialGradient => {
-            let start_matrix = reader.read_matrix()?;
-            let end_matrix = reader.read_matrix()?;
+            let start_matrix = read_matrix(reader)?;
+            let end_matrix = read_matrix(reader)?;
             let gradient = read_morph_focal_gradient(reader)?;
             MorphFillStyle::FocalRadialGradient {
                 start_matrix,
@@ -123,8 +123,8 @@ fn read_morph_fill_style<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Mo
         }
         FillStyleType::RepeatingBitmap => {
             let bitmap_id = reader.read_u16()?;
-            let start_matrix = reader.read_matrix()?;
-            let end_matrix = reader.read_matrix()?;
+            let start_matrix = read_matrix(reader)?;
+            let end_matrix = read_matrix(reader)?;
             MorphFillStyle::RepeatingBitmap {
                 bitmap_id,
                 start_matrix,
@@ -133,8 +133,8 @@ fn read_morph_fill_style<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Mo
         }
         FillStyleType::ClippedBitmap => {
             let bitmap_id = reader.read_u16()?;
-            let start_matrix = reader.read_matrix()?;
-            let end_matrix = reader.read_matrix()?;
+            let start_matrix = read_matrix(reader)?;
+            let end_matrix = read_matrix(reader)?;
             MorphFillStyle::ClippedBitmap {
                 bitmap_id,
                 start_matrix,
@@ -143,8 +143,8 @@ fn read_morph_fill_style<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Mo
         }
         FillStyleType::NonSmoothedRepeatingBitmap => {
             let bitmap_id = reader.read_u16()?;
-            let start_matrix = reader.read_matrix()?;
-            let end_matrix = reader.read_matrix()?;
+            let start_matrix = read_matrix(reader)?;
+            let end_matrix = read_matrix(reader)?;
             MorphFillStyle::NonSmoothedRepeatingBitmap {
                 bitmap_id,
                 start_matrix,
@@ -153,8 +153,8 @@ fn read_morph_fill_style<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Mo
         }
         FillStyleType::NonSmoothedClippedBitmap => {
             let bitmap_id = reader.read_u16()?;
-            let start_matrix = reader.read_matrix()?;
-            let end_matrix = reader.read_matrix()?;
+            let start_matrix = read_matrix(reader)?;
+            let end_matrix = read_matrix(reader)?;
             MorphFillStyle::NonSmoothedClippedBitmap {
                 bitmap_id,
                 start_matrix,

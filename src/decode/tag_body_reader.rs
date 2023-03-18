@@ -1,6 +1,4 @@
-use crate::ast::common::{
-    ColorTransform, ColorTransformWithAlpha, Fixed16, Fixed8, Matrix, String,
-};
+use crate::ast::common::{ColorTransform, ColorTransformWithAlpha, Fixed16, Fixed8, String};
 use crate::decode::max_length_reader::MaxLengthReader;
 use crate::decode::read_ext::SwfTypesReadExt;
 use byteorder::{ByteOrder, LittleEndian};
@@ -164,45 +162,6 @@ impl<R: Read> SwfTagBodyReader<R> {
             buffer.push(self.read_u16()?);
         }
         Ok(buffer)
-    }
-
-    pub fn read_matrix(&mut self) -> Result<Matrix> {
-        self.align_byte();
-        let has_scale = self.read_bit()?;
-        let scale_bits = if has_scale { self.read_ub8(5)? } else { 0 };
-        let scale_x = if has_scale {
-            self.read_fixed16_bits(scale_bits)?
-        } else {
-            Fixed16::ONE
-        };
-        let scale_y = if has_scale {
-            self.read_fixed16_bits(scale_bits)?
-        } else {
-            Fixed16::ONE
-        };
-        let has_rotate = self.read_bit()?;
-        let rotate_bits = if has_rotate { self.read_ub8(5)? } else { 0 };
-        let rotate_skew_0 = if has_rotate {
-            self.read_fixed16_bits(rotate_bits)?
-        } else {
-            Fixed16::ZERO
-        };
-        let rotate_skew_1 = if has_rotate {
-            self.read_fixed16_bits(rotate_bits)?
-        } else {
-            Fixed16::ZERO
-        };
-        let translate_bits = self.read_ub8(5)?;
-        let translate_x = self.read_sb(translate_bits)?;
-        let translate_y = self.read_sb(translate_bits)?;
-        Ok(Matrix {
-            scale_x,
-            scale_y,
-            rotate_skew_0,
-            rotate_skew_1,
-            translate_x,
-            translate_y,
-        })
     }
 
     pub fn read_color_transform(&mut self) -> Result<ColorTransform> {

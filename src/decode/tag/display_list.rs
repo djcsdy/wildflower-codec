@@ -6,7 +6,7 @@ use crate::ast::display_list::{
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag::actions::read_action_records;
-use crate::decode::tag::common::read_rgba;
+use crate::decode::tag::common::{read_matrix, read_rgba};
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Read, Result};
@@ -14,7 +14,7 @@ use std::io::{Error, Read, Result};
 pub fn read_place_object_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<PlaceObjectTag> {
     let character_id = reader.read_u16()?;
     let depth = reader.read_u16()?;
-    let matrix = reader.read_matrix()?;
+    let matrix = read_matrix(reader)?;
     let color_transform = if reader.remaining() > 0 {
         Some(reader.read_color_transform()?)
     } else {
@@ -47,7 +47,7 @@ pub fn read_place_object2_tag<R: Read>(
         None
     };
     let matrix = if has_matrix {
-        Some(reader.read_matrix()?)
+        Some(read_matrix(reader)?)
     } else {
         None
     };
@@ -165,7 +165,7 @@ pub fn read_place_object3_tag<R: Read>(
         None
     };
     let matrix = if has_matrix {
-        Some(reader.read_matrix()?)
+        Some(read_matrix(reader)?)
     } else {
         None
     };
