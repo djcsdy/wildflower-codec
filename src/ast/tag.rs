@@ -8,8 +8,9 @@ use super::buttons::{
 };
 use super::control::{
     DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, EnableDebugger2Tag, EnableDebuggerTag,
-    EndTag, ExportAssetsTag, FrameLabelTag, ImportAssets2Tag, ImportAssetsTag, MetadataTag,
-    ProtectTag, ScriptLimitsTag, SetBackgroundColorTag, SetTabIndexTag, SymbolClassTag,
+    EndTag, ExportAssetsTag, FileAttributesTag, FrameLabelTag, ImportAssets2Tag, ImportAssetsTag,
+    MetadataTag, ProtectTag, ScriptLimitsTag, SetBackgroundColorTag, SetTabIndexTag,
+    SymbolClassTag,
 };
 use super::display_list::{
     PlaceObject2Tag, PlaceObject3Tag, PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag,
@@ -19,7 +20,7 @@ use super::fonts::{
     DefineFont2Tag, DefineFont3Tag, DefineFont4Tag, DefineFontAlignZonesTag, DefineFontInfo2Tag,
     DefineFontInfoTag, DefineFontNameTag, DefineFontTag,
 };
-use super::metadata::{DefineBinaryDataTag, EnableTelemetryTag, FileAttributesTag};
+use super::metadata::{DefineBinaryDataTag, EnableTelemetryTag};
 use super::shape_morphing::{DefineMorphShape2Tag, DefineMorphShapeTag};
 use super::shapes::{DefineShape2Tag, DefineShape3Tag, DefineShape4Tag, DefineShapeTag};
 use super::sounds::{
