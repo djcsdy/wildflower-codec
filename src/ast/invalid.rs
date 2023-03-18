@@ -2,7 +2,7 @@
 #[derive(Clone, PartialEq, Debug)]
 pub struct UnknownTag {
     pub tag_code: u16,
-    pub data: Vec<u8>,
+    pub body: Vec<u8>,
 }
 
 /// A tag with a supported tag code but invalid data.
