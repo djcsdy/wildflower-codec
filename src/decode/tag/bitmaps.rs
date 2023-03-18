@@ -110,13 +110,14 @@ pub fn read_define_bits_lossless_tag<R: Read>(
 }
 
 struct ReadColorMapDataOptions<
-    'read_color_map_data,
+    'reader,
+    'read_color,
     R: Read,
     Color,
     ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>,
 > {
-    reader: &'read_color_map_data mut SwfTagBodyReader<R>,
-    read_color: ReadColor,
+    reader: &'reader mut SwfTagBodyReader<R>,
+    read_color: &'read_color ReadColor,
     color_table_size: usize,
     bitmap_width: u16,
     bitmap_height: u16,
@@ -144,12 +145,13 @@ fn read_colormap_data<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) ->
 
 struct ReadBitmapDataOptions<
     'read_bitmap_data,
+    'read_color,
     R: Read,
     Color,
     ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>,
 > {
     reader: &'read_bitmap_data mut SwfTagBodyReader<R>,
-    read_color: ReadColor,
+    read_color: &'read_color ReadColor,
     bitmap_width: u16,
     bitmap_height: u16,
 }

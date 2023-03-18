@@ -20,14 +20,16 @@ pub fn read_shape<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Shape<(),
         reader,
         num_fill_bits,
         num_line_bits,
-        read_line_style_array: |_| Ok(vec![]),
-        read_fill_style_array: |_| Ok(vec![]),
+        read_line_style_array: &|_| Ok(vec![]),
+        read_fill_style_array: &|_| Ok(vec![]),
     })?;
     Ok(Shape { shape_records })
 }
 
 pub struct ReadShapeWithStyleOptions<
     'read_shape_with_style,
+    'read_line_style_array,
+    'read_fill_style_array,
     R: Read,
     Color,
     LineStyle,
@@ -35,8 +37,8 @@ pub struct ReadShapeWithStyleOptions<
     ReadFillStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<FillStyle<Color>>>,
 > {
     pub reader: &'read_shape_with_style mut SwfTagBodyReader<R>,
-    pub read_line_style_array: ReadLineStyleArray,
-    pub read_fill_style_array: ReadFillStyleArray,
+    pub read_line_style_array: &'read_line_style_array ReadLineStyleArray,
+    pub read_fill_style_array: &'read_fill_style_array ReadFillStyleArray,
 }
 
 pub fn read_shape_with_style<
@@ -72,6 +74,8 @@ pub fn read_shape_with_style<
 
 pub struct ReadShapeRecordOptions<
     'read_shape_record,
+    'read_line_style_array,
+    'read_fill_style_array,
     R: Read,
     Color,
     LineStyle,
@@ -81,8 +85,8 @@ pub struct ReadShapeRecordOptions<
     pub reader: &'read_shape_record mut SwfTagBodyReader<R>,
     pub num_fill_bits: u8,
     pub num_line_bits: u8,
-    pub read_line_style_array: ReadLineStyleArray,
-    pub read_fill_style_array: ReadFillStyleArray,
+    pub read_line_style_array: &'read_line_style_array ReadLineStyleArray,
+    pub read_fill_style_array: &'read_fill_style_array ReadFillStyleArray,
 }
 
 fn read_shape_records<
@@ -292,8 +296,8 @@ pub fn read_define_shape_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Resul
     let shape_bounds = read_rectangle(reader)?;
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
-        read_line_style_array: |reader| {
-            read_line_style_array(reader, |reader| read_line_style(reader, &read_rgb))
+        read_line_style_array: &|reader| {
+            read_line_style_array(reader, &|reader| read_line_style(reader, &read_rgb))
         },
         read_fill_style_array: &read_fill_style_array,
     })?;
@@ -311,10 +315,10 @@ pub fn read_define_shape2_tag<R: Read>(
     let shape_bounds = read_rectangle(reader)?;
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
-        read_line_style_array: |reader| {
-            read_line_style_array(reader, |reader| read_line_style(reader, &read_rgb))
+        read_line_style_array: &|reader| {
+            read_line_style_array(reader, &|reader| read_line_style(reader, &read_rgb))
         },
-        read_fill_style_array: |reader| read_extended_fill_style_array(reader, &read_rgb),
+        read_fill_style_array: &|reader| read_extended_fill_style_array(reader, &read_rgb),
     })?;
     Ok(DefineShape2Tag {
         shape_id,
@@ -330,10 +334,10 @@ pub fn read_define_shape3_tag<R: Read>(
     let shape_bounds = read_rectangle(reader)?;
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
-        read_line_style_array: |reader| {
-            read_line_style_array(reader, |reader| read_line_style(reader, &read_rgba))
+        read_line_style_array: &|reader| {
+            read_line_style_array(reader, &|reader| read_line_style(reader, &read_rgba))
         },
-        read_fill_style_array: |reader| read_extended_fill_style_array(reader, &read_rgba),
+        read_fill_style_array: &|reader| read_extended_fill_style_array(reader, &read_rgba),
     })?;
     Ok(DefineShape3Tag {
         shape_id,
@@ -354,8 +358,8 @@ pub fn read_define_shape4_tag<R: Read>(
     let uses_scaling_strokes = reader.read_bit()?;
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
-        read_line_style_array: |reader| read_line_style_array(reader, &read_line_style2),
-        read_fill_style_array: |reader| read_extended_fill_style_array(reader, &read_rgba),
+        read_line_style_array: &|reader| read_line_style_array(reader, &read_line_style2),
+        read_fill_style_array: &|reader| read_extended_fill_style_array(reader, &read_rgba),
     })?;
     Ok(DefineShape4Tag {
         shape_id,
