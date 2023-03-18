@@ -29,6 +29,7 @@ use super::sounds::{
 use super::sprites::DefineSpriteTag;
 use super::text::{CsmTextSettingsTag, DefineEditTextTag, DefineText2Tag, DefineTextTag};
 use super::video::DefineVideoStreamTag;
+use crate::ast::invalid::UnknownTag;
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum Tag {
@@ -96,4 +97,5 @@ pub enum Tag {
     DefineVideoStream(DefineVideoStreamTag),
     EnableTelemetry(EnableTelemetryTag),
     DefineBinaryData(DefineBinaryDataTag),
+    Unknown(UnknownTag),
 }
