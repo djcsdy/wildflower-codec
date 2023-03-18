@@ -4,7 +4,7 @@ use crate::ast::shapes::{
 };
 use crate::ast::styles::FillStyle;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::tag::common::{read_rgb, read_rgba};
+use crate::decode::tag::common::{read_rectangle, read_rgb, read_rgba};
 use crate::decode::tag::styles::{
     read_extended_fill_style_array, read_fill_style_array, read_line_style, read_line_style2,
     read_line_style_array,
@@ -288,7 +288,7 @@ pub fn read_curved_edge_record<R: Read>(
 
 pub fn read_define_shape_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<DefineShapeTag> {
     let shape_id = reader.read_u16()?;
-    let shape_bounds = reader.read_rectangle()?;
+    let shape_bounds = read_rectangle(reader)?;
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
         read_line_style_array: |reader| {
@@ -307,7 +307,7 @@ pub fn read_define_shape2_tag<R: Read>(
     reader: &mut SwfTagBodyReader<R>,
 ) -> Result<DefineShape2Tag> {
     let shape_id = reader.read_u16()?;
-    let shape_bounds = reader.read_rectangle()?;
+    let shape_bounds = read_rectangle(reader)?;
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
         read_line_style_array: |reader| {
@@ -326,7 +326,7 @@ pub fn read_define_shape3_tag<R: Read>(
     reader: &mut SwfTagBodyReader<R>,
 ) -> Result<DefineShape3Tag> {
     let shape_id = reader.read_u16()?;
-    let shape_bounds = reader.read_rectangle()?;
+    let shape_bounds = read_rectangle(reader)?;
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
         read_line_style_array: |reader| {
@@ -345,8 +345,8 @@ pub fn read_define_shape4_tag<R: Read>(
     reader: &mut SwfTagBodyReader<R>,
 ) -> Result<DefineShape4Tag> {
     let shape_id = reader.read_u16()?;
-    let shape_bounds = reader.read_rectangle()?;
-    let edge_bounds = reader.read_rectangle()?;
+    let shape_bounds = read_rectangle(reader)?;
+    let edge_bounds = read_rectangle(reader)?;
     reader.read_ub8(5)?;
     let uses_fill_winding_rule = reader.read_bit()?;
     let uses_non_scaling_strokes = reader.read_bit()?;

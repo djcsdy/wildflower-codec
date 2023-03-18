@@ -1,6 +1,7 @@
 use crate::ast::header::{Compression, Header};
 use crate::decode::decompressing_reader::DecompressingReader;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::tag::common::read_rectangle;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::ErrorKind::InvalidData;
 use std::io::{BufRead, Error, Result};
@@ -29,7 +30,7 @@ pub fn read_header<R: BufRead>(mut reader: R) -> Result<(Header, DecompressingRe
         29,
     );
 
-    let frame_size = decompressing_tag_body_reader.read_rectangle()?;
+    let frame_size = read_rectangle(&mut decompressing_tag_body_reader)?;
     let frame_rate = decompressing_tag_body_reader.read_fixed8()?; // FIXME May use a different byte order than Fixed8
     let frame_count = decompressing_tag_body_reader.read_u16()?;
 

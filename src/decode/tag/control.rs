@@ -5,7 +5,7 @@ use crate::ast::control::{
     ScriptLimitsTag, SetBackgroundColorTag, SetTabIndexTag, SymbolClassRecord, SymbolClassTag,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::tag::common::read_rgb;
+use crate::decode::tag::common::{read_rectangle, read_rgb};
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};
 
@@ -134,7 +134,7 @@ pub fn read_define_scaling_grid_tag<R: Read>(
     reader: &mut SwfTagBodyReader<R>,
 ) -> Result<DefineScalingGridTag> {
     let character_id = reader.read_u16()?;
-    let splitter = reader.read_rectangle()?;
+    let splitter = read_rectangle(reader)?;
     Ok(DefineScalingGridTag {
         character_id,
         splitter,
