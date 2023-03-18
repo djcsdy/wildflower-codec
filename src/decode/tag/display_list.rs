@@ -6,7 +6,9 @@ use crate::ast::display_list::{
 };
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag::actions::read_action_records;
-use crate::decode::tag::common::{read_color_transform, read_matrix, read_rgba};
+use crate::decode::tag::common::{
+    read_color_transform, read_color_transform_with_alpha, read_matrix, read_rgba,
+};
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Read, Result};
@@ -52,7 +54,7 @@ pub fn read_place_object2_tag<R: Read>(
         None
     };
     let color_transform = if has_color_transform {
-        Some(reader.read_color_transform_with_alpha()?)
+        Some(read_color_transform_with_alpha(reader)?)
     } else {
         None
     };
@@ -170,7 +172,7 @@ pub fn read_place_object3_tag<R: Read>(
         None
     };
     let color_transform = if has_color_transform {
-        Some(reader.read_color_transform_with_alpha()?)
+        Some(read_color_transform_with_alpha(reader)?)
     } else {
         None
     };
