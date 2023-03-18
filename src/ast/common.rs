@@ -22,6 +22,12 @@ impl<N: Display> Debug for Twips<N> {
     }
 }
 
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
+pub struct Point<N> {
+    x: Twips<N>,
+    y: Twips<N>,
+}
+
 /// A fixed-point number consisting of a 16-bit whole part plus a 16-bit
 /// fractional part.
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
