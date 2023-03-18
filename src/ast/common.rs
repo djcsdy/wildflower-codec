@@ -28,6 +28,12 @@ pub struct Point<N> {
     y: Twips<N>,
 }
 
+impl<N: Display> Display for Point<N> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "({}, {})twpx", self.x.0, self.y.0)
+    }
+}
+
 /// A fixed-point number consisting of a 16-bit whole part plus a 16-bit
 /// fractional part.
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
