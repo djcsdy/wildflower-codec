@@ -1,7 +1,10 @@
 use crate::ast::header::Header;
 use crate::decode::decompressing_reader::DecompressingReader;
 use crate::decode::header::read_header;
-use std::io::{BufRead, Result};
+use crate::decode::read_ext::SwfTypesReadExt;
+use crate::encoded_tags::encoded_tag::EncodedTag;
+use crate::encoded_tags::tag_type::TagType;
+use std::io::{BufRead, Read, Result};
 
 pub struct ExtractTagsReader<'reader, R: BufRead> {
     reader: DecompressingReader<&'reader mut R>,
@@ -11,5 +14,19 @@ pub struct ExtractTagsReader<'reader, R: BufRead> {
 impl<'reader, R: BufRead> ExtractTagsReader<'reader, R> {
     pub fn extract_tags(reader: &'reader mut R) -> Result<Self> {
         read_header(reader).map(|(header, reader)| ExtractTagsReader { reader, header })
+    }
+
+    pub fn read_tag(&mut self) -> Result<EncodedTag> {
+        let tag_code_and_length = self.reader.read_u16()?;
+        let tag_type = TagType::from(tag_code_and_length >> 6);
+        let mut length = (tag_code_and_length & 0x3f) as usize;
+        if length == 0x3f {
+            length = self.reader.read_u32()? as usize
+        }
+
+        let mut body = vec![0u8; length];
+        self.reader.read_exact(&mut body)?;
+
+        Ok(EncodedTag::new(tag_type, body))
     }
 }
