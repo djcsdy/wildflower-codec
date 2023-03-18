@@ -21,7 +21,11 @@ pub fn read_fill_style_array<R: Read>(
     Ok(fill_styles)
 }
 
-pub fn read_extended_fill_style_array<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>>(
+pub fn read_extended_fill_style_array<
+    R: Read,
+    Color,
+    ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>,
+>(
     reader: &mut SwfTagBodyReader<R>,
     read_color: &ReadColor,
 ) -> Result<Vec<FillStyle<Color>>> {
