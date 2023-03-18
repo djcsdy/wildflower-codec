@@ -5,15 +5,15 @@ use crate::ast::shapes::{
 use crate::ast::styles::FillStyle;
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag::common::{read_rectangle, read_rgb, read_rgba};
 use crate::decode::tag::styles::{
     read_extended_fill_style_array, read_fill_style_array, read_line_style, read_line_style2,
     read_line_style_array,
 };
-use crate::decode::tag_body_reader::SwfTagBodyReader;
-use std::io::{Read, Result};
+use std::io::Result;
 
-pub fn read_shape<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Shape<(), ()>> {
+pub fn read_shape(reader: &mut SwfSliceReader) -> Result<Shape<(), ()>> {
     let num_fill_bits = reader.read_ub8(4)?;
     let num_line_bits = reader.read_ub8(4)?;
     let shape_records = read_shape_records(ReadShapeRecordOptions {
@@ -27,32 +27,31 @@ pub fn read_shape<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Shape<(),
 }
 
 pub struct ReadShapeWithStyleOptions<
-    'read_shape_with_style,
+    'reader,
+    'buffer,
     'read_line_style_array,
     'read_fill_style_array,
-    R: Read,
     Color,
     LineStyle,
-    ReadLineStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<LineStyle>>,
-    ReadFillStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<FillStyle<Color>>>,
+    ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
+    ReadFillStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<FillStyle<Color>>>,
 > {
-    pub reader: &'read_shape_with_style mut SwfTagBodyReader<R>,
+    pub reader: &'reader mut SwfSliceReader<'buffer>,
     pub read_line_style_array: &'read_line_style_array ReadLineStyleArray,
     pub read_fill_style_array: &'read_fill_style_array ReadFillStyleArray,
 }
 
 pub fn read_shape_with_style<
-    R: Read,
     Color,
     LineStyle,
-    ReadLineStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<LineStyle>>,
-    ReadFillStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<FillStyle<Color>>>,
+    ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
+    ReadFillStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<FillStyle<Color>>>,
 >(
     ReadShapeWithStyleOptions {
         reader,
         read_line_style_array,
         read_fill_style_array,
-    }: ReadShapeWithStyleOptions<R, Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
+    }: ReadShapeWithStyleOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
 ) -> Result<ShapeWithStyle<Color, LineStyle>> {
     let fill_styles = (read_fill_style_array)(reader)?;
     let line_styles = (read_line_style_array)(reader)?;
@@ -73,16 +72,16 @@ pub fn read_shape_with_style<
 }
 
 pub struct ReadShapeRecordOptions<
-    'read_shape_record,
+    'reader,
+    'buffer,
     'read_line_style_array,
     'read_fill_style_array,
-    R: Read,
     Color,
     LineStyle,
-    ReadLineStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<LineStyle>>,
-    ReadFillStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<FillStyle<Color>>>,
+    ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
+    ReadFillStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<FillStyle<Color>>>,
 > {
-    pub reader: &'read_shape_record mut SwfTagBodyReader<R>,
+    pub reader: &'reader mut SwfSliceReader<'buffer>,
     pub num_fill_bits: u8,
     pub num_line_bits: u8,
     pub read_line_style_array: &'read_line_style_array ReadLineStyleArray,
@@ -90,19 +89,12 @@ pub struct ReadShapeRecordOptions<
 }
 
 fn read_shape_records<
-    R: Read,
     Color,
     LineStyle,
-    ReadLineStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<LineStyle>>,
-    ReadFillStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<FillStyle<Color>>>,
+    ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
+    ReadFillStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<FillStyle<Color>>>,
 >(
-    mut options: ReadShapeRecordOptions<
-        R,
-        Color,
-        LineStyle,
-        ReadLineStyleArray,
-        ReadFillStyleArray,
-    >,
+    mut options: ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
 ) -> Result<Vec<ShapeRecord<Color, LineStyle>>> {
     let mut shape_records = Vec::new();
     while options.reader.remaining() > 0 {
@@ -144,13 +136,12 @@ pub enum InternalShapeRecord<Color, LineStyle> {
 }
 
 pub fn read_shape_record<
-    R: Read,
     Color,
     LineStyle,
-    ReadLineStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<LineStyle>>,
-    ReadFillStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<FillStyle<Color>>>,
+    ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
+    ReadFillStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<FillStyle<Color>>>,
 >(
-    options: ReadShapeRecordOptions<R, Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
+    options: ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
 ) -> Result<InternalShapeRecord<Color, LineStyle>> {
     let is_edge = options.reader.read_bit()?;
     if is_edge {
@@ -184,13 +175,12 @@ pub enum NonEdgeRecord<Color, LineStyle> {
 }
 
 pub fn read_non_edge_record<
-    R: Read,
     Color,
     LineStyle,
-    ReadLineStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<LineStyle>>,
-    ReadFillStyleArray: Fn(&mut SwfTagBodyReader<R>) -> Result<Vec<FillStyle<Color>>>,
+    ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
+    ReadFillStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<FillStyle<Color>>>,
 >(
-    options: ReadShapeRecordOptions<R, Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
+    options: ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
 ) -> Result<NonEdgeRecord<Color, LineStyle>> {
     if options.num_fill_bits > 16 || options.num_line_bits > 16 {
         panic!();
@@ -243,7 +233,7 @@ pub enum EdgeRecord {
     CurvedEdge(CurvedEdgeRecord),
 }
 
-pub fn read_edge_record<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<EdgeRecord> {
+pub fn read_edge_record(reader: &mut SwfSliceReader) -> Result<EdgeRecord> {
     let is_straight = reader.read_bit()?;
     if is_straight {
         Ok(EdgeRecord::StraightEdge(read_straight_edge_record(reader)?))
@@ -252,9 +242,7 @@ pub fn read_edge_record<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Edg
     }
 }
 
-pub fn read_straight_edge_record<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<StraightEdgeRecord> {
+pub fn read_straight_edge_record(reader: &mut SwfSliceReader) -> Result<StraightEdgeRecord> {
     let num_bits = reader.read_ub8(4)? + 2;
     let is_general_line = reader.read_bit()?;
     let is_vertical_line = if is_general_line {
@@ -275,9 +263,7 @@ pub fn read_straight_edge_record<R: Read>(
     Ok(StraightEdgeRecord { delta_x, delta_y })
 }
 
-pub fn read_curved_edge_record<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<CurvedEdgeRecord> {
+pub fn read_curved_edge_record(reader: &mut SwfSliceReader) -> Result<CurvedEdgeRecord> {
     let num_bits = reader.read_ub8(4)? + 2;
     let control_delta_x = reader.read_sb(num_bits)?;
     let control_delta_y = reader.read_sb(num_bits)?;
@@ -291,7 +277,7 @@ pub fn read_curved_edge_record<R: Read>(
     })
 }
 
-pub fn read_define_shape_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<DefineShapeTag> {
+pub fn read_define_shape_tag(reader: &mut SwfSliceReader) -> Result<DefineShapeTag> {
     let shape_id = reader.read_u16()?;
     let shape_bounds = read_rectangle(reader)?;
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
@@ -308,9 +294,7 @@ pub fn read_define_shape_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Resul
     })
 }
 
-pub fn read_define_shape2_tag<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<DefineShape2Tag> {
+pub fn read_define_shape2_tag(reader: &mut SwfSliceReader) -> Result<DefineShape2Tag> {
     let shape_id = reader.read_u16()?;
     let shape_bounds = read_rectangle(reader)?;
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
@@ -327,9 +311,7 @@ pub fn read_define_shape2_tag<R: Read>(
     })
 }
 
-pub fn read_define_shape3_tag<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<DefineShape3Tag> {
+pub fn read_define_shape3_tag(reader: &mut SwfSliceReader) -> Result<DefineShape3Tag> {
     let shape_id = reader.read_u16()?;
     let shape_bounds = read_rectangle(reader)?;
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
@@ -346,9 +328,7 @@ pub fn read_define_shape3_tag<R: Read>(
     })
 }
 
-pub fn read_define_shape4_tag<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<DefineShape4Tag> {
+pub fn read_define_shape4_tag(reader: &mut SwfSliceReader) -> Result<DefineShape4Tag> {
     let shape_id = reader.read_u16()?;
     let shape_bounds = read_rectangle(reader)?;
     let edge_bounds = read_rectangle(reader)?;

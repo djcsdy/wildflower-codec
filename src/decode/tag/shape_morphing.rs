@@ -5,18 +5,16 @@ use crate::ast::shape_morphing::{
 use crate::ast::styles::JoinStyle;
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag::common::{read_matrix, read_rectangle, read_rgba};
 use crate::decode::tag::shapes::read_shape;
 use crate::decode::tag::styles::{
     read_cap_style, read_fill_style_type, read_line_style_array, FillStyleType,
 };
-use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::ErrorKind::InvalidData;
-use std::io::{Error, Read, Result};
+use std::io::{Error, Result};
 
-pub fn read_define_morph_shape_tag<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<DefineMorphShapeTag> {
+pub fn read_define_morph_shape_tag(reader: &mut SwfSliceReader) -> Result<DefineMorphShapeTag> {
     let character_id = reader.read_u16()?;
     let start_bounds = read_rectangle(reader)?;
     let end_bounds = read_rectangle(reader)?;
@@ -36,9 +34,7 @@ pub fn read_define_morph_shape_tag<R: Read>(
     })
 }
 
-pub fn read_define_morph_shape2_tag<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<DefineMorphShape2Tag> {
+pub fn read_define_morph_shape2_tag(reader: &mut SwfSliceReader) -> Result<DefineMorphShape2Tag> {
     let character_id = reader.read_u16()?;
     let start_bounds = read_rectangle(reader)?;
     let end_bounds = read_rectangle(reader)?;
@@ -67,9 +63,7 @@ pub fn read_define_morph_shape2_tag<R: Read>(
     })
 }
 
-fn read_morph_fill_style_array<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<Vec<MorphFillStyle>> {
+fn read_morph_fill_style_array(reader: &mut SwfSliceReader) -> Result<Vec<MorphFillStyle>> {
     let mut count = reader.read_u8()? as usize;
     if count == 0xff {
         count = reader.read_u16()? as usize
@@ -81,7 +75,7 @@ fn read_morph_fill_style_array<R: Read>(
     Ok(fill_styles)
 }
 
-fn read_morph_fill_style<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<MorphFillStyle> {
+fn read_morph_fill_style(reader: &mut SwfSliceReader) -> Result<MorphFillStyle> {
     let fill_style_type = read_fill_style_type(reader)?;
     Ok(match fill_style_type {
         FillStyleType::Solid => {
@@ -165,7 +159,7 @@ fn read_morph_fill_style<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Mo
     })
 }
 
-fn read_morph_gradient<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<MorphGradient> {
+fn read_morph_gradient(reader: &mut SwfSliceReader) -> Result<MorphGradient> {
     let num_gradients = reader.read_u8()? as usize;
     let mut gradient_records = Vec::with_capacity(num_gradients);
     for _ in 0..num_gradients {
@@ -174,9 +168,7 @@ fn read_morph_gradient<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Morp
     Ok(MorphGradient { gradient_records })
 }
 
-fn read_morph_focal_gradient<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<MorphFocalGradient> {
+fn read_morph_focal_gradient(reader: &mut SwfSliceReader) -> Result<MorphFocalGradient> {
     let morph_gradient = read_morph_gradient(reader)?;
     let start_focal_point = reader.read_fixed8()?;
     let end_focal_point = reader.read_fixed8()?;
@@ -187,9 +179,7 @@ fn read_morph_focal_gradient<R: Read>(
     })
 }
 
-fn read_morph_gradient_record<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<MorphGradientRecord> {
+fn read_morph_gradient_record(reader: &mut SwfSliceReader) -> Result<MorphGradientRecord> {
     let start_ratio = reader.read_u8()?;
     let start_color = read_rgba(reader)?;
     let end_ratio = reader.read_u8()?;
@@ -202,7 +192,7 @@ fn read_morph_gradient_record<R: Read>(
     })
 }
 
-fn read_morph_line_style<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<MorphLineStyle> {
+fn read_morph_line_style(reader: &mut SwfSliceReader) -> Result<MorphLineStyle> {
     let start_width = reader.read_u16()?;
     let end_width = reader.read_u16()?;
     let start_color = read_rgba(reader)?;
@@ -215,7 +205,7 @@ fn read_morph_line_style<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Mo
     })
 }
 
-fn read_morph_line_style2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<MorphLineStyle2> {
+fn read_morph_line_style2(reader: &mut SwfSliceReader) -> Result<MorphLineStyle2> {
     let start_width = reader.read_u16()?;
     let end_width = reader.read_u16()?;
     let start_cap_style = read_cap_style(reader)?;

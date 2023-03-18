@@ -1,25 +1,22 @@
 use crate::ast::common::String;
 use crate::decode::bit_read::BitRead;
 use crate::decode::bit_reader::BitReader;
-use crate::decode::max_length_reader::MaxLengthReader;
 use crate::decode::read_ext::SwfTypesReadExt;
 use std::io::{IoSliceMut, Read, Result};
 
-pub struct SwfTagBodyReader<R: Read> {
-    inner: BitReader<MaxLengthReader<R>>,
+pub struct SwfSliceReader<'buffer> {
+    inner: BitReader<&'buffer [u8]>,
     swf_version: u8,
+    length: usize,
 }
 
-impl<R: Read> SwfTagBodyReader<R> {
-    pub fn new(inner: R, swf_version: u8, max_length: usize) -> SwfTagBodyReader<R> {
-        SwfTagBodyReader {
-            inner: BitReader::new(MaxLengthReader::new(inner, max_length)),
+impl<'buffer> SwfSliceReader<'buffer> {
+    pub fn new(buffer: &'buffer [u8], swf_version: u8) -> Self {
+        SwfSliceReader {
+            inner: BitReader::new(buffer),
             swf_version,
+            length: buffer.len(),
         }
-    }
-
-    pub fn into_inner(self) -> R {
-        self.inner.into_inner().into_inner()
     }
 
     pub fn swf_version(&self) -> u8 {
@@ -27,23 +24,15 @@ impl<R: Read> SwfTagBodyReader<R> {
     }
 
     pub fn count(&self) -> usize {
-        self.inner.inner().count()
+        self.inner.inner().len() - self.length
     }
 
     pub fn remaining(&self) -> usize {
-        self.inner.inner().remaining()
+        self.inner.inner().len()
     }
 
-    pub fn skip_to_end(&mut self) -> Result<()> {
-        let mut buf = [0; 4096];
-        while self.remaining() > 0 {
-            self.read(&mut buf)?;
-        }
-        Ok(())
-    }
-
-    pub fn slice(&mut self, length: usize) -> SwfTagBodyReader<&mut Self> {
-        SwfTagBodyReader::new(self, self.swf_version, length)
+    pub fn slice(&mut self, length: usize) -> Self {
+        Self::new(self.inner.slice(length), self.swf_version)
     }
 
     pub fn read_null_terminated_bytes(&mut self) -> Result<Vec<u8>> {
@@ -81,7 +70,7 @@ impl<R: Read> SwfTagBodyReader<R> {
     }
 }
 
-impl<R: Read> Read for SwfTagBodyReader<R> {
+impl<'buffer> Read for SwfSliceReader<'buffer> {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
         self.inner.read(buf)
     }
@@ -91,7 +80,7 @@ impl<R: Read> Read for SwfTagBodyReader<R> {
     }
 }
 
-impl<R: Read> BitRead for SwfTagBodyReader<R> {
+impl<'buffer> BitRead for SwfSliceReader<'buffer> {
     fn align_byte(&mut self) {
         self.inner.align_byte()
     }

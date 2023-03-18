@@ -4,15 +4,13 @@ use crate::ast::styles::{
 };
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag::common::{read_matrix, read_rgb, read_rgba};
-use crate::decode::tag_body_reader::SwfTagBodyReader;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::io::ErrorKind::InvalidData;
-use std::io::{Error, Read, Result};
+use std::io::{Error, Result};
 
-pub fn read_fill_style_array<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<Vec<FillStyle<Rgb>>> {
+pub fn read_fill_style_array(reader: &mut SwfSliceReader) -> Result<Vec<FillStyle<Rgb>>> {
     let fill_style_count = reader.read_u8()?;
     let mut fill_styles = Vec::with_capacity(fill_style_count as usize);
     for _ in 0..fill_style_count {
@@ -22,12 +20,14 @@ pub fn read_fill_style_array<R: Read>(
 }
 
 pub fn read_extended_fill_style_array<
-    R: Read,
+    'reader,
+    'buffer,
+    'read_color,
     Color,
-    ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>,
+    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
 >(
-    reader: &mut SwfTagBodyReader<R>,
-    read_color: &ReadColor,
+    reader: &'reader mut SwfSliceReader<'buffer>,
+    read_color: &'read_color ReadColor,
 ) -> Result<Vec<FillStyle<Color>>> {
     let mut fill_style_count = reader.read_u8()? as u16;
     if fill_style_count == 0xff {
@@ -40,26 +40,32 @@ pub fn read_extended_fill_style_array<
     Ok(fill_styles)
 }
 
-pub fn read_fill_style<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>>(
-    reader: &mut SwfTagBodyReader<R>,
-    read_color: &ReadColor,
+pub fn read_fill_style<
+    'reader,
+    'buffer,
+    'read_color,
+    Color,
+    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
+>(
+    reader: &'reader mut SwfSliceReader<'buffer>,
+    read_color: &'read_color ReadColor,
 ) -> Result<FillStyle<Color>> {
     let fill_style_type = read_fill_style_type(reader)?;
     Ok(match fill_style_type {
         FillStyleType::Solid => FillStyle::Solid(read_color(reader)?),
         FillStyleType::LinearGradient => {
             let matrix = read_matrix(reader)?;
-            let gradient = read_gradient(reader, read_color)?;
+            let gradient = read_gradient(reader, &read_color)?;
             FillStyle::LinearGradient { matrix, gradient }
         }
         FillStyleType::RadialGradient => {
             let matrix = read_matrix(reader)?;
-            let gradient = read_gradient(reader, read_color)?;
+            let gradient = read_gradient(reader, &read_color)?;
             FillStyle::RadialGradient { matrix, gradient }
         }
         FillStyleType::FocalRadialGradient => {
             let matrix = read_matrix(reader)?;
-            let gradient = read_focal_gradient(reader, read_color)?;
+            let gradient = read_focal_gradient(reader, &read_color)?;
             FillStyle::FocalRadialGradient { matrix, gradient }
         }
         FillStyleType::RepeatingBitmap => {
@@ -98,7 +104,7 @@ pub enum FillStyleType {
     NonSmoothedClippedBitmap = 0x43,
 }
 
-pub fn read_fill_style_type<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<FillStyleType> {
+pub fn read_fill_style_type(reader: &mut SwfSliceReader) -> Result<FillStyleType> {
     reader
         .read_u8()?
         .try_into()
@@ -106,11 +112,10 @@ pub fn read_fill_style_type<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result
 }
 
 pub fn read_line_style_array<
-    R: Read,
     LineStyle,
-    ReadLineStyle: Fn(&mut SwfTagBodyReader<R>) -> Result<LineStyle>,
+    ReadLineStyle: Fn(&mut SwfSliceReader) -> Result<LineStyle>,
 >(
-    reader: &mut SwfTagBodyReader<R>,
+    reader: &mut SwfSliceReader,
     read_line_style: &ReadLineStyle,
 ) -> Result<Vec<LineStyle>> {
     let mut count = reader.read_u8()? as u16;
@@ -124,16 +129,22 @@ pub fn read_line_style_array<
     Ok(line_styles)
 }
 
-pub fn read_line_style<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>>(
-    reader: &mut SwfTagBodyReader<R>,
-    read_color: &ReadColor,
+pub fn read_line_style<
+    'reader,
+    'buffer,
+    'read_color,
+    Color,
+    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
+>(
+    reader: &'reader mut SwfSliceReader<'buffer>,
+    read_color: &'read_color ReadColor,
 ) -> Result<LineStyle<Color>> {
     let width = reader.read_u16()?;
     let color = read_color(reader)?;
     Ok(LineStyle { width, color })
 }
 
-pub fn read_line_style2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<LineStyle2> {
+pub fn read_line_style2(reader: &mut SwfSliceReader) -> Result<LineStyle2> {
     let width = reader.read_u16()?;
     let start_cap_style = read_cap_style(reader)?;
     let join_style = reader.read_ub8(2)?;
@@ -174,13 +185,19 @@ pub fn read_line_style2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Lin
     })
 }
 
-pub fn read_cap_style<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<CapStyle> {
+pub fn read_cap_style(reader: &mut SwfSliceReader) -> Result<CapStyle> {
     CapStyle::try_from(reader.read_ub8(2)?).map_err(|_| Error::from(InvalidData))
 }
 
-pub fn read_gradient<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>>(
-    reader: &mut SwfTagBodyReader<R>,
-    read_color: &ReadColor,
+pub fn read_gradient<
+    'reader,
+    'buffer,
+    'read_color,
+    Color,
+    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
+>(
+    reader: &'reader mut SwfSliceReader<'buffer>,
+    read_color: &'read_color ReadColor,
 ) -> Result<Gradient<Color>> {
     let spread_mode = reader
         .read_ub8(2)?
@@ -203,12 +220,14 @@ pub fn read_gradient<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> 
 }
 
 pub fn read_focal_gradient<
-    R: Read,
+    'reader,
+    'buffer,
+    'read_color,
     Color,
-    ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>,
+    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
 >(
-    reader: &mut SwfTagBodyReader<R>,
-    read_color: &ReadColor,
+    reader: &'reader mut SwfSliceReader<'buffer>,
+    read_color: &'read_color ReadColor,
 ) -> Result<FocalGradient<Color>> {
     let gradient = read_gradient(reader, read_color)?;
     let focal_point = reader.read_fixed8()?;
@@ -221,12 +240,14 @@ pub fn read_focal_gradient<
 }
 
 fn read_gradient_record<
-    R: Read,
+    'reader,
+    'buffer,
+    'read_color,
     Color,
-    ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>,
+    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
 >(
-    reader: &mut SwfTagBodyReader<R>,
-    read_color: &ReadColor,
+    reader: &'reader mut SwfSliceReader<'buffer>,
+    read_color: &'read_color ReadColor,
 ) -> Result<GradientRecord<Color>> {
     let ratio = reader.read_u8()?;
     let color = read_color(reader)?;

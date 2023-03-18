@@ -6,15 +6,15 @@ use crate::ast::display_list::{
 };
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag::actions::read_action_records;
 use crate::decode::tag::common::{
     read_color_transform, read_color_transform_with_alpha, read_matrix, read_rgba,
 };
-use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::ErrorKind::InvalidData;
-use std::io::{Error, Read, Result};
+use std::io::{Error, Result};
 
-pub fn read_place_object_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<PlaceObjectTag> {
+pub fn read_place_object_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjectTag> {
     let character_id = reader.read_u16()?;
     let depth = reader.read_u16()?;
     let matrix = read_matrix(reader)?;
@@ -32,9 +32,7 @@ pub fn read_place_object_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Resul
     })
 }
 
-pub fn read_place_object2_tag<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<PlaceObject2Tag> {
+pub fn read_place_object2_tag(reader: &mut SwfSliceReader) -> Result<PlaceObject2Tag> {
     let has_clip_actions = reader.read_bit()?;
     let has_clip_depth = reader.read_bit()?;
     let has_name = reader.read_bit()?;
@@ -92,7 +90,7 @@ pub fn read_place_object2_tag<R: Read>(
     })
 }
 
-fn read_clip_actions<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<ClipActions> {
+fn read_clip_actions(reader: &mut SwfSliceReader) -> Result<ClipActions> {
     reader.read_u16()?;
     let all_event_flags = read_clip_event_flags(reader)?;
     let mut clip_action_records = Vec::new();
@@ -105,7 +103,7 @@ fn read_clip_actions<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<ClipAc
     })
 }
 
-fn read_clip_event_flags<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<ClipEventFlags> {
+fn read_clip_event_flags(reader: &mut SwfSliceReader) -> Result<ClipEventFlags> {
     Ok(ClipEventFlags::from_bits_truncate(
         if reader.swf_version() >= 6 {
             reader.read_u32()?
@@ -115,9 +113,7 @@ fn read_clip_event_flags<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Cl
     ))
 }
 
-fn read_clip_action_record<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<Option<ClipActionRecord>> {
+fn read_clip_action_record(reader: &mut SwfSliceReader) -> Result<Option<ClipActionRecord>> {
     let event_flags = read_clip_event_flags(reader)?;
     if event_flags.is_empty() {
         Ok(None)
@@ -138,9 +134,7 @@ fn read_clip_action_record<R: Read>(
     }
 }
 
-pub fn read_place_object3_tag<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<PlaceObject3Tag> {
+pub fn read_place_object3_tag(reader: &mut SwfSliceReader) -> Result<PlaceObject3Tag> {
     let has_clip_actions = reader.read_bit()?;
     let has_clip_depth = reader.read_bit()?;
     let has_name = reader.read_bit()?;
@@ -249,7 +243,7 @@ pub fn read_place_object3_tag<R: Read>(
     })
 }
 
-fn read_filter_list<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Vec<Filter>> {
+fn read_filter_list(reader: &mut SwfSliceReader) -> Result<Vec<Filter>> {
     let number_of_filters = reader.read_u8()?;
     let mut filters = Vec::with_capacity(number_of_filters as usize);
     for _ in 0..number_of_filters {
@@ -258,7 +252,7 @@ fn read_filter_list<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Vec<Fil
     Ok(filters)
 }
 
-fn read_filter<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Filter> {
+fn read_filter(reader: &mut SwfSliceReader) -> Result<Filter> {
     let filter_id = reader.read_u8()?;
     Ok(match filter_id {
         0 => Filter::DropShadow(read_drop_shadow_filter(reader)?),
@@ -273,15 +267,13 @@ fn read_filter<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Filter> {
     })
 }
 
-fn read_color_matrix_filter<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<ColorMatrixFilter> {
+fn read_color_matrix_filter(reader: &mut SwfSliceReader) -> Result<ColorMatrixFilter> {
     let mut matrix = [0f32; 20];
     reader.read_f32_into(&mut matrix)?;
     Ok(ColorMatrixFilter { matrix })
 }
 
-fn read_convolution_filter<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<ConvolutionFilter> {
+fn read_convolution_filter(reader: &mut SwfSliceReader) -> Result<ConvolutionFilter> {
     let matrix_x = reader.read_u8()?;
     let matrix_y = reader.read_u8()?;
     let divisor = reader.read_f32()?;
@@ -305,7 +297,7 @@ fn read_convolution_filter<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<
     })
 }
 
-fn read_blur_filter<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<BlurFilter> {
+fn read_blur_filter(reader: &mut SwfSliceReader) -> Result<BlurFilter> {
     let blur_x = reader.read_fixed16()?;
     let blur_y = reader.read_fixed16()?;
     let passes = reader.read_ub8(5)?;
@@ -317,7 +309,7 @@ fn read_blur_filter<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<BlurFil
     })
 }
 
-fn read_drop_shadow_filter<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<DropShadowFilter> {
+fn read_drop_shadow_filter(reader: &mut SwfSliceReader) -> Result<DropShadowFilter> {
     let color = read_rgba(reader)?;
     let blur_x = reader.read_fixed16()?;
     let blur_y = reader.read_fixed16()?;
@@ -342,7 +334,7 @@ fn read_drop_shadow_filter<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<
     })
 }
 
-fn read_glow_filter<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GlowFilter> {
+fn read_glow_filter(reader: &mut SwfSliceReader) -> Result<GlowFilter> {
     let color = read_rgba(reader)?;
     let blur_x = reader.read_fixed16()?;
     let blur_y = reader.read_fixed16()?;
@@ -363,7 +355,7 @@ fn read_glow_filter<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GlowFil
     })
 }
 
-fn read_bevel_filter<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<BevelFilter> {
+fn read_bevel_filter(reader: &mut SwfSliceReader) -> Result<BevelFilter> {
     let shadow_color = read_rgba(reader)?;
     let highlight_color = read_rgba(reader)?;
     let blur_x = reader.read_fixed16()?;
@@ -392,9 +384,7 @@ fn read_bevel_filter<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<BevelF
     })
 }
 
-fn read_gradient_glow_filter<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<GradientGlowFilter> {
+fn read_gradient_glow_filter(reader: &mut SwfSliceReader) -> Result<GradientGlowFilter> {
     let num_colors = reader.read_u8()?;
     let mut colors = Vec::with_capacity(num_colors as usize);
     for _ in 0..num_colors {
@@ -430,9 +420,7 @@ fn read_gradient_glow_filter<R: Read>(
     })
 }
 
-fn read_gradient_bevel_filter<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<GradientBevelFilter> {
+fn read_gradient_bevel_filter(reader: &mut SwfSliceReader) -> Result<GradientBevelFilter> {
     let num_colors = reader.read_u8()?;
     let mut colors = Vec::with_capacity(num_colors as usize);
     for _ in 0..num_colors {
@@ -468,9 +456,7 @@ fn read_gradient_bevel_filter<R: Read>(
     })
 }
 
-pub fn read_remove_object_tag<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<RemoveObjectTag> {
+pub fn read_remove_object_tag(reader: &mut SwfSliceReader) -> Result<RemoveObjectTag> {
     let character_id = reader.read_u16()?;
     let depth = reader.read_u16()?;
     Ok(RemoveObjectTag {
@@ -479,9 +465,7 @@ pub fn read_remove_object_tag<R: Read>(
     })
 }
 
-pub fn read_remove_object2_tag<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<RemoveObject2Tag> {
+pub fn read_remove_object2_tag(reader: &mut SwfSliceReader) -> Result<RemoveObject2Tag> {
     let depth = reader.read_u16()?;
     Ok(RemoveObject2Tag { depth })
 }

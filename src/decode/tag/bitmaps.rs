@@ -5,14 +5,14 @@ use crate::ast::bitmaps::{
 use crate::ast::common::Rgb;
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag::common::{read_argb, read_rgb, read_rgba};
-use crate::decode::tag_body_reader::SwfTagBodyReader;
 use inflate::DeflateDecoder;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Read, Result};
 
-pub fn read_define_bits_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<DefineBitsTag> {
+pub fn read_define_bits_tag(reader: &mut SwfSliceReader) -> Result<DefineBitsTag> {
     let character_id = reader.read_u16()?;
     let jpeg_data = reader.read_u8_to_end()?;
     Ok(DefineBitsTag {
@@ -21,14 +21,12 @@ pub fn read_define_bits_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result
     })
 }
 
-pub fn read_jpeg_tables_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<JpegTablesTag> {
+pub fn read_jpeg_tables_tag(reader: &mut SwfSliceReader) -> Result<JpegTablesTag> {
     let jpeg_data = reader.read_u8_to_end()?;
     Ok(JpegTablesTag { jpeg_data })
 }
 
-pub fn read_define_bits_jpeg2_tag<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<DefineBitsJpeg2Tag> {
+pub fn read_define_bits_jpeg2_tag(reader: &mut SwfSliceReader) -> Result<DefineBitsJpeg2Tag> {
     let character_id = reader.read_u16()?;
     let image_data = reader.read_u8_to_end()?;
     Ok(DefineBitsJpeg2Tag {
@@ -37,9 +35,7 @@ pub fn read_define_bits_jpeg2_tag<R: Read>(
     })
 }
 
-pub fn read_define_bits_jpeg3_tag<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<DefineBitsJpeg3Tag> {
+pub fn read_define_bits_jpeg3_tag(reader: &mut SwfSliceReader) -> Result<DefineBitsJpeg3Tag> {
     let character_id = reader.read_u16()?;
     let alpha_data_offset = reader.read_u32()? as usize;
     let mut image_data = vec![0u8; alpha_data_offset];
@@ -60,9 +56,7 @@ enum BitmapFormat {
     Rgb24 = 5,
 }
 
-pub fn read_define_bits_lossless_tag<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<DefineBitsLosslessTag> {
+pub fn read_define_bits_lossless_tag(reader: &mut SwfSliceReader) -> Result<DefineBitsLosslessTag> {
     let character_id = reader.read_u16()?;
     let bitmap_format = reader
         .read_u8()?
@@ -76,12 +70,14 @@ pub fn read_define_bits_lossless_tag<R: Read>(
         0
     };
     let swf_version = reader.swf_version();
-    let mut zlib_reader =
-        SwfTagBodyReader::new(DeflateDecoder::from_zlib(reader), swf_version, usize::MAX);
+    let mut decompressed_bitmap_data = Vec::with_capacity(reader.remaining() * 2);
+    let mut zlib_reader = DeflateDecoder::from_zlib(reader);
+    zlib_reader.read_to_end(&mut decompressed_bitmap_data)?;
+    let mut bitmap_data_reader = SwfSliceReader::new(&decompressed_bitmap_data, swf_version);
     let bitmap_data = match bitmap_format {
         BitmapFormat::ColorMap8 => {
             BitmapData::ColorMap8(read_colormap_data(ReadColorMapDataOptions {
-                reader: &mut zlib_reader,
+                reader: &mut bitmap_data_reader,
                 read_color: &read_rgb,
                 color_table_size,
                 bitmap_width,
@@ -89,13 +85,13 @@ pub fn read_define_bits_lossless_tag<R: Read>(
             })?)
         }
         BitmapFormat::Rgb15 => read_bitmap_data(ReadBitmapDataOptions {
-            reader: &mut zlib_reader,
+            reader: &mut bitmap_data_reader,
             read_color: &read_pix15,
             bitmap_width,
             bitmap_height,
         })?,
         BitmapFormat::Rgb24 => read_bitmap_data(ReadBitmapDataOptions {
-            reader: &mut zlib_reader,
+            reader: &mut bitmap_data_reader,
             read_color: &read_pix24,
             bitmap_width,
             bitmap_height,
@@ -111,20 +107,26 @@ pub fn read_define_bits_lossless_tag<R: Read>(
 
 struct ReadColorMapDataOptions<
     'reader,
+    'buffer,
     'read_color,
-    R: Read,
     Color,
-    ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>,
+    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
 > {
-    reader: &'reader mut SwfTagBodyReader<R>,
+    reader: &'reader mut SwfSliceReader<'buffer>,
     read_color: &'read_color ReadColor,
     color_table_size: usize,
     bitmap_width: u16,
     bitmap_height: u16,
 }
 
-fn read_colormap_data<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>>(
-    options: ReadColorMapDataOptions<R, Color, ReadColor>,
+fn read_colormap_data<
+    'reader,
+    'buffer,
+    'read_color,
+    Color,
+    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
+>(
+    options: ReadColorMapDataOptions<'reader, 'buffer, 'read_color, Color, ReadColor>,
 ) -> Result<ColorMapData<Color>> {
     let mut color_table = Vec::with_capacity(options.color_table_size);
     for _ in 0..options.color_table_size {
@@ -144,20 +146,26 @@ fn read_colormap_data<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) ->
 }
 
 struct ReadBitmapDataOptions<
-    'read_bitmap_data,
+    'reader,
+    'buffer,
     'read_color,
-    R: Read,
     Color,
-    ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>,
+    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
 > {
-    reader: &'read_bitmap_data mut SwfTagBodyReader<R>,
+    reader: &'reader mut SwfSliceReader<'buffer>,
     read_color: &'read_color ReadColor,
     bitmap_width: u16,
     bitmap_height: u16,
 }
 
-fn read_bitmap_data<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> Result<Color>>(
-    options: ReadBitmapDataOptions<R, Color, ReadColor>,
+fn read_bitmap_data<
+    'reader,
+    'buffer,
+    'read_color,
+    Color,
+    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
+>(
+    options: ReadBitmapDataOptions<'reader, 'buffer, 'read_color, Color, ReadColor>,
 ) -> Result<BitmapData<Color>> {
     let start = options.reader.count();
     let mut pixel_data =
@@ -173,7 +181,7 @@ fn read_bitmap_data<R: Read, Color, ReadColor: Fn(&mut SwfTagBodyReader<R>) -> R
     Ok(BitmapData::Rgb(pixel_data))
 }
 
-fn read_pix15<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Rgb> {
+fn read_pix15(reader: &mut SwfSliceReader) -> Result<Rgb> {
     reader.read_bit()?;
     let red = reader.read_ub8(5)? << 3;
     let green = reader.read_ub8(5)? << 3;
@@ -181,7 +189,7 @@ fn read_pix15<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Rgb> {
     Ok(Rgb { red, green, blue })
 }
 
-fn read_pix24<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Rgb> {
+fn read_pix24(reader: &mut SwfSliceReader) -> Result<Rgb> {
     reader.read_u8()?;
     let red = reader.read_u8()?;
     let green = reader.read_u8()?;
@@ -189,8 +197,8 @@ fn read_pix24<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Rgb> {
     Ok(Rgb { red, green, blue })
 }
 
-pub fn read_define_bits_lossless2_tag<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
+pub fn read_define_bits_lossless2_tag(
+    reader: &mut SwfSliceReader,
 ) -> Result<DefineBitsLossless2Tag> {
     let character_id = reader.read_u16()?;
     let bitmap_format = reader
@@ -205,12 +213,14 @@ pub fn read_define_bits_lossless2_tag<R: Read>(
         0
     };
     let swf_version = reader.swf_version();
-    let mut zlib_reader =
-        SwfTagBodyReader::new(DeflateDecoder::from_zlib(reader), swf_version, usize::MAX);
+    let mut decompressed_bitmap_data = Vec::with_capacity(reader.remaining() * 2);
+    let mut zlib_reader = DeflateDecoder::from_zlib(reader);
+    zlib_reader.read_to_end(&mut decompressed_bitmap_data)?;
+    let mut bitmap_data_reader = SwfSliceReader::new(&decompressed_bitmap_data, swf_version);
     let bitmap_data = match bitmap_format {
         BitmapFormat::ColorMap8 => {
             BitmapData::ColorMap8(read_colormap_data(ReadColorMapDataOptions {
-                reader: &mut zlib_reader,
+                reader: &mut bitmap_data_reader,
                 read_color: &read_rgba,
                 color_table_size,
                 bitmap_width,
@@ -219,7 +229,7 @@ pub fn read_define_bits_lossless2_tag<R: Read>(
         }
         BitmapFormat::Rgb15 => return Err(Error::from(InvalidData)),
         BitmapFormat::Rgb24 => read_bitmap_data(ReadBitmapDataOptions {
-            reader: &mut zlib_reader,
+            reader: &mut bitmap_data_reader,
             read_color: &read_argb,
             bitmap_width,
             bitmap_height,
@@ -233,9 +243,7 @@ pub fn read_define_bits_lossless2_tag<R: Read>(
     })
 }
 
-pub fn read_define_bits_jpeg4_tag<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<DefineBitsJpeg4Tag> {
+pub fn read_define_bits_jpeg4_tag(reader: &mut SwfSliceReader) -> Result<DefineBitsJpeg4Tag> {
     let character_id = reader.read_u16()?;
     let alpha_data_offset = reader.read_u32()? as usize;
     let deblock_param = reader.read_fixed8()?;

@@ -5,16 +5,16 @@ use crate::ast::actions::{
 };
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::tag_body_reader::SwfTagBodyReader;
+use crate::decode::slice_reader::SwfSliceReader;
 use std::io::ErrorKind::InvalidData;
-use std::io::{Error, Read, Result};
+use std::io::{Error, Result};
 
-pub fn read_do_action_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<DoActionTag> {
+pub fn read_do_action_tag(reader: &mut SwfSliceReader) -> Result<DoActionTag> {
     let actions = read_action_records(reader)?;
     Ok(DoActionTag { actions })
 }
 
-pub fn read_action_record<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<ActionRecord> {
+pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
     let action_code = reader.read_u8()?;
     let length = if action_code >= 0x80 {
         reader.read_u16()?
@@ -125,12 +125,11 @@ pub fn read_action_record<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<A
         0x9f => ActionRecord::GoToFrame2(read_go_to_frame2(&mut body_reader)?),
         _ => return Err(Error::from(InvalidData)),
     };
-    body_reader.skip_to_end()?;
 
     Ok(action_record)
 }
 
-pub fn read_action_records<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Vec<ActionRecord>> {
+pub fn read_action_records(reader: &mut SwfSliceReader) -> Result<Vec<ActionRecord>> {
     let mut actions = Vec::new();
     while reader.remaining() > 0 {
         actions.push(read_action_record(reader)?);
@@ -138,34 +137,34 @@ pub fn read_action_records<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<
     Ok(actions)
 }
 
-fn read_go_to_frame<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GoToFrame> {
+fn read_go_to_frame(reader: &mut SwfSliceReader) -> Result<GoToFrame> {
     let frame = reader.read_u16()?;
     Ok(GoToFrame { frame })
 }
 
-fn read_get_url<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GetUrl> {
+fn read_get_url(reader: &mut SwfSliceReader) -> Result<GetUrl> {
     let url = reader.read_string()?;
     let target = reader.read_string()?;
     Ok(GetUrl { url, target })
 }
 
-fn read_wait_for_frame<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<WaitForFrame> {
+fn read_wait_for_frame(reader: &mut SwfSliceReader) -> Result<WaitForFrame> {
     let frame = reader.read_u16()?;
     let skip_count = reader.read_u8()?;
     Ok(WaitForFrame { frame, skip_count })
 }
 
-fn read_set_target<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<SetTarget> {
+fn read_set_target(reader: &mut SwfSliceReader) -> Result<SetTarget> {
     let target_name = reader.read_string()?;
     Ok(SetTarget { target_name })
 }
 
-fn read_go_to_label<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GoToLabel> {
+fn read_go_to_label(reader: &mut SwfSliceReader) -> Result<GoToLabel> {
     let label = reader.read_string()?;
     Ok(GoToLabel { label })
 }
 
-fn read_push<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Push> {
+fn read_push(reader: &mut SwfSliceReader) -> Result<Push> {
     let value_type = reader.read_u8()?;
     let value = match value_type {
         0 => PushValue::String(reader.read_string()?),
@@ -183,17 +182,17 @@ fn read_push<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Push> {
     Ok(Push { value })
 }
 
-fn read_jump<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Jump> {
+fn read_jump(reader: &mut SwfSliceReader) -> Result<Jump> {
     let offset = reader.read_i16()?;
     Ok(Jump { offset })
 }
 
-fn read_if<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<If> {
+fn read_if(reader: &mut SwfSliceReader) -> Result<If> {
     let offset = reader.read_i16()?;
     Ok(If { offset })
 }
 
-fn read_get_url2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GetUrl2> {
+fn read_get_url2(reader: &mut SwfSliceReader) -> Result<GetUrl2> {
     let send_vars_method = reader
         .read_ub8(2)?
         .try_into()
@@ -211,7 +210,7 @@ fn read_get_url2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GetUrl2> {
     })
 }
 
-fn read_go_to_frame2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GoToFrame2> {
+fn read_go_to_frame2(reader: &mut SwfSliceReader) -> Result<GoToFrame2> {
     reader.read_ub8(6)?;
     let scene_bias_flag = reader.read_bit()?;
     let play = reader.read_bit()?;
@@ -223,12 +222,12 @@ fn read_go_to_frame2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<GoToFr
     Ok(GoToFrame2 { play, scene_bias })
 }
 
-fn read_wait_for_frame2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<WaitForFrame2> {
+fn read_wait_for_frame2(reader: &mut SwfSliceReader) -> Result<WaitForFrame2> {
     let skip_count = reader.read_u8()?;
     Ok(WaitForFrame2 { skip_count })
 }
 
-fn read_constant_pool<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<ConstantPool> {
+fn read_constant_pool(reader: &mut SwfSliceReader) -> Result<ConstantPool> {
     let count = reader.read_u16()?;
     let mut constant_pool = Vec::with_capacity(count as usize);
     for _ in 0..count {
@@ -237,7 +236,7 @@ fn read_constant_pool<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Const
     Ok(ConstantPool { constant_pool })
 }
 
-fn read_define_function<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<DefineFunction> {
+fn read_define_function(reader: &mut SwfSliceReader) -> Result<DefineFunction> {
     let function_name = reader.read_string()?;
     let num_params = reader.read_u16()?;
     let mut params = Vec::with_capacity(num_params as usize);
@@ -253,26 +252,24 @@ fn read_define_function<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Def
     })
 }
 
-fn read_with<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<With> {
+fn read_with(reader: &mut SwfSliceReader) -> Result<With> {
     let size = reader.read_u16()?;
     let body = read_action_records(&mut reader.slice(size as usize))?;
     Ok(With { body })
 }
 
-fn read_store_register<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<StoreRegister> {
+fn read_store_register(reader: &mut SwfSliceReader) -> Result<StoreRegister> {
     let register_number = reader.read_u8()?;
     Ok(StoreRegister { register_number })
 }
 
-pub fn read_do_init_action_tag<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<DoInitActionTag> {
+pub fn read_do_init_action_tag(reader: &mut SwfSliceReader) -> Result<DoInitActionTag> {
     let sprite_id = reader.read_u16()?;
     let actions = read_action_records(reader)?;
     Ok(DoInitActionTag { sprite_id, actions })
 }
 
-fn read_define_function2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<DefineFunction2> {
+fn read_define_function2(reader: &mut SwfSliceReader) -> Result<DefineFunction2> {
     let function_name = reader.read_string()?;
     let num_params = reader.read_u16()?;
     let register_count = reader.read_u8()?;
@@ -309,7 +306,7 @@ fn read_define_function2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<De
     })
 }
 
-fn read_register_param<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<RegisterParam> {
+fn read_register_param(reader: &mut SwfSliceReader) -> Result<RegisterParam> {
     let register = reader.read_u8()?;
     let name = reader.read_string()?;
     Ok(if register == 0 {
@@ -319,7 +316,7 @@ fn read_register_param<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Regi
     })
 }
 
-fn read_try<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Try> {
+fn read_try(reader: &mut SwfSliceReader) -> Result<Try> {
     reader.read_ub8(5)?;
     let catch_in_register = reader.read_bit()?;
     let has_finally_block = reader.read_bit()?;
@@ -353,7 +350,7 @@ fn read_try<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Try> {
     })
 }
 
-pub fn read_do_abc_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<DoAbcTag> {
+pub fn read_do_abc_tag(reader: &mut SwfSliceReader) -> Result<DoAbcTag> {
     let flags = reader.read_u32()?;
     let name = reader.read_string()?;
     let abc_data = reader.read_u8_to_end()?;

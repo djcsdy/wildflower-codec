@@ -3,12 +3,12 @@ use crate::ast::fonts::{
 };
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag::shapes::read_shape;
-use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::ErrorKind::InvalidData;
-use std::io::{Error, Read, Result};
+use std::io::{Error, Result};
 
-pub fn read_define_font_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<DefineFontTag> {
+pub fn read_define_font_tag(reader: &mut SwfSliceReader) -> Result<DefineFontTag> {
     let font_id = reader.read_u16()?;
     let end_offset = reader.remaining();
     let first_offset = reader.read_u16()? as usize;
@@ -25,7 +25,6 @@ pub fn read_define_font_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result
     for length in length_table {
         let mut glyph_reader = reader.slice(length);
         glyph_shapes.push(read_shape(&mut glyph_reader)?);
-        glyph_reader.skip_to_end()?;
     }
     Ok(DefineFontTag {
         font_id,
@@ -33,9 +32,7 @@ pub fn read_define_font_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result
     })
 }
 
-pub fn read_define_font_info_tag<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<DefineFontInfoTag> {
+pub fn read_define_font_info_tag(reader: &mut SwfSliceReader) -> Result<DefineFontInfoTag> {
     let font_id = reader.read_u16()?;
     let name_len = reader.read_u8()? as usize;
     let font_name = reader.read_fixed_string(name_len)?;
@@ -72,9 +69,7 @@ pub fn read_define_font_info_tag<R: Read>(
     })
 }
 
-pub fn read_define_font_info2_tag<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
-) -> Result<DefineFontInfo2Tag> {
+pub fn read_define_font_info2_tag(reader: &mut SwfSliceReader) -> Result<DefineFontInfo2Tag> {
     let font_id = reader.read_u16()?;
     let name_len = reader.read_u8()? as usize;
     let font_name = reader.read_fixed_string(name_len)?;
@@ -114,6 +109,6 @@ pub fn read_define_font_info2_tag<R: Read>(
     })
 }
 
-fn read_language_code<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<LanguageCode> {
+fn read_language_code(reader: &mut SwfSliceReader) -> Result<LanguageCode> {
     LanguageCode::try_from(reader.read_u8()?).map_err(|_| Error::from(InvalidData))
 }
