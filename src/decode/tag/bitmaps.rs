@@ -3,6 +3,7 @@ use crate::ast::bitmaps::{
     DefineBitsLossless2Tag, DefineBitsLosslessTag, DefineBitsTag, JpegTablesTag,
 };
 use crate::ast::common::Rgb;
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag::common::{read_argb, read_rgb, read_rgba};
 use crate::decode::tag_body_reader::SwfTagBodyReader;

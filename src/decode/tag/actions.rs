@@ -3,6 +3,7 @@ use crate::ast::actions::{
     DoInitActionTag, GetUrl, GetUrl2, GoToFrame, GoToFrame2, GoToLabel, If, Jump, Push, PushValue,
     RegisterParam, SetTarget, StoreRegister, Try, WaitForFrame, WaitForFrame2, With,
 };
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::ErrorKind::InvalidData;

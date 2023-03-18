@@ -2,6 +2,7 @@ use crate::ast::common::Rgb;
 use crate::ast::styles::{
     CapStyle, FillStyle, FocalGradient, Gradient, GradientRecord, JoinStyle, LineStyle, LineStyle2,
 };
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag::common::{read_matrix, read_rgb, read_rgba};
 use crate::decode::tag_body_reader::SwfTagBodyReader;

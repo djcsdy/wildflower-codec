@@ -3,6 +3,7 @@ use crate::ast::shape_morphing::{
     MorphGradientRecord, MorphLineStyle, MorphLineStyle2,
 };
 use crate::ast::styles::JoinStyle;
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag::common::{read_matrix, read_rectangle, read_rgba};
 use crate::decode::tag::shapes::read_shape;

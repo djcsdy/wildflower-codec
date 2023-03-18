@@ -1,3 +1,4 @@
+pub mod bit_read;
 pub mod decompressing_reader;
 pub mod header;
 pub mod max_length_reader;

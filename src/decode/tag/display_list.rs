@@ -4,6 +4,7 @@ use crate::ast::display_list::{
     GradientGlowFilter, PlaceObject2Tag, PlaceObject3Tag, PlaceObjectTag, RemoveObject2Tag,
     RemoveObjectTag,
 };
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag::actions::read_action_records;
 use crate::decode::tag::common::{

@@ -1,6 +1,7 @@
 use crate::ast::fonts::{
     CodeTable, DefineFontInfo2Tag, DefineFontInfoTag, DefineFontTag, LanguageCode,
 };
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag::shapes::read_shape;
 use crate::decode::tag_body_reader::SwfTagBodyReader;

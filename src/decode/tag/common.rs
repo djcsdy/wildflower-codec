@@ -1,6 +1,7 @@
 use crate::ast::common::{
     ColorTransform, ColorTransformWithAlpha, Fixed16, Fixed8, Matrix, Rectangle, Rgb, Rgba,
 };
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};

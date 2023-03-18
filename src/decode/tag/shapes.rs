@@ -3,6 +3,7 @@ use crate::ast::shapes::{
     ShapeRecord, ShapeWithStyle, StraightEdgeRecord, StyleChangeRecord,
 };
 use crate::ast::styles::FillStyle;
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag::common::{read_rectangle, read_rgb, read_rgba};
 use crate::decode::tag::styles::{
