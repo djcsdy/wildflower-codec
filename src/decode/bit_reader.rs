@@ -1,6 +1,6 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
-use std::io::{IoSliceMut, Read, Result};
+use std::io::{BufRead, IoSliceMut, Read, Result};
 
 pub struct BitReader<R: Read> {
     inner: R,
@@ -65,5 +65,17 @@ impl<R: Read> BitRead for BitReader<R> {
 
             Ok((result << bits_remaining) | ((self.partial_byte as u32) >> self.partial_bit_count))
         }
+    }
+}
+
+impl<R: BufRead> BufRead for BitReader<R> {
+    fn fill_buf(&mut self) -> Result<&[u8]> {
+        self.align_byte();
+        self.inner.fill_buf()
+    }
+
+    fn consume(&mut self, amt: usize) {
+        self.align_byte();
+        self.inner.consume(amt)
     }
 }
