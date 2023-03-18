@@ -79,3 +79,12 @@ impl<R: BufRead> BufRead for BitReader<R> {
         self.inner.consume(amt)
     }
 }
+
+impl<'buffer> BitReader<&'buffer [u8]> {
+    pub fn slice(&mut self, length: usize) -> &'buffer [u8] {
+        self.align_byte();
+        let (slice, new_buffer) = self.inner.split_at(length);
+        self.inner = new_buffer;
+        slice
+    }
+}
