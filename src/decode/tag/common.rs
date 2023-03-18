@@ -53,7 +53,7 @@ pub fn read_rectangle<R: BitRead>(reader: &mut R) -> Result<Rectangle> {
     })
 }
 
-pub fn read_matrix<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Matrix> {
+pub fn read_matrix<R: BitRead>(reader: &mut R) -> Result<Matrix> {
     reader.align_byte();
     let has_scale = reader.read_bit()?;
     let scale_bits = if has_scale { reader.read_ub8(5)? } else { 0 };
