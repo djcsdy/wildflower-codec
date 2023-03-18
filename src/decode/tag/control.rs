@@ -1,9 +1,10 @@
 use crate::ast::control::{
     DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, EnableDebugger2Tag, EnableDebuggerTag,
-    ExportAssetsTag, FileAttributesFlags, FileAttributesTag, FrameLabelRecord, FrameLabelTag,
-    ImportAssets2Tag, ImportAssetsTag, MetadataTag, PortableCharacterRecord, SceneRecord,
-    ScriptLimitsTag, SetBackgroundColorTag, SetTabIndexTag, SymbolClassRecord, SymbolClassTag,
+    ExportAssetsTag, FrameLabelRecord, FrameLabelTag, ImportAssets2Tag, ImportAssetsTag,
+    MetadataTag, PortableCharacterRecord, SceneRecord, ScriptLimitsTag, SetBackgroundColorTag,
+    SetTabIndexTag, SymbolClassRecord, SymbolClassTag,
 };
+use crate::ast::metadata::{FileAttributesFlags, FileAttributesTag};
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag::common::{read_rectangle, read_rgb};

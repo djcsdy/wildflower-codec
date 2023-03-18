@@ -8,9 +8,8 @@ use super::buttons::{
 };
 use super::control::{
     DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, EnableDebugger2Tag, EnableDebuggerTag,
-    EndTag, ExportAssetsTag, FileAttributesTag, FrameLabelTag, ImportAssets2Tag, ImportAssetsTag,
-    MetadataTag, ProtectTag, ScriptLimitsTag, SetBackgroundColorTag, SetTabIndexTag,
-    SymbolClassTag,
+    EndTag, ExportAssetsTag, FrameLabelTag, ImportAssets2Tag, ImportAssetsTag, MetadataTag,
+    ProtectTag, ScriptLimitsTag, SetBackgroundColorTag, SetTabIndexTag, SymbolClassTag,
 };
 use super::display_list::{
     PlaceObject2Tag, PlaceObject3Tag, PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag,
@@ -31,6 +30,7 @@ use super::sprites::DefineSpriteTag;
 use super::text::{CsmTextSettingsTag, DefineEditTextTag, DefineText2Tag, DefineTextTag};
 use super::video::DefineVideoStreamTag;
 use crate::ast::invalid::{InvalidTag, UnknownTag};
+use crate::ast::metadata::FileAttributesTag;
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum Tag {
