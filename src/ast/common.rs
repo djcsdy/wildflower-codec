@@ -34,6 +34,12 @@ impl<N: Display> Display for Point<N> {
     }
 }
 
+impl<N: Display> Debug for Point<N> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        Display::fmt(self, f)
+    }
+}
+
 /// A fixed-point number consisting of a 16-bit whole part plus a 16-bit
 /// fractional part.
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
