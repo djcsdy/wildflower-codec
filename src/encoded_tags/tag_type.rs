@@ -1,6 +1,6 @@
-use num_enum::{IntoPrimitive, TryFromPrimitive};
+use num_enum::{FromPrimitive, IntoPrimitive};
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, FromPrimitive)]
 #[repr(u8)]
 pub enum TagType {
     End = 0,
@@ -68,4 +68,6 @@ pub enum TagType {
     DefineBitsJpeg4 = 90,
     DefineFont4 = 91,
     EnableTelemetry = 93,
+    #[num_enum(catch_all)]
+    Unknown(u8),
 }
