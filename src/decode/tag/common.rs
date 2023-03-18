@@ -3,7 +3,6 @@ use crate::ast::common::{
 };
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};
 
 pub fn read_rgb<R: Read>(reader: &mut R) -> Result<Rgb> {
@@ -136,8 +135,8 @@ pub fn read_color_transform<R: BitRead>(reader: &mut R) -> Result<ColorTransform
     })
 }
 
-pub fn read_color_transform_with_alpha<R: Read>(
-    reader: &mut SwfTagBodyReader<R>,
+pub fn read_color_transform_with_alpha<R: BitRead>(
+    reader: &mut R,
 ) -> Result<ColorTransformWithAlpha> {
     let has_add_terms = reader.read_bit()?;
     let has_mult_terms = reader.read_bit()?;
