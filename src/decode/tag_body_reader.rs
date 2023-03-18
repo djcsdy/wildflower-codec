@@ -1,28 +1,25 @@
 use crate::ast::common::String;
 use crate::decode::bit_read::BitRead;
+use crate::decode::bit_reader::BitReader;
 use crate::decode::max_length_reader::MaxLengthReader;
 use crate::decode::read_ext::SwfTypesReadExt;
 use std::io::{IoSliceMut, Read, Result};
 
 pub struct SwfTagBodyReader<R: Read> {
-    inner: MaxLengthReader<R>,
+    inner: BitReader<MaxLengthReader<R>>,
     swf_version: u8,
-    partial_byte: u8,
-    partial_bit_count: u8,
 }
 
 impl<R: Read> SwfTagBodyReader<R> {
     pub fn new(inner: R, swf_version: u8, max_length: usize) -> SwfTagBodyReader<R> {
         SwfTagBodyReader {
-            inner: MaxLengthReader::new(inner, max_length),
+            inner: BitReader::new(MaxLengthReader::new(inner, max_length)),
             swf_version,
-            partial_byte: 0,
-            partial_bit_count: 0,
         }
     }
 
     pub fn into_inner(self) -> R {
-        self.inner.into_inner()
+        self.inner.into_inner().into_inner()
     }
 
     pub fn swf_version(&self) -> u8 {
@@ -30,11 +27,11 @@ impl<R: Read> SwfTagBodyReader<R> {
     }
 
     pub fn count(&self) -> usize {
-        self.inner.count()
+        self.inner.inner().count()
     }
 
     pub fn remaining(&self) -> usize {
-        self.inner.remaining()
+        self.inner.inner().remaining()
     }
 
     pub fn skip_to_end(&mut self) -> Result<()> {
@@ -86,42 +83,20 @@ impl<R: Read> SwfTagBodyReader<R> {
 
 impl<R: Read> Read for SwfTagBodyReader<R> {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
-        self.align_byte();
         self.inner.read(buf)
     }
 
     fn read_vectored(&mut self, bufs: &mut [IoSliceMut<'_>]) -> Result<usize> {
-        self.align_byte();
         self.inner.read_vectored(bufs)
     }
 }
 
 impl<R: Read> BitRead for SwfTagBodyReader<R> {
     fn align_byte(&mut self) {
-        self.partial_byte = 0;
-        self.partial_bit_count = 0;
+        self.inner.align_byte()
     }
 
     fn read_ub(&mut self, bits: u8) -> Result<u32> {
-        if bits > 32 {
-            panic!();
-        }
-
-        if bits <= self.partial_bit_count {
-            self.partial_bit_count = self.partial_bit_count - bits;
-            Ok((self.partial_byte as u32) >> self.partial_bit_count)
-        } else {
-            let mut result = self.partial_byte as u32;
-            let mut bits_remaining = bits - self.partial_bit_count;
-            while bits_remaining > 8 {
-                result = (result << 8) | self.read_u8()? as u32;
-                bits_remaining = bits_remaining - 8;
-            }
-
-            self.partial_byte = self.read_u8()?;
-            self.partial_bit_count = 8 - bits_remaining;
-
-            Ok((result << bits_remaining) | ((self.partial_byte as u32) >> self.partial_bit_count))
-        }
+        self.inner.read_ub(bits)
     }
 }
