@@ -10,7 +10,7 @@ pub struct SwfTagBodyReader<R: Read> {
     inner: MaxLengthReader<R>,
     swf_version: u8,
     partial_byte: u8,
-    partial_bits: u8,
+    partial_bit_count: u8,
 }
 
 impl<R: Read> SwfTagBodyReader<R> {
@@ -19,7 +19,7 @@ impl<R: Read> SwfTagBodyReader<R> {
             inner: MaxLengthReader::new(inner, max_length),
             swf_version,
             partial_byte: 0,
-            partial_bits: 0,
+            partial_bit_count: 0,
         }
     }
 
@@ -53,7 +53,7 @@ impl<R: Read> SwfTagBodyReader<R> {
 
     pub fn align_byte(&mut self) {
         self.partial_byte = 0;
-        self.partial_bits = 0;
+        self.partial_bit_count = 0;
     }
 
     pub fn read_bit(&mut self) -> Result<bool> {
@@ -81,21 +81,21 @@ impl<R: Read> SwfTagBodyReader<R> {
             panic!();
         }
 
-        if bits <= self.partial_bits {
-            self.partial_bits = self.partial_bits - bits;
-            Ok((self.partial_byte as u32) >> self.partial_bits)
+        if bits <= self.partial_bit_count {
+            self.partial_bit_count = self.partial_bit_count - bits;
+            Ok((self.partial_byte as u32) >> self.partial_bit_count)
         } else {
             let mut result = self.partial_byte as u32;
-            let mut bits_remaining = bits - self.partial_bits;
+            let mut bits_remaining = bits - self.partial_bit_count;
             while bits_remaining > 8 {
                 result = (result << 8) | self.read_u8()? as u32;
                 bits_remaining = bits_remaining - 8;
             }
 
             self.partial_byte = self.read_u8()?;
-            self.partial_bits = 8 - bits_remaining;
+            self.partial_bit_count = 8 - bits_remaining;
 
-            Ok((result << bits_remaining) | ((self.partial_byte as u32) >> self.partial_bits))
+            Ok((result << bits_remaining) | ((self.partial_byte as u32) >> self.partial_bit_count))
         }
     }
 
