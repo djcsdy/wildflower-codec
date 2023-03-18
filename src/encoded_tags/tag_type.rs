@@ -1,7 +1,7 @@
 use num_enum::{FromPrimitive, IntoPrimitive};
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, FromPrimitive)]
-#[repr(u8)]
+#[repr(u16)]
 pub enum TagType {
     End = 0,
     ShowFrame = 1,
@@ -69,5 +69,5 @@ pub enum TagType {
     DefineFont4 = 91,
     EnableTelemetry = 93,
     #[num_enum(catch_all)]
-    Unknown(u8),
+    Unknown(u16),
 }
