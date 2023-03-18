@@ -27,6 +27,6 @@ impl<'reader, R: BufRead> ExtractTagsReader<'reader, R> {
         let mut body = vec![0u8; length];
         self.reader.read_exact(&mut body)?;
 
-        Ok(EncodedTag::new(tag_type, body))
+        Ok(EncodedTag::new(self.header.version, tag_type, body))
     }
 }
