@@ -22,7 +22,7 @@ pub fn read_define_font_tag<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result
     length_table.push(end_offset - prev_offset);
     let mut glyph_shapes = Vec::with_capacity(num_glyphs);
     for length in length_table {
-        let mut glyph_reader = reader.with_max_length(length);
+        let mut glyph_reader = reader.slice(length);
         glyph_shapes.push(read_shape(&mut glyph_reader)?);
         glyph_reader.skip_to_end()?;
     }

@@ -47,8 +47,8 @@ impl<R: Read> SwfTagBodyReader<R> {
         Ok(())
     }
 
-    pub fn with_max_length(&mut self, max_length: usize) -> SwfTagBodyReader<&mut Self> {
-        SwfTagBodyReader::new(self, self.swf_version, max_length)
+    pub fn slice(&mut self, length: usize) -> SwfTagBodyReader<&mut Self> {
+        SwfTagBodyReader::new(self, self.swf_version, length)
     }
 
     pub fn align_byte(&mut self) {

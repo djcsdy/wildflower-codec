@@ -21,7 +21,7 @@ pub fn read_action_record<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<A
         0
     };
 
-    let mut body_reader = reader.with_max_length(length as usize);
+    let mut body_reader = reader.slice(length as usize);
     let action_record = match action_code {
         0x04 => ActionRecord::NextFrame,
         0x05 => ActionRecord::PreviousFrame,
@@ -244,7 +244,7 @@ fn read_define_function<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Def
         params.push(reader.read_string()?);
     }
     let code_size = reader.read_u16()?;
-    let body = read_action_records(&mut reader.with_max_length(code_size as usize))?;
+    let body = read_action_records(&mut reader.slice(code_size as usize))?;
     Ok(DefineFunction {
         function_name,
         params,
@@ -254,7 +254,7 @@ fn read_define_function<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Def
 
 fn read_with<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<With> {
     let size = reader.read_u16()?;
-    let body = read_action_records(&mut reader.with_max_length(size as usize))?;
+    let body = read_action_records(&mut reader.slice(size as usize))?;
     Ok(With { body })
 }
 
@@ -290,7 +290,7 @@ fn read_define_function2<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<De
         parameters.push(read_register_param(reader)?);
     }
     let code_size = reader.read_u16()?;
-    let body = read_action_records(&mut reader.with_max_length(code_size as usize))?;
+    let body = read_action_records(&mut reader.slice(code_size as usize))?;
     Ok(DefineFunction2 {
         function_name,
         register_count,
@@ -331,17 +331,17 @@ fn read_try<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Try> {
     } else {
         RegisterParam::Name(reader.read_string()?)
     };
-    let try_body = read_action_records(&mut reader.with_max_length(try_size as usize))?;
+    let try_body = read_action_records(&mut reader.slice(try_size as usize))?;
     let catch_body = if has_catch_block {
         Some(read_action_records(
-            &mut reader.with_max_length(catch_size as usize),
+            &mut reader.slice(catch_size as usize),
         )?)
     } else {
         None
     };
     let finally_body = if has_finally_block {
         Some(read_action_records(
-            &mut reader.with_max_length(finally_size as usize),
+            &mut reader.slice(finally_size as usize),
         )?)
     } else {
         None

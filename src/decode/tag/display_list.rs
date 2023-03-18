@@ -119,7 +119,7 @@ fn read_clip_action_record<R: Read>(
         Ok(None)
     } else {
         let action_record_size = reader.read_u32()?;
-        let mut action_record_reader = reader.with_max_length(action_record_size as usize);
+        let mut action_record_reader = reader.slice(action_record_size as usize);
         let key_code = if event_flags.contains(ClipEventFlags::KEY_PRESS) {
             Some(action_record_reader.read_u8()?)
         } else {

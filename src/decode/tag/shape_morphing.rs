@@ -21,7 +21,7 @@ pub fn read_define_morph_shape_tag<R: Read>(
     let offset = reader.read_u32()? as usize;
     let fill_styles = read_morph_fill_style_array(reader)?;
     let line_styles = read_line_style_array(reader, &read_morph_line_style)?;
-    let start_edges = read_shape(&mut reader.with_max_length(offset))?;
+    let start_edges = read_shape(&mut reader.slice(offset))?;
     let end_edges = read_shape(reader)?;
     Ok(DefineMorphShapeTag {
         character_id,
@@ -48,7 +48,7 @@ pub fn read_define_morph_shape2_tag<R: Read>(
     let offset = reader.read_u32()? as usize;
     let fill_styles = read_morph_fill_style_array(reader)?;
     let line_styles = read_line_style_array(reader, &read_morph_line_style2)?;
-    let start_edges = read_shape(&mut reader.with_max_length(offset))?;
+    let start_edges = read_shape(&mut reader.slice(offset))?;
     let end_edges = read_shape(reader)?;
     Ok(DefineMorphShape2Tag {
         character_id,
