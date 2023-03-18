@@ -1,5 +1,5 @@
 use crate::ast::common::{
-    ColorTransform, ColorTransformWithAlpha, Fixed16, Fixed8, Matrix, Rectangle, Rgba, String,
+    ColorTransform, ColorTransformWithAlpha, Fixed16, Fixed8, Matrix, Rectangle, String,
 };
 use crate::decode::max_length_reader::MaxLengthReader;
 use crate::decode::read_ext::SwfTypesReadExt;
@@ -164,17 +164,6 @@ impl<R: Read> SwfTagBodyReader<R> {
             buffer.push(self.read_u16()?);
         }
         Ok(buffer)
-    }
-
-    pub fn read_argb(&mut self) -> Result<Rgba> {
-        let mut buf = [0u8; 4];
-        self.read_u8_into(&mut buf)?;
-        Ok(Rgba {
-            red: buf[1],
-            green: buf[2],
-            blue: buf[3],
-            alpha: buf[0],
-        })
     }
 
     pub fn read_rectangle(&mut self) -> Result<Rectangle> {

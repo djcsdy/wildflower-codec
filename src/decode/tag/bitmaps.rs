@@ -4,7 +4,7 @@ use crate::ast::bitmaps::{
 };
 use crate::ast::common::Rgb;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::tag::common::{read_rgb, read_rgba};
+use crate::decode::tag::common::{read_argb, read_rgb, read_rgba};
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use inflate::DeflateDecoder;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
@@ -217,7 +217,7 @@ pub fn read_define_bits_lossless2_tag<R: Read>(
         BitmapFormat::Rgb15 => return Err(Error::from(InvalidData)),
         BitmapFormat::Rgb24 => read_bitmap_data(ReadBitmapDataOptions {
             reader: &mut zlib_reader,
-            read_color: SwfTagBodyReader::read_argb,
+            read_color: &read_argb,
             bitmap_width,
             bitmap_height,
         })?,
