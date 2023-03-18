@@ -5,13 +5,14 @@ use crate::ast::control::{
     ScriptLimitsTag, SetBackgroundColorTag, SetTabIndexTag, SymbolClassRecord, SymbolClassTag,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::tag::common::read_rgb;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};
 
 pub fn read_set_background_color_tag<R: Read>(
     reader: &mut SwfTagBodyReader<R>,
 ) -> Result<SetBackgroundColorTag> {
-    let color = reader.read_rgb()?;
+    let color = read_rgb(reader)?;
     Ok(SetBackgroundColorTag { color })
 }
 

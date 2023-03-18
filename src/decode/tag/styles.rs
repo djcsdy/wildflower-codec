@@ -3,6 +3,7 @@ use crate::ast::styles::{
     CapStyle, FillStyle, FocalGradient, Gradient, GradientRecord, JoinStyle, LineStyle, LineStyle2,
 };
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::tag::common::read_rgb;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::io::ErrorKind::InvalidData;
@@ -14,7 +15,7 @@ pub fn read_fill_style_array<R: Read>(
     let fill_style_count = reader.read_u8()?;
     let mut fill_styles = Vec::with_capacity(fill_style_count as usize);
     for _ in 0..fill_style_count {
-        fill_styles.push(read_fill_style(reader, &SwfTagBodyReader::read_rgb)?);
+        fill_styles.push(read_fill_style(reader, &read_rgb)?);
     }
     Ok(fill_styles)
 }

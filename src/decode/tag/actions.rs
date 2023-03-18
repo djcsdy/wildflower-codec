@@ -333,9 +333,7 @@ fn read_try<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Try> {
     };
     let try_body = read_action_records(&mut reader.slice(try_size as usize))?;
     let catch_body = if has_catch_block {
-        Some(read_action_records(
-            &mut reader.slice(catch_size as usize),
-        )?)
+        Some(read_action_records(&mut reader.slice(catch_size as usize))?)
     } else {
         None
     };
