@@ -10,6 +10,12 @@ impl<N> Twips<N> {
     }
 }
 
+impl<N: Display> Display for Twips<N> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}twpx", self.0)
+    }
+}
+
 /// A fixed-point number consisting of a 16-bit whole part plus a 16-bit
 /// fractional part.
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
