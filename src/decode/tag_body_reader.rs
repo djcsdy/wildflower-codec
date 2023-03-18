@@ -1,4 +1,4 @@
-use crate::ast::common::{ColorTransform, ColorTransformWithAlpha, Fixed16, Fixed8, String};
+use crate::ast::common::{ColorTransformWithAlpha, Fixed16, Fixed8, String};
 use crate::decode::max_length_reader::MaxLengthReader;
 use crate::decode::read_ext::SwfTypesReadExt;
 use byteorder::{ByteOrder, LittleEndian};
@@ -162,50 +162,6 @@ impl<R: Read> SwfTagBodyReader<R> {
             buffer.push(self.read_u16()?);
         }
         Ok(buffer)
-    }
-
-    pub fn read_color_transform(&mut self) -> Result<ColorTransform> {
-        let has_add_terms = self.read_bit()?;
-        let has_mult_terms = self.read_bit()?;
-        let bits = self.read_ub8(4)?;
-        let red_multiplication_term = if has_mult_terms {
-            self.read_fixed8_bits(bits)?
-        } else {
-            Fixed8::ONE
-        };
-        let green_multiplication_term = if has_mult_terms {
-            self.read_fixed8_bits(bits)?
-        } else {
-            Fixed8::ONE
-        };
-        let blue_multiplication_term = if has_mult_terms {
-            self.read_fixed8_bits(bits)?
-        } else {
-            Fixed8::ONE
-        };
-        let red_addition_term = if has_add_terms {
-            self.read_sb16(bits)?
-        } else {
-            0
-        };
-        let green_addition_term = if has_add_terms {
-            self.read_sb16(bits)?
-        } else {
-            0
-        };
-        let blue_addition_term = if has_add_terms {
-            self.read_sb16(bits)?
-        } else {
-            0
-        };
-        Ok(ColorTransform {
-            red_multiplication_term,
-            green_multiplication_term,
-            blue_multiplication_term,
-            red_addition_term,
-            green_addition_term,
-            blue_addition_term,
-        })
     }
 
     pub fn read_color_transform_with_alpha(&mut self) -> Result<ColorTransformWithAlpha> {

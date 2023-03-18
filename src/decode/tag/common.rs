@@ -1,4 +1,4 @@
-use crate::ast::common::{Fixed16, Matrix, Rectangle, Rgb, Rgba};
+use crate::ast::common::{ColorTransform, Fixed16, Fixed8, Matrix, Rectangle, Rgb, Rgba};
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_body_reader::SwfTagBodyReader;
 use std::io::{Read, Result};
@@ -86,5 +86,49 @@ pub fn read_matrix<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<Matrix> 
         rotate_skew_1,
         translate_x,
         translate_y,
+    })
+}
+
+pub fn read_color_transform<R: Read>(reader: &mut SwfTagBodyReader<R>) -> Result<ColorTransform> {
+    let has_add_terms = reader.read_bit()?;
+    let has_mult_terms = reader.read_bit()?;
+    let bits = reader.read_ub8(4)?;
+    let red_multiplication_term = if has_mult_terms {
+        reader.read_fixed8_bits(bits)?
+    } else {
+        Fixed8::ONE
+    };
+    let green_multiplication_term = if has_mult_terms {
+        reader.read_fixed8_bits(bits)?
+    } else {
+        Fixed8::ONE
+    };
+    let blue_multiplication_term = if has_mult_terms {
+        reader.read_fixed8_bits(bits)?
+    } else {
+        Fixed8::ONE
+    };
+    let red_addition_term = if has_add_terms {
+        reader.read_sb16(bits)?
+    } else {
+        0
+    };
+    let green_addition_term = if has_add_terms {
+        reader.read_sb16(bits)?
+    } else {
+        0
+    };
+    let blue_addition_term = if has_add_terms {
+        reader.read_sb16(bits)?
+    } else {
+        0
+    };
+    Ok(ColorTransform {
+        red_multiplication_term,
+        green_multiplication_term,
+        blue_multiplication_term,
+        red_addition_term,
+        green_addition_term,
+        blue_addition_term,
     })
 }
