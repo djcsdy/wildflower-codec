@@ -1,5 +1,6 @@
 use crate::encoded_tags::tag_type::TagType;
 
+#[derive(Clone, PartialEq, Eq, Debug, Hash)]
 pub struct EncodedTag {
     tag_type: TagType,
     body: Vec<u8>,
