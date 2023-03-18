@@ -1,6 +1,15 @@
 use byteorder::{ByteOrder, LittleEndian};
 use std::fmt::{Debug, Display, Formatter};
 
+#[derive(Clone, Copy, PartialEq, PartialOrd, Eq, Ord, Hash)]
+pub struct Twips<N>(N);
+
+impl<N> Twips<N> {
+    pub fn new(twips: N) -> Twips<N> {
+        Twips(twips)
+    }
+}
+
 /// A fixed-point number consisting of a 16-bit whole part plus a 16-bit
 /// fractional part.
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
