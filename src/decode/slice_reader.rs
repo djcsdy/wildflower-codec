@@ -31,6 +31,10 @@ impl<'buffer> SwfSliceReader<'buffer> {
         self.inner.inner().len()
     }
 
+    pub fn seek(&mut self, position: usize) {
+        self.inner = BitReader::new(&self.buffer[position..]);
+    }
+
     pub fn slice(&mut self, length: usize) -> Self {
         Self::new(self.inner.slice(length), self.swf_version)
     }
