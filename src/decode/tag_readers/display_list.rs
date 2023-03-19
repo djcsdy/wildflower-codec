@@ -298,8 +298,8 @@ fn read_convolution_filter(reader: &mut SwfSliceReader) -> Result<ConvolutionFil
 }
 
 fn read_blur_filter(reader: &mut SwfSliceReader) -> Result<BlurFilter> {
-    let blur_x = reader.read_fixed16()?;
-    let blur_y = reader.read_fixed16()?;
+    let blur_x = reader.read_fixed_16()?;
+    let blur_y = reader.read_fixed_16()?;
     let passes = reader.read_ub8(5)?;
     reader.read_ub8(3)?;
     Ok(BlurFilter {
@@ -311,10 +311,10 @@ fn read_blur_filter(reader: &mut SwfSliceReader) -> Result<BlurFilter> {
 
 fn read_drop_shadow_filter(reader: &mut SwfSliceReader) -> Result<DropShadowFilter> {
     let color = read_rgba(reader)?;
-    let blur_x = reader.read_fixed16()?;
-    let blur_y = reader.read_fixed16()?;
-    let angle = reader.read_fixed16()?;
-    let distance = reader.read_fixed16()?;
+    let blur_x = reader.read_fixed_16()?;
+    let blur_y = reader.read_fixed_16()?;
+    let angle = reader.read_fixed_16()?;
+    let distance = reader.read_fixed_16()?;
     let strength = reader.read_fixed8()?;
     let inner_shadow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
@@ -336,8 +336,8 @@ fn read_drop_shadow_filter(reader: &mut SwfSliceReader) -> Result<DropShadowFilt
 
 fn read_glow_filter(reader: &mut SwfSliceReader) -> Result<GlowFilter> {
     let color = read_rgba(reader)?;
-    let blur_x = reader.read_fixed16()?;
-    let blur_y = reader.read_fixed16()?;
+    let blur_x = reader.read_fixed_16()?;
+    let blur_y = reader.read_fixed_16()?;
     let strength = reader.read_fixed8()?;
     let inner_glow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
@@ -358,10 +358,10 @@ fn read_glow_filter(reader: &mut SwfSliceReader) -> Result<GlowFilter> {
 fn read_bevel_filter(reader: &mut SwfSliceReader) -> Result<BevelFilter> {
     let shadow_color = read_rgba(reader)?;
     let highlight_color = read_rgba(reader)?;
-    let blur_x = reader.read_fixed16()?;
-    let blur_y = reader.read_fixed16()?;
-    let angle = reader.read_fixed16()?;
-    let distance = reader.read_fixed16()?;
+    let blur_x = reader.read_fixed_16()?;
+    let blur_y = reader.read_fixed_16()?;
+    let angle = reader.read_fixed_16()?;
+    let distance = reader.read_fixed_16()?;
     let strength = reader.read_fixed8()?;
     let inner_shadow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
@@ -394,10 +394,10 @@ fn read_gradient_glow_filter(reader: &mut SwfSliceReader) -> Result<GradientGlow
     for _ in 0..num_colors {
         ratio.push(reader.read_u8()?);
     }
-    let blur_x = reader.read_fixed16()?;
-    let blur_y = reader.read_fixed16()?;
-    let angle = reader.read_fixed16()?;
-    let distance = reader.read_fixed16()?;
+    let blur_x = reader.read_fixed_16()?;
+    let blur_y = reader.read_fixed_16()?;
+    let angle = reader.read_fixed_16()?;
+    let distance = reader.read_fixed_16()?;
     let strength = reader.read_fixed8()?;
     let inner_shadow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
@@ -430,10 +430,10 @@ fn read_gradient_bevel_filter(reader: &mut SwfSliceReader) -> Result<GradientBev
     for _ in 0..num_colors {
         ratio.push(reader.read_u8()?);
     }
-    let blur_x = reader.read_fixed16()?;
-    let blur_y = reader.read_fixed16()?;
-    let angle = reader.read_fixed16()?;
-    let distance = reader.read_fixed16()?;
+    let blur_x = reader.read_fixed_16()?;
+    let blur_y = reader.read_fixed_16()?;
+    let angle = reader.read_fixed_16()?;
+    let distance = reader.read_fixed_16()?;
     let strength = reader.read_fixed8()?;
     let inner_shadow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
