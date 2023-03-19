@@ -12,16 +12,11 @@ pub struct DefineFontTag {
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFont2Tag {
     pub font_id: u16,
-    flags: DefineFont2Flags,
+    pub flags: DefineFont2Flags,
     pub language_code: Option<LanguageCode>,
     pub font_name: String,
-    pub glyph_shapes: Vec<Shape<(), ()>>,
-    pub code_table: CodeTableWithKernings,
-    pub ascent: u16,
-    pub descent: u16,
-    pub leading: i16,
-    pub advances: Vec<i16>,
-    pub bounds: Vec<Rectangle>,
+    pub num_glyphs: u16,
+    pub glyphs_and_layout: Vec<u8>,
 }
 
 bitflags! {
