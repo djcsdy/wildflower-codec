@@ -51,7 +51,7 @@ pub fn read_enable_debugger_tag(reader: &mut SwfSliceReader) -> Result<EnableDeb
     Ok(EnableDebuggerTag { password_md5 })
 }
 
-pub fn read_enable_debugger2_tag(reader: &mut SwfSliceReader) -> Result<EnableDebugger2Tag> {
+pub fn read_enable_debugger_2_tag(reader: &mut SwfSliceReader) -> Result<EnableDebugger2Tag> {
     reader.read_u16()?;
     let password_md5 = reader.read_null_terminated_bytes()?;
     Ok(EnableDebugger2Tag { password_md5 })

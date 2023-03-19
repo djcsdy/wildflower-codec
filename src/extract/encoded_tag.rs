@@ -9,7 +9,7 @@ use crate::decode::tag_readers::bitmaps::{
 };
 use crate::decode::tag_readers::control::{
     read_define_scaling_grid_tag, read_define_scene_and_frame_label_data_tag,
-    read_enable_debugger2_tag, read_enable_debugger_tag, read_export_assets_tag,
+    read_enable_debugger_2_tag, read_enable_debugger_tag, read_export_assets_tag,
     read_file_attributes_tag, read_frame_label_tag, read_import_assets2_tag,
     read_import_assets_tag, read_metadata_tag, read_script_limits_tag,
     read_set_background_color_tag, read_set_tab_index_tag, read_symbol_class_tag,
@@ -141,7 +141,7 @@ impl EncodedTag {
             TagType::DefineFontInfo2 => read_define_font_info2_tag(&mut slice_reader)
                 .map(Tag::DefineFontInfo2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::EnableDebugger2 => read_enable_debugger2_tag(&mut slice_reader)
+            TagType::EnableDebugger2 => read_enable_debugger_2_tag(&mut slice_reader)
                 .map(Tag::EnableDebugger2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::ScriptLimits => read_script_limits_tag(&mut slice_reader)
