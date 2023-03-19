@@ -113,7 +113,7 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
         0x8b => ActionRecord::SetTarget(read_set_target(&mut body_reader)?),
         0x8c => ActionRecord::GoToLabel(read_go_to_label(&mut body_reader)?),
         0x8d => ActionRecord::WaitForFrame2(read_wait_for_frame_2(&mut body_reader)?),
-        0x8e => ActionRecord::DefineFunction2(read_define_function2(&mut body_reader)?),
+        0x8e => ActionRecord::DefineFunction2(read_define_function_2(&mut body_reader)?),
         0x8f => ActionRecord::Try(read_try(&mut body_reader)?),
         0x94 => ActionRecord::With(read_with(&mut body_reader)?),
         0x96 => ActionRecord::Push(read_push(&mut body_reader)?),
@@ -269,7 +269,7 @@ pub fn read_do_init_action_tag(reader: &mut SwfSliceReader) -> Result<DoInitActi
     Ok(DoInitActionTag { sprite_id, actions })
 }
 
-fn read_define_function2(reader: &mut SwfSliceReader) -> Result<DefineFunction2> {
+fn read_define_function_2(reader: &mut SwfSliceReader) -> Result<DefineFunction2> {
     let function_name = reader.read_string()?;
     let num_params = reader.read_u16()?;
     let register_count = reader.read_u8()?;
