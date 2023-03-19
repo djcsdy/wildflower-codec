@@ -5,17 +5,17 @@ use crate::decode::tags::common::String;
 use std::io::{IoSliceMut, Read, Result};
 
 pub struct SwfSliceReader<'buffer> {
+    buffer: &'buffer [u8],
     inner: BitReader<&'buffer [u8]>,
     swf_version: u8,
-    length: usize,
 }
 
 impl<'buffer> SwfSliceReader<'buffer> {
     pub fn new(buffer: &'buffer [u8], swf_version: u8) -> Self {
         SwfSliceReader {
+            buffer,
             inner: BitReader::new(buffer),
             swf_version,
-            length: buffer.len(),
         }
     }
 
@@ -24,7 +24,7 @@ impl<'buffer> SwfSliceReader<'buffer> {
     }
 
     pub fn count(&self) -> usize {
-        self.inner.inner().len() - self.length
+        self.inner.inner().len() - self.buffer.len()
     }
 
     pub fn remaining(&self) -> usize {
