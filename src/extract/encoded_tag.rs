@@ -15,7 +15,7 @@ use crate::decode::tag_readers::control::{
     read_set_background_color_tag, read_set_tab_index_tag, read_symbol_class_tag,
 };
 use crate::decode::tag_readers::display_list::{
-    read_place_object_2_tag, read_place_object3_tag, read_place_object_tag, read_remove_object2_tag,
+    read_place_object_2_tag, read_place_object_3_tag, read_place_object_tag, read_remove_object2_tag,
     read_remove_object_tag,
 };
 use crate::decode::tag_readers::fonts::{
@@ -153,7 +153,7 @@ impl EncodedTag {
             TagType::FileAttributes => read_file_attributes_tag(&mut slice_reader)
                 .map(Tag::FileAttributes)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::PlaceObject3 => read_place_object3_tag(&mut slice_reader)
+            TagType::PlaceObject3 => read_place_object_3_tag(&mut slice_reader)
                 .map(Tag::PlaceObject3)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::ImportAssets2 => read_import_assets_2_tag(&mut slice_reader)
