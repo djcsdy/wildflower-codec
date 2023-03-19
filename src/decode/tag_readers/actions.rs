@@ -122,7 +122,7 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
         0x9b => ActionRecord::DefineFunction(read_define_function(&mut body_reader)?),
         0x9d => ActionRecord::If(read_if(&mut body_reader)?),
         0x9e => ActionRecord::Call,
-        0x9f => ActionRecord::GoToFrame2(read_go_to_frame2(&mut body_reader)?),
+        0x9f => ActionRecord::GoToFrame2(read_go_to_frame_2(&mut body_reader)?),
         _ => return Err(Error::from(InvalidData)),
     };
 
@@ -210,7 +210,7 @@ fn read_get_url_2(reader: &mut SwfSliceReader) -> Result<GetUrl2> {
     })
 }
 
-fn read_go_to_frame2(reader: &mut SwfSliceReader) -> Result<GoToFrame2> {
+fn read_go_to_frame_2(reader: &mut SwfSliceReader) -> Result<GoToFrame2> {
     reader.read_ub8(6)?;
     let scene_bias_flag = reader.read_bit()?;
     let play = reader.read_bit()?;
