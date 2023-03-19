@@ -112,7 +112,7 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
         0x8a => ActionRecord::WaitForFrame(read_wait_for_frame(&mut body_reader)?),
         0x8b => ActionRecord::SetTarget(read_set_target(&mut body_reader)?),
         0x8c => ActionRecord::GoToLabel(read_go_to_label(&mut body_reader)?),
-        0x8d => ActionRecord::WaitForFrame2(read_wait_for_frame2(&mut body_reader)?),
+        0x8d => ActionRecord::WaitForFrame2(read_wait_for_frame_2(&mut body_reader)?),
         0x8e => ActionRecord::DefineFunction2(read_define_function2(&mut body_reader)?),
         0x8f => ActionRecord::Try(read_try(&mut body_reader)?),
         0x94 => ActionRecord::With(read_with(&mut body_reader)?),
@@ -222,7 +222,7 @@ fn read_go_to_frame_2(reader: &mut SwfSliceReader) -> Result<GoToFrame2> {
     Ok(GoToFrame2 { play, scene_bias })
 }
 
-fn read_wait_for_frame2(reader: &mut SwfSliceReader) -> Result<WaitForFrame2> {
+fn read_wait_for_frame_2(reader: &mut SwfSliceReader) -> Result<WaitForFrame2> {
     let skip_count = reader.read_u8()?;
     Ok(WaitForFrame2 { skip_count })
 }
