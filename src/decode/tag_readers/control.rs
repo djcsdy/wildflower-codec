@@ -17,7 +17,7 @@ pub fn read_set_background_color_tag(reader: &mut SwfSliceReader) -> Result<SetB
 
 pub fn read_frame_label_tag(reader: &mut SwfSliceReader) -> Result<FrameLabelTag> {
     let name = reader.read_string()?;
-    let named_anchor = reader.remaining() > 0 && reader.read_u8()? == 1;
+    let named_anchor = reader.bytes_remaining() > 0 && reader.read_u8()? == 1;
     Ok(FrameLabelTag { name, named_anchor })
 }
 

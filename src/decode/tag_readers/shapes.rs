@@ -97,7 +97,7 @@ fn read_shape_records<
     mut options: ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
 ) -> Result<Vec<ShapeRecord<Color, LineStyle>>> {
     let mut shape_records = Vec::new();
-    while options.reader.remaining() > 0 {
+    while options.reader.bytes_remaining() > 0 {
         shape_records.push(
             match read_shape_record(ReadShapeRecordOptions {
                 reader: options.reader,

@@ -18,7 +18,7 @@ pub fn read_place_object_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjectT
     let character_id = reader.read_u16()?;
     let depth = reader.read_u16()?;
     let matrix = read_matrix(reader)?;
-    let color_transform = if reader.remaining() > 0 {
+    let color_transform = if reader.bytes_remaining() > 0 {
         Some(read_color_transform(reader)?)
     } else {
         None

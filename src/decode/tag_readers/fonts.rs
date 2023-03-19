@@ -10,7 +10,7 @@ use std::io::{Error, Result};
 
 pub fn read_define_font_tag(reader: &mut SwfSliceReader) -> Result<DefineFontTag> {
     let font_id = reader.read_u16()?;
-    let end_offset = reader.remaining();
+    let end_offset = reader.bytes_remaining();
     let first_offset = reader.read_u16()? as usize;
     let num_glyphs = first_offset / 2;
     let mut length_table = Vec::with_capacity(num_glyphs);

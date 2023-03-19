@@ -131,7 +131,7 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
 
 pub fn read_action_records(reader: &mut SwfSliceReader) -> Result<Vec<ActionRecord>> {
     let mut actions = Vec::new();
-    while reader.remaining() > 0 {
+    while reader.bytes_remaining() > 0 {
         actions.push(read_action_record(reader)?);
     }
     Ok(actions)

@@ -27,7 +27,7 @@ impl<'buffer> SwfSliceReader<'buffer> {
         self.inner.inner().len() - self.buffer.len()
     }
 
-    pub fn remaining(&self) -> usize {
+    pub fn bytes_remaining(&self) -> usize {
         self.inner.inner().len()
     }
 
@@ -63,7 +63,7 @@ impl<'buffer> SwfSliceReader<'buffer> {
 
     pub fn read_u16_to_end(&mut self) -> Result<Vec<u16>> {
         let mut buffer = Vec::new();
-        while self.remaining() > 0 {
+        while self.bytes_remaining() > 0 {
             buffer.push(self.read_u16()?);
         }
         Ok(buffer)
