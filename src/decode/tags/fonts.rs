@@ -26,6 +26,19 @@ pub struct DefineFont2Tag {
     pub bounds: Vec<Rectangle>,
 }
 
+bitflags! {
+    pub struct DefineFont2Flags: u8 {
+        const HasLayout = 0x80;
+        const ShiftJis = 0x40;
+        const SmallText = 0x20;
+        const Ansi = 0x10;
+        const WideOffsets = 0x08;
+        const WideCodes = 0x04;
+        const Italic = 0x02;
+        const Bold = 0x01;
+    }
+}
+
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFont3Tag {
     pub font_id: u16,
