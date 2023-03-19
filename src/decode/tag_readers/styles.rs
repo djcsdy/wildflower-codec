@@ -144,7 +144,7 @@ pub fn read_line_style<
     Ok(LineStyle { width, color })
 }
 
-pub fn read_line_style2(reader: &mut SwfSliceReader) -> Result<LineStyle2> {
+pub fn read_line_style_2(reader: &mut SwfSliceReader) -> Result<LineStyle2> {
     let width = reader.read_u16()?;
     let start_cap_style = read_cap_style(reader)?;
     let join_style = reader.read_ub8(2)?;

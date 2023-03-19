@@ -3,7 +3,7 @@ use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::common::{read_rectangle, read_rgb, read_rgba};
 use crate::decode::tag_readers::styles::{
-    read_extended_fill_style_array, read_fill_style_array, read_line_style, read_line_style2,
+    read_extended_fill_style_array, read_fill_style_array, read_line_style, read_line_style_2,
     read_line_style_array,
 };
 use crate::decode::tags::shapes::{
@@ -339,7 +339,7 @@ pub fn read_define_shape_4_tag(reader: &mut SwfSliceReader) -> Result<DefineShap
     let uses_scaling_strokes = reader.read_bit()?;
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
-        read_line_style_array: &|reader| read_line_style_array(reader, &read_line_style2),
+        read_line_style_array: &|reader| read_line_style_array(reader, &read_line_style_2),
         read_fill_style_array: &|reader| read_extended_fill_style_array(reader, &read_rgba),
     })?;
     Ok(DefineShape4Tag {
