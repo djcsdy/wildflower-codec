@@ -170,8 +170,8 @@ fn read_morph_gradient(reader: &mut SwfSliceReader) -> Result<MorphGradient> {
 
 fn read_morph_focal_gradient(reader: &mut SwfSliceReader) -> Result<MorphFocalGradient> {
     let morph_gradient = read_morph_gradient(reader)?;
-    let start_focal_point = reader.read_fixed8()?;
-    let end_focal_point = reader.read_fixed8()?;
+    let start_focal_point = reader.read_fixed_8()?;
+    let end_focal_point = reader.read_fixed_8()?;
     Ok(MorphFocalGradient {
         gradient_records: morph_gradient.gradient_records,
         start_focal_point,
@@ -218,7 +218,7 @@ fn read_morph_line_style2(reader: &mut SwfSliceReader) -> Result<MorphLineStyle2
     let no_close = reader.read_bit()?;
     let end_cap_style = read_cap_style(reader)?;
     let miter_limit_factor = if join_style == 2 {
-        Some(reader.read_fixed8()?)
+        Some(reader.read_fixed_8()?)
     } else {
         None
     };

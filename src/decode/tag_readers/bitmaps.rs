@@ -246,7 +246,7 @@ pub fn read_define_bits_lossless_2_tag(
 pub fn read_define_bits_jpeg_4_tag(reader: &mut SwfSliceReader) -> Result<DefineBitsJpeg4Tag> {
     let character_id = reader.read_u16()?;
     let alpha_data_offset = reader.read_u32()? as usize;
-    let deblock_param = reader.read_fixed8()?;
+    let deblock_param = reader.read_fixed_8()?;
     let mut image_data = vec![0u8; alpha_data_offset];
     reader.read_exact(&mut image_data)?;
     let bitmap_alpha_data = reader.read_u8_to_end()?;

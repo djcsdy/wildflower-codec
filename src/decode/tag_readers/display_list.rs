@@ -315,7 +315,7 @@ fn read_drop_shadow_filter(reader: &mut SwfSliceReader) -> Result<DropShadowFilt
     let blur_y = reader.read_fixed_16()?;
     let angle = reader.read_fixed_16()?;
     let distance = reader.read_fixed_16()?;
-    let strength = reader.read_fixed8()?;
+    let strength = reader.read_fixed_8()?;
     let inner_shadow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
     let composite_source = reader.read_bit()?;
@@ -338,7 +338,7 @@ fn read_glow_filter(reader: &mut SwfSliceReader) -> Result<GlowFilter> {
     let color = read_rgba(reader)?;
     let blur_x = reader.read_fixed_16()?;
     let blur_y = reader.read_fixed_16()?;
-    let strength = reader.read_fixed8()?;
+    let strength = reader.read_fixed_8()?;
     let inner_glow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
     let composite_source = reader.read_bit()?;
@@ -362,7 +362,7 @@ fn read_bevel_filter(reader: &mut SwfSliceReader) -> Result<BevelFilter> {
     let blur_y = reader.read_fixed_16()?;
     let angle = reader.read_fixed_16()?;
     let distance = reader.read_fixed_16()?;
-    let strength = reader.read_fixed8()?;
+    let strength = reader.read_fixed_8()?;
     let inner_shadow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
     let composite_source = reader.read_bit()?;
@@ -398,7 +398,7 @@ fn read_gradient_glow_filter(reader: &mut SwfSliceReader) -> Result<GradientGlow
     let blur_y = reader.read_fixed_16()?;
     let angle = reader.read_fixed_16()?;
     let distance = reader.read_fixed_16()?;
-    let strength = reader.read_fixed8()?;
+    let strength = reader.read_fixed_8()?;
     let inner_shadow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
     let composite_source = reader.read_bit()?;
@@ -434,7 +434,7 @@ fn read_gradient_bevel_filter(reader: &mut SwfSliceReader) -> Result<GradientBev
     let blur_y = reader.read_fixed_16()?;
     let angle = reader.read_fixed_16()?;
     let distance = reader.read_fixed_16()?;
-    let strength = reader.read_fixed8()?;
+    let strength = reader.read_fixed_8()?;
     let inner_shadow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
     let composite_source = reader.read_bit()?;

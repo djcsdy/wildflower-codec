@@ -156,7 +156,7 @@ pub fn read_line_style2(reader: &mut SwfSliceReader) -> Result<LineStyle2> {
     let no_close = reader.read_bit()?;
     let end_cap_style = read_cap_style(reader)?;
     let miter_limit_factor = if join_style == 2 {
-        Some(reader.read_fixed8()?)
+        Some(reader.read_fixed_8()?)
     } else {
         None
     };
@@ -230,7 +230,7 @@ pub fn read_focal_gradient<
     read_color: &'read_color ReadColor,
 ) -> Result<FocalGradient<Color>> {
     let gradient = read_gradient(reader, read_color)?;
-    let focal_point = reader.read_fixed8()?;
+    let focal_point = reader.read_fixed_8()?;
     Ok(FocalGradient {
         spread_mode: gradient.spread_mode,
         interpolation_mode: gradient.interpolation_mode,

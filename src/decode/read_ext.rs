@@ -18,7 +18,7 @@ pub trait SwfTypesReadExt {
     fn read_u32_into(&mut self, buf: &mut [u32]) -> Result<()>;
     fn read_u64_into(&mut self, buf: &mut [u64]) -> Result<()>;
     fn read_fixed_16(&mut self) -> Result<Fixed16>;
-    fn read_fixed8(&mut self) -> Result<Fixed8>;
+    fn read_fixed_8(&mut self) -> Result<Fixed8>;
     fn read_f16(&mut self) -> Result<f16>;
     fn read_f32(&mut self) -> Result<f32>;
     fn read_f64(&mut self) -> Result<f64>;
@@ -90,7 +90,7 @@ impl<R: Read + ?Sized> SwfTypesReadExt for R {
         Ok(Fixed16::from_bytes(&buf))
     }
 
-    fn read_fixed8(&mut self) -> Result<Fixed8> {
+    fn read_fixed_8(&mut self) -> Result<Fixed8> {
         let mut buf = [0u8; 2];
         self.read_exact(&mut buf)?;
         Ok(Fixed8::from_bytes(&buf))

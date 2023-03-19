@@ -27,7 +27,7 @@ pub fn read_header<R: BufRead>(mut reader: R) -> Result<(Header, DecompressingRe
     });
 
     let frame_size = read_rectangle(&mut bit_reader)?;
-    let frame_rate = bit_reader.read_fixed8()?;
+    let frame_rate = bit_reader.read_fixed_8()?;
     let frame_count = bit_reader.read_u16()?;
 
     Ok((
