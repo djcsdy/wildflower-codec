@@ -188,11 +188,12 @@ pub fn read_non_edge_record<
 
     let has_new_styles = options.reader.read_bit()?;
     let has_line_style = options.reader.read_bit()?;
-    let has_fill_style1 = options.reader.read_bit()?;
-    let has_fill_style0 = options.reader.read_bit()?;
+    let has_fill_style_1 = options.reader.read_bit()?;
+    let has_fill_style_0 = options.reader.read_bit()?;
     let has_move_to = options.reader.read_bit()?;
 
-    if !has_new_styles && !has_line_style && !has_fill_style1 && !has_fill_style0 && !has_move_to {
+    if !has_new_styles && !has_line_style && !has_fill_style_1 && !has_fill_style_0 && !has_move_to
+    {
         return Ok(NonEdgeRecord::EndShape);
     }
 
