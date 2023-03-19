@@ -1,30 +1,32 @@
 use crate::ast::invalid::{InvalidTag, UnknownTag};
 use crate::ast::tag::Tag;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag::actions::{read_do_abc_tag, read_do_action_tag, read_do_init_action_tag};
-use crate::decode::tag::bitmaps::{
+use crate::decode::tag_readers::actions::{
+    read_do_abc_tag, read_do_action_tag, read_do_init_action_tag,
+};
+use crate::decode::tag_readers::bitmaps::{
     read_define_bits_jpeg2_tag, read_define_bits_jpeg3_tag, read_define_bits_jpeg4_tag,
     read_define_bits_lossless2_tag, read_define_bits_lossless_tag, read_define_bits_tag,
     read_jpeg_tables_tag,
 };
-use crate::decode::tag::control::{
+use crate::decode::tag_readers::control::{
     read_define_scaling_grid_tag, read_define_scene_and_frame_label_data_tag,
     read_enable_debugger2_tag, read_enable_debugger_tag, read_export_assets_tag,
     read_file_attributes_tag, read_frame_label_tag, read_import_assets2_tag,
     read_import_assets_tag, read_metadata_tag, read_script_limits_tag,
     read_set_background_color_tag, read_set_tab_index_tag, read_symbol_class_tag,
 };
-use crate::decode::tag::display_list::{
+use crate::decode::tag_readers::display_list::{
     read_place_object2_tag, read_place_object3_tag, read_place_object_tag, read_remove_object2_tag,
     read_remove_object_tag,
 };
-use crate::decode::tag::fonts::{
+use crate::decode::tag_readers::fonts::{
     read_define_font_info2_tag, read_define_font_info_tag, read_define_font_tag,
 };
-use crate::decode::tag::shape_morphing::{
+use crate::decode::tag_readers::shape_morphing::{
     read_define_morph_shape2_tag, read_define_morph_shape_tag,
 };
-use crate::decode::tag::shapes::{
+use crate::decode::tag_readers::shapes::{
     read_define_shape2_tag, read_define_shape3_tag, read_define_shape4_tag, read_define_shape_tag,
 };
 use crate::extract::tag_type::TagType;

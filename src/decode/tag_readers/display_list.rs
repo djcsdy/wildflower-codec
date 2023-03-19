@@ -7,8 +7,8 @@ use crate::ast::display_list::{
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag::actions::read_action_records;
-use crate::decode::tag::common::{
+use crate::decode::tag_readers::actions::read_action_records;
+use crate::decode::tag_readers::common::{
     read_color_transform, read_color_transform_with_alpha, read_matrix, read_rgba,
 };
 use std::io::ErrorKind::InvalidData;

@@ -7,7 +7,7 @@ use num_enum::{IntoPrimitive, TryFromPrimitive};
 pub struct PlaceObjectTag {
     /// The ID of the character to place.
     ///
-    /// The character must have previously be defined by another tag.
+    /// The character must have previously be defined by another tag_readers.
     pub character_id: u16,
 
     /// Depth of the character.
@@ -31,10 +31,10 @@ pub struct PlaceObjectTag {
 /// Equivalent to PlaceObjectTag, but with extended functionality.
 #[derive(Clone, PartialEq, Debug)]
 pub struct PlaceObject2Tag {
-    /// If true, then this tag modifies or replaces an existing character at
+    /// If true, then this tag_readers modifies or replaces an existing character at
     /// the specified depth.
     ///
-    /// If false, then this tag creates a new character at the specified depth.
+    /// If false, then this tag_readers creates a new character at the specified depth.
     /// There must not be an existing character at the specified depth.
     ///
     /// Called `PlaceFlagMove` in the SWF Specification.
@@ -48,7 +48,7 @@ pub struct PlaceObject2Tag {
 
     /// The ID of the character to place.
     ///
-    /// The character must have previously been defined by another tag.
+    /// The character must have previously been defined by another tag_readers.
     ///
     /// Required if `modify` is false, otherwise optional.
     pub character_id: Option<u16>,
@@ -303,6 +303,6 @@ pub struct RemoveObject2Tag {
 /// Instructs the player to display the contents of the display list.
 ///
 /// The player will wait at least the duration of one frame before the next
-/// ShowFrame tag takes effect.
+/// ShowFrame tag_readers takes effect.
 #[derive(Clone, PartialEq, Debug)]
 pub struct ShowFrameTag {}

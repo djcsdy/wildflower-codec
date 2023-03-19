@@ -6,8 +6,8 @@ use crate::ast::styles::FillStyle;
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag::common::{read_rectangle, read_rgb, read_rgba};
-use crate::decode::tag::styles::{
+use crate::decode::tag_readers::common::{read_rectangle, read_rgb, read_rgba};
+use crate::decode::tag_readers::styles::{
     read_extended_fill_style_array, read_fill_style_array, read_line_style, read_line_style2,
     read_line_style_array,
 };

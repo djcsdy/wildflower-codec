@@ -7,7 +7,7 @@ use crate::ast::control::{
 use crate::ast::metadata::{FileAttributesFlags, FileAttributesTag};
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag::common::{read_rectangle, read_rgb};
+use crate::decode::tag_readers::common::{read_rectangle, read_rgb};
 use std::io::Result;
 
 pub fn read_set_background_color_tag(reader: &mut SwfSliceReader) -> Result<SetBackgroundColorTag> {

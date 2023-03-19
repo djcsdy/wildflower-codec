@@ -6,9 +6,9 @@ use crate::ast::styles::JoinStyle;
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag::common::{read_matrix, read_rectangle, read_rgba};
-use crate::decode::tag::shapes::read_shape;
-use crate::decode::tag::styles::{
+use crate::decode::tag_readers::common::{read_matrix, read_rectangle, read_rgba};
+use crate::decode::tag_readers::shapes::read_shape;
+use crate::decode::tag_readers::styles::{
     read_cap_style, read_fill_style_type, read_line_style_array, FillStyleType,
 };
 use std::io::ErrorKind::InvalidData;

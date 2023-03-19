@@ -6,7 +6,7 @@ use crate::ast::common::Rgb;
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag::common::{read_argb, read_rgb, read_rgba};
+use crate::decode::tag_readers::common::{read_argb, read_rgb, read_rgba};
 use inflate::DeflateDecoder;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::io::ErrorKind::InvalidData;

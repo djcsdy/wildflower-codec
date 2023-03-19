@@ -4,7 +4,7 @@ use crate::ast::fonts::{
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag::shapes::read_shape;
+use crate::decode::tag_readers::shapes::read_shape;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Result};
 

@@ -5,7 +5,7 @@ use crate::ast::styles::{
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag::common::{read_matrix, read_rgb, read_rgba};
+use crate::decode::tag_readers::common::{read_matrix, read_rgb, read_rgba};
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Result};
