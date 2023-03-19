@@ -57,24 +57,24 @@ pub fn read_matrix<R: BitRead>(reader: &mut R) -> Result<Matrix> {
     let has_scale = reader.read_bit()?;
     let scale_bits = if has_scale { reader.read_ub8(5)? } else { 0 };
     let scale_x = if has_scale {
-        reader.read_fixed16_bits(scale_bits)?
+        reader.read_fixed_16_bits(scale_bits)?
     } else {
         Fixed16::ONE
     };
     let scale_y = if has_scale {
-        reader.read_fixed16_bits(scale_bits)?
+        reader.read_fixed_16_bits(scale_bits)?
     } else {
         Fixed16::ONE
     };
     let has_rotate = reader.read_bit()?;
     let rotate_bits = if has_rotate { reader.read_ub8(5)? } else { 0 };
     let rotate_skew_0 = if has_rotate {
-        reader.read_fixed16_bits(rotate_bits)?
+        reader.read_fixed_16_bits(rotate_bits)?
     } else {
         Fixed16::ZERO
     };
     let rotate_skew_1 = if has_rotate {
-        reader.read_fixed16_bits(rotate_bits)?
+        reader.read_fixed_16_bits(rotate_bits)?
     } else {
         Fixed16::ZERO
     };
