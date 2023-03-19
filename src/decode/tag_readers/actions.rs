@@ -118,7 +118,7 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
         0x94 => ActionRecord::With(read_with(&mut body_reader)?),
         0x96 => ActionRecord::Push(read_push(&mut body_reader)?),
         0x99 => ActionRecord::Jump(read_jump(&mut body_reader)?),
-        0x9a => ActionRecord::GetUrl2(read_get_url2(&mut body_reader)?),
+        0x9a => ActionRecord::GetUrl2(read_get_url_2(&mut body_reader)?),
         0x9b => ActionRecord::DefineFunction(read_define_function(&mut body_reader)?),
         0x9d => ActionRecord::If(read_if(&mut body_reader)?),
         0x9e => ActionRecord::Call,
@@ -192,7 +192,7 @@ fn read_if(reader: &mut SwfSliceReader) -> Result<If> {
     Ok(If { offset })
 }
 
-fn read_get_url2(reader: &mut SwfSliceReader) -> Result<GetUrl2> {
+fn read_get_url_2(reader: &mut SwfSliceReader) -> Result<GetUrl2> {
     let send_vars_method = reader
         .read_ub8(2)?
         .try_into()
