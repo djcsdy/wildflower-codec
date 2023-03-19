@@ -465,7 +465,7 @@ pub fn read_remove_object_tag(reader: &mut SwfSliceReader) -> Result<RemoveObjec
     })
 }
 
-pub fn read_remove_object2_tag(reader: &mut SwfSliceReader) -> Result<RemoveObject2Tag> {
+pub fn read_remove_object_2_tag(reader: &mut SwfSliceReader) -> Result<RemoveObject2Tag> {
     let depth = reader.read_u16()?;
     Ok(RemoveObject2Tag { depth })
 }
