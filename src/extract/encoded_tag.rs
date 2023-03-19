@@ -19,7 +19,7 @@ use crate::decode::tag_readers::display_list::{
     read_remove_object_tag,
 };
 use crate::decode::tag_readers::fonts::{
-    read_define_font_info2_tag, read_define_font_info_tag, read_define_font_tag,
+    read_define_font_info_2_tag, read_define_font_info_tag, read_define_font_tag,
 };
 use crate::decode::tag_readers::shape_morphing::{
     read_define_morph_shape2_tag, read_define_morph_shape_tag,
@@ -138,7 +138,7 @@ impl EncodedTag {
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineVideoStream => Tag::Unknown(self.into_unknown()),
             TagType::VideoFrame => Tag::Unknown(self.into_unknown()),
-            TagType::DefineFontInfo2 => read_define_font_info2_tag(&mut slice_reader)
+            TagType::DefineFontInfo2 => read_define_font_info_2_tag(&mut slice_reader)
                 .map(Tag::DefineFontInfo2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::EnableDebugger2 => read_enable_debugger_2_tag(&mut slice_reader)

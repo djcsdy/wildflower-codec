@@ -70,7 +70,7 @@ pub fn read_define_font_info_tag(reader: &mut SwfSliceReader) -> Result<DefineFo
     })
 }
 
-pub fn read_define_font_info2_tag(reader: &mut SwfSliceReader) -> Result<DefineFontInfo2Tag> {
+pub fn read_define_font_info_2_tag(reader: &mut SwfSliceReader) -> Result<DefineFontInfo2Tag> {
     let font_id = reader.read_u16()?;
     let name_len = reader.read_u8()? as usize;
     let font_name = reader.read_fixed_string(name_len)?;
