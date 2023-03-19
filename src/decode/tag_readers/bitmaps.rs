@@ -167,14 +167,14 @@ fn read_bitmap_data<
 >(
     options: ReadBitmapDataOptions<'reader, 'buffer, 'read_color, Color, ReadColor>,
 ) -> Result<BitmapData<Color>> {
-    let start = options.reader.count();
+    let start = options.reader.position();
     let mut pixel_data =
         Vec::with_capacity((options.bitmap_height as usize) * (options.bitmap_width as usize));
     for _ in 0..options.bitmap_height {
         for _ in 0..options.bitmap_width {
             pixel_data.push((options.read_color)(options.reader)?);
         }
-        while (options.reader.count() - start) & 4 != 0 {
+        while (options.reader.position() - start) & 4 != 0 {
             options.reader.read_u8()?;
         }
     }

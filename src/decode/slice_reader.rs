@@ -23,7 +23,7 @@ impl<'buffer> SwfSliceReader<'buffer> {
         self.swf_version
     }
 
-    pub fn count(&self) -> usize {
+    pub fn position(&self) -> usize {
         self.inner.inner().len() - self.buffer.len()
     }
 
