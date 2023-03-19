@@ -125,7 +125,7 @@ fn read_language_code(reader: &mut SwfSliceReader) -> Result<LanguageCode> {
     read_optional_language_code(reader)?.ok_or_else(|| Error::from(InvalidData))
 }
 
-pub fn read_define_font2_tag(reader: &mut SwfSliceReader) -> Result<DefineFont2Tag> {
+pub fn read_define_font_2_tag(reader: &mut SwfSliceReader) -> Result<DefineFont2Tag> {
     let font_id = reader.read_u16()?;
     let flags = DefineFont2Flags::from_bits(reader.read_u8()?).unwrap();
     let language_code = read_optional_language_code(reader)?;
