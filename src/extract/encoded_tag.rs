@@ -3,7 +3,7 @@ use crate::decode::tag_readers::actions::{
     read_do_abc_tag, read_do_action_tag, read_do_init_action_tag,
 };
 use crate::decode::tag_readers::bitmaps::{
-    read_define_bits_jpeg2_tag, read_define_bits_jpeg3_tag, read_define_bits_jpeg4_tag,
+    read_define_bits_jpeg_2_tag, read_define_bits_jpeg3_tag, read_define_bits_jpeg4_tag,
     read_define_bits_lossless2_tag, read_define_bits_lossless_tag, read_define_bits_tag,
     read_jpeg_tables_tag,
 };
@@ -89,7 +89,7 @@ impl EncodedTag {
             TagType::DefineBitsLossless => read_define_bits_lossless_tag(&mut slice_reader)
                 .map(Tag::DefineBitsLossless)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineBitsJpeg2 => read_define_bits_jpeg2_tag(&mut slice_reader)
+            TagType::DefineBitsJpeg2 => read_define_bits_jpeg_2_tag(&mut slice_reader)
                 .map(Tag::DefineBitsJpeg2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineShape2 => read_define_shape2_tag(&mut slice_reader)
