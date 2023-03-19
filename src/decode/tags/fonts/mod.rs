@@ -4,24 +4,12 @@ use half::f16;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 pub mod define_font_2;
+pub mod define_font_2_flags;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFontTag {
     pub font_id: u16,
     pub glyph_shapes: Vec<Shape<(), ()>>,
-}
-
-bitflags! {
-    pub struct DefineFont2Flags: u8 {
-        const HAS_LAYOUT = 0x80;
-        const SHIFT_JIS = 0x40;
-        const SMALL_TEXT = 0x20;
-        const ANSI = 0x10;
-        const WIDE_OFFSETS = 0x08;
-        const WIDE_CODES = 0x04;
-        const ITALIC = 0x02;
-        const BOLD = 0x01;
-    }
 }
 
 #[derive(Clone, PartialEq, Debug)]

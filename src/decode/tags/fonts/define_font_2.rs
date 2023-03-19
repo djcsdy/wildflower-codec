@@ -1,5 +1,6 @@
 use crate::decode::tags::common;
-use crate::decode::tags::fonts::{DefineFont2Flags, LanguageCode};
+use crate::decode::tags::fonts::define_font_2_flags::DefineFont2Flags;
+use crate::decode::tags::fonts::LanguageCode;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFont2Tag {
