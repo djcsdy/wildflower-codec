@@ -12,9 +12,7 @@ pub struct DefineFontTag {
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFont2Tag {
     pub font_id: u16,
-    pub small_text: bool,
-    pub italic: bool,
-    pub bold: bool,
+    flags: DefineFont2Flags,
     pub language_code: Option<LanguageCode>,
     pub font_name: String,
     pub glyph_shapes: Vec<Shape<(), ()>>,
