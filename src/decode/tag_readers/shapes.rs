@@ -294,7 +294,7 @@ pub fn read_define_shape_tag(reader: &mut SwfSliceReader) -> Result<DefineShapeT
     })
 }
 
-pub fn read_define_shape2_tag(reader: &mut SwfSliceReader) -> Result<DefineShape2Tag> {
+pub fn read_define_shape_2_tag(reader: &mut SwfSliceReader) -> Result<DefineShape2Tag> {
     let shape_id = reader.read_u16()?;
     let shape_bounds = read_rectangle(reader)?;
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {

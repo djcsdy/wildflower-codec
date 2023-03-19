@@ -25,7 +25,7 @@ use crate::decode::tag_readers::shape_morphing::{
     read_define_morph_shape_2_tag, read_define_morph_shape_tag,
 };
 use crate::decode::tag_readers::shapes::{
-    read_define_shape2_tag, read_define_shape3_tag, read_define_shape4_tag, read_define_shape_tag,
+    read_define_shape_2_tag, read_define_shape3_tag, read_define_shape4_tag, read_define_shape_tag,
 };
 use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
 use crate::decode::tags::tag::Tag;
@@ -92,7 +92,7 @@ impl EncodedTag {
             TagType::DefineBitsJpeg2 => read_define_bits_jpeg_2_tag(&mut slice_reader)
                 .map(Tag::DefineBitsJpeg2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineShape2 => read_define_shape2_tag(&mut slice_reader)
+            TagType::DefineShape2 => read_define_shape_2_tag(&mut slice_reader)
                 .map(Tag::DefineShape2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineButtonColorTransform => Tag::Unknown(self.into_unknown()),
