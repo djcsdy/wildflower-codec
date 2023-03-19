@@ -80,7 +80,7 @@ pub fn read_define_font_info2_tag(reader: &mut SwfSliceReader) -> Result<DefineF
     let italic = reader.read_bit()?;
     let bold = reader.read_bit()?;
     let wide_codes = reader.read_bit()?;
-    let language_code = read_optional_language_code(reader)?;
+    let language_code = read_language_code(reader)?;
     let code_table = if wide_codes {
         if ansi {
             return Err(Error::from(InvalidData));
@@ -118,4 +118,8 @@ fn read_optional_language_code(reader: &mut SwfSliceReader) -> Result<Option<Lan
             .map(Some)
             .map_err(|_| Error::from(InvalidData))
     }
+}
+
+fn read_language_code(reader: &mut SwfSliceReader) -> Result<LanguageCode> {
+    read_optional_language_code(reader)?.ok_or_else(|| Error::from(InvalidData))
 }
