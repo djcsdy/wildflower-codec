@@ -45,7 +45,7 @@ pub trait BitRead {
         Ok(Fixed16::from_bytes(&buf))
     }
 
-    fn read_fixed8_bits(&mut self, bits: u8) -> Result<Fixed8> {
+    fn read_fixed_8_bits(&mut self, bits: u8) -> Result<Fixed8> {
         let mut buf = [0u8; 2];
         LittleEndian::write_u16(&mut buf, self.read_ub16(bits)?);
         Ok(Fixed8::from_bytes(&buf))

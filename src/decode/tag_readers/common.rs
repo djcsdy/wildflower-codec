@@ -96,17 +96,17 @@ pub fn read_color_transform<R: BitRead>(reader: &mut R) -> Result<ColorTransform
     let has_mult_terms = reader.read_bit()?;
     let bits = reader.read_ub8(4)?;
     let red_multiplication_term = if has_mult_terms {
-        reader.read_fixed8_bits(bits)?
+        reader.read_fixed_8_bits(bits)?
     } else {
         Fixed8::ONE
     };
     let green_multiplication_term = if has_mult_terms {
-        reader.read_fixed8_bits(bits)?
+        reader.read_fixed_8_bits(bits)?
     } else {
         Fixed8::ONE
     };
     let blue_multiplication_term = if has_mult_terms {
-        reader.read_fixed8_bits(bits)?
+        reader.read_fixed_8_bits(bits)?
     } else {
         Fixed8::ONE
     };
@@ -142,22 +142,22 @@ pub fn read_color_transform_with_alpha<R: BitRead>(
     let has_mult_terms = reader.read_bit()?;
     let bits = reader.read_ub8(4)?;
     let red_multiplication_term = if has_mult_terms {
-        reader.read_fixed8_bits(bits)?
+        reader.read_fixed_8_bits(bits)?
     } else {
         Fixed8::ONE
     };
     let green_multiplication_term = if has_mult_terms {
-        reader.read_fixed8_bits(bits)?
+        reader.read_fixed_8_bits(bits)?
     } else {
         Fixed8::ONE
     };
     let blue_multiplication_term = if has_mult_terms {
-        reader.read_fixed8_bits(bits)?
+        reader.read_fixed_8_bits(bits)?
     } else {
         Fixed8::ONE
     };
     let alpha_multiplication_term = if has_mult_terms {
-        reader.read_fixed8_bits(bits)?
+        reader.read_fixed_8_bits(bits)?
     } else {
         Fixed8::ONE
     };
