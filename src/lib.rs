@@ -4,4 +4,4 @@ extern crate byteorder;
 
 pub mod ast;
 pub mod decode;
-pub mod encoded_tags;
+pub mod extract;

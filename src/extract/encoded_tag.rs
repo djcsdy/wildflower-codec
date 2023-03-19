@@ -27,7 +27,7 @@ use crate::decode::tag::shape_morphing::{
 use crate::decode::tag::shapes::{
     read_define_shape2_tag, read_define_shape3_tag, read_define_shape4_tag, read_define_shape_tag,
 };
-use crate::encoded_tags::tag_type::TagType;
+use crate::extract::tag_type::TagType;
 
 #[derive(Clone, PartialEq, Eq, Debug, Hash)]
 pub struct EncodedTag {

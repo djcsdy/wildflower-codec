@@ -2,8 +2,8 @@ use crate::ast::header::Header;
 use crate::decode::decompressing_reader::DecompressingReader;
 use crate::decode::header::read_header;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::encoded_tags::encoded_tag::EncodedTag;
-use crate::encoded_tags::tag_type::TagType;
+use crate::extract::encoded_tag::EncodedTag;
+use crate::extract::tag_type::TagType;
 use std::io::{BufRead, Read, Result};
 
 pub struct ExtractTagsReader<'reader, R: BufRead> {
