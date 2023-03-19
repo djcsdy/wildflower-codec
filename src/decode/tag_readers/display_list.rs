@@ -32,7 +32,7 @@ pub fn read_place_object_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjectT
     })
 }
 
-pub fn read_place_object2_tag(reader: &mut SwfSliceReader) -> Result<PlaceObject2Tag> {
+pub fn read_place_object_2_tag(reader: &mut SwfSliceReader) -> Result<PlaceObject2Tag> {
     let has_clip_actions = reader.read_bit()?;
     let has_clip_depth = reader.read_bit()?;
     let has_name = reader.read_bit()?;

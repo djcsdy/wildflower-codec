@@ -15,7 +15,7 @@ use crate::decode::tag_readers::control::{
     read_set_background_color_tag, read_set_tab_index_tag, read_symbol_class_tag,
 };
 use crate::decode::tag_readers::display_list::{
-    read_place_object2_tag, read_place_object3_tag, read_place_object_tag, read_remove_object2_tag,
+    read_place_object_2_tag, read_place_object3_tag, read_place_object_tag, read_remove_object2_tag,
     read_remove_object_tag,
 };
 use crate::decode::tag_readers::fonts::{
@@ -97,7 +97,7 @@ impl EncodedTag {
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineButtonColorTransform => Tag::Unknown(self.into_unknown()),
             TagType::Protect => Tag::Unknown(self.into_unknown()),
-            TagType::PlaceObject2 => read_place_object2_tag(&mut slice_reader)
+            TagType::PlaceObject2 => read_place_object_2_tag(&mut slice_reader)
                 .map(Tag::PlaceObject2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::RemoveObject2 => read_remove_object2_tag(&mut slice_reader)
