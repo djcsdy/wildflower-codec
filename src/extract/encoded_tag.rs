@@ -22,7 +22,7 @@ use crate::decode::tag_readers::fonts::{
     read_define_font_info_2_tag, read_define_font_info_tag, read_define_font_tag,
 };
 use crate::decode::tag_readers::shape_morphing::{
-    read_define_morph_shape2_tag, read_define_morph_shape_tag,
+    read_define_morph_shape_2_tag, read_define_morph_shape_tag,
 };
 use crate::decode::tag_readers::shapes::{
     read_define_shape2_tag, read_define_shape3_tag, read_define_shape4_tag, read_define_shape_tag,
@@ -177,7 +177,7 @@ impl EncodedTag {
             TagType::DefineShape4 => read_define_shape4_tag(&mut slice_reader)
                 .map(Tag::DefineShape4)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineMorphShape2 => read_define_morph_shape2_tag(&mut slice_reader)
+            TagType::DefineMorphShape2 => read_define_morph_shape_2_tag(&mut slice_reader)
                 .map(Tag::DefineMorphShape2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineSceneAndFrameLabelData => {

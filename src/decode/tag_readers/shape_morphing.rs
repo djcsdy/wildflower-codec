@@ -34,7 +34,7 @@ pub fn read_define_morph_shape_tag(reader: &mut SwfSliceReader) -> Result<Define
     })
 }
 
-pub fn read_define_morph_shape2_tag(reader: &mut SwfSliceReader) -> Result<DefineMorphShape2Tag> {
+pub fn read_define_morph_shape_2_tag(reader: &mut SwfSliceReader) -> Result<DefineMorphShape2Tag> {
     let character_id = reader.read_u16()?;
     let start_bounds = read_rectangle(reader)?;
     let end_bounds = read_rectangle(reader)?;
