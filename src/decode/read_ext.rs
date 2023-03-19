@@ -1,4 +1,4 @@
-use crate::ast::common::{Fixed16, Fixed8};
+use crate::decode::tags::common::{Fixed16, Fixed8};
 use byteorder::{LittleEndian, ReadBytesExt};
 use half::f16;
 use std::io::{Read, Result};

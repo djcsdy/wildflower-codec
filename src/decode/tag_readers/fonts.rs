@@ -1,10 +1,10 @@
-use crate::ast::fonts::{
-    CodeTable, DefineFontInfo2Tag, DefineFontInfoTag, DefineFontTag, LanguageCode,
-};
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::shapes::read_shape;
+use crate::decode::tags::fonts::{
+    CodeTable, DefineFontInfo2Tag, DefineFontInfoTag, DefineFontTag, LanguageCode,
+};
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Result};
 

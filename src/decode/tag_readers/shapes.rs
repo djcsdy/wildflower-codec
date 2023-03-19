@@ -1,8 +1,3 @@
-use crate::ast::shapes::{
-    CurvedEdgeRecord, DefineShape2Tag, DefineShape3Tag, DefineShape4Tag, DefineShapeTag, Shape,
-    ShapeRecord, ShapeWithStyle, StraightEdgeRecord, StyleChangeRecord,
-};
-use crate::ast::styles::FillStyle;
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
@@ -11,6 +6,11 @@ use crate::decode::tag_readers::styles::{
     read_extended_fill_style_array, read_fill_style_array, read_line_style, read_line_style2,
     read_line_style_array,
 };
+use crate::decode::tags::shapes::{
+    CurvedEdgeRecord, DefineShape2Tag, DefineShape3Tag, DefineShape4Tag, DefineShapeTag, Shape,
+    ShapeRecord, ShapeWithStyle, StraightEdgeRecord, StyleChangeRecord,
+};
+use crate::decode::tags::styles::FillStyle;
 use std::io::Result;
 
 pub fn read_shape(reader: &mut SwfSliceReader) -> Result<Shape<(), ()>> {

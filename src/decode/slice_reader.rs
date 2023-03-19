@@ -1,7 +1,7 @@
-use crate::ast::common::String;
 use crate::decode::bit_read::BitRead;
 use crate::decode::bit_reader::BitReader;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::tags::common::String;
 use std::io::{IoSliceMut, Read, Result};
 
 pub struct SwfSliceReader<'buffer> {

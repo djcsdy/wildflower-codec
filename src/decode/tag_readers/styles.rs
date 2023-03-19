@@ -1,11 +1,11 @@
-use crate::ast::common::Rgb;
-use crate::ast::styles::{
-    CapStyle, FillStyle, FocalGradient, Gradient, GradientRecord, JoinStyle, LineStyle, LineStyle2,
-};
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::common::{read_matrix, read_rgb, read_rgba};
+use crate::decode::tags::common::Rgb;
+use crate::decode::tags::styles::{
+    CapStyle, FillStyle, FocalGradient, Gradient, GradientRecord, JoinStyle, LineStyle, LineStyle2,
+};
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Result};

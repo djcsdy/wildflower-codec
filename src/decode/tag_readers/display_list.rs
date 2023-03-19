@@ -1,15 +1,15 @@
-use crate::ast::display_list::{
-    BevelFilter, BlurFilter, ClipActionRecord, ClipActions, ClipEventFlags, ColorMatrixFilter,
-    ConvolutionFilter, DropShadowFilter, Filter, GlowFilter, GradientBevelFilter,
-    GradientGlowFilter, PlaceObject2Tag, PlaceObject3Tag, PlaceObjectTag, RemoveObject2Tag,
-    RemoveObjectTag,
-};
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::actions::read_action_records;
 use crate::decode::tag_readers::common::{
     read_color_transform, read_color_transform_with_alpha, read_matrix, read_rgba,
+};
+use crate::decode::tags::display_list::{
+    BevelFilter, BlurFilter, ClipActionRecord, ClipActions, ClipEventFlags, ColorMatrixFilter,
+    ConvolutionFilter, DropShadowFilter, Filter, GlowFilter, GradientBevelFilter,
+    GradientGlowFilter, PlaceObject2Tag, PlaceObject3Tag, PlaceObjectTag, RemoveObject2Tag,
+    RemoveObjectTag,
 };
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Result};

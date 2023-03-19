@@ -1,8 +1,8 @@
-use crate::ast::common::{
-    ColorTransform, ColorTransformWithAlpha, Fixed16, Fixed8, Matrix, Rectangle, Rgb, Rgba,
-};
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::tags::common::{
+    ColorTransform, ColorTransformWithAlpha, Fixed16, Fixed8, Matrix, Rectangle, Rgb, Rgba,
+};
 use std::io::{Read, Result};
 
 pub fn read_rgb<R: Read>(reader: &mut R) -> Result<Rgb> {

@@ -29,8 +29,8 @@ use super::sounds::{
 use super::sprites::DefineSpriteTag;
 use super::text::{CsmTextSettingsTag, DefineEditTextTag, DefineText2Tag, DefineTextTag};
 use super::video::DefineVideoStreamTag;
-use crate::ast::invalid::{InvalidTag, UnknownTag};
-use crate::ast::metadata::FileAttributesTag;
+use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
+use crate::decode::tags::metadata::FileAttributesTag;
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum Tag {

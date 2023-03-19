@@ -1,6 +1,6 @@
-use crate::ast::header::Header;
 use crate::decode::decompressing_reader::DecompressingReader;
 use crate::decode::header::read_header;
+use crate::decode::tags::header::Header;
 use std::fs::File;
 use std::io::{BufRead, BufReader, Result};
 use std::path::Path;

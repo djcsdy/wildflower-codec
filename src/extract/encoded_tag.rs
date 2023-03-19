@@ -1,5 +1,3 @@
-use crate::ast::invalid::{InvalidTag, UnknownTag};
-use crate::ast::tag::Tag;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::actions::{
     read_do_abc_tag, read_do_action_tag, read_do_init_action_tag,
@@ -29,6 +27,8 @@ use crate::decode::tag_readers::shape_morphing::{
 use crate::decode::tag_readers::shapes::{
     read_define_shape2_tag, read_define_shape3_tag, read_define_shape4_tag, read_define_shape_tag,
 };
+use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
+use crate::decode::tags::tag::Tag;
 use crate::extract::tag_type::TagType;
 
 #[derive(Clone, PartialEq, Eq, Debug, Hash)]

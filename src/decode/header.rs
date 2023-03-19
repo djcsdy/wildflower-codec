@@ -1,8 +1,8 @@
-use crate::ast::header::{Compression, Header};
 use crate::decode::bit_reader::BitReader;
 use crate::decode::decompressing_reader::DecompressingReader;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_readers::common::read_rectangle;
+use crate::decode::tags::header::{Compression, Header};
 use std::io::ErrorKind::InvalidData;
 use std::io::{BufRead, Error, Result};
 
