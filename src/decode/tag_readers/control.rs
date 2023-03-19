@@ -77,7 +77,7 @@ pub fn read_file_attributes_tag(reader: &mut SwfSliceReader) -> Result<FileAttri
     Ok(FileAttributesTag { flags })
 }
 
-pub fn read_import_assets2_tag(reader: &mut SwfSliceReader) -> Result<ImportAssets2Tag> {
+pub fn read_import_assets_2_tag(reader: &mut SwfSliceReader) -> Result<ImportAssets2Tag> {
     let url = reader.read_string()?;
     reader.read_u16()?;
     let count = reader.read_u16()?;

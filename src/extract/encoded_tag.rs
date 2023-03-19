@@ -10,7 +10,7 @@ use crate::decode::tag_readers::bitmaps::{
 use crate::decode::tag_readers::control::{
     read_define_scaling_grid_tag, read_define_scene_and_frame_label_data_tag,
     read_enable_debugger_2_tag, read_enable_debugger_tag, read_export_assets_tag,
-    read_file_attributes_tag, read_frame_label_tag, read_import_assets2_tag,
+    read_file_attributes_tag, read_frame_label_tag, read_import_assets_2_tag,
     read_import_assets_tag, read_metadata_tag, read_script_limits_tag,
     read_set_background_color_tag, read_set_tab_index_tag, read_symbol_class_tag,
 };
@@ -156,7 +156,7 @@ impl EncodedTag {
             TagType::PlaceObject3 => read_place_object3_tag(&mut slice_reader)
                 .map(Tag::PlaceObject3)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::ImportAssets2 => read_import_assets2_tag(&mut slice_reader)
+            TagType::ImportAssets2 => read_import_assets_2_tag(&mut slice_reader)
                 .map(Tag::ImportAssets2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineFontAlignZones => Tag::Unknown(self.into_unknown()),
