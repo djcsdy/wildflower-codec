@@ -16,8 +16,8 @@ use super::display_list::{
     ShowFrameTag,
 };
 use super::fonts::{
-    DefineFont2Tag, DefineFont3Tag, DefineFont4Tag, DefineFontAlignZonesTag, DefineFontInfo2Tag,
-    DefineFontInfoTag, DefineFontNameTag, DefineFontTag,
+    DefineFont3Tag, DefineFont4Tag, DefineFontAlignZonesTag, DefineFontInfo2Tag, DefineFontInfoTag,
+    DefineFontNameTag, DefineFontTag,
 };
 use super::metadata::{DefineBinaryDataTag, EnableTelemetryTag};
 use super::shape_morphing::{DefineMorphShape2Tag, DefineMorphShapeTag};
@@ -29,6 +29,7 @@ use super::sounds::{
 use super::sprites::DefineSpriteTag;
 use super::text::{CsmTextSettingsTag, DefineEditTextTag, DefineText2Tag, DefineTextTag};
 use super::video::DefineVideoStreamTag;
+use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
 use crate::decode::tags::metadata::FileAttributesTag;
 

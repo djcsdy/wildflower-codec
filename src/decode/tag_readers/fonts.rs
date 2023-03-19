@@ -2,9 +2,9 @@ use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::shapes::read_shape;
+use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::{
-    CodeTable, DefineFont2Flags, DefineFont2Tag, DefineFontInfo2Tag, DefineFontInfoTag,
-    DefineFontTag, LanguageCode,
+    CodeTable, DefineFont2Flags, DefineFontInfo2Tag, DefineFontInfoTag, DefineFontTag, LanguageCode,
 };
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Result};

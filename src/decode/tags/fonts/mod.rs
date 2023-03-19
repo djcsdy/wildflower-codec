@@ -3,20 +3,12 @@ use super::shapes::Shape;
 use half::f16;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
+pub mod define_font_2;
+
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFontTag {
     pub font_id: u16,
     pub glyph_shapes: Vec<Shape<(), ()>>,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct DefineFont2Tag {
-    pub font_id: u16,
-    pub flags: DefineFont2Flags,
-    pub language_code: Option<LanguageCode>,
-    pub font_name: String,
-    pub num_glyphs: u16,
-    pub glyphs_and_layout: Vec<u8>,
 }
 
 bitflags! {
