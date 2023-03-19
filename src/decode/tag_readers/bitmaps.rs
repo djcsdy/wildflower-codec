@@ -197,7 +197,7 @@ fn read_pix24(reader: &mut SwfSliceReader) -> Result<Rgb> {
     Ok(Rgb { red, green, blue })
 }
 
-pub fn read_define_bits_lossless2_tag(
+pub fn read_define_bits_lossless_2_tag(
     reader: &mut SwfSliceReader,
 ) -> Result<DefineBitsLossless2Tag> {
     let character_id = reader.read_u16()?;
