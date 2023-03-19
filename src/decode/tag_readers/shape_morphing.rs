@@ -45,7 +45,7 @@ pub fn read_define_morph_shape_2_tag(reader: &mut SwfSliceReader) -> Result<Defi
     let uses_scaling_strokes = reader.read_bit()?;
     let offset = reader.read_u32()? as usize;
     let fill_styles = read_morph_fill_style_array(reader)?;
-    let line_styles = read_line_style_array(reader, &read_morph_line_style2)?;
+    let line_styles = read_line_style_array(reader, &read_morph_line_style_2)?;
     let start_edges = read_shape(&mut reader.slice(offset))?;
     let end_edges = read_shape(reader)?;
     Ok(DefineMorphShape2Tag {
@@ -205,7 +205,7 @@ fn read_morph_line_style(reader: &mut SwfSliceReader) -> Result<MorphLineStyle> 
     })
 }
 
-fn read_morph_line_style2(reader: &mut SwfSliceReader) -> Result<MorphLineStyle2> {
+fn read_morph_line_style_2(reader: &mut SwfSliceReader) -> Result<MorphLineStyle2> {
     let start_width = reader.read_u16()?;
     let end_width = reader.read_u16()?;
     let start_cap_style = read_cap_style(reader)?;
