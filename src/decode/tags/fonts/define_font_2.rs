@@ -24,6 +24,25 @@ pub struct DefineFont2Tag {
 }
 
 impl DefineFont2Tag {
+    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+        let font_id = reader.read_u16()?;
+        let flags = DefineFontFlags::from_bits(reader.read_u8()?).unwrap();
+        let language_code = LanguageCode::read_optional(reader)?;
+        let name_len = reader.read_u8()? as usize;
+        let font_name = reader.read_fixed_string(name_len)?;
+        let num_glyphs = reader.read_u16()?;
+        let glyphs_and_layout = reader.read_u8_to_end()?;
+
+        Ok(Self {
+            font_id,
+            flags,
+            language_code,
+            font_name,
+            num_glyphs,
+            glyphs_and_code_table_and_layout: glyphs_and_layout,
+        })
+    }
+
     pub fn read_glyphs_and_code_table_and_layout(
         &self,
         swf_version: u8,

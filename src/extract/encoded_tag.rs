@@ -18,7 +18,6 @@ use crate::decode::tag_readers::display_list::{
     read_place_object_2_tag, read_place_object_3_tag, read_place_object_tag,
     read_remove_object_2_tag, read_remove_object_tag,
 };
-use crate::decode::tag_readers::fonts::read_define_font_2_tag;
 use crate::decode::tag_readers::shape_morphing::{
     read_define_morph_shape_2_tag, read_define_morph_shape_tag,
 };
@@ -27,6 +26,7 @@ use crate::decode::tag_readers::shapes::{
     read_define_shape_tag,
 };
 use crate::decode::tags::fonts::define_font::DefineFontTag;
+use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::define_font_info::DefineFontInfoTag;
 use crate::decode::tags::fonts::define_font_info_2::DefineFontInfo2Tag;
 use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
@@ -125,7 +125,7 @@ impl EncodedTag {
             TagType::DefineMorphShape => read_define_morph_shape_tag(&mut slice_reader)
                 .map(Tag::DefineMorphShape)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineFont2 => read_define_font_2_tag(&mut slice_reader)
+            TagType::DefineFont2 => DefineFont2Tag::read(&mut slice_reader)
                 .map(Tag::DefineFont2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::ExportAssets => read_export_assets_tag(&mut slice_reader)
