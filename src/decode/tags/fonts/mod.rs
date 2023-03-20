@@ -1,6 +1,5 @@
 use super::common::*;
 use half::f16;
-use kerning::KerningRecord;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 pub mod code_table;
@@ -17,26 +16,6 @@ pub mod glyphs_and_code_table_and_layout;
 pub mod kerning;
 pub mod language_code;
 pub mod layout;
-
-#[derive(Clone, PartialEq, Debug)]
-pub enum CodeTableWithKernings {
-    Windows1252 {
-        character_codes: Vec<u8>,
-        kernings: Vec<KerningRecord<u8>>,
-    },
-    JisX0201 {
-        character_codes: Vec<u8>,
-        kernings: Vec<KerningRecord<u8>>,
-    },
-    ShiftJis {
-        character_codes: Vec<u16>,
-        kernings: Vec<KerningRecord<u16>>,
-    },
-    Ucs2 {
-        character_codes: Vec<u16>,
-        kernings: Vec<KerningRecord<u16>>,
-    },
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFontAlignZonesTag {
