@@ -5,6 +5,7 @@ use kerning::KerningRecord;
 use language_code::LanguageCode;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
+pub mod code_table;
 pub mod code_table_and_layout;
 pub mod define_font;
 pub mod define_font_2;
@@ -33,14 +34,6 @@ pub struct DefineFont3Tag {
     pub leading: i16,
     pub advances: Vec<i16>,
     pub bounds: Vec<Rectangle>,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub enum CodeTable {
-    Windows1252(Vec<u8>),
-    JisX0201(Vec<u8>),
-    ShiftJis(Vec<u16>),
-    Ucs2(Vec<u16>),
 }
 
 #[derive(Clone, PartialEq, Debug)]

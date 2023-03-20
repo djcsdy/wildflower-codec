@@ -1,9 +1,9 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::String;
+use crate::decode::tags::fonts::code_table::CodeTable;
 use crate::decode::tags::fonts::define_font_info_flags::DefineFontInfoFlags;
 use crate::decode::tags::fonts::language_code::LanguageCode;
-use crate::decode::tags::fonts::CodeTable;
 use std::io::Error;
 use std::io::ErrorKind::InvalidData;
 use std::io::Result;
