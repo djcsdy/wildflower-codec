@@ -1,6 +1,7 @@
 use super::common::*;
 
 pub mod align_zone_data;
+pub mod align_zone_flags;
 pub mod align_zone_record;
 pub mod code_table;
 pub mod code_table_and_layout;
