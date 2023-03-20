@@ -3,7 +3,7 @@ use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::common::read_rectangle;
 use crate::decode::tags::common::{Rectangle, String};
 use crate::decode::tags::fonts::code_table_and_layout::CodeTableAndLayout;
-use crate::decode::tags::fonts::define_font_2_flags::DefineFont2Flags;
+use crate::decode::tags::fonts::define_font_flags::DefineFontFlags;
 use crate::decode::tags::fonts::glyph_shape_table::GlyphShapeTable;
 use crate::decode::tags::fonts::glyphs_and_code_table_and_layout::GlyphsAndCodeTableAndLayout;
 use crate::decode::tags::fonts::kerning::KerningRecord;
@@ -16,7 +16,7 @@ use std::mem::size_of;
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFont2Tag {
     pub font_id: u16,
-    pub flags: DefineFont2Flags,
+    pub flags: DefineFontFlags,
     pub language_code: Option<LanguageCode>,
     pub font_name: String,
     pub num_glyphs: u16,
@@ -31,7 +31,7 @@ impl DefineFont2Tag {
         let mut reader = SwfSliceReader::new(&self.glyphs_and_code_table_and_layout, swf_version);
         let mut offset_table = Vec::with_capacity(self.num_glyphs as usize + 1);
         for _ in 0..self.num_glyphs + 1 {
-            offset_table.push(if self.flags.contains(DefineFont2Flags::WIDE_OFFSETS) {
+            offset_table.push(if self.flags.contains(DefineFontFlags::WIDE_OFFSETS) {
                 reader.read_u16()? as usize
             } else {
                 reader.read_u8()? as usize
@@ -41,8 +41,8 @@ impl DefineFont2Tag {
         let code_table_offset = *offset_table.last().unwrap_or(&0usize);
         let shape_table =
             &self.glyphs_and_code_table_and_layout[shape_table_offset..code_table_offset];
-        let partial_layout = if self.flags.contains(DefineFont2Flags::HAS_LAYOUT) {
-            let char_code_size_bytes = if self.flags.contains(DefineFont2Flags::WIDE_CODES) {
+        let partial_layout = if self.flags.contains(DefineFontFlags::HAS_LAYOUT) {
+            let char_code_size_bytes = if self.flags.contains(DefineFontFlags::WIDE_CODES) {
                 size_of::<u16>()
             } else {
                 size_of::<u8>()
@@ -56,7 +56,7 @@ impl DefineFont2Tag {
         } else {
             None
         };
-        let code_table_and_layout = if self.flags.contains(DefineFont2Flags::WIDE_CODES) {
+        let code_table_and_layout = if self.flags.contains(DefineFontFlags::WIDE_CODES) {
             let layout = partial_layout.map_or(<Result<_>>::Ok(None), |partial| {
                 Ok(Some(partial.read_kerning_table(
                     &mut reader,
@@ -69,12 +69,12 @@ impl DefineFont2Tag {
             for _ in 0..self.num_glyphs {
                 character_codes.push(reader.read_u16()?);
             }
-            if self.flags.contains(DefineFont2Flags::SHIFT_JIS) {
+            if self.flags.contains(DefineFontFlags::SHIFT_JIS) {
                 CodeTableAndLayout::ShiftJis {
                     character_codes,
                     layout,
                 }
-            } else if self.flags.contains(DefineFont2Flags::ANSI) {
+            } else if self.flags.contains(DefineFontFlags::ANSI) {
                 return Err(Error::from(InvalidData));
             } else {
                 CodeTableAndLayout::Ucs2 {
@@ -95,12 +95,12 @@ impl DefineFont2Tag {
             for _ in 0..self.num_glyphs {
                 character_codes.push(reader.read_u8()?);
             }
-            if self.flags.contains(DefineFont2Flags::SHIFT_JIS) {
+            if self.flags.contains(DefineFontFlags::SHIFT_JIS) {
                 CodeTableAndLayout::JisX0201 {
                     character_codes,
                     layout,
                 }
-            } else if self.flags.contains(DefineFont2Flags::ANSI) {
+            } else if self.flags.contains(DefineFontFlags::ANSI) {
                 CodeTableAndLayout::Windows1252 {
                     character_codes,
                     layout,

@@ -1,6 +1,6 @@
 use crate::decode::tags::common;
 use crate::decode::tags::common::Rectangle;
-use crate::decode::tags::fonts::define_font_2_flags::DefineFont2Flags;
+use crate::decode::tags::fonts::define_font_flags::DefineFontFlags;
 use crate::decode::tags::fonts::language_code::LanguageCode;
 use crate::decode::tags::fonts::CodeTableWithKernings;
 use crate::decode::tags::shapes::Shape;
@@ -8,7 +8,7 @@ use crate::decode::tags::shapes::Shape;
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFont3Tag {
     pub font_id: u16,
-    pub flags: DefineFont2Flags,
+    pub flags: DefineFontFlags,
     pub language_code: LanguageCode,
     pub font_name: common::String,
     pub glyph_shapes: Vec<Shape<(), ()>>,

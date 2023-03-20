@@ -1,5 +1,5 @@
 bitflags! {
-    pub struct DefineFont2Flags: u8 {
+    pub struct DefineFontFlags: u8 {
         const HAS_LAYOUT = 0x80;
         const SHIFT_JIS = 0x40;
         const SMALL_TEXT = 0x20;
