@@ -1,9 +1,9 @@
 use super::common::*;
 use half::f16;
-use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 pub mod code_table;
 pub mod code_table_and_layout;
+pub mod csm_table_hint;
 pub mod define_font;
 pub mod define_font_2;
 pub mod define_font_3;
@@ -17,14 +17,6 @@ pub mod glyphs_and_code_table_and_layout;
 pub mod kerning;
 pub mod language_code;
 pub mod layout;
-
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
-#[repr(u8)]
-pub enum CsmTableHint {
-    Thin = 0,
-    Medium = 1,
-    Thick = 2,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct AlignZoneRecord {
