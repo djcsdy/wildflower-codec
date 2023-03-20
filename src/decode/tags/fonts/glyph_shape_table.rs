@@ -4,13 +4,13 @@ use crate::decode::tags::shapes::Shape;
 use std::io::Result;
 
 #[derive(Clone, PartialEq, Debug)]
-pub struct GlyphTable<'define_font> {
+pub struct GlyphShapeTable<'define_font> {
     pub swf_version: u8,
     pub offset_table: Vec<usize>,
     pub shape_table: &'define_font [u8],
 }
 
-impl<'define_font> GlyphTable<'define_font> {
+impl<'define_font> GlyphShapeTable<'define_font> {
     pub fn num_glyphs(&self) -> usize {
         self.offset_table.len() - 1
     }
@@ -25,7 +25,7 @@ impl<'define_font> GlyphTable<'define_font> {
     }
 }
 
-impl<'glyph_table, 'define_font> IntoIterator for &'glyph_table GlyphTable<'define_font> {
+impl<'glyph_table, 'define_font> IntoIterator for &'glyph_table GlyphShapeTable<'define_font> {
     type Item = Result<Shape<(), ()>>;
     type IntoIter = GlyphTableIterator<'glyph_table, 'define_font>;
 
@@ -36,7 +36,7 @@ impl<'glyph_table, 'define_font> IntoIterator for &'glyph_table GlyphTable<'defi
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct GlyphTableIterator<'glyph_table, 'define_font> {
-    pub table: &'glyph_table GlyphTable<'define_font>,
+    pub table: &'glyph_table GlyphShapeTable<'define_font>,
     pub index: usize,
 }
 

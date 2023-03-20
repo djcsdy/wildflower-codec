@@ -1,9 +1,9 @@
-use crate::decode::tags::fonts::glyph_table::GlyphTable;
+use crate::decode::tags::fonts::glyph_shape_table::GlyphShapeTable;
 use crate::decode::tags::fonts::layout::FontLayout;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct GlyphsAndLayout<'define_font> {
-    pub glyph_table: GlyphTable<'define_font>,
+    pub shape_table: GlyphShapeTable<'define_font>,
     pub code_table_and_layout: CodeTableAndLayout,
 }
 
