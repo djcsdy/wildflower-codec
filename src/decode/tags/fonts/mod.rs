@@ -1,8 +1,6 @@
 use super::common::*;
-use super::shapes::Shape;
 use half::f16;
 use kerning::KerningRecord;
-use language_code::LanguageCode;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 pub mod code_table;
@@ -10,6 +8,7 @@ pub mod code_table_and_layout;
 pub mod define_font;
 pub mod define_font_2;
 pub mod define_font_2_flags;
+pub mod define_font_3;
 pub mod define_font_info;
 pub mod define_font_info_2;
 pub mod define_font_info_flags;
@@ -18,23 +17,6 @@ pub mod glyphs_and_code_table_and_layout;
 pub mod kerning;
 pub mod language_code;
 pub mod layout;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct DefineFont3Tag {
-    pub font_id: u16,
-    pub small_text: bool,
-    pub italic: bool,
-    pub bold: bool,
-    pub language_code: LanguageCode,
-    pub font_name: String,
-    pub glyph_shapes: Vec<Shape<(), ()>>,
-    pub code_table: CodeTableWithKernings,
-    pub ascent: u16,
-    pub descent: u16,
-    pub leading: i16,
-    pub advances: Vec<i16>,
-    pub bounds: Vec<Rectangle>,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum CodeTableWithKernings {
