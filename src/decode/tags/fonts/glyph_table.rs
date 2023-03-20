@@ -3,6 +3,7 @@ use crate::decode::tag_readers::shapes::read_shape;
 use crate::decode::tags::shapes::Shape;
 use std::io::Result;
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct GlyphTable<'define_font, Offset: Copy + Into<usize>> {
     pub swf_version: u8,
     pub offset_table: &'define_font [Offset],
