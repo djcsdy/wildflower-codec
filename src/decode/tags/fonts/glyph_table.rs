@@ -4,20 +4,20 @@ use crate::decode::tags::shapes::Shape;
 use std::io::Result;
 
 #[derive(Clone, PartialEq, Debug)]
-pub struct GlyphTable<'define_font, Offset: Copy + Into<usize>> {
+pub struct GlyphTable<'define_font> {
     pub swf_version: u8,
-    pub offset_table: &'define_font [Offset],
+    pub offset_table: Vec<usize>,
     pub shape_table: &'define_font [u8],
 }
 
-impl<'define_font, Offset: Copy + Into<usize>> GlyphTable<'define_font, Offset> {
+impl<'define_font> GlyphTable<'define_font> {
     pub fn num_glyphs(&self) -> usize {
         self.offset_table.len() - 1
     }
 
     pub fn iter<'glyph_table>(
         &'glyph_table self,
-    ) -> GlyphTableIterator<'glyph_table, 'define_font, Offset> {
+    ) -> GlyphTableIterator<'glyph_table, 'define_font> {
         GlyphTableIterator {
             table: self,
             index: 0,
@@ -25,9 +25,9 @@ impl<'define_font, Offset: Copy + Into<usize>> GlyphTable<'define_font, Offset> 
     }
 }
 
-impl<'glyph_table, 'define_font, Offset: Copy + Into<usize>> IntoIterator for &'glyph_table GlyphTable<'define_font, Offset> {
+impl<'glyph_table, 'define_font> IntoIterator for &'glyph_table GlyphTable<'define_font> {
     type Item = Result<Shape<(), ()>>;
-    type IntoIter = GlyphTableIterator<'glyph_table, 'define_font, Offset>;
+    type IntoIter = GlyphTableIterator<'glyph_table, 'define_font>;
 
     fn into_iter(self) -> Self::IntoIter {
         self.iter()
@@ -35,14 +35,12 @@ impl<'glyph_table, 'define_font, Offset: Copy + Into<usize>> IntoIterator for &'
 }
 
 #[derive(Clone, PartialEq, Debug)]
-pub struct GlyphTableIterator<'glyph_table, 'define_font, Offset: Copy + Into<usize>> {
-    pub table: &'glyph_table GlyphTable<'define_font, Offset>,
+pub struct GlyphTableIterator<'glyph_table, 'define_font> {
+    pub table: &'glyph_table GlyphTable<'define_font>,
     pub index: usize,
 }
 
-impl<'glyph_table, 'define_font, Offset: Copy + Into<usize>> Iterator
-for GlyphTableIterator<'glyph_table, 'define_font, Offset>
-{
+impl<'glyph_table, 'define_font> Iterator for GlyphTableIterator<'glyph_table, 'define_font> {
     type Item = Result<Shape<(), ()>>;
 
     fn next(&mut self) -> Option<Self::Item> {

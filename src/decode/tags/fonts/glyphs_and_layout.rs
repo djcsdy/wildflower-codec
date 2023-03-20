@@ -2,8 +2,8 @@ use crate::decode::tags::fonts::glyph_table::GlyphTable;
 use crate::decode::tags::fonts::layout::FontLayout;
 
 #[derive(Clone, PartialEq, Debug)]
-pub struct GlyphsAndLayout<'define_font, Offset: Copy + Into<usize>> {
-    pub glyph_table: GlyphTable<'define_font, Offset>,
+pub struct GlyphsAndLayout<'define_font> {
+    pub glyph_table: GlyphTable<'define_font>,
     pub code_table_and_layout: CodeTableAndLayout,
 }
 
