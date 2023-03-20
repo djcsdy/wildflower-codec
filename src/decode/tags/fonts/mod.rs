@@ -75,24 +75,24 @@ pub enum CodeTable {
 pub enum CodeTableWithKernings {
     Windows1252 {
         character_codes: Vec<u8>,
-        kernings: Vec<Kerning<u8>>,
+        kernings: Vec<KerningRecord<u8>>,
     },
     JisX0201 {
         character_codes: Vec<u8>,
-        kernings: Vec<Kerning<u8>>,
+        kernings: Vec<KerningRecord<u8>>,
     },
     ShiftJis {
         character_codes: Vec<u16>,
-        kernings: Vec<Kerning<u16>>,
+        kernings: Vec<KerningRecord<u16>>,
     },
     Ucs2 {
         character_codes: Vec<u16>,
-        kernings: Vec<Kerning<u16>>,
+        kernings: Vec<KerningRecord<u16>>,
     },
 }
 
 #[derive(Clone, PartialEq, Debug)]
-pub struct Kerning<T> {
+pub struct KerningRecord<T> {
     pub left_character_code: T,
     pub right_character_code: T,
     pub kerning_adjustment: i16,
