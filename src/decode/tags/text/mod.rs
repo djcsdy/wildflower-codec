@@ -1,13 +1,7 @@
 use super::common::*;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
-#[derive(Clone, PartialEq, Debug)]
-pub struct DefineTextTag {
-    pub character_id: u16,
-    pub text_bounds: Rectangle,
-    pub text_matrix: Matrix,
-    pub text_records: Vec<TextRecord<Rgb>>,
-}
+pub mod define_text;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineText2Tag {
