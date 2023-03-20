@@ -7,6 +7,7 @@ use num_enum::{IntoPrimitive, TryFromPrimitive};
 pub mod define_font;
 pub mod define_font_2;
 pub mod define_font_2_flags;
+pub mod define_font_info;
 pub mod glyph_shape_table;
 pub mod glyphs_and_layout;
 pub mod kerning;
@@ -27,16 +28,6 @@ pub struct DefineFont3Tag {
     pub leading: i16,
     pub advances: Vec<i16>,
     pub bounds: Vec<Rectangle>,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct DefineFontInfoTag {
-    pub font_id: u16,
-    pub font_name: String,
-    pub small_text: bool,
-    pub italic: bool,
-    pub bold: bool,
-    pub code_table: CodeTable,
 }
 
 #[derive(Clone, PartialEq, Debug)]
