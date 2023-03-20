@@ -1,8 +1,7 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::common::read_rectangle;
-use crate::decode::tags::common;
-use crate::decode::tags::common::Rectangle;
+use crate::decode::tags::common::{Rectangle, String};
 use crate::decode::tags::fonts::code_table_and_layout::CodeTableAndLayout;
 use crate::decode::tags::fonts::define_font_2_flags::DefineFont2Flags;
 use crate::decode::tags::fonts::glyph_shape_table::GlyphShapeTable;
@@ -19,7 +18,7 @@ pub struct DefineFont2Tag {
     pub font_id: u16,
     pub flags: DefineFont2Flags,
     pub language_code: Option<LanguageCode>,
-    pub font_name: common::String,
+    pub font_name: String,
     pub num_glyphs: u16,
     pub glyphs_and_code_table_and_layout: Vec<u8>,
 }
