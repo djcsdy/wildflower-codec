@@ -1,5 +1,6 @@
 use super::common::*;
 
+pub mod align_zone_data;
 pub mod align_zone_record;
 pub mod code_table;
 pub mod code_table_and_layout;
@@ -17,7 +18,6 @@ pub mod glyphs_and_code_table_and_layout;
 pub mod kerning;
 pub mod language_code;
 pub mod layout;
-pub mod zone_data;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFontNameTag {
