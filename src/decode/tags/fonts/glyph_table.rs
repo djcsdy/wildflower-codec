@@ -10,11 +10,17 @@ pub struct GlyphTable<'define_font, Offset: Copy + Into<usize>> {
     pub index: usize,
 }
 
+impl<'define_font, Offset: Copy + Into<usize>> GlyphTable<'define_font, Offset> {
+    pub fn num_glyphs(&self) -> usize {
+        self.offset_table.len() - 1
+    }
+}
+
 impl<'define_font, Offset: Copy + Into<usize>> Iterator for GlyphTable<'define_font, Offset> {
     type Item = Result<Shape<(), ()>>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.index >= self.offset_table.len() - 1 {
+        if self.index >= self.num_glyphs() {
             None
         } else {
             let start_offset = self.offset_table[self.index].into();
