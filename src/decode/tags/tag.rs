@@ -15,7 +15,7 @@ use super::display_list::{
     PlaceObject2Tag, PlaceObject3Tag, PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag,
     ShowFrameTag,
 };
-use super::fonts::{DefineFont4Tag, DefineFontAlignZonesTag, DefineFontNameTag};
+use super::fonts::{DefineFont4Tag, DefineFontNameTag};
 use super::metadata::{DefineBinaryDataTag, EnableTelemetryTag};
 use super::shape_morphing::{DefineMorphShape2Tag, DefineMorphShapeTag};
 use super::shapes::{DefineShape2Tag, DefineShape3Tag, DefineShape4Tag, DefineShapeTag};
@@ -29,6 +29,7 @@ use super::video::DefineVideoStreamTag;
 use crate::decode::tags::fonts::define_font::DefineFontTag;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::define_font_3::DefineFont3Tag;
+use crate::decode::tags::fonts::define_font_align_zones::DefineFontAlignZonesTag;
 use crate::decode::tags::fonts::define_font_info::DefineFontInfoTag;
 use crate::decode::tags::fonts::define_font_info_2::DefineFontInfo2Tag;
 use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
