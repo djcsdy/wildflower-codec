@@ -1,5 +1,5 @@
-use crate::decode::tags::fonts::csm_table_hint::CsmTableHint;
 use crate::decode::tags::fonts::align_zone_record::AlignZoneRecord;
+use crate::decode::tags::fonts::csm_table_hint::CsmTableHint;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFontAlignZonesTag {

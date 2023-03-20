@@ -1,5 +1,4 @@
 use super::common::*;
-use half::f16;
 
 pub mod align_zone_record;
 pub mod code_table;
@@ -18,12 +17,7 @@ pub mod glyphs_and_code_table_and_layout;
 pub mod kerning;
 pub mod language_code;
 pub mod layout;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct ZoneData {
-    pub alignment_coordinate: f16,
-    pub range: f16,
-}
+pub mod zone_data;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFontNameTag {

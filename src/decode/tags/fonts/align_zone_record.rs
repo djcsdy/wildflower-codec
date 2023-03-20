@@ -1,4 +1,4 @@
-use crate::decode::tags::fonts::ZoneData;
+use crate::decode::tags::fonts::zone_data::ZoneData;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct AlignZoneRecord {
