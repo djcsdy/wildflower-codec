@@ -20,7 +20,7 @@ pub fn read_define_font_info_2_tag(reader: &mut SwfSliceReader) -> Result<Define
     let italic = reader.read_bit()?;
     let bold = reader.read_bit()?;
     let wide_codes = reader.read_bit()?;
-    let language_code = read_language_code(reader)?;
+    let language_code = LanguageCode::read(reader)?;
     let code_table = if wide_codes {
         if ansi {
             return Err(Error::from(InvalidData));
@@ -49,25 +49,10 @@ pub fn read_define_font_info_2_tag(reader: &mut SwfSliceReader) -> Result<Define
     })
 }
 
-fn read_optional_language_code(reader: &mut SwfSliceReader) -> Result<Option<LanguageCode>> {
-    let code = reader.read_u8()?;
-    if code == 0 {
-        Ok(None)
-    } else {
-        LanguageCode::try_from(code)
-            .map(Some)
-            .map_err(|_| Error::from(InvalidData))
-    }
-}
-
-fn read_language_code(reader: &mut SwfSliceReader) -> Result<LanguageCode> {
-    read_optional_language_code(reader)?.ok_or_else(|| Error::from(InvalidData))
-}
-
 pub fn read_define_font_2_tag(reader: &mut SwfSliceReader) -> Result<DefineFont2Tag> {
     let font_id = reader.read_u16()?;
     let flags = DefineFont2Flags::from_bits(reader.read_u8()?).unwrap();
-    let language_code = read_optional_language_code(reader)?;
+    let language_code = LanguageCode::read_optional(reader)?;
     let name_len = reader.read_u8()? as usize;
     let font_name = reader.read_fixed_string(name_len)?;
     let num_glyphs = reader.read_u16()?;
