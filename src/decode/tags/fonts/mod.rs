@@ -1,6 +1,7 @@
 use super::common::*;
 use half::f16;
 
+pub mod align_zone_record;
 pub mod code_table;
 pub mod code_table_and_layout;
 pub mod csm_table_hint;
@@ -17,13 +18,6 @@ pub mod glyphs_and_code_table_and_layout;
 pub mod kerning;
 pub mod language_code;
 pub mod layout;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct AlignZoneRecord {
-    pub zone_data: Vec<ZoneData>,
-    pub zone_mask_y: bool,
-    pub zone_mask_x: bool,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct ZoneData {
