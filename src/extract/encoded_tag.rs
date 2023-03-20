@@ -20,7 +20,6 @@ use crate::decode::tag_readers::display_list::{
 };
 use crate::decode::tag_readers::fonts::{
     read_define_font_2_tag, read_define_font_info_2_tag, read_define_font_info_tag,
-    read_define_font_tag,
 };
 use crate::decode::tag_readers::shape_morphing::{
     read_define_morph_shape_2_tag, read_define_morph_shape_tag,
@@ -29,6 +28,7 @@ use crate::decode::tag_readers::shapes::{
     read_define_shape_2_tag, read_define_shape_3_tag, read_define_shape_4_tag,
     read_define_shape_tag,
 };
+use crate::decode::tags::fonts::define_font::DefineFontTag;
 use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
 use crate::decode::tags::tag::Tag;
 use crate::extract::tag_type::TagType;
@@ -73,7 +73,7 @@ impl EncodedTag {
             TagType::SetBackgroundColor => read_set_background_color_tag(&mut slice_reader)
                 .map(Tag::SetBackgroundColor)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineFont => read_define_font_tag(&mut slice_reader)
+            TagType::DefineFont => DefineFontTag::read(&mut slice_reader)
                 .map(Tag::DefineFont)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineText => Tag::Unknown(self.into_unknown()),
