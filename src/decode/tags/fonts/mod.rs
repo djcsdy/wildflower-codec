@@ -5,6 +5,7 @@ use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 pub mod define_font_2;
 pub mod define_font_2_flags;
+pub mod glyph_table;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFontTag {
