@@ -4,6 +4,7 @@ use half::f16;
 use kerning::KerningRecord;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
+pub mod code_table_and_layout;
 pub mod define_font;
 pub mod define_font_2;
 pub mod define_font_2_flags;
