@@ -18,9 +18,7 @@ use crate::decode::tag_readers::display_list::{
     read_place_object_2_tag, read_place_object_3_tag, read_place_object_tag,
     read_remove_object_2_tag, read_remove_object_tag,
 };
-use crate::decode::tag_readers::fonts::{
-    read_define_font_2_tag, read_define_font_info_2_tag, read_define_font_info_tag,
-};
+use crate::decode::tag_readers::fonts::{read_define_font_2_tag, read_define_font_info_2_tag};
 use crate::decode::tag_readers::shape_morphing::{
     read_define_morph_shape_2_tag, read_define_morph_shape_tag,
 };
@@ -29,6 +27,7 @@ use crate::decode::tag_readers::shapes::{
     read_define_shape_tag,
 };
 use crate::decode::tags::fonts::define_font::DefineFontTag;
+use crate::decode::tags::fonts::define_font_info::DefineFontInfoTag;
 use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
 use crate::decode::tags::tag::Tag;
 use crate::extract::tag_type::TagType;
@@ -80,7 +79,7 @@ impl EncodedTag {
             TagType::DoAction => read_do_action_tag(&mut slice_reader)
                 .map(Tag::DoAction)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineFontInfo => read_define_font_info_tag(&mut slice_reader)
+            TagType::DefineFontInfo => DefineFontInfoTag::read(&mut slice_reader)
                 .map(Tag::DefineFontInfo)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineSound => Tag::Unknown(self.into_unknown()),
