@@ -1,12 +1,14 @@
 use super::common::*;
 use super::shapes::Shape;
 use half::f16;
+use kerning::KerningRecord;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 pub mod define_font_2;
 pub mod define_font_2_flags;
 pub mod glyph_shape_table;
 pub mod glyphs_and_layout;
+pub mod kerning;
 pub mod layout;
 
 #[derive(Clone, PartialEq, Debug)]
@@ -89,13 +91,6 @@ pub enum CodeTableWithKernings {
         character_codes: Vec<u16>,
         kernings: Vec<KerningRecord<u16>>,
     },
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct KerningRecord<T> {
-    pub left_character_code: T,
-    pub right_character_code: T,
-    pub kerning_adjustment: i16,
 }
 
 #[derive(Clone, PartialEq, Debug)]

@@ -1,5 +1,5 @@
 use crate::decode::tags::common::Rectangle;
-use crate::decode::tags::fonts::KerningRecord;
+use crate::decode::tags::fonts::kerning::KerningRecord;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct FontLayout<CharacterCode> {
