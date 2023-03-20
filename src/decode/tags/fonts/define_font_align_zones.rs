@@ -5,5 +5,5 @@ use crate::decode::tags::fonts::csm_table_hint::CsmTableHint;
 pub struct DefineFontAlignZonesTag {
     pub font_id: u16,
     pub csm_table_hint: CsmTableHint,
-    pub zones: Vec<AlignZoneRecord>,
+    pub zone_table: Vec<AlignZoneRecord>,
 }
