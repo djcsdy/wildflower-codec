@@ -1,6 +1,7 @@
 use crate::decode::tags::common::Rectangle;
 use crate::decode::tags::fonts::Kerning;
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct FontLayout<CharacterCode> {
     pub ascent: u16,
     pub descent: u16,
