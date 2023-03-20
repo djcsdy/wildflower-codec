@@ -14,18 +14,12 @@ pub mod define_font_flags;
 pub mod define_font_info;
 pub mod define_font_info_2;
 pub mod define_font_info_flags;
+pub mod define_font_name;
 pub mod glyph_shape_table;
 pub mod glyphs_and_code_table_and_layout;
 pub mod kerning;
 pub mod language_code;
 pub mod layout;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct DefineFontNameTag {
-    pub font_id: u16,
-    pub font_name: String,
-    pub font_copyright: String,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFont4Tag {
