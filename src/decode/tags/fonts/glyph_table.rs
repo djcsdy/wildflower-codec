@@ -25,6 +25,15 @@ impl<'define_font, Offset: Copy + Into<usize>> GlyphTable<'define_font, Offset> 
     }
 }
 
+impl<'glyph_table, 'define_font, Offset: Copy + Into<usize>> IntoIterator for &'glyph_table GlyphTable<'define_font, Offset> {
+    type Item = Result<Shape<(), ()>>;
+    type IntoIter = GlyphTableIterator<'glyph_table, 'define_font, Offset>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.iter()
+    }
+}
+
 #[derive(Clone, PartialEq, Debug)]
 pub struct GlyphTableIterator<'glyph_table, 'define_font, Offset: Copy + Into<usize>> {
     pub table: &'glyph_table GlyphTable<'define_font, Offset>,
