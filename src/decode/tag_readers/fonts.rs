@@ -115,6 +115,6 @@ pub fn read_define_font_2_tag(reader: &mut SwfSliceReader) -> Result<DefineFont2
         language_code,
         font_name,
         num_glyphs,
-        glyphs_and_layout,
+        glyphs_and_code_table_and_layout: glyphs_and_layout,
     })
 }

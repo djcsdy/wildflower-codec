@@ -10,7 +10,7 @@ pub mod define_font_2;
 pub mod define_font_2_flags;
 pub mod define_font_info;
 pub mod glyph_shape_table;
-pub mod glyphs_and_layout;
+pub mod glyphs_and_code_table_and_layout;
 pub mod kerning;
 pub mod layout;
 

@@ -6,7 +6,7 @@ use crate::decode::tags::common::Rectangle;
 use crate::decode::tags::fonts::code_table_and_layout::CodeTableAndLayout;
 use crate::decode::tags::fonts::define_font_2_flags::DefineFont2Flags;
 use crate::decode::tags::fonts::glyph_shape_table::GlyphShapeTable;
-use crate::decode::tags::fonts::glyphs_and_layout::GlyphsAndLayout;
+use crate::decode::tags::fonts::glyphs_and_code_table_and_layout::GlyphsAndCodeTableAndLayout;
 use crate::decode::tags::fonts::kerning::KerningRecord;
 use crate::decode::tags::fonts::layout::FontLayout;
 use crate::decode::tags::fonts::LanguageCode;
@@ -21,12 +21,15 @@ pub struct DefineFont2Tag {
     pub language_code: Option<LanguageCode>,
     pub font_name: common::String,
     pub num_glyphs: u16,
-    pub glyphs_and_layout: Vec<u8>,
+    pub glyphs_and_code_table_and_layout: Vec<u8>,
 }
 
 impl DefineFont2Tag {
-    pub fn read_glyphs_and_layout(&self, swf_version: u8) -> Result<GlyphsAndLayout> {
-        let mut reader = SwfSliceReader::new(&self.glyphs_and_layout, swf_version);
+    pub fn read_glyphs_and_code_table_and_layout(
+        &self,
+        swf_version: u8,
+    ) -> Result<GlyphsAndCodeTableAndLayout> {
+        let mut reader = SwfSliceReader::new(&self.glyphs_and_code_table_and_layout, swf_version);
         let mut offset_table = Vec::with_capacity(self.num_glyphs as usize + 1);
         for _ in 0..self.num_glyphs + 1 {
             offset_table.push(if self.flags.contains(DefineFont2Flags::WIDE_OFFSETS) {
@@ -37,7 +40,8 @@ impl DefineFont2Tag {
         }
         let shape_table_offset = *offset_table.first().unwrap_or(&0usize);
         let code_table_offset = *offset_table.last().unwrap_or(&0usize);
-        let shape_table = &self.glyphs_and_layout[shape_table_offset..code_table_offset];
+        let shape_table =
+            &self.glyphs_and_code_table_and_layout[shape_table_offset..code_table_offset];
         let partial_layout = if self.flags.contains(DefineFont2Flags::HAS_LAYOUT) {
             let char_code_size_bytes = if self.flags.contains(DefineFont2Flags::WIDE_CODES) {
                 size_of::<u16>()
@@ -106,7 +110,7 @@ impl DefineFont2Tag {
                 return Err(Error::from(InvalidData));
             }
         };
-        Ok(GlyphsAndLayout {
+        Ok(GlyphsAndCodeTableAndLayout {
             shape_table: GlyphShapeTable {
                 swf_version,
                 offset_table,
