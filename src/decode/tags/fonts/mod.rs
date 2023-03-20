@@ -2,6 +2,7 @@ use super::common::*;
 use super::shapes::Shape;
 use half::f16;
 use kerning::KerningRecord;
+use language_code::LanguageCode;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 pub mod code_table_and_layout;
@@ -13,6 +14,7 @@ pub mod define_font_info_2;
 pub mod glyph_shape_table;
 pub mod glyphs_and_code_table_and_layout;
 pub mod kerning;
+pub mod language_code;
 pub mod layout;
 
 #[derive(Clone, PartialEq, Debug)]
@@ -30,16 +32,6 @@ pub struct DefineFont3Tag {
     pub leading: i16,
     pub advances: Vec<i16>,
     pub bounds: Vec<Rectangle>,
-}
-
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
-#[repr(u8)]
-pub enum LanguageCode {
-    Latin = 1,
-    Japanese = 2,
-    Korean = 3,
-    SimplifiedChinese = 4,
-    TraditionalChinese = 5,
 }
 
 #[derive(Clone, PartialEq, Debug)]

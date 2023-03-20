@@ -1,5 +1,6 @@
 use crate::decode::tags::common::String;
-use crate::decode::tags::fonts::{CodeTable, LanguageCode};
+use crate::decode::tags::fonts::language_code::LanguageCode;
+use crate::decode::tags::fonts::CodeTable;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFontInfo2Tag {

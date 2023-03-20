@@ -4,7 +4,8 @@ use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::define_font_2_flags::DefineFont2Flags;
 use crate::decode::tags::fonts::define_font_info_2::DefineFontInfo2Tag;
-use crate::decode::tags::fonts::{CodeTable, LanguageCode};
+use crate::decode::tags::fonts::language_code::LanguageCode;
+use crate::decode::tags::fonts::CodeTable;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Result};
 
