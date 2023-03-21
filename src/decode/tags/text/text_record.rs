@@ -17,7 +17,7 @@ pub struct ReadTextRecordOptions<
     'reader,
     'buffer,
     Color,
-    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Color,
+    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
 > {
     pub reader: &'reader mut SwfSliceReader<'buffer>,
     pub glyph_bits: u8,
@@ -42,7 +42,7 @@ impl Flags {
 }
 
 impl<Color> TextRecord<Color> {
-    pub fn read<'reader, 'buffer, ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Color>(
+    pub fn read<'reader, 'buffer, ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>>(
         options: &mut ReadTextRecordOptions<'reader, 'buffer, Color, ReadColor>,
     ) -> Result<Option<Self>> {
         let flags = Flags::read(options.reader)?;
@@ -55,7 +55,7 @@ impl<Color> TextRecord<Color> {
                 None
             };
             let text_color = if flags.contains(Flags::HAS_COLOR) {
-                Some((options.read_color)(options.reader))
+                Some((options.read_color)(options.reader)?)
             } else {
                 None
             };
@@ -96,7 +96,11 @@ impl<Color> TextRecord<Color> {
         })
     }
 
-    pub fn read_all<'reader, 'buffer, ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Color>(
+    pub fn read_all<
+        'reader,
+        'buffer,
+        ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
+    >(
         options: &mut ReadTextRecordOptions<'reader, 'buffer, Color, ReadColor>,
     ) -> Result<Vec<Self>> {
         let mut records = Vec::new();
