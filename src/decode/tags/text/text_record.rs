@@ -1,15 +1,15 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
+use crate::decode::tags::text::text_record_font::TextRecordFont;
 use crate::decode::tags::text::GlyphEntry;
 use std::io::Result;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct TextRecord<TColor> {
-    pub font_id: Option<u16>,
+    pub font: Option<TextRecordFont>,
     pub text_color: Option<TColor>,
     pub x_offset: Option<i16>,
     pub y_offset: Option<i16>,
-    pub text_height: Option<u16>,
     pub glyphs: Vec<GlyphEntry>,
 }
 

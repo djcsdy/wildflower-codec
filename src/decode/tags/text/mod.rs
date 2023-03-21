@@ -4,6 +4,7 @@ use text_record::TextRecord;
 
 pub mod define_text;
 pub mod text_record;
+pub mod text_record_font;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineText2Tag {
