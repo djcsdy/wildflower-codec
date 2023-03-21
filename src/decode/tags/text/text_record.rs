@@ -95,4 +95,14 @@ impl<Color> TextRecord<Color> {
             })
         })
     }
+
+    pub fn read_all<'reader, 'buffer, ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Color>(
+        options: &mut ReadTextRecordOptions<'reader, 'buffer, Color, ReadColor>,
+    ) -> Result<Vec<Self>> {
+        let mut records = Vec::new();
+        while let Some(record) = Self::read(options)? {
+            records.push(record)
+        }
+        Ok(records)
+    }
 }
