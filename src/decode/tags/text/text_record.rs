@@ -10,7 +10,7 @@ pub struct TextRecord<TColor> {
     pub text_color: Option<TColor>,
     pub x_offset: Option<i16>,
     pub y_offset: Option<i16>,
-    pub glyphs: Vec<GlyphEntry>,
+    pub glyph_entries: Vec<GlyphEntry>,
 }
 
 pub struct ReadTextRecordOptions<
