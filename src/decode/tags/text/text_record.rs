@@ -1,5 +1,7 @@
+use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::text::GlyphEntry;
+use std::io::Result;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct TextRecord<TColor> {
@@ -30,5 +32,11 @@ bitflags! {
         const HAS_COLOR = 0x04;
         const HAS_Y_OFFSET = 0x02;
         const HAS_X_OFFSET = 0x01;
+    }
+}
+
+impl Flags {
+    fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+        Ok(Self::from_bits(reader.read_u8()?).unwrap())
     }
 }
