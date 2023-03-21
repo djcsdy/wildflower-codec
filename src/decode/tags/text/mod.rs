@@ -1,7 +1,9 @@
 use super::common::*;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
+use text_record::TextRecord;
 
 pub mod define_text;
+pub mod text_record;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineText2Tag {
@@ -9,16 +11,6 @@ pub struct DefineText2Tag {
     pub text_bounds: Rectangle,
     pub text_matrix: Matrix,
     pub text_records: Vec<TextRecord<Rgba>>,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct TextRecord<TColor> {
-    pub font_id: u16,
-    pub text_color: Option<TColor>,
-    pub x_offset: i16,
-    pub y_offset: i16,
-    pub text_height: u16,
-    pub glyphs: Vec<GlyphEntry>,
 }
 
 #[derive(Clone, PartialEq, Debug)]

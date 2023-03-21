@@ -1,5 +1,5 @@
 use crate::decode::tags::common::{Matrix, Rectangle, Rgb};
-use crate::decode::tags::text::TextRecord;
+use crate::decode::tags::text::text_record::TextRecord;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineTextTag {
