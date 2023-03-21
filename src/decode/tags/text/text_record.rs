@@ -22,3 +22,13 @@ pub struct ReadTextRecordOptions<
     pub advance_bits: u8,
     pub read_color: ReadColor,
 }
+
+bitflags! {
+    struct Flags: u8 {
+        const RESERVED = 0xf0;
+        const HAS_FONT = 0x08;
+        const HAS_COLOR = 0x04;
+        const HAS_Y_OFFSET = 0x02;
+        const HAS_X_OFFSET = 0x01;
+    }
+}
