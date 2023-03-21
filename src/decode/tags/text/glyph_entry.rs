@@ -15,7 +15,7 @@ pub struct ReadGlyphEntryOptions<'reader, 'buffer> {
 }
 
 impl GlyphEntry {
-    pub fn read(options: ReadGlyphEntryOptions) -> Result<Self> {
+    pub fn read(options: &mut ReadGlyphEntryOptions) -> Result<Self> {
         let glyph_index = options.reader.read_ub(options.glyph_bits)?;
         let glyph_advance = options.reader.read_sb(options.advance_bits)?;
         Ok(Self {

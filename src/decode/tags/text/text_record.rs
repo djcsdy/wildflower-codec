@@ -43,7 +43,7 @@ impl Flags {
 
 impl<Color> TextRecord<Color> {
     pub fn read<'reader, 'buffer, ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Color>(
-        options: ReadTextRecordOptions<'reader, 'buffer, Color, ReadColor>,
+        options: &mut ReadTextRecordOptions<'reader, 'buffer, Color, ReadColor>,
     ) -> Result<Option<Self>> {
         let flags = Flags::read(options.reader)?;
         Ok(if flags.is_empty() {
@@ -80,7 +80,7 @@ impl<Color> TextRecord<Color> {
             let glyph_count = options.reader.read_u8()?;
             let mut glyph_entries = Vec::with_capacity(glyph_count as usize);
             for _ in 0..glyph_count {
-                glyph_entries.push(GlyphEntry::read(ReadGlyphEntryOptions {
+                glyph_entries.push(GlyphEntry::read(&mut ReadGlyphEntryOptions {
                     reader: options.reader,
                     glyph_bits: options.glyph_bits,
                     advance_bits: options.advance_bits,

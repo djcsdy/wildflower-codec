@@ -84,13 +84,13 @@ pub fn read_define_bits_lossless_tag(reader: &mut SwfSliceReader) -> Result<Defi
                 bitmap_height,
             })?)
         }
-        BitmapFormat::Rgb15 => read_bitmap_data(ReadBitmapDataOptions {
+        BitmapFormat::Rgb15 => read_bitmap_data(&mut ReadBitmapDataOptions {
             reader: &mut bitmap_data_reader,
             read_color: &read_pix15,
             bitmap_width,
             bitmap_height,
         })?,
-        BitmapFormat::Rgb24 => read_bitmap_data(ReadBitmapDataOptions {
+        BitmapFormat::Rgb24 => read_bitmap_data(&mut ReadBitmapDataOptions {
             reader: &mut bitmap_data_reader,
             read_color: &read_pix24,
             bitmap_width,
@@ -159,13 +159,14 @@ struct ReadBitmapDataOptions<
 }
 
 fn read_bitmap_data<
+    'options,
     'reader,
     'buffer,
     'read_color,
     Color,
     ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
 >(
-    options: ReadBitmapDataOptions<'reader, 'buffer, 'read_color, Color, ReadColor>,
+    options: &'options mut ReadBitmapDataOptions<'reader, 'buffer, 'read_color, Color, ReadColor>,
 ) -> Result<BitmapData<Color>> {
     let start = options.reader.position();
     let mut pixel_data =
@@ -228,7 +229,7 @@ pub fn read_define_bits_lossless_2_tag(
             })?)
         }
         BitmapFormat::Rgb15 => return Err(Error::from(InvalidData)),
-        BitmapFormat::Rgb24 => read_bitmap_data(ReadBitmapDataOptions {
+        BitmapFormat::Rgb24 => read_bitmap_data(&mut ReadBitmapDataOptions {
             reader: &mut bitmap_data_reader,
             read_color: &read_argb,
             bitmap_width,

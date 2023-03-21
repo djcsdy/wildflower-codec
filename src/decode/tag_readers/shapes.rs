@@ -16,7 +16,7 @@ use std::io::Result;
 pub fn read_shape(reader: &mut SwfSliceReader) -> Result<Shape<(), ()>> {
     let num_fill_bits = reader.read_ub8(4)?;
     let num_line_bits = reader.read_ub8(4)?;
-    let shape_records = read_shape_records(ReadShapeRecordOptions {
+    let shape_records = read_shape_records(&mut ReadShapeRecordOptions {
         reader,
         num_fill_bits,
         num_line_bits,
@@ -57,7 +57,7 @@ pub fn read_shape_with_style<
     let line_styles = (read_line_style_array)(reader)?;
     let num_fill_bits = reader.read_ub8(4)?;
     let num_line_bits = reader.read_ub8(4)?;
-    let shape_records = read_shape_records(ReadShapeRecordOptions {
+    let shape_records = read_shape_records(&mut ReadShapeRecordOptions {
         reader,
         num_fill_bits,
         num_line_bits,
@@ -94,12 +94,12 @@ fn read_shape_records<
     ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
     ReadFillStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<FillStyle<Color>>>,
 >(
-    mut options: ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
+    options: &mut ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
 ) -> Result<Vec<ShapeRecord<Color, LineStyle>>> {
     let mut shape_records = Vec::new();
     while options.reader.bytes_remaining() > 0 {
         shape_records.push(
-            match read_shape_record(ReadShapeRecordOptions {
+            match read_shape_record(&mut ReadShapeRecordOptions {
                 reader: options.reader,
                 num_fill_bits: options.num_fill_bits,
                 num_line_bits: options.num_line_bits,
@@ -141,7 +141,7 @@ pub fn read_shape_record<
     ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
     ReadFillStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<FillStyle<Color>>>,
 >(
-    options: ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
+    options: &mut ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
 ) -> Result<InternalShapeRecord<Color, LineStyle>> {
     let is_edge = options.reader.read_bit()?;
     if is_edge {
@@ -180,7 +180,7 @@ pub fn read_non_edge_record<
     ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
     ReadFillStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<FillStyle<Color>>>,
 >(
-    options: ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
+    options: &mut ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
 ) -> Result<NonEdgeRecord<Color, LineStyle>> {
     if options.num_fill_bits > 16 || options.num_line_bits > 16 {
         panic!();
