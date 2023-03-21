@@ -5,11 +5,11 @@ use std::io::Result;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct TextRecord<TColor> {
-    pub font_id: u16,
+    pub font_id: Option<u16>,
     pub text_color: Option<TColor>,
-    pub x_offset: i16,
-    pub y_offset: i16,
-    pub text_height: u16,
+    pub x_offset: Option<i16>,
+    pub y_offset: Option<i16>,
+    pub text_height: Option<u16>,
     pub glyphs: Vec<GlyphEntry>,
 }
 
