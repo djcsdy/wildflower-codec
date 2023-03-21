@@ -1,7 +1,7 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
+use crate::decode::tags::text::glyph_entry::GlyphEntry;
 use crate::decode::tags::text::text_record_font::TextRecordFont;
-use crate::decode::tags::text::GlyphEntry;
 use std::io::Result;
 
 #[derive(Clone, PartialEq, Debug)]

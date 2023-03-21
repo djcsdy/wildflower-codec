@@ -3,6 +3,7 @@ use num_enum::{IntoPrimitive, TryFromPrimitive};
 use text_record::TextRecord;
 
 pub mod define_text;
+pub mod glyph_entry;
 pub mod text_record;
 pub mod text_record_font;
 
@@ -12,12 +13,6 @@ pub struct DefineText2Tag {
     pub text_bounds: Rectangle,
     pub text_matrix: Matrix,
     pub text_records: Vec<TextRecord<Rgba>>,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct GlyphEntry {
-    pub glyph_index: u32,
-    pub glyph_advance: i32,
 }
 
 #[derive(Clone, PartialEq, Debug)]
