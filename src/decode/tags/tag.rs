@@ -24,7 +24,7 @@ use super::sounds::{
     StartSoundTag,
 };
 use super::sprites::DefineSpriteTag;
-use super::text::{CsmTextSettingsTag, DefineEditTextTag, DefineText2Tag};
+use super::text::{CsmTextSettingsTag, DefineEditTextTag};
 use super::video::DefineVideoStreamTag;
 use crate::decode::tags::fonts::define_font::DefineFontTag;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
@@ -36,6 +36,7 @@ use crate::decode::tags::fonts::define_font_name::DefineFontNameTag;
 use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
 use crate::decode::tags::metadata::FileAttributesTag;
 use crate::decode::tags::text::define_text::DefineTextTag;
+use crate::decode::tags::text::define_text_2::DefineText2Tag;
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum Tag {
