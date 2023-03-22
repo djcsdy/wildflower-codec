@@ -4,6 +4,7 @@ pub mod define_edit_text;
 pub mod define_edit_text_flags;
 pub mod define_text;
 pub mod define_text_2;
+pub mod font_ref;
 pub mod glyph_entry;
 pub mod text_record;
 pub mod text_record_font;
