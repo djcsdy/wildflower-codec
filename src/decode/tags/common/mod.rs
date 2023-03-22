@@ -1,4 +1,5 @@
 pub mod rgb;
+pub mod rgba;
 
 use byteorder::{ByteOrder, LittleEndian};
 use std::fmt::{Debug, Display, Formatter};
@@ -168,15 +169,6 @@ impl Debug for String {
         write!(f, "\"")?;
         Ok(())
     }
-}
-
-/// An RGB color with an alpha component.
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash)]
-pub struct Rgba {
-    pub red: u8,
-    pub green: u8,
-    pub blue: u8,
-    pub alpha: u8,
 }
 
 /// An axis-aligned rectangle.

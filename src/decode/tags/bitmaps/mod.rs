@@ -1,5 +1,6 @@
 use super::common::*;
 use crate::decode::tags::common::rgb::Rgb;
+use crate::decode::tags::common::rgba::Rgba;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineBitsTag {

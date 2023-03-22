@@ -1,5 +1,6 @@
 use super::actions::ActionRecord;
 use super::common::*;
+use crate::decode::tags::common::rgba::Rgba;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 /// Adds a character to the display list.

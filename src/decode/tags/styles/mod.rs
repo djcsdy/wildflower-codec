@@ -1,4 +1,5 @@
 use super::common::*;
+use crate::decode::tags::common::rgba::Rgba;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 #[derive(Clone, PartialEq, Debug)]
