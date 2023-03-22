@@ -1,12 +1,13 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::common::{read_argb, read_rgba};
+use crate::decode::tag_readers::common::read_argb;
 use crate::decode::tags::bitmaps::{
     BitmapData, ColorMapData, DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsJpeg4Tag,
     DefineBitsLossless2Tag, DefineBitsLosslessTag, DefineBitsTag, JpegTablesTag,
 };
 use crate::decode::tags::common::rgb::Rgb;
+use crate::decode::tags::common::rgba::Rgba;
 use inflate::DeflateDecoder;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::io::ErrorKind::InvalidData;
@@ -222,7 +223,7 @@ pub fn read_define_bits_lossless_2_tag(
         BitmapFormat::ColorMap8 => {
             BitmapData::ColorMap8(read_colormap_data(ReadColorMapDataOptions {
                 reader: &mut bitmap_data_reader,
-                read_color: &read_rgba,
+                read_color: &Rgba::read,
                 color_table_size,
                 bitmap_width,
                 bitmap_height,

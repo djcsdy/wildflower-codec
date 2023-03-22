@@ -1,11 +1,12 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::common::{read_matrix, read_rectangle, read_rgba};
+use crate::decode::tag_readers::common::{read_matrix, read_rectangle};
 use crate::decode::tag_readers::shapes::read_shape;
 use crate::decode::tag_readers::styles::{
     read_cap_style, read_fill_style_type, read_line_style_array, FillStyleType,
 };
+use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::shape_morphing::{
     DefineMorphShape2Tag, DefineMorphShapeTag, MorphFillStyle, MorphFocalGradient, MorphGradient,
     MorphGradientRecord, MorphLineStyle, MorphLineStyle2,
@@ -79,8 +80,8 @@ fn read_morph_fill_style(reader: &mut SwfSliceReader) -> Result<MorphFillStyle> 
     let fill_style_type = read_fill_style_type(reader)?;
     Ok(match fill_style_type {
         FillStyleType::Solid => {
-            let start_color = read_rgba(reader)?;
-            let end_color = read_rgba(reader)?;
+            let start_color = Rgba::read(reader)?;
+            let end_color = Rgba::read(reader)?;
             MorphFillStyle::Solid {
                 start_color,
                 end_color,
@@ -181,9 +182,9 @@ fn read_morph_focal_gradient(reader: &mut SwfSliceReader) -> Result<MorphFocalGr
 
 fn read_morph_gradient_record(reader: &mut SwfSliceReader) -> Result<MorphGradientRecord> {
     let start_ratio = reader.read_u8()?;
-    let start_color = read_rgba(reader)?;
+    let start_color = Rgba::read(reader)?;
     let end_ratio = reader.read_u8()?;
-    let end_color = read_rgba(reader)?;
+    let end_color = Rgba::read(reader)?;
     Ok(MorphGradientRecord {
         start_ratio,
         start_color,
@@ -195,8 +196,8 @@ fn read_morph_gradient_record(reader: &mut SwfSliceReader) -> Result<MorphGradie
 fn read_morph_line_style(reader: &mut SwfSliceReader) -> Result<MorphLineStyle> {
     let start_width = reader.read_u16()?;
     let end_width = reader.read_u16()?;
-    let start_color = read_rgba(reader)?;
-    let end_color = read_rgba(reader)?;
+    let start_color = Rgba::read(reader)?;
+    let end_color = Rgba::read(reader)?;
     Ok(MorphLineStyle {
         start_width,
         end_width,
@@ -225,8 +226,8 @@ fn read_morph_line_style_2(reader: &mut SwfSliceReader) -> Result<MorphLineStyle
     let fill_style = if has_fill {
         read_morph_fill_style(reader)?
     } else {
-        let start_color = read_rgba(reader)?;
-        let end_color = read_rgba(reader)?;
+        let start_color = Rgba::read(reader)?;
+        let end_color = Rgba::read(reader)?;
         MorphFillStyle::Solid {
             start_color,
             end_color,

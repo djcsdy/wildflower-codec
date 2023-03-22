@@ -1,6 +1,6 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::common::{read_rectangle, read_rgba};
+use crate::decode::tag_readers::common::read_rectangle;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::common::{Rectangle, String};
 use crate::decode::tags::text::define_edit_text_flags::DefineEditTextFlags;
@@ -46,7 +46,7 @@ impl DefineEditTextTag {
             None
         };
         let text_color = if flags.contains(DefineEditTextFlags::HAS_TEXT_COLOR) {
-            Some(read_rgba(reader)?)
+            Some(Rgba::read(reader)?)
         } else {
             None
         };

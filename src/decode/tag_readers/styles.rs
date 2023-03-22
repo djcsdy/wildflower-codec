@@ -1,8 +1,9 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::common::{read_matrix, read_rgba};
+use crate::decode::tag_readers::common::read_matrix;
 use crate::decode::tags::common::rgb::Rgb;
+use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::styles::{
     CapStyle, FillStyle, FocalGradient, Gradient, GradientRecord, JoinStyle, LineStyle, LineStyle2,
 };
@@ -161,9 +162,9 @@ pub fn read_line_style_2(reader: &mut SwfSliceReader) -> Result<LineStyle2> {
         None
     };
     let fill_style = if has_fill {
-        read_fill_style(reader, &read_rgba)?
+        read_fill_style(reader, &Rgba::read)?
     } else {
-        FillStyle::Solid(read_rgba(reader)?)
+        FillStyle::Solid(Rgba::read(reader)?)
     };
     Ok(LineStyle2 {
         width,

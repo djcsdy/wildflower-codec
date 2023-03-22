@@ -3,8 +3,9 @@ use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::actions::read_action_records;
 use crate::decode::tag_readers::common::{
-    read_color_transform, read_color_transform_with_alpha, read_matrix, read_rgba,
+    read_color_transform, read_color_transform_with_alpha, read_matrix,
 };
+use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::display_list::{
     BevelFilter, BlurFilter, ClipActionRecord, ClipActions, ClipEventFlags, ColorMatrixFilter,
     ConvolutionFilter, DropShadowFilter, Filter, GlowFilter, GradientBevelFilter,
@@ -212,7 +213,7 @@ pub fn read_place_object_3_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjec
         None
     };
     let background_color = if has_visible {
-        Some(read_rgba(reader)?)
+        Some(Rgba::read(reader)?)
     } else {
         None
     };
@@ -280,7 +281,7 @@ fn read_convolution_filter(reader: &mut SwfSliceReader) -> Result<ConvolutionFil
     let bias = reader.read_f32()?;
     let mut matrix = vec![0f32; (matrix_x as usize) * (matrix_y as usize)];
     reader.read_f32_into(&mut matrix)?;
-    let default_color = read_rgba(reader)?;
+    let default_color = Rgba::read(reader)?;
     reader.read_ub8(6)?;
     let clamp = reader.read_bit()?;
     let preserve_alpha = reader.read_bit()?;
@@ -310,7 +311,7 @@ fn read_blur_filter(reader: &mut SwfSliceReader) -> Result<BlurFilter> {
 }
 
 fn read_drop_shadow_filter(reader: &mut SwfSliceReader) -> Result<DropShadowFilter> {
-    let color = read_rgba(reader)?;
+    let color = Rgba::read(reader)?;
     let blur_x = reader.read_fixed_16()?;
     let blur_y = reader.read_fixed_16()?;
     let angle = reader.read_fixed_16()?;
@@ -335,7 +336,7 @@ fn read_drop_shadow_filter(reader: &mut SwfSliceReader) -> Result<DropShadowFilt
 }
 
 fn read_glow_filter(reader: &mut SwfSliceReader) -> Result<GlowFilter> {
-    let color = read_rgba(reader)?;
+    let color = Rgba::read(reader)?;
     let blur_x = reader.read_fixed_16()?;
     let blur_y = reader.read_fixed_16()?;
     let strength = reader.read_fixed_8()?;
@@ -356,8 +357,8 @@ fn read_glow_filter(reader: &mut SwfSliceReader) -> Result<GlowFilter> {
 }
 
 fn read_bevel_filter(reader: &mut SwfSliceReader) -> Result<BevelFilter> {
-    let shadow_color = read_rgba(reader)?;
-    let highlight_color = read_rgba(reader)?;
+    let shadow_color = Rgba::read(reader)?;
+    let highlight_color = Rgba::read(reader)?;
     let blur_x = reader.read_fixed_16()?;
     let blur_y = reader.read_fixed_16()?;
     let angle = reader.read_fixed_16()?;
@@ -388,7 +389,7 @@ fn read_gradient_glow_filter(reader: &mut SwfSliceReader) -> Result<GradientGlow
     let num_colors = reader.read_u8()?;
     let mut colors = Vec::with_capacity(num_colors as usize);
     for _ in 0..num_colors {
-        colors.push(read_rgba(reader)?);
+        colors.push(Rgba::read(reader)?);
     }
     let mut ratio = Vec::with_capacity(num_colors as usize);
     for _ in 0..num_colors {
@@ -424,7 +425,7 @@ fn read_gradient_bevel_filter(reader: &mut SwfSliceReader) -> Result<GradientBev
     let num_colors = reader.read_u8()?;
     let mut colors = Vec::with_capacity(num_colors as usize);
     for _ in 0..num_colors {
-        colors.push(read_rgba(reader)?);
+        colors.push(Rgba::read(reader)?);
     }
     let mut ratio = Vec::with_capacity(num_colors as usize);
     for _ in 0..num_colors {
