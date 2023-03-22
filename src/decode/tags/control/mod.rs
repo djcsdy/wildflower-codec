@@ -1,4 +1,5 @@
 use super::common::*;
+use crate::decode::tags::common::rgb::Rgb;
 
 /// Sets the background color of the display.
 #[derive(Clone, PartialEq, Debug)]

@@ -1,7 +1,8 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::common::{read_matrix, read_rectangle, read_rgb};
-use crate::decode::tags::common::{Matrix, Rectangle, Rgb};
+use crate::decode::tags::common::rgb::Rgb;
+use crate::decode::tags::common::{Matrix, Rectangle};
 use crate::decode::tags::text::text_record::{ReadTextRecordOptions, TextRecord};
 use std::io::Result;
 

@@ -1,5 +1,6 @@
 use super::common::*;
 use super::styles::{FillStyle, LineStyle, LineStyle2};
+use crate::decode::tags::common::rgb::Rgb;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineShapeTag {

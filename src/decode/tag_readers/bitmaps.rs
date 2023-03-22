@@ -6,7 +6,7 @@ use crate::decode::tags::bitmaps::{
     BitmapData, ColorMapData, DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsJpeg4Tag,
     DefineBitsLossless2Tag, DefineBitsLosslessTag, DefineBitsTag, JpegTablesTag,
 };
-use crate::decode::tags::common::Rgb;
+use crate::decode::tags::common::rgb::Rgb;
 use inflate::DeflateDecoder;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::io::ErrorKind::InvalidData;
