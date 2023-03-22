@@ -21,4 +21,15 @@ impl Rgba {
             alpha: buf[3],
         })
     }
+
+    pub fn read_argb<R: Read>(reader: &mut R) -> Result<Rgba> {
+        let mut buf = [0u8; 4];
+        reader.read_u8_into(&mut buf)?;
+        Ok(Self {
+            red: buf[1],
+            green: buf[2],
+            blue: buf[3],
+            alpha: buf[0],
+        })
+    }
 }

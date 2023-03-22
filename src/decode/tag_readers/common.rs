@@ -1,21 +1,8 @@
 use crate::decode::bit_read::BitRead;
-use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::common::{
     ColorTransform, ColorTransformWithAlpha, Fixed16, Fixed8, Matrix, Rectangle,
 };
-use std::io::{Read, Result};
-
-pub fn read_argb<R: Read>(reader: &mut R) -> Result<Rgba> {
-    let mut buf = [0u8; 4];
-    reader.read_u8_into(&mut buf)?;
-    Ok(Rgba {
-        red: buf[1],
-        green: buf[2],
-        blue: buf[3],
-        alpha: buf[0],
-    })
-}
+use std::io::Result;
 
 pub fn read_rectangle<R: BitRead>(reader: &mut R) -> Result<Rectangle> {
     reader.align_byte();
