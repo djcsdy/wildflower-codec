@@ -1,11 +1,12 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::common::{read_rectangle, read_rgb, read_rgba};
+use crate::decode::tag_readers::common::{read_rectangle, read_rgba};
 use crate::decode::tag_readers::styles::{
     read_extended_fill_style_array, read_fill_style_array, read_line_style, read_line_style_2,
     read_line_style_array,
 };
+use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::shapes::{
     CurvedEdgeRecord, DefineShape2Tag, DefineShape3Tag, DefineShape4Tag, DefineShapeTag, Shape,
     ShapeRecord, ShapeWithStyle, StraightEdgeRecord, StyleChangeRecord,
@@ -284,7 +285,7 @@ pub fn read_define_shape_tag(reader: &mut SwfSliceReader) -> Result<DefineShapeT
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
         read_line_style_array: &|reader| {
-            read_line_style_array(reader, &|reader| read_line_style(reader, &read_rgb))
+            read_line_style_array(reader, &|reader| read_line_style(reader, &Rgb::read))
         },
         read_fill_style_array: &read_fill_style_array,
     })?;
@@ -301,9 +302,9 @@ pub fn read_define_shape_2_tag(reader: &mut SwfSliceReader) -> Result<DefineShap
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
         read_line_style_array: &|reader| {
-            read_line_style_array(reader, &|reader| read_line_style(reader, &read_rgb))
+            read_line_style_array(reader, &|reader| read_line_style(reader, &Rgb::read))
         },
-        read_fill_style_array: &|reader| read_extended_fill_style_array(reader, &read_rgb),
+        read_fill_style_array: &|reader| read_extended_fill_style_array(reader, &Rgb::read),
     })?;
     Ok(DefineShape2Tag {
         shape_id,

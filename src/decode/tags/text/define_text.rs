@@ -1,6 +1,6 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::common::{read_matrix, read_rectangle, read_rgb};
+use crate::decode::tag_readers::common::{read_matrix, read_rectangle};
 use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::{Matrix, Rectangle};
 use crate::decode::tags::text::text_record::{ReadTextRecordOptions, TextRecord};
@@ -25,7 +25,7 @@ impl DefineTextTag {
             reader,
             glyph_bits,
             advance_bits,
-            read_color: &read_rgb,
+            read_color: &Rgb::read,
         })?;
         Ok(Self {
             character_id,

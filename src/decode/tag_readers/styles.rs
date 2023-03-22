@@ -1,7 +1,7 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::common::{read_matrix, read_rgb, read_rgba};
+use crate::decode::tag_readers::common::{read_matrix, read_rgba};
 use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::styles::{
     CapStyle, FillStyle, FocalGradient, Gradient, GradientRecord, JoinStyle, LineStyle, LineStyle2,
@@ -14,7 +14,7 @@ pub fn read_fill_style_array(reader: &mut SwfSliceReader) -> Result<Vec<FillStyl
     let fill_style_count = reader.read_u8()?;
     let mut fill_styles = Vec::with_capacity(fill_style_count as usize);
     for _ in 0..fill_style_count {
-        fill_styles.push(read_fill_style(reader, &read_rgb)?);
+        fill_styles.push(read_fill_style(reader, &Rgb::read)?);
     }
     Ok(fill_styles)
 }

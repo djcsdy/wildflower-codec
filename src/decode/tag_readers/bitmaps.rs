@@ -1,7 +1,7 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::common::{read_argb, read_rgb, read_rgba};
+use crate::decode::tag_readers::common::{read_argb, read_rgba};
 use crate::decode::tags::bitmaps::{
     BitmapData, ColorMapData, DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsJpeg4Tag,
     DefineBitsLossless2Tag, DefineBitsLosslessTag, DefineBitsTag, JpegTablesTag,
@@ -78,7 +78,7 @@ pub fn read_define_bits_lossless_tag(reader: &mut SwfSliceReader) -> Result<Defi
         BitmapFormat::ColorMap8 => {
             BitmapData::ColorMap8(read_colormap_data(ReadColorMapDataOptions {
                 reader: &mut bitmap_data_reader,
-                read_color: &read_rgb,
+                read_color: &Rgb::read,
                 color_table_size,
                 bitmap_width,
                 bitmap_height,
