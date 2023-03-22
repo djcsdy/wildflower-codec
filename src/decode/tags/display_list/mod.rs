@@ -1,5 +1,6 @@
 use super::actions::ActionRecord;
 use super::common::*;
+use crate::decode::tags::common::fixed_16::Fixed16;
 use crate::decode::tags::common::rgba::Rgba;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 

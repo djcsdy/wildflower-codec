@@ -1,7 +1,6 @@
 use crate::decode::bit_read::BitRead;
-use crate::decode::tags::common::{
-    ColorTransform, ColorTransformWithAlpha, Fixed16, Fixed8, Matrix,
-};
+use crate::decode::tags::common::fixed_16::Fixed16;
+use crate::decode::tags::common::{ColorTransform, ColorTransformWithAlpha, Fixed8, Matrix};
 use std::io::Result;
 
 pub fn read_matrix<R: BitRead>(reader: &mut R) -> Result<Matrix> {

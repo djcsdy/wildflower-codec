@@ -5,6 +5,7 @@ use crate::decode::tag_readers::actions::read_action_records;
 use crate::decode::tag_readers::common::{
     read_color_transform, read_color_transform_with_alpha, read_matrix,
 };
+use crate::decode::tags::common::fixed_16::Fixed16;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::display_list::{
     BevelFilter, BlurFilter, ClipActionRecord, ClipActions, ClipEventFlags, ColorMatrixFilter,
@@ -299,8 +300,8 @@ fn read_convolution_filter(reader: &mut SwfSliceReader) -> Result<ConvolutionFil
 }
 
 fn read_blur_filter(reader: &mut SwfSliceReader) -> Result<BlurFilter> {
-    let blur_x = reader.read_fixed_16()?;
-    let blur_y = reader.read_fixed_16()?;
+    let blur_x = Fixed16::read(reader)?;
+    let blur_y = Fixed16::read(reader)?;
     let passes = reader.read_ub8(5)?;
     reader.read_ub8(3)?;
     Ok(BlurFilter {
@@ -312,10 +313,10 @@ fn read_blur_filter(reader: &mut SwfSliceReader) -> Result<BlurFilter> {
 
 fn read_drop_shadow_filter(reader: &mut SwfSliceReader) -> Result<DropShadowFilter> {
     let color = Rgba::read(reader)?;
-    let blur_x = reader.read_fixed_16()?;
-    let blur_y = reader.read_fixed_16()?;
-    let angle = reader.read_fixed_16()?;
-    let distance = reader.read_fixed_16()?;
+    let blur_x = Fixed16::read(reader)?;
+    let blur_y = Fixed16::read(reader)?;
+    let angle = Fixed16::read(reader)?;
+    let distance = Fixed16::read(reader)?;
     let strength = reader.read_fixed_8()?;
     let inner_shadow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
@@ -337,8 +338,8 @@ fn read_drop_shadow_filter(reader: &mut SwfSliceReader) -> Result<DropShadowFilt
 
 fn read_glow_filter(reader: &mut SwfSliceReader) -> Result<GlowFilter> {
     let color = Rgba::read(reader)?;
-    let blur_x = reader.read_fixed_16()?;
-    let blur_y = reader.read_fixed_16()?;
+    let blur_x = Fixed16::read(reader)?;
+    let blur_y = Fixed16::read(reader)?;
     let strength = reader.read_fixed_8()?;
     let inner_glow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
@@ -359,10 +360,10 @@ fn read_glow_filter(reader: &mut SwfSliceReader) -> Result<GlowFilter> {
 fn read_bevel_filter(reader: &mut SwfSliceReader) -> Result<BevelFilter> {
     let shadow_color = Rgba::read(reader)?;
     let highlight_color = Rgba::read(reader)?;
-    let blur_x = reader.read_fixed_16()?;
-    let blur_y = reader.read_fixed_16()?;
-    let angle = reader.read_fixed_16()?;
-    let distance = reader.read_fixed_16()?;
+    let blur_x = Fixed16::read(reader)?;
+    let blur_y = Fixed16::read(reader)?;
+    let angle = Fixed16::read(reader)?;
+    let distance = Fixed16::read(reader)?;
     let strength = reader.read_fixed_8()?;
     let inner_shadow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
@@ -395,10 +396,10 @@ fn read_gradient_glow_filter(reader: &mut SwfSliceReader) -> Result<GradientGlow
     for _ in 0..num_colors {
         ratio.push(reader.read_u8()?);
     }
-    let blur_x = reader.read_fixed_16()?;
-    let blur_y = reader.read_fixed_16()?;
-    let angle = reader.read_fixed_16()?;
-    let distance = reader.read_fixed_16()?;
+    let blur_x = Fixed16::read(reader)?;
+    let blur_y = Fixed16::read(reader)?;
+    let angle = Fixed16::read(reader)?;
+    let distance = Fixed16::read(reader)?;
     let strength = reader.read_fixed_8()?;
     let inner_shadow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
@@ -431,10 +432,10 @@ fn read_gradient_bevel_filter(reader: &mut SwfSliceReader) -> Result<GradientBev
     for _ in 0..num_colors {
         ratio.push(reader.read_u8()?);
     }
-    let blur_x = reader.read_fixed_16()?;
-    let blur_y = reader.read_fixed_16()?;
-    let angle = reader.read_fixed_16()?;
-    let distance = reader.read_fixed_16()?;
+    let blur_x = Fixed16::read(reader)?;
+    let blur_y = Fixed16::read(reader)?;
+    let angle = Fixed16::read(reader)?;
+    let distance = Fixed16::read(reader)?;
     let strength = reader.read_fixed_8()?;
     let inner_shadow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
