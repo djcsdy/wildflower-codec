@@ -1,3 +1,4 @@
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use byteorder::{ByteOrder, LittleEndian};
 use std::fmt::{Debug, Display, Formatter};
@@ -19,6 +20,12 @@ impl Fixed16 {
     pub fn read<R: Read + ?Sized>(reader: &mut R) -> Result<Self> {
         let mut buf = [0u8; 4];
         reader.read_u8_into(&mut buf)?;
+        Ok(Self::from_bytes(&buf))
+    }
+
+    pub fn read_bits<R: BitRead + ?Sized>(reader: &mut R, bits: u8) -> Result<Self> {
+        let mut buf = [0u8; 4];
+        LittleEndian::write_u32(&mut buf, reader.read_ub(bits)?);
         Ok(Self::from_bytes(&buf))
     }
 }
