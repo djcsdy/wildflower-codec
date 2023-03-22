@@ -1,4 +1,4 @@
-use crate::decode::tags::text::Align;
+use crate::decode::tags::text::align::Align;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineEditTextLayout {

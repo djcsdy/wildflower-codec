@@ -1,5 +1,6 @@
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
+pub mod align;
 pub mod define_edit_text;
 pub mod define_edit_text_flags;
 pub mod define_edit_text_layout;
@@ -9,15 +10,6 @@ pub mod font_ref;
 pub mod glyph_entry;
 pub mod text_record;
 pub mod text_record_font;
-
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
-#[repr(u8)]
-pub enum Align {
-    Left = 0,
-    Right = 1,
-    Center = 2,
-    Justify = 3,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct CsmTextSettingsTag {
