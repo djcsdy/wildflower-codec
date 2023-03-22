@@ -1,7 +1,6 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tags::actions::do_abc::DoAbcTag;
 use crate::decode::tags::actions::{
     ActionRecord, ConstantPool, DefineFunction, DefineFunction2, DoActionTag, DoInitActionTag,
     GetUrl, GetUrl2, GoToFrame, GoToFrame2, GoToLabel, If, Jump, Push, PushValue, RegisterParam,
@@ -348,16 +347,5 @@ fn read_try(reader: &mut SwfSliceReader) -> Result<Try> {
         try_body,
         catch_body,
         finally_body,
-    })
-}
-
-pub fn read_do_abc_tag(reader: &mut SwfSliceReader) -> Result<DoAbcTag> {
-    let flags = reader.read_u32()?;
-    let name = reader.read_string()?;
-    let abc_data = reader.read_u8_to_end()?;
-    Ok(DoAbcTag {
-        flags,
-        name,
-        abc_data,
     })
 }

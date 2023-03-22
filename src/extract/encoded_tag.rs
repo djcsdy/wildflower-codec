@@ -1,7 +1,5 @@
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::actions::{
-    read_do_abc_tag, read_do_action_tag, read_do_init_action_tag,
-};
+use crate::decode::tag_readers::actions::{read_do_action_tag, read_do_init_action_tag};
 use crate::decode::tag_readers::bitmaps::{
     read_define_bits_jpeg_2_tag, read_define_bits_jpeg_3_tag, read_define_bits_jpeg_4_tag,
     read_define_bits_lossless_2_tag, read_define_bits_lossless_tag, read_define_bits_tag,
@@ -25,6 +23,7 @@ use crate::decode::tag_readers::shapes::{
     read_define_shape_2_tag, read_define_shape_3_tag, read_define_shape_4_tag,
     read_define_shape_tag,
 };
+use crate::decode::tags::actions::do_abc::DoAbcTag;
 use crate::decode::tags::fonts::define_font::DefineFontTag;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::define_font_info::DefineFontInfoTag;
@@ -175,7 +174,7 @@ impl EncodedTag {
             TagType::DefineScalingGrid => read_define_scaling_grid_tag(&mut slice_reader)
                 .map(Tag::DefineScalingGrid)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DoAbc => read_do_abc_tag(&mut slice_reader)
+            TagType::DoAbc => DoAbcTag::read(&mut slice_reader)
                 .map(Tag::DoAbc)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineShape4 => read_define_shape_4_tag(&mut slice_reader)
