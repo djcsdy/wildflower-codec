@@ -1,20 +1,12 @@
 use crate::decode::tags::common::{Rectangle, Rgba, String};
+use crate::decode::tags::text::define_edit_text_flags::DefineEditTextFlags;
 use crate::decode::tags::text::Align;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineEditTextTag {
     pub character_id: u16,
     pub bounds: Rectangle,
-    pub word_wrap: bool,
-    pub multiline: bool,
-    pub password: bool,
-    pub read_only: bool,
-    pub auto_size: bool,
-    pub no_select: bool,
-    pub border: bool,
-    pub was_static: bool,
-    pub html: bool,
-    pub use_outlines: bool,
+    pub flags: DefineEditTextFlags,
     pub font_id: u16,
     pub font_class: String,
     pub font_height: u16,
