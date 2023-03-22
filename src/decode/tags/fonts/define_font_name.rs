@@ -1,13 +1,13 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tags::common;
+use crate::decode::tags::common::String;
 use std::io::Result;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFontNameTag {
     pub font_id: u16,
-    pub font_name: common::String,
-    pub font_copyright: common::String,
+    pub font_name: String,
+    pub font_copyright: String,
 }
 
 impl DefineFontNameTag {

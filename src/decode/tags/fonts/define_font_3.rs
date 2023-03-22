@@ -1,5 +1,5 @@
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tags::common;
+use crate::decode::tags::common::String;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::define_font_flags::DefineFontFlags;
 use crate::decode::tags::fonts::language_code::LanguageCode;
@@ -11,7 +11,7 @@ pub struct DefineFont3Tag {
     pub font_id: u16,
     pub flags: DefineFontFlags,
     pub language_code: LanguageCode,
-    pub font_name: common::String,
+    pub font_name: String,
     pub num_glyphs: u16,
     pub glyphs_and_code_table_and_layout: Vec<u8>,
 }
