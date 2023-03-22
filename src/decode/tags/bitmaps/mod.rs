@@ -1,4 +1,4 @@
-use super::common::*;
+use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::rgba::Rgba;
 

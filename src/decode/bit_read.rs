@@ -1,5 +1,5 @@
 use crate::decode::tags::common::fixed_16::Fixed16;
-use crate::decode::tags::common::Fixed8;
+use crate::decode::tags::common::fixed_8::Fixed8;
 use byteorder::{ByteOrder, LittleEndian};
 use std::io::Result;
 

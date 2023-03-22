@@ -1,4 +1,4 @@
-use super::common::*;
+use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::rectangle::Rectangle;
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash)]
