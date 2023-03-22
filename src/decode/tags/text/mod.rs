@@ -2,6 +2,7 @@ use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 pub mod define_edit_text;
 pub mod define_edit_text_flags;
+pub mod define_edit_text_layout;
 pub mod define_text;
 pub mod define_text_2;
 pub mod font_ref;
