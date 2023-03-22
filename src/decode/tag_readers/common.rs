@@ -1,6 +1,7 @@
 use crate::decode::bit_read::BitRead;
+use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::{
-    ColorTransform, ColorTransformWithAlpha, Fixed16, Fixed8, Matrix, Rectangle,
+    ColorTransform, ColorTransformWithAlpha, Fixed16, Fixed8, Matrix,
 };
 use std::io::Result;
 

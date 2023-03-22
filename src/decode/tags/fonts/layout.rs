@@ -1,4 +1,4 @@
-use crate::decode::tags::common::Rectangle;
+use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::fonts::kerning::KerningRecord;
 
 #[derive(Clone, PartialEq, Debug)]

@@ -1,6 +1,7 @@
 use super::common::*;
 use super::shapes::Shape;
 use super::styles::{CapStyle, JoinStyle};
+use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgba::Rgba;
 
 #[derive(Clone, PartialEq, Debug)]

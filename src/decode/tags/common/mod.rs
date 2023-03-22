@@ -1,3 +1,4 @@
+pub mod rectangle;
 pub mod rgb;
 pub mod rgba;
 
@@ -169,15 +170,6 @@ impl Debug for String {
         write!(f, "\"")?;
         Ok(())
     }
-}
-
-/// An axis-aligned rectangle.
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash)]
-pub struct Rectangle {
-    pub x_min: i32,
-    pub x_max: i32,
-    pub y_min: i32,
-    pub y_max: i32,
 }
 
 /// A 2×3 matrix, used for 2D affine transformations.

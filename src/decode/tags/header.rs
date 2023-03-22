@@ -1,4 +1,5 @@
 use super::common::*;
+use crate::decode::tags::common::rectangle::Rectangle;
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash)]
 pub enum Compression {
