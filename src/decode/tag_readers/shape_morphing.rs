@@ -1,11 +1,12 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::common::{read_matrix, read_rectangle};
+use crate::decode::tag_readers::common::read_matrix;
 use crate::decode::tag_readers::shapes::read_shape;
 use crate::decode::tag_readers::styles::{
     read_cap_style, read_fill_style_type, read_line_style_array, FillStyleType,
 };
+use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::shape_morphing::{
     DefineMorphShape2Tag, DefineMorphShapeTag, MorphFillStyle, MorphFocalGradient, MorphGradient,
@@ -17,8 +18,8 @@ use std::io::{Error, Result};
 
 pub fn read_define_morph_shape_tag(reader: &mut SwfSliceReader) -> Result<DefineMorphShapeTag> {
     let character_id = reader.read_u16()?;
-    let start_bounds = read_rectangle(reader)?;
-    let end_bounds = read_rectangle(reader)?;
+    let start_bounds = Rectangle::read(reader)?;
+    let end_bounds = Rectangle::read(reader)?;
     let offset = reader.read_u32()? as usize;
     let fill_styles = read_morph_fill_style_array(reader)?;
     let line_styles = read_line_style_array(reader, &read_morph_line_style)?;
@@ -37,10 +38,10 @@ pub fn read_define_morph_shape_tag(reader: &mut SwfSliceReader) -> Result<Define
 
 pub fn read_define_morph_shape_2_tag(reader: &mut SwfSliceReader) -> Result<DefineMorphShape2Tag> {
     let character_id = reader.read_u16()?;
-    let start_bounds = read_rectangle(reader)?;
-    let end_bounds = read_rectangle(reader)?;
-    let start_edge_bounds = read_rectangle(reader)?;
-    let end_edge_bounds = read_rectangle(reader)?;
+    let start_bounds = Rectangle::read(reader)?;
+    let end_bounds = Rectangle::read(reader)?;
+    let start_edge_bounds = Rectangle::read(reader)?;
+    let end_edge_bounds = Rectangle::read(reader)?;
     reader.read_ub8(6)?;
     let uses_non_scaling_strokes = reader.read_bit()?;
     let uses_scaling_strokes = reader.read_bit()?;

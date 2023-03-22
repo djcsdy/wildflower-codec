@@ -1,6 +1,6 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::common::read_rectangle;
+use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::control::{
     DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, EnableDebugger2Tag, EnableDebuggerTag,
@@ -114,7 +114,7 @@ pub fn read_metadata_tag(reader: &mut SwfSliceReader) -> Result<MetadataTag> {
 
 pub fn read_define_scaling_grid_tag(reader: &mut SwfSliceReader) -> Result<DefineScalingGridTag> {
     let character_id = reader.read_u16()?;
-    let splitter = read_rectangle(reader)?;
+    let splitter = Rectangle::read(reader)?;
     Ok(DefineScalingGridTag {
         character_id,
         splitter,

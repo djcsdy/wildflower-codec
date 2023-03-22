@@ -1,6 +1,5 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::common::read_rectangle;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::common::String;
@@ -26,7 +25,7 @@ pub struct DefineEditTextTag {
 impl DefineEditTextTag {
     pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
         let character_id = reader.read_u16()?;
-        let bounds = read_rectangle(reader)?;
+        let bounds = Rectangle::read(reader)?;
         let flags = DefineEditTextFlags::read(reader)?;
         let font_id = if flags.contains(DefineEditTextFlags::HAS_FONT) {
             Some(reader.read_u16()?)

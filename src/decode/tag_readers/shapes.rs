@@ -1,11 +1,11 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::common::read_rectangle;
 use crate::decode::tag_readers::styles::{
     read_extended_fill_style_array, read_fill_style_array, read_line_style, read_line_style_2,
     read_line_style_array,
 };
+use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::shapes::{
@@ -282,7 +282,7 @@ pub fn read_curved_edge_record(reader: &mut SwfSliceReader) -> Result<CurvedEdge
 
 pub fn read_define_shape_tag(reader: &mut SwfSliceReader) -> Result<DefineShapeTag> {
     let shape_id = reader.read_u16()?;
-    let shape_bounds = read_rectangle(reader)?;
+    let shape_bounds = Rectangle::read(reader)?;
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
         read_line_style_array: &|reader| {
@@ -299,7 +299,7 @@ pub fn read_define_shape_tag(reader: &mut SwfSliceReader) -> Result<DefineShapeT
 
 pub fn read_define_shape_2_tag(reader: &mut SwfSliceReader) -> Result<DefineShape2Tag> {
     let shape_id = reader.read_u16()?;
-    let shape_bounds = read_rectangle(reader)?;
+    let shape_bounds = Rectangle::read(reader)?;
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
         read_line_style_array: &|reader| {
@@ -316,7 +316,7 @@ pub fn read_define_shape_2_tag(reader: &mut SwfSliceReader) -> Result<DefineShap
 
 pub fn read_define_shape_3_tag(reader: &mut SwfSliceReader) -> Result<DefineShape3Tag> {
     let shape_id = reader.read_u16()?;
-    let shape_bounds = read_rectangle(reader)?;
+    let shape_bounds = Rectangle::read(reader)?;
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
         read_line_style_array: &|reader| {
@@ -333,8 +333,8 @@ pub fn read_define_shape_3_tag(reader: &mut SwfSliceReader) -> Result<DefineShap
 
 pub fn read_define_shape_4_tag(reader: &mut SwfSliceReader) -> Result<DefineShape4Tag> {
     let shape_id = reader.read_u16()?;
-    let shape_bounds = read_rectangle(reader)?;
-    let edge_bounds = read_rectangle(reader)?;
+    let shape_bounds = Rectangle::read(reader)?;
+    let edge_bounds = Rectangle::read(reader)?;
     reader.read_ub8(5)?;
     let uses_fill_winding_rule = reader.read_bit()?;
     let uses_non_scaling_strokes = reader.read_bit()?;

@@ -1,6 +1,5 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::common::read_rectangle;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::String;
 use crate::decode::tags::fonts::code_table_and_layout::CodeTableAndLayout;
@@ -160,7 +159,7 @@ impl PartialFontLayout {
         }
         let mut bounds_table = Vec::with_capacity(num_glyphs);
         for _ in 0..num_glyphs {
-            bounds_table.push(read_rectangle(reader)?);
+            bounds_table.push(Rectangle::read(reader)?);
         }
         Ok(PartialFontLayout {
             ascent,
