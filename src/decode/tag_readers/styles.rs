@@ -2,6 +2,7 @@ use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::common::read_matrix;
+use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::styles::{
@@ -157,7 +158,7 @@ pub fn read_line_style_2(reader: &mut SwfSliceReader) -> Result<LineStyle2> {
     let no_close = reader.read_bit()?;
     let end_cap_style = read_cap_style(reader)?;
     let miter_limit_factor = if join_style == 2 {
-        Some(reader.read_fixed_8()?)
+        Some(Fixed8::read(reader)?)
     } else {
         None
     };
@@ -231,7 +232,7 @@ pub fn read_focal_gradient<
     read_color: &'read_color ReadColor,
 ) -> Result<FocalGradient<Color>> {
     let gradient = read_gradient(reader, read_color)?;
-    let focal_point = reader.read_fixed_8()?;
+    let focal_point = Fixed8::read(reader)?;
     Ok(FocalGradient {
         spread_mode: gradient.spread_mode,
         interpolation_mode: gradient.interpolation_mode,

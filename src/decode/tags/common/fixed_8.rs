@@ -1,5 +1,6 @@
 use byteorder::{ByteOrder, LittleEndian};
 use std::fmt::{Debug, Display, Formatter};
+use std::io::{Read, Result};
 
 /// A fixed-point number consisting of a 8-bit whole part plus an 8-bit
 /// fractional part.
@@ -12,6 +13,12 @@ impl Fixed8 {
 
     pub fn from_bytes(buf: &[u8; 2]) -> Fixed8 {
         Fixed8(LittleEndian::read_i16(buf))
+    }
+
+    pub fn read<R: Read + ?Sized>(reader: &mut R) -> Result<Self> {
+        let mut buf = [0u8; 2];
+        reader.read_exact(&mut buf)?;
+        Ok(Self::from_bytes(&buf))
     }
 }
 

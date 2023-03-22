@@ -6,6 +6,7 @@ use crate::decode::tag_readers::common::{
     read_color_transform, read_color_transform_with_alpha, read_matrix,
 };
 use crate::decode::tags::common::fixed_16::Fixed16;
+use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::display_list::{
     BevelFilter, BlurFilter, ClipActionRecord, ClipActions, ClipEventFlags, ColorMatrixFilter,
@@ -317,7 +318,7 @@ fn read_drop_shadow_filter(reader: &mut SwfSliceReader) -> Result<DropShadowFilt
     let blur_y = Fixed16::read(reader)?;
     let angle = Fixed16::read(reader)?;
     let distance = Fixed16::read(reader)?;
-    let strength = reader.read_fixed_8()?;
+    let strength = Fixed8::read(reader)?;
     let inner_shadow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
     let composite_source = reader.read_bit()?;
@@ -340,7 +341,7 @@ fn read_glow_filter(reader: &mut SwfSliceReader) -> Result<GlowFilter> {
     let color = Rgba::read(reader)?;
     let blur_x = Fixed16::read(reader)?;
     let blur_y = Fixed16::read(reader)?;
-    let strength = reader.read_fixed_8()?;
+    let strength = Fixed8::read(reader)?;
     let inner_glow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
     let composite_source = reader.read_bit()?;
@@ -364,7 +365,7 @@ fn read_bevel_filter(reader: &mut SwfSliceReader) -> Result<BevelFilter> {
     let blur_y = Fixed16::read(reader)?;
     let angle = Fixed16::read(reader)?;
     let distance = Fixed16::read(reader)?;
-    let strength = reader.read_fixed_8()?;
+    let strength = Fixed8::read(reader)?;
     let inner_shadow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
     let composite_source = reader.read_bit()?;
@@ -400,7 +401,7 @@ fn read_gradient_glow_filter(reader: &mut SwfSliceReader) -> Result<GradientGlow
     let blur_y = Fixed16::read(reader)?;
     let angle = Fixed16::read(reader)?;
     let distance = Fixed16::read(reader)?;
-    let strength = reader.read_fixed_8()?;
+    let strength = Fixed8::read(reader)?;
     let inner_shadow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
     let composite_source = reader.read_bit()?;
@@ -436,7 +437,7 @@ fn read_gradient_bevel_filter(reader: &mut SwfSliceReader) -> Result<GradientBev
     let blur_y = Fixed16::read(reader)?;
     let angle = Fixed16::read(reader)?;
     let distance = Fixed16::read(reader)?;
-    let strength = reader.read_fixed_8()?;
+    let strength = Fixed8::read(reader)?;
     let inner_shadow = reader.read_bit()?;
     let knockout = reader.read_bit()?;
     let composite_source = reader.read_bit()?;

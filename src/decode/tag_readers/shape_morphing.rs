@@ -6,6 +6,7 @@ use crate::decode::tag_readers::shapes::read_shape;
 use crate::decode::tag_readers::styles::{
     read_cap_style, read_fill_style_type, read_line_style_array, FillStyleType,
 };
+use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::shape_morphing::{
@@ -172,8 +173,8 @@ fn read_morph_gradient(reader: &mut SwfSliceReader) -> Result<MorphGradient> {
 
 fn read_morph_focal_gradient(reader: &mut SwfSliceReader) -> Result<MorphFocalGradient> {
     let morph_gradient = read_morph_gradient(reader)?;
-    let start_focal_point = reader.read_fixed_8()?;
-    let end_focal_point = reader.read_fixed_8()?;
+    let start_focal_point = Fixed8::read(reader)?;
+    let end_focal_point = Fixed8::read(reader)?;
     Ok(MorphFocalGradient {
         gradient_records: morph_gradient.gradient_records,
         start_focal_point,
@@ -220,7 +221,7 @@ fn read_morph_line_style_2(reader: &mut SwfSliceReader) -> Result<MorphLineStyle
     let no_close = reader.read_bit()?;
     let end_cap_style = read_cap_style(reader)?;
     let miter_limit_factor = if join_style == 2 {
-        Some(reader.read_fixed_8()?)
+        Some(Fixed8::read(reader)?)
     } else {
         None
     };

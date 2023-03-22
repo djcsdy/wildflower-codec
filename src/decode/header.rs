@@ -1,6 +1,7 @@
 use crate::decode::bit_reader::BitReader;
 use crate::decode::decompressing_reader::DecompressingReader;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::header::{Compression, Header};
 use std::io::ErrorKind::InvalidData;
@@ -27,7 +28,7 @@ pub fn read_header<R: BufRead>(mut reader: R) -> Result<(Header, DecompressingRe
     });
 
     let frame_size = Rectangle::read(&mut bit_reader)?;
-    let frame_rate = bit_reader.read_fixed_8()?;
+    let frame_rate = Fixed8::read(&mut bit_reader)?;
     let frame_count = bit_reader.read_u16()?;
 
     Ok((

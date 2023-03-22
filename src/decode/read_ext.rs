@@ -1,4 +1,3 @@
-use crate::decode::tags::common::fixed_8::Fixed8;
 use byteorder::{LittleEndian, ReadBytesExt};
 use half::f16;
 use std::io::{Read, Result};
@@ -17,7 +16,6 @@ pub trait SwfTypesReadExt {
     fn read_u24_into(&mut self, buf: &mut [u32]) -> Result<()>;
     fn read_u32_into(&mut self, buf: &mut [u32]) -> Result<()>;
     fn read_u64_into(&mut self, buf: &mut [u64]) -> Result<()>;
-    fn read_fixed_8(&mut self) -> Result<Fixed8>;
     fn read_f16(&mut self) -> Result<f16>;
     fn read_f32(&mut self) -> Result<f32>;
     fn read_f64(&mut self) -> Result<f64>;
@@ -81,12 +79,6 @@ impl<R: Read + ?Sized> SwfTypesReadExt for R {
 
     fn read_u64_into(&mut self, buf: &mut [u64]) -> Result<()> {
         ReadBytesExt::read_u64_into::<LittleEndian>(self, buf)
-    }
-
-    fn read_fixed_8(&mut self) -> Result<Fixed8> {
-        let mut buf = [0u8; 2];
-        self.read_exact(&mut buf)?;
-        Ok(Fixed8::from_bytes(&buf))
     }
 
     fn read_f16(&mut self) -> Result<f16> {

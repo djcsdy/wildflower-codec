@@ -5,6 +5,7 @@ use crate::decode::tags::bitmaps::{
     BitmapData, ColorMapData, DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsJpeg4Tag,
     DefineBitsLossless2Tag, DefineBitsLosslessTag, DefineBitsTag, JpegTablesTag,
 };
+use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::rgba::Rgba;
 use inflate::DeflateDecoder;
@@ -247,7 +248,7 @@ pub fn read_define_bits_lossless_2_tag(
 pub fn read_define_bits_jpeg_4_tag(reader: &mut SwfSliceReader) -> Result<DefineBitsJpeg4Tag> {
     let character_id = reader.read_u16()?;
     let alpha_data_offset = reader.read_u32()? as usize;
-    let deblock_param = reader.read_fixed_8()?;
+    let deblock_param = Fixed8::read(reader)?;
     let mut image_data = vec![0u8; alpha_data_offset];
     reader.read_exact(&mut image_data)?;
     let bitmap_alpha_data = reader.read_u8_to_end()?;
