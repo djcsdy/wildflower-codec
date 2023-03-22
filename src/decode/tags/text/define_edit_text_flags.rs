@@ -1,3 +1,7 @@
+use crate::decode::bit_read::BitRead;
+use crate::decode::slice_reader::SwfSliceReader;
+use std::io::Result;
+
 bitflags! {
     pub struct DefineEditTextFlags: u16 {
         const HAS_TEXT = 0x8000;
@@ -16,5 +20,11 @@ bitflags! {
         const WAS_STATIC = 0x0004;
         const HTML = 0x0002;
         const USE_OUTLINES = 0x0001;
+    }
+}
+
+impl DefineEditTextFlags {
+    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+        Ok(Self::from_bits(reader.read_ub16(16)?).unwrap())
     }
 }
