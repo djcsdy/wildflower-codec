@@ -1,9 +1,10 @@
-use super::actions::{DoAbcTag, DoActionTag, DoInitActionTag};
+use super::actions::{DoActionTag, DoInitActionTag};
 use super::control::{EndTag, FrameLabelTag};
 use super::display_list::{
     PlaceObject2Tag, PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag, ShowFrameTag,
 };
 use super::sounds::{SoundStreamBlockTag, SoundStreamHead2Tag, SoundStreamHeadTag, StartSoundTag};
+use crate::decode::tags::actions::do_abc::DoAbcTag;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineSpriteTag {

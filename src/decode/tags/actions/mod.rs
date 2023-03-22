@@ -1,3 +1,5 @@
+pub mod do_abc;
+
 use super::common::*;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
@@ -10,13 +12,6 @@ pub struct DoActionTag {
 pub struct DoInitActionTag {
     pub sprite_id: u16,
     pub actions: Vec<ActionRecord>,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct DoAbcTag {
-    pub flags: u32,
-    pub name: String,
-    pub abc_data: Vec<u8>,
 }
 
 #[derive(Clone, PartialEq, Debug)]

@@ -1,4 +1,4 @@
-use super::actions::{DoAbcTag, DoActionTag, DoInitActionTag};
+use super::actions::{DoActionTag, DoInitActionTag};
 use super::bitmaps::{
     DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsJpeg4Tag, DefineBitsLossless2Tag,
     DefineBitsLosslessTag, DefineBitsTag, JpegTablesTag,
@@ -24,6 +24,7 @@ use super::sounds::{
 };
 use super::sprites::DefineSpriteTag;
 use super::video::DefineVideoStreamTag;
+use crate::decode::tags::actions::do_abc::DoAbcTag;
 use crate::decode::tags::fonts::define_font::DefineFontTag;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::define_font_3::DefineFont3Tag;
