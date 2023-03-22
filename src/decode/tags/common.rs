@@ -144,6 +144,8 @@ impl Debug for Fixed8 {
 pub struct String(Vec<u8>);
 
 impl String {
+    pub const EMPTY: Self = Self(vec![]);
+
     pub fn from_bytes<I: Into<Vec<u8>>>(buf: I) -> String {
         String(buf.into())
     }
