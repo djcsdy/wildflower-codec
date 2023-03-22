@@ -1,3 +1,4 @@
+use crate::decode::bit_read::BitRead;
 use byteorder::{ByteOrder, LittleEndian};
 use std::fmt::{Debug, Display, Formatter};
 use std::io::{Read, Result};
@@ -19,6 +20,12 @@ impl Fixed8 {
         let mut buf = [0u8; 2];
         reader.read_exact(&mut buf)?;
         Ok(Self::from_bytes(&buf))
+    }
+
+    pub fn read_bits<R: BitRead + ?Sized>(reader: &mut R, bits: u8) -> Result<Self> {
+        let mut buf = [0u8; 2];
+        LittleEndian::write_u16(&mut buf, reader.read_ub16(bits)?);
+        Ok(Fixed8::from_bytes(&buf))
     }
 }
 
