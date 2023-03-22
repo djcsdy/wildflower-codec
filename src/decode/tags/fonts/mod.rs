@@ -8,6 +8,7 @@ pub mod define_font;
 pub mod define_font_2;
 pub mod define_font_3;
 pub mod define_font_4;
+pub mod define_font_4_flags;
 pub mod define_font_align_zones;
 pub mod define_font_flags;
 pub mod define_font_info;
