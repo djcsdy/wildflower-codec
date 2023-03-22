@@ -1,4 +1,5 @@
-use crate::decode::tags::text::{GridFit, TextRenderer};
+use crate::decode::tags::text::text_renderer::TextRenderer;
+use crate::decode::tags::text::GridFit;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct CsmTextSettingsTag {

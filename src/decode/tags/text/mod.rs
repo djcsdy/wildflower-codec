@@ -11,13 +11,7 @@ pub mod font_ref;
 pub mod glyph_entry;
 pub mod text_record;
 pub mod text_record_font;
-
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
-#[repr(u8)]
-pub enum TextRenderer {
-    Standard = 0,
-    Advanced = 1,
-}
+pub mod text_renderer;
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
 #[repr(u8)]
