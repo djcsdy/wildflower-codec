@@ -1,11 +1,11 @@
 pub mod fixed_16;
 pub mod fixed_8;
+pub mod matrix;
 pub mod rectangle;
 pub mod rgb;
 pub mod rgba;
 pub mod string;
 
-use fixed_16::Fixed16;
 use fixed_8::Fixed8;
 use std::fmt::{Debug, Display, Formatter};
 
@@ -46,17 +46,6 @@ impl<N: Display> Debug for Point<N> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         Display::fmt(self, f)
     }
-}
-
-/// A 2×3 matrix, used for 2D affine transformations.
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash)]
-pub struct Matrix {
-    pub scale_x: Fixed16,
-    pub scale_y: Fixed16,
-    pub rotate_skew_0: Fixed16,
-    pub rotate_skew_1: Fixed16,
-    pub translate_x: i32,
-    pub translate_y: i32,
 }
 
 /// A simple color transformation.
