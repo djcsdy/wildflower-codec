@@ -1,8 +1,8 @@
 use super::actions::ActionRecord;
-use super::common::*;
 use super::display_list::{BlendMode, Filter};
 use super::sounds::SoundInfo;
 use crate::decode::tags::common::color_transform::ColorTransform;
+use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithAlpha;
 use crate::decode::tags::common::matrix::Matrix;
 
 #[derive(Clone, PartialEq, Debug)]

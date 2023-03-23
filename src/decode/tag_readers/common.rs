@@ -1,6 +1,6 @@
 use crate::decode::bit_read::BitRead;
+use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithAlpha;
 use crate::decode::tags::common::fixed_8::Fixed8;
-use crate::decode::tags::common::ColorTransformWithAlpha;
 use std::io::Result;
 
 pub fn read_color_transform_with_alpha<R: BitRead>(
