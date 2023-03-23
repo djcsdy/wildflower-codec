@@ -1,6 +1,6 @@
 use crate::decode::tags::sounds::sampling_rate::SamplingRate;
 use crate::decode::tags::sounds::sound_channels::SoundChannels;
-use crate::decode::tags::sounds::SoundStreamCompression;
+use crate::decode::tags::sounds::sound_stream_compression::SoundStreamCompression;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct SoundStreamHeadTag {

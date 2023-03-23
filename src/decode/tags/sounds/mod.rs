@@ -6,22 +6,15 @@ pub mod sound_envelope_point;
 pub mod sound_format;
 pub mod sound_info;
 pub mod sound_info_flags;
+pub mod sound_stream_compression;
 pub mod sound_stream_head;
 pub mod start_sound;
 pub mod start_sound_2;
 
-use num_enum::{IntoPrimitive, TryFromPrimitive};
 use sampling_bits::SamplingBits;
 use sampling_rate::SamplingRate;
 use sound_channels::SoundChannels;
 use sound_format::SoundFormat;
-
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
-#[repr(u8)]
-pub enum SoundStreamCompression {
-    Adpcm = 1,
-    Mp3 = 2,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct SoundStreamHead2Tag {
