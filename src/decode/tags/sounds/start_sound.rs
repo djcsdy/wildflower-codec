@@ -1,4 +1,4 @@
-use crate::decode::tags::sounds::SoundInfo;
+use crate::decode::tags::sounds::sound_info::SoundInfo;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct StartSoundTag {

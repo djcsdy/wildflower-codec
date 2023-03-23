@@ -1,9 +1,9 @@
 use super::actions::ActionRecord;
 use super::display_list::{BlendMode, Filter};
-use super::sounds::SoundInfo;
 use crate::decode::tags::common::color_transform::ColorTransform;
 use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithAlpha;
 use crate::decode::tags::common::matrix::Matrix;
+use crate::decode::tags::sounds::sound_info::SoundInfo;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineButtonTag {

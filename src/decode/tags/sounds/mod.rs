@@ -3,6 +3,7 @@ pub mod sampling_bits;
 pub mod sampling_rate;
 pub mod sound_channels;
 pub mod sound_format;
+pub mod sound_info;
 pub mod start_sound;
 
 use crate::decode::tags::common::string::String;
@@ -11,21 +12,12 @@ use sampling_bits::SamplingBits;
 use sampling_rate::SamplingRate;
 use sound_channels::SoundChannels;
 use sound_format::SoundFormat;
+use sound_info::SoundInfo;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct StartSound2Tag {
     pub sound_class_name: String,
     pub sound_info: SoundInfo,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct SoundInfo {
-    pub sync_stop: bool,
-    pub sync_no_multiple: bool,
-    pub in_point: u32,
-    pub out_point: u32,
-    pub loop_count: u16,
-    pub envelope_points: SoundEnvelopePoint,
 }
 
 #[derive(Clone, PartialEq, Debug)]
