@@ -7,20 +7,13 @@ pub mod sound_format;
 pub mod sound_info;
 pub mod sound_info_flags;
 pub mod start_sound;
+pub mod start_sound_2;
 
-use crate::decode::tags::common::string::String;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use sampling_bits::SamplingBits;
 use sampling_rate::SamplingRate;
 use sound_channels::SoundChannels;
 use sound_format::SoundFormat;
-use sound_info::SoundInfo;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct StartSound2Tag {
-    pub sound_class_name: String,
-    pub sound_info: SoundInfo,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct SoundStreamHeadTag {
