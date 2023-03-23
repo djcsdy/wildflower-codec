@@ -19,8 +19,7 @@ use super::metadata::{DefineBinaryDataTag, EnableTelemetryTag};
 use super::shape_morphing::{DefineMorphShape2Tag, DefineMorphShapeTag};
 use super::shapes::{DefineShape2Tag, DefineShape3Tag, DefineShape4Tag, DefineShapeTag};
 use super::sounds::{
-    DefineSoundTag, SoundStreamBlockTag, SoundStreamHead2Tag, SoundStreamHeadTag, StartSound2Tag,
-    StartSoundTag,
+    SoundStreamBlockTag, SoundStreamHead2Tag, SoundStreamHeadTag, StartSound2Tag, StartSoundTag,
 };
 use super::sprites::DefineSpriteTag;
 use super::video::DefineVideoStreamTag;
@@ -35,6 +34,7 @@ use crate::decode::tags::fonts::define_font_info_2::DefineFontInfo2Tag;
 use crate::decode::tags::fonts::define_font_name::DefineFontNameTag;
 use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
 use crate::decode::tags::metadata::FileAttributesTag;
+use crate::decode::tags::sounds::define_sound::DefineSoundTag;
 use crate::decode::tags::text::csm_text_settings::CsmTextSettingsTag;
 use crate::decode::tags::text::define_edit_text::DefineEditTextTag;
 use crate::decode::tags::text::define_text::DefineTextTag;

@@ -1,15 +1,7 @@
+pub mod define_sound;
+
 use crate::decode::tags::common::string::String;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct DefineSoundTag {
-    pub sound_id: u16,
-    pub sound_format: SoundFormat,
-    pub sound_rate: SamplingRate,
-    pub sound_bits: SamplingBits,
-    pub sound_channels: SoundChannels,
-    pub sound_data: Vec<u8>,
-}
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
 #[repr(u8)]
