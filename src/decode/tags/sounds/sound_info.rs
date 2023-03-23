@@ -1,5 +1,5 @@
+use crate::decode::tags::sounds::sound_envelope_point::SoundEnvelopePoint;
 use crate::decode::tags::sounds::sound_info_flags::SoundInfoFlags;
-use crate::decode::tags::sounds::SoundEnvelopePoint;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct SoundInfo {

@@ -2,6 +2,7 @@ pub mod define_sound;
 pub mod sampling_bits;
 pub mod sampling_rate;
 pub mod sound_channels;
+pub mod sound_envelope_point;
 pub mod sound_format;
 pub mod sound_info;
 pub mod sound_info_flags;
@@ -19,13 +20,6 @@ use sound_info::SoundInfo;
 pub struct StartSound2Tag {
     pub sound_class_name: String,
     pub sound_info: SoundInfo,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct SoundEnvelopePoint {
-    pub pos_samples_44: u32,
-    pub left_level: u16,
-    pub right_level: u16,
 }
 
 #[derive(Clone, PartialEq, Debug)]
