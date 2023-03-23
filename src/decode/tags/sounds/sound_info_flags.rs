@@ -1,3 +1,7 @@
+use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::slice_reader::SwfSliceReader;
+use std::io::Result;
+
 bitflags! {
     pub struct SoundInfoFlags: u8 {
         const RESERVED = 0xc0;
@@ -7,5 +11,11 @@ bitflags! {
         const HAS_LOOPS = 0x04;
         const HAS_OUT_POINT = 0x02;
         const HAS_IN_POINT = 0x01;
+    }
+}
+
+impl SoundInfoFlags {
+    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+        Ok(Self::from_bits(reader.read_u8()?).unwrap())
     }
 }
