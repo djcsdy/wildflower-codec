@@ -2,7 +2,8 @@ use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::actions::read_action_records;
-use crate::decode::tag_readers::common::{read_color_transform, read_color_transform_with_alpha};
+use crate::decode::tag_readers::common::read_color_transform_with_alpha;
+use crate::decode::tags::common::color_transform::ColorTransform;
 use crate::decode::tags::common::fixed_16::Fixed16;
 use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::matrix::Matrix;
@@ -22,7 +23,7 @@ pub fn read_place_object_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjectT
     let depth = reader.read_u16()?;
     let matrix = Matrix::read(reader)?;
     let color_transform = if reader.bytes_remaining() > 0 {
-        Some(read_color_transform(reader)?)
+        Some(ColorTransform::read(reader)?)
     } else {
         None
     };
