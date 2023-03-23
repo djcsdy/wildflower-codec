@@ -1,18 +1,13 @@
 pub mod define_sound;
+pub mod sampling_bits;
 pub mod sampling_rate;
 pub mod sound_format;
 
 use crate::decode::tags::common::string::String;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
+use sampling_bits::SamplingBits;
 use sampling_rate::SamplingRate;
 use sound_format::SoundFormat;
-
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
-#[repr(u8)]
-pub enum SamplingBits {
-    Bits8 = 0,
-    Bits16 = 1,
-}
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
 #[repr(u8)]
