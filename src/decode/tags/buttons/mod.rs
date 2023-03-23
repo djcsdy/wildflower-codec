@@ -1,12 +1,12 @@
 pub mod button_record;
+pub mod button_record_2;
 pub mod button_record_flags;
 
 use super::actions::ActionRecord;
-use super::display_list::{BlendMode, Filter};
 use crate::decode::tags::common::color_transform::ColorTransform;
-use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithAlpha;
 use crate::decode::tags::sounds::sound_info::SoundInfo;
 use button_record::ButtonRecord;
+use button_record_2::ButtonRecord2;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineButtonTag {
@@ -21,14 +21,6 @@ pub struct DefineButton2Tag {
     pub track_as_menu: bool,
     pub characters: Vec<ButtonRecord2>,
     pub actions: Vec<ButtonConditionActionRecord>,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct ButtonRecord2 {
-    pub button_record: ButtonRecord,
-    pub color_transform: ColorTransformWithAlpha,
-    pub filter_list: Vec<Filter>,
-    pub blend_mode: BlendMode,
 }
 
 #[derive(Clone, PartialEq, Debug)]
