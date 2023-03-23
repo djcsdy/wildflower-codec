@@ -1,4 +1,5 @@
 pub mod button_record;
+pub mod button_record_flags;
 
 use super::actions::ActionRecord;
 use super::display_list::{BlendMode, Filter};
