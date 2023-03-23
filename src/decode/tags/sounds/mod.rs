@@ -6,13 +6,9 @@ pub mod sound_envelope_point;
 pub mod sound_format;
 pub mod sound_info;
 pub mod sound_info_flags;
+pub mod sound_stream_block;
 pub mod sound_stream_compression;
 pub mod sound_stream_head;
 pub mod sound_stream_head_2;
 pub mod start_sound;
 pub mod start_sound_2;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct SoundStreamBlockTag {
-    pub stream_sound_data: Vec<u8>,
-}
