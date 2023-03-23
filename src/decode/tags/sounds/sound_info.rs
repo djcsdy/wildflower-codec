@@ -7,5 +7,5 @@ pub struct SoundInfo {
     pub in_point: u32,
     pub out_point: u32,
     pub loop_count: u16,
-    pub envelope_points: SoundEnvelopePoint,
+    pub envelope_points: Vec<SoundEnvelopePoint>,
 }
