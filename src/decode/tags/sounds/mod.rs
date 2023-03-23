@@ -3,6 +3,7 @@ pub mod sampling_bits;
 pub mod sampling_rate;
 pub mod sound_channels;
 pub mod sound_format;
+pub mod start_sound;
 
 use crate::decode::tags::common::string::String;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
@@ -10,12 +11,6 @@ use sampling_bits::SamplingBits;
 use sampling_rate::SamplingRate;
 use sound_channels::SoundChannels;
 use sound_format::SoundFormat;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct StartSoundTag {
-    pub sound_id: u16,
-    pub sound_info: SoundInfo,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct StartSound2Tag {
