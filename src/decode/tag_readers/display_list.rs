@@ -2,8 +2,8 @@ use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::actions::read_action_records;
-use crate::decode::tag_readers::common::read_color_transform_with_alpha;
 use crate::decode::tags::common::color_transform::ColorTransform;
+use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithAlpha;
 use crate::decode::tags::common::fixed_16::Fixed16;
 use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::matrix::Matrix;
@@ -57,7 +57,7 @@ pub fn read_place_object_2_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjec
         None
     };
     let color_transform = if has_color_transform {
-        Some(read_color_transform_with_alpha(reader)?)
+        Some(ColorTransformWithAlpha::read(reader)?)
     } else {
         None
     };
@@ -171,7 +171,7 @@ pub fn read_place_object_3_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjec
         None
     };
     let color_transform = if has_color_transform {
-        Some(read_color_transform_with_alpha(reader)?)
+        Some(ColorTransformWithAlpha::read(reader)?)
     } else {
         None
     };
