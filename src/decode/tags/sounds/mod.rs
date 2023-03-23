@@ -4,6 +4,7 @@ pub mod sampling_rate;
 pub mod sound_channels;
 pub mod sound_format;
 pub mod sound_info;
+pub mod sound_info_flags;
 pub mod start_sound;
 
 use crate::decode::tags::common::string::String;
