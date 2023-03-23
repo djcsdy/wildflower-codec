@@ -3,9 +3,10 @@ use super::control::{EndTag, FrameLabelTag};
 use super::display_list::{
     PlaceObject2Tag, PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag, ShowFrameTag,
 };
-use super::sounds::{SoundStreamBlockTag, SoundStreamHead2Tag};
+use super::sounds::SoundStreamBlockTag;
 use crate::decode::tags::actions::do_abc::DoAbcTag;
 use crate::decode::tags::sounds::sound_stream_head::SoundStreamHeadTag;
+use crate::decode::tags::sounds::sound_stream_head_2::SoundStreamHead2Tag;
 use crate::decode::tags::sounds::start_sound::StartSoundTag;
 
 #[derive(Clone, PartialEq, Debug)]
