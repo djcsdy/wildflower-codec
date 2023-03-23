@@ -8,6 +8,7 @@ use crate::decode::tag_readers::common::{
 use crate::decode::tags::common::fixed_16::Fixed16;
 use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::rgba::Rgba;
+use crate::decode::tags::common::string::String;
 use crate::decode::tags::display_list::{
     BevelFilter, BlurFilter, ClipActionRecord, ClipActions, ClipEventFlags, ColorMatrixFilter,
     ConvolutionFilter, DropShadowFilter, Filter, GlowFilter, GradientBevelFilter,
@@ -66,7 +67,7 @@ pub fn read_place_object_2_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjec
         None
     };
     let name = if has_name {
-        Some(reader.read_string()?)
+        Some(String::read(reader)?)
     } else {
         None
     };
@@ -155,7 +156,7 @@ pub fn read_place_object_3_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjec
     let has_filter_list = reader.read_bit()?;
     let depth = reader.read_u16()?;
     let class_name = if has_class_name || (has_image && has_character) {
-        Some(reader.read_string()?)
+        Some(String::read(reader)?)
     } else {
         None
     };
@@ -180,7 +181,7 @@ pub fn read_place_object_3_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjec
         None
     };
     let name = if has_name {
-        Some(reader.read_string()?)
+        Some(String::read(reader)?)
     } else {
         None
     };

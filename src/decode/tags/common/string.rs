@@ -1,4 +1,6 @@
+use crate::decode::slice_reader::SwfSliceReader;
 use std::fmt::{Debug, Formatter};
+use std::io::Result;
 
 /// A sequence of bytes representing a character string.
 ///
@@ -20,6 +22,10 @@ impl String {
 
     pub fn from_bytes<I: Into<Vec<u8>>>(buf: I) -> String {
         String(buf.into())
+    }
+
+    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+        Ok(Self::from_bytes(reader.read_null_terminated_bytes()?))
     }
 }
 

@@ -13,8 +13,8 @@ pub struct DefineFontNameTag {
 impl DefineFontNameTag {
     pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
         let font_id = reader.read_u16()?;
-        let font_name = reader.read_string()?;
-        let font_copyright = reader.read_string()?;
+        let font_name = String::read(reader)?;
+        let font_copyright = String::read(reader)?;
         Ok(Self {
             font_id,
             font_name,

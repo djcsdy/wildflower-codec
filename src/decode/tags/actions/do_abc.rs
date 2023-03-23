@@ -13,7 +13,7 @@ pub struct DoAbcTag {
 impl DoAbcTag {
     pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
         let flags = reader.read_u32()?;
-        let name = reader.read_string()?;
+        let name = String::read(reader)?;
         let abc_data = reader.read_u8_to_end()?;
         Ok(Self {
             flags,

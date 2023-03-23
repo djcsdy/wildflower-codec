@@ -53,10 +53,6 @@ impl<'buffer> SwfSliceReader<'buffer> {
         Ok(bytes)
     }
 
-    pub fn read_string(&mut self) -> Result<String> {
-        Ok(String::from_bytes(self.read_null_terminated_bytes()?))
-    }
-
     pub fn read_fixed_string(&mut self, byte_length: usize) -> Result<String> {
         let mut buffer = vec![0u8; byte_length];
         self.read_exact(&mut buffer)?;

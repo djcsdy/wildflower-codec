@@ -6,6 +6,7 @@ use crate::decode::tags::actions::{
     GetUrl, GetUrl2, GoToFrame, GoToFrame2, GoToLabel, If, Jump, Push, PushValue, RegisterParam,
     SetTarget, StoreRegister, Try, WaitForFrame, WaitForFrame2, With,
 };
+use crate::decode::tags::common::string::String;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Result};
 
@@ -143,8 +144,8 @@ fn read_go_to_frame(reader: &mut SwfSliceReader) -> Result<GoToFrame> {
 }
 
 fn read_get_url(reader: &mut SwfSliceReader) -> Result<GetUrl> {
-    let url = reader.read_string()?;
-    let target = reader.read_string()?;
+    let url = String::read(reader)?;
+    let target = String::read(reader)?;
     Ok(GetUrl { url, target })
 }
 
@@ -155,19 +156,19 @@ fn read_wait_for_frame(reader: &mut SwfSliceReader) -> Result<WaitForFrame> {
 }
 
 fn read_set_target(reader: &mut SwfSliceReader) -> Result<SetTarget> {
-    let target_name = reader.read_string()?;
+    let target_name = String::read(reader)?;
     Ok(SetTarget { target_name })
 }
 
 fn read_go_to_label(reader: &mut SwfSliceReader) -> Result<GoToLabel> {
-    let label = reader.read_string()?;
+    let label = String::read(reader)?;
     Ok(GoToLabel { label })
 }
 
 fn read_push(reader: &mut SwfSliceReader) -> Result<Push> {
     let value_type = reader.read_u8()?;
     let value = match value_type {
-        0 => PushValue::String(reader.read_string()?),
+        0 => PushValue::String(String::read(reader)?),
         1 => PushValue::Float(reader.read_f32()?),
         2 => PushValue::Null,
         3 => PushValue::Undefined,
@@ -231,17 +232,17 @@ fn read_constant_pool(reader: &mut SwfSliceReader) -> Result<ConstantPool> {
     let count = reader.read_u16()?;
     let mut constant_pool = Vec::with_capacity(count as usize);
     for _ in 0..count {
-        constant_pool.push(reader.read_string()?);
+        constant_pool.push(String::read(reader)?);
     }
     Ok(ConstantPool { constant_pool })
 }
 
 fn read_define_function(reader: &mut SwfSliceReader) -> Result<DefineFunction> {
-    let function_name = reader.read_string()?;
+    let function_name = String::read(reader)?;
     let num_params = reader.read_u16()?;
     let mut params = Vec::with_capacity(num_params as usize);
     for _ in 0..num_params {
-        params.push(reader.read_string()?);
+        params.push(String::read(reader)?);
     }
     let code_size = reader.read_u16()?;
     let body = read_action_records(&mut reader.slice(code_size as usize))?;
@@ -270,7 +271,7 @@ pub fn read_do_init_action_tag(reader: &mut SwfSliceReader) -> Result<DoInitActi
 }
 
 fn read_define_function_2(reader: &mut SwfSliceReader) -> Result<DefineFunction2> {
-    let function_name = reader.read_string()?;
+    let function_name = String::read(reader)?;
     let num_params = reader.read_u16()?;
     let register_count = reader.read_u8()?;
     let preload_parent = reader.read_bit()?;
@@ -308,7 +309,7 @@ fn read_define_function_2(reader: &mut SwfSliceReader) -> Result<DefineFunction2
 
 fn read_register_param(reader: &mut SwfSliceReader) -> Result<RegisterParam> {
     let register = reader.read_u8()?;
-    let name = reader.read_string()?;
+    let name = String::read(reader)?;
     Ok(if register == 0 {
         RegisterParam::Name(name)
     } else {
@@ -327,7 +328,7 @@ fn read_try(reader: &mut SwfSliceReader) -> Result<Try> {
     let catch_parameter = if catch_in_register {
         RegisterParam::Register(reader.read_u8()?)
     } else {
-        RegisterParam::Name(reader.read_string()?)
+        RegisterParam::Name(String::read(reader)?)
     };
     let try_body = read_action_records(&mut reader.slice(try_size as usize))?;
     let catch_body = if has_catch_block {

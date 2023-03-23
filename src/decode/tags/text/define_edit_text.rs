@@ -33,7 +33,7 @@ impl DefineEditTextTag {
             None
         };
         let font_class = if flags.contains(DefineEditTextFlags::HAS_FONT_CLASS) {
-            Some(reader.read_string()?)
+            Some(String::read(reader)?)
         } else {
             None
         };
@@ -60,9 +60,9 @@ impl DefineEditTextTag {
         } else {
             None
         };
-        let variable_name = reader.read_string()?;
+        let variable_name = String::read(reader)?;
         let initial_text = if flags.contains(DefineEditTextFlags::HAS_TEXT) {
-            reader.read_string()?
+            String::read(reader)?
         } else {
             String::EMPTY
         };

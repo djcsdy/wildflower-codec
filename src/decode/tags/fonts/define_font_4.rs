@@ -16,7 +16,7 @@ impl DefineFont4Tag {
     pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
         let font_id = reader.read_u16()?;
         let flags = DefineFont4Flags::read(reader)?;
-        let font_name = reader.read_string()?;
+        let font_name = String::read(reader)?;
         let font_data = if flags.contains(DefineFont4Flags::HAS_FONT_DATA) {
             Some(reader.read_u8_to_end()?)
         } else {

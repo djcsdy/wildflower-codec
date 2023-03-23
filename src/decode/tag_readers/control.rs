@@ -2,6 +2,7 @@ use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgb::Rgb;
+use crate::decode::tags::common::string::String;
 use crate::decode::tags::control::{
     DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, EnableDebugger2Tag, EnableDebuggerTag,
     ExportAssetsTag, FrameLabelRecord, FrameLabelTag, ImportAssets2Tag, ImportAssetsTag,
@@ -17,7 +18,7 @@ pub fn read_set_background_color_tag(reader: &mut SwfSliceReader) -> Result<SetB
 }
 
 pub fn read_frame_label_tag(reader: &mut SwfSliceReader) -> Result<FrameLabelTag> {
-    let name = reader.read_string()?;
+    let name = String::read(reader)?;
     let named_anchor = reader.bytes_remaining() > 0 && reader.read_u8()? == 1;
     Ok(FrameLabelTag { name, named_anchor })
 }
@@ -32,7 +33,7 @@ pub fn read_export_assets_tag(reader: &mut SwfSliceReader) -> Result<ExportAsset
 }
 
 pub fn read_import_assets_tag(reader: &mut SwfSliceReader) -> Result<ImportAssetsTag> {
-    let url = reader.read_string()?;
+    let url = String::read(reader)?;
     let count = reader.read_u16()?;
     let mut imports = Vec::with_capacity(count as usize);
     for _ in 0..count {
@@ -43,7 +44,7 @@ pub fn read_import_assets_tag(reader: &mut SwfSliceReader) -> Result<ImportAsset
 
 fn read_portable_character_record(reader: &mut SwfSliceReader) -> Result<PortableCharacterRecord> {
     let character_id = reader.read_u16()?;
-    let name = reader.read_string()?;
+    let name = String::read(reader)?;
     Ok(PortableCharacterRecord { character_id, name })
 }
 
@@ -79,7 +80,7 @@ pub fn read_file_attributes_tag(reader: &mut SwfSliceReader) -> Result<FileAttri
 }
 
 pub fn read_import_assets_2_tag(reader: &mut SwfSliceReader) -> Result<ImportAssets2Tag> {
-    let url = reader.read_string()?;
+    let url = String::read(reader)?;
     reader.read_u16()?;
     let count = reader.read_u16()?;
     let mut imports = Vec::with_capacity(count as usize);
@@ -100,7 +101,7 @@ pub fn read_symbol_class_tag(reader: &mut SwfSliceReader) -> Result<SymbolClassT
 
 fn read_symbol_class_record(reader: &mut SwfSliceReader) -> Result<SymbolClassRecord> {
     let character_id = reader.read_u16()?;
-    let class_name = reader.read_string()?;
+    let class_name = String::read(reader)?;
     Ok(SymbolClassRecord {
         character_id,
         class_name,
@@ -108,7 +109,7 @@ fn read_symbol_class_record(reader: &mut SwfSliceReader) -> Result<SymbolClassRe
 }
 
 pub fn read_metadata_tag(reader: &mut SwfSliceReader) -> Result<MetadataTag> {
-    let metadata = reader.read_string()?;
+    let metadata = String::read(reader)?;
     Ok(MetadataTag { metadata })
 }
 
@@ -142,13 +143,13 @@ pub fn read_define_scene_and_frame_label_data_tag(
 
 fn read_scene_record(reader: &mut SwfSliceReader) -> Result<SceneRecord> {
     let offset = reader.read_encoded_u32()?;
-    let name = reader.read_string()?;
+    let name = String::read(reader)?;
     Ok(SceneRecord { offset, name })
 }
 
 fn read_frame_label_record(reader: &mut SwfSliceReader) -> Result<FrameLabelRecord> {
     let frame_num = reader.read_encoded_u32()?;
-    let frame_label = reader.read_string()?;
+    let frame_label = String::read(reader)?;
     Ok(FrameLabelRecord {
         frame_num,
         frame_label,
