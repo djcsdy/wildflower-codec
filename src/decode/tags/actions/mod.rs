@@ -1,6 +1,6 @@
 pub mod do_abc;
 
-use super::common::*;
+use crate::decode::tags::common::string::String;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 #[derive(Clone, PartialEq, Debug)]

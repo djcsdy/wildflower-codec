@@ -1,6 +1,6 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tags::common::String;
+use crate::decode::tags::common::string::String;
 use std::io::Result;
 
 #[derive(Clone, PartialEq, Debug)]

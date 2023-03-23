@@ -2,7 +2,7 @@ use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgba::Rgba;
-use crate::decode::tags::common::String;
+use crate::decode::tags::common::string::String;
 use crate::decode::tags::text::define_edit_text_flags::DefineEditTextFlags;
 use crate::decode::tags::text::define_edit_text_layout::DefineEditTextLayout;
 use crate::decode::tags::text::font_ref::FontRef;

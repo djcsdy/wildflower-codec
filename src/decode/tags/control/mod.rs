@@ -1,6 +1,6 @@
-use super::common::*;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgb::Rgb;
+use crate::decode::tags::common::string::String;
 
 /// Sets the background color of the display.
 #[derive(Clone, PartialEq, Debug)]

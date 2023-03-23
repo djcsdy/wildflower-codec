@@ -1,7 +1,7 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::rectangle::Rectangle;
-use crate::decode::tags::common::String;
+use crate::decode::tags::common::string::String;
 use crate::decode::tags::fonts::code_table_and_layout::CodeTableAndLayout;
 use crate::decode::tags::fonts::define_font_flags::DefineFontFlags;
 use crate::decode::tags::fonts::glyph_shape_table::GlyphShapeTable;

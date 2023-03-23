@@ -1,5 +1,5 @@
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tags::common::String;
+use crate::decode::tags::common::string::String;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::define_font_flags::DefineFontFlags;
 use crate::decode::tags::fonts::language_code::LanguageCode;
