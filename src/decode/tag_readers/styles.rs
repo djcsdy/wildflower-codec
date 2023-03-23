@@ -1,8 +1,8 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::common::read_matrix;
 use crate::decode::tags::common::fixed_8::Fixed8;
+use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::styles::{
@@ -56,38 +56,38 @@ pub fn read_fill_style<
     Ok(match fill_style_type {
         FillStyleType::Solid => FillStyle::Solid(read_color(reader)?),
         FillStyleType::LinearGradient => {
-            let matrix = read_matrix(reader)?;
+            let matrix = Matrix::read(reader)?;
             let gradient = read_gradient(reader, &read_color)?;
             FillStyle::LinearGradient { matrix, gradient }
         }
         FillStyleType::RadialGradient => {
-            let matrix = read_matrix(reader)?;
+            let matrix = Matrix::read(reader)?;
             let gradient = read_gradient(reader, &read_color)?;
             FillStyle::RadialGradient { matrix, gradient }
         }
         FillStyleType::FocalRadialGradient => {
-            let matrix = read_matrix(reader)?;
+            let matrix = Matrix::read(reader)?;
             let gradient = read_focal_gradient(reader, &read_color)?;
             FillStyle::FocalRadialGradient { matrix, gradient }
         }
         FillStyleType::RepeatingBitmap => {
             let bitmap_id = reader.read_u16()?;
-            let matrix = read_matrix(reader)?;
+            let matrix = Matrix::read(reader)?;
             FillStyle::RepeatingBitmap { bitmap_id, matrix }
         }
         FillStyleType::ClippedBitmap => {
             let bitmap_id = reader.read_u16()?;
-            let matrix = read_matrix(reader)?;
+            let matrix = Matrix::read(reader)?;
             FillStyle::ClippedBitmap { bitmap_id, matrix }
         }
         FillStyleType::NonSmoothedRepeatingBitmap => {
             let bitmap_id = reader.read_u16()?;
-            let matrix = read_matrix(reader)?;
+            let matrix = Matrix::read(reader)?;
             FillStyle::NonSmoothedRepeatingBitmap { bitmap_id, matrix }
         }
         FillStyleType::NonSmoothedClippedBitmap => {
             let bitmap_id = reader.read_u16()?;
-            let matrix = read_matrix(reader)?;
+            let matrix = Matrix::read(reader)?;
             FillStyle::NonSmoothedClippedBitmap { bitmap_id, matrix }
         }
     })

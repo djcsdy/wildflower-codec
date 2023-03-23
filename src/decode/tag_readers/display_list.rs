@@ -2,11 +2,10 @@ use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::actions::read_action_records;
-use crate::decode::tag_readers::common::{
-    read_color_transform, read_color_transform_with_alpha, read_matrix,
-};
+use crate::decode::tag_readers::common::{read_color_transform, read_color_transform_with_alpha};
 use crate::decode::tags::common::fixed_16::Fixed16;
 use crate::decode::tags::common::fixed_8::Fixed8;
+use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::common::string::String;
 use crate::decode::tags::display_list::{
@@ -21,7 +20,7 @@ use std::io::{Error, Result};
 pub fn read_place_object_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjectTag> {
     let character_id = reader.read_u16()?;
     let depth = reader.read_u16()?;
-    let matrix = read_matrix(reader)?;
+    let matrix = Matrix::read(reader)?;
     let color_transform = if reader.bytes_remaining() > 0 {
         Some(read_color_transform(reader)?)
     } else {
@@ -52,7 +51,7 @@ pub fn read_place_object_2_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjec
         None
     };
     let matrix = if has_matrix {
-        Some(read_matrix(reader)?)
+        Some(Matrix::read(reader)?)
     } else {
         None
     };
@@ -166,7 +165,7 @@ pub fn read_place_object_3_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjec
         None
     };
     let matrix = if has_matrix {
-        Some(read_matrix(reader)?)
+        Some(Matrix::read(reader)?)
     } else {
         None
     };

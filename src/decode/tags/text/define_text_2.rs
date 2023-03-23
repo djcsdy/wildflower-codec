@@ -1,6 +1,5 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::common::read_matrix;
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgba::Rgba;
@@ -19,7 +18,7 @@ impl DefineText2Tag {
     pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
         let character_id = reader.read_u16()?;
         let text_bounds = Rectangle::read(reader)?;
-        let text_matrix = read_matrix(reader)?;
+        let text_matrix = Matrix::read(reader)?;
         let glyph_bits = reader.read_u8()?;
         let advance_bits = reader.read_u8()?;
         let text_records = TextRecord::read_all(&mut ReadTextRecordOptions {

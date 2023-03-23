@@ -1,12 +1,12 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::common::read_matrix;
 use crate::decode::tag_readers::shapes::read_shape;
 use crate::decode::tag_readers::styles::{
     read_cap_style, read_fill_style_type, read_line_style_array, FillStyleType,
 };
 use crate::decode::tags::common::fixed_8::Fixed8;
+use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::shape_morphing::{
@@ -90,8 +90,8 @@ fn read_morph_fill_style(reader: &mut SwfSliceReader) -> Result<MorphFillStyle> 
             }
         }
         FillStyleType::LinearGradient => {
-            let start_matrix = read_matrix(reader)?;
-            let end_matrix = read_matrix(reader)?;
+            let start_matrix = Matrix::read(reader)?;
+            let end_matrix = Matrix::read(reader)?;
             let gradient = read_morph_gradient(reader)?;
             MorphFillStyle::LinearGradient {
                 start_matrix,
@@ -100,8 +100,8 @@ fn read_morph_fill_style(reader: &mut SwfSliceReader) -> Result<MorphFillStyle> 
             }
         }
         FillStyleType::RadialGradient => {
-            let start_matrix = read_matrix(reader)?;
-            let end_matrix = read_matrix(reader)?;
+            let start_matrix = Matrix::read(reader)?;
+            let end_matrix = Matrix::read(reader)?;
             let gradient = read_morph_gradient(reader)?;
             MorphFillStyle::RadialGradient {
                 start_matrix,
@@ -110,8 +110,8 @@ fn read_morph_fill_style(reader: &mut SwfSliceReader) -> Result<MorphFillStyle> 
             }
         }
         FillStyleType::FocalRadialGradient => {
-            let start_matrix = read_matrix(reader)?;
-            let end_matrix = read_matrix(reader)?;
+            let start_matrix = Matrix::read(reader)?;
+            let end_matrix = Matrix::read(reader)?;
             let gradient = read_morph_focal_gradient(reader)?;
             MorphFillStyle::FocalRadialGradient {
                 start_matrix,
@@ -121,8 +121,8 @@ fn read_morph_fill_style(reader: &mut SwfSliceReader) -> Result<MorphFillStyle> 
         }
         FillStyleType::RepeatingBitmap => {
             let bitmap_id = reader.read_u16()?;
-            let start_matrix = read_matrix(reader)?;
-            let end_matrix = read_matrix(reader)?;
+            let start_matrix = Matrix::read(reader)?;
+            let end_matrix = Matrix::read(reader)?;
             MorphFillStyle::RepeatingBitmap {
                 bitmap_id,
                 start_matrix,
@@ -131,8 +131,8 @@ fn read_morph_fill_style(reader: &mut SwfSliceReader) -> Result<MorphFillStyle> 
         }
         FillStyleType::ClippedBitmap => {
             let bitmap_id = reader.read_u16()?;
-            let start_matrix = read_matrix(reader)?;
-            let end_matrix = read_matrix(reader)?;
+            let start_matrix = Matrix::read(reader)?;
+            let end_matrix = Matrix::read(reader)?;
             MorphFillStyle::ClippedBitmap {
                 bitmap_id,
                 start_matrix,
@@ -141,8 +141,8 @@ fn read_morph_fill_style(reader: &mut SwfSliceReader) -> Result<MorphFillStyle> 
         }
         FillStyleType::NonSmoothedRepeatingBitmap => {
             let bitmap_id = reader.read_u16()?;
-            let start_matrix = read_matrix(reader)?;
-            let end_matrix = read_matrix(reader)?;
+            let start_matrix = Matrix::read(reader)?;
+            let end_matrix = Matrix::read(reader)?;
             MorphFillStyle::NonSmoothedRepeatingBitmap {
                 bitmap_id,
                 start_matrix,
@@ -151,8 +151,8 @@ fn read_morph_fill_style(reader: &mut SwfSliceReader) -> Result<MorphFillStyle> 
         }
         FillStyleType::NonSmoothedClippedBitmap => {
             let bitmap_id = reader.read_u16()?;
-            let start_matrix = read_matrix(reader)?;
-            let end_matrix = read_matrix(reader)?;
+            let start_matrix = Matrix::read(reader)?;
+            let end_matrix = Matrix::read(reader)?;
             MorphFillStyle::NonSmoothedClippedBitmap {
                 bitmap_id,
                 start_matrix,

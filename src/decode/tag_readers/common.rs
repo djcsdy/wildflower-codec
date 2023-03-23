@@ -1,48 +1,7 @@
 use crate::decode::bit_read::BitRead;
-use crate::decode::tags::common::fixed_16::Fixed16;
 use crate::decode::tags::common::fixed_8::Fixed8;
-use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::{ColorTransform, ColorTransformWithAlpha};
 use std::io::Result;
-
-pub fn read_matrix<R: BitRead>(reader: &mut R) -> Result<Matrix> {
-    reader.align_byte();
-    let has_scale = reader.read_bit()?;
-    let scale_bits = if has_scale { reader.read_ub8(5)? } else { 0 };
-    let scale_x = if has_scale {
-        Fixed16::read_bits(reader, scale_bits)?
-    } else {
-        Fixed16::ONE
-    };
-    let scale_y = if has_scale {
-        Fixed16::read_bits(reader, scale_bits)?
-    } else {
-        Fixed16::ONE
-    };
-    let has_rotate = reader.read_bit()?;
-    let rotate_bits = if has_rotate { reader.read_ub8(5)? } else { 0 };
-    let rotate_skew_0 = if has_rotate {
-        Fixed16::read_bits(reader, rotate_bits)?
-    } else {
-        Fixed16::ZERO
-    };
-    let rotate_skew_1 = if has_rotate {
-        Fixed16::read_bits(reader, rotate_bits)?
-    } else {
-        Fixed16::ZERO
-    };
-    let translate_bits = reader.read_ub8(5)?;
-    let translate_x = reader.read_sb(translate_bits)?;
-    let translate_y = reader.read_sb(translate_bits)?;
-    Ok(Matrix {
-        scale_x,
-        scale_y,
-        rotate_skew_0,
-        rotate_skew_1,
-        translate_x,
-        translate_y,
-    })
-}
 
 pub fn read_color_transform<R: BitRead>(reader: &mut R) -> Result<ColorTransform> {
     let has_add_terms = reader.read_bit()?;
