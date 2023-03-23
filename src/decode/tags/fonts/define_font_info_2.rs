@@ -19,7 +19,7 @@ impl DefineFontInfo2Tag {
     pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
         let font_id = reader.read_u16()?;
         let name_len = reader.read_u8()? as usize;
-        let font_name = reader.read_fixed_string(name_len)?;
+        let font_name = String::read_fixed_length(reader, name_len)?;
         let flags = DefineFontInfoFlags::read(reader)?;
         let language_code = LanguageCode::read(reader)?;
         let code_table = CodeTable::read(reader, flags)?;

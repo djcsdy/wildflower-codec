@@ -1,3 +1,4 @@
+use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use std::fmt::{Debug, Formatter};
 use std::io::Result;
@@ -26,6 +27,12 @@ impl String {
 
     pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
         Ok(Self::from_bytes(reader.read_null_terminated_bytes()?))
+    }
+
+    pub fn read_fixed_length(reader: &mut SwfSliceReader, length_bytes: usize) -> Result<Self> {
+        let mut buffer = vec![0u8; length_bytes];
+        reader.read_u8_into(&mut buffer)?;
+        Ok(Self::from_bytes(buffer))
     }
 }
 

@@ -1,7 +1,6 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::bit_reader::BitReader;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::tags::common::string::String;
 use std::io::{IoSliceMut, Read, Result};
 
 pub struct SwfSliceReader<'buffer> {
@@ -51,12 +50,6 @@ impl<'buffer> SwfSliceReader<'buffer> {
             byte = self.read_u8()?;
         }
         Ok(bytes)
-    }
-
-    pub fn read_fixed_string(&mut self, byte_length: usize) -> Result<String> {
-        let mut buffer = vec![0u8; byte_length];
-        self.read_exact(&mut buffer)?;
-        Ok(String::from_bytes(buffer))
     }
 
     pub fn read_u8_to_end(&mut self) -> Result<Vec<u8>> {

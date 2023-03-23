@@ -29,7 +29,7 @@ impl DefineFont2Tag {
         let flags = DefineFontFlags::from_bits(reader.read_u8()?).unwrap();
         let language_code = LanguageCode::read_optional(reader)?;
         let name_len = reader.read_u8()? as usize;
-        let font_name = reader.read_fixed_string(name_len)?;
+        let font_name = String::read_fixed_length(reader, name_len)?;
         let num_glyphs = reader.read_u16()?;
         let glyphs_and_layout = reader.read_u8_to_end()?;
 
