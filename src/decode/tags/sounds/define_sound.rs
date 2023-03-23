@@ -1,4 +1,5 @@
-use crate::decode::tags::sounds::{SamplingBits, SamplingRate, SoundChannels, SoundFormat};
+use crate::decode::tags::sounds::sound_format::SoundFormat;
+use crate::decode::tags::sounds::{SamplingBits, SamplingRate, SoundChannels};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineSoundTag {
