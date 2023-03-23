@@ -1,20 +1,15 @@
 pub mod define_sound;
 pub mod sampling_bits;
 pub mod sampling_rate;
+pub mod sound_channels;
 pub mod sound_format;
 
 use crate::decode::tags::common::string::String;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use sampling_bits::SamplingBits;
 use sampling_rate::SamplingRate;
+use sound_channels::SoundChannels;
 use sound_format::SoundFormat;
-
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
-#[repr(u8)]
-pub enum SoundChannels {
-    Mono = 0,
-    Stereo = 1,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct StartSoundTag {
