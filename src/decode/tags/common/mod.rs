@@ -1,3 +1,4 @@
+pub mod color_transform;
 pub mod fixed_16;
 pub mod fixed_8;
 pub mod matrix;
@@ -46,17 +47,6 @@ impl<N: Display> Debug for Point<N> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         Display::fmt(self, f)
     }
-}
-
-/// A simple color transformation.
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash)]
-pub struct ColorTransform {
-    pub red_multiplication_term: Fixed8,
-    pub green_multiplication_term: Fixed8,
-    pub blue_multiplication_term: Fixed8,
-    pub red_addition_term: i16,
-    pub green_addition_term: i16,
-    pub blue_addition_term: i16,
 }
 
 /// A simple transformation of an RGBA color-with-alpha.

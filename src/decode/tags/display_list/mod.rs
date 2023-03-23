@@ -1,5 +1,6 @@
 use super::actions::ActionRecord;
 use super::common::*;
+use crate::decode::tags::common::color_transform::ColorTransform;
 use crate::decode::tags::common::fixed_16::Fixed16;
 use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::matrix::Matrix;
