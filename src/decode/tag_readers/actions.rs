@@ -1,10 +1,11 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
+use crate::decode::tags::actions::get_url::GetUrl;
 use crate::decode::tags::actions::go_to_frame::GoToFrame;
 use crate::decode::tags::actions::{
     ActionRecord, ConstantPool, DefineFunction, DefineFunction2, DoActionTag, DoInitActionTag,
-    GetUrl, GetUrl2, GoToFrame2, GoToLabel, If, Jump, Push, PushValue, RegisterParam, SetTarget,
+    GetUrl2, GoToFrame2, GoToLabel, If, Jump, Push, PushValue, RegisterParam, SetTarget,
     StoreRegister, Try, WaitForFrame, WaitForFrame2, With,
 };
 use crate::decode::tags::common::string::String;

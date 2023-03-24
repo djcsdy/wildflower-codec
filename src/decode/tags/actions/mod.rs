@@ -1,7 +1,9 @@
 pub mod do_abc;
+pub mod get_url;
 pub mod go_to_frame;
 
 use crate::decode::tags::common::string::String;
+use get_url::GetUrl;
 use go_to_frame::GoToFrame;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
@@ -117,12 +119,6 @@ pub enum ActionRecord {
     ImplementsOp,
     Try(Try),
     Throw,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct GetUrl {
-    pub url: String,
-    pub target: String,
 }
 
 #[derive(Clone, PartialEq, Debug)]
