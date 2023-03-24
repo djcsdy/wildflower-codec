@@ -1,5 +1,5 @@
+use crate::decode::tags::actions::load_target::LoadTarget;
 use crate::decode::tags::actions::send_vars_method::SendVarsMethod;
-use crate::decode::tags::actions::LoadTarget;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct GetUrl2 {

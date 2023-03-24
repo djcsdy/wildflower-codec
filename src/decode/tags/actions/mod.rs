@@ -5,6 +5,7 @@ pub mod go_to_frame;
 pub mod go_to_label;
 pub mod r#if;
 pub mod jump;
+pub mod load_target;
 pub mod push;
 pub mod push_value;
 pub mod send_vars_method;
@@ -17,7 +18,6 @@ use get_url_2::GetUrl2;
 use go_to_frame::GoToFrame;
 use go_to_label::GoToLabel;
 use jump::Jump;
-use num_enum::{IntoPrimitive, TryFromPrimitive};
 use push::Push;
 use r#if::If;
 use set_target::SetTarget;
@@ -135,13 +135,6 @@ pub enum ActionRecord {
     ImplementsOp,
     Try(Try),
     Throw,
-}
-
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
-#[repr(u8)]
-pub enum LoadTarget {
-    BrowserWindow = 0,
-    PathToSprite = 1,
 }
 
 #[derive(Clone, PartialEq, Debug)]
