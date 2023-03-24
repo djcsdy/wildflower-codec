@@ -4,12 +4,13 @@ use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::get_url::GetUrl;
 use crate::decode::tags::actions::go_to_frame::GoToFrame;
 use crate::decode::tags::actions::go_to_label::GoToLabel;
+use crate::decode::tags::actions::push::Push;
 use crate::decode::tags::actions::set_target::SetTarget;
 use crate::decode::tags::actions::wait_for_frame::WaitForFrame;
 use crate::decode::tags::actions::{
     ActionRecord, ConstantPool, DefineFunction, DefineFunction2, DoActionTag, DoInitActionTag,
-    GetUrl2, GoToFrame2, If, Jump, Push, PushValue, RegisterParam, StoreRegister, Try,
-    WaitForFrame2, With,
+    GetUrl2, GoToFrame2, If, Jump, PushValue, RegisterParam, StoreRegister, Try, WaitForFrame2,
+    With,
 };
 use crate::decode::tags::common::string::String;
 use std::io::ErrorKind::InvalidData;

@@ -2,6 +2,7 @@ pub mod do_abc;
 pub mod get_url;
 pub mod go_to_frame;
 pub mod go_to_label;
+pub mod push;
 pub mod set_target;
 pub mod wait_for_frame;
 
@@ -10,6 +11,7 @@ use get_url::GetUrl;
 use go_to_frame::GoToFrame;
 use go_to_label::GoToLabel;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
+use push::Push;
 use set_target::SetTarget;
 use wait_for_frame::WaitForFrame;
 
@@ -125,11 +127,6 @@ pub enum ActionRecord {
     ImplementsOp,
     Try(Try),
     Throw,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct Push {
-    pub value: PushValue,
 }
 
 #[derive(Clone, PartialEq, Debug)]
