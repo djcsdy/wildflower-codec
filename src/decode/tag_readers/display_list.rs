@@ -188,7 +188,7 @@ pub fn read_place_object_3_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjec
         None
     };
     let surface_filter_list = if has_filter_list {
-        Some(read_filter_list(reader)?)
+        Some(Filter::read_list(reader)?)
     } else {
         None
     };
@@ -242,15 +242,6 @@ pub fn read_place_object_3_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjec
         visible,
         background_color,
     })
-}
-
-fn read_filter_list(reader: &mut SwfSliceReader) -> Result<Vec<Filter>> {
-    let number_of_filters = reader.read_u8()?;
-    let mut filters = Vec::with_capacity(number_of_filters as usize);
-    for _ in 0..number_of_filters {
-        filters.push(Filter::read(reader)?);
-    }
-    Ok(filters)
 }
 
 pub fn read_remove_object_tag(reader: &mut SwfSliceReader) -> Result<RemoveObjectTag> {

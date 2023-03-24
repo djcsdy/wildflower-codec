@@ -38,4 +38,13 @@ impl Filter {
             _ => return Err(Error::from(InvalidData)),
         })
     }
+
+    pub fn read_list(reader: &mut SwfSliceReader) -> Result<Vec<Filter>> {
+        let number_of_filters = reader.read_u8()?;
+        let mut filters = Vec::with_capacity(number_of_filters as usize);
+        for _ in 0..number_of_filters {
+            filters.push(Filter::read(reader)?);
+        }
+        Ok(filters)
+    }
 }
