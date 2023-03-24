@@ -266,7 +266,7 @@ fn read_filter_list(reader: &mut SwfSliceReader) -> Result<Vec<Filter>> {
 fn read_filter(reader: &mut SwfSliceReader) -> Result<Filter> {
     let filter_id = reader.read_u8()?;
     Ok(match filter_id {
-        0 => Filter::DropShadow(read_drop_shadow_filter(reader)?),
+        0 => Filter::DropShadow(DropShadowFilter::read(reader)?),
         1 => Filter::Blur(read_blur_filter(reader)?),
         2 => Filter::Glow(read_glow_filter(reader)?),
         3 => Filter::Bevel(read_bevel_filter(reader)?),
@@ -316,31 +316,6 @@ fn read_blur_filter(reader: &mut SwfSliceReader) -> Result<BlurFilter> {
     Ok(BlurFilter {
         blur_x,
         blur_y,
-        passes,
-    })
-}
-
-fn read_drop_shadow_filter(reader: &mut SwfSliceReader) -> Result<DropShadowFilter> {
-    let color = Rgba::read(reader)?;
-    let blur_x = Fixed16::read(reader)?;
-    let blur_y = Fixed16::read(reader)?;
-    let angle = Fixed16::read(reader)?;
-    let distance = Fixed16::read(reader)?;
-    let strength = Fixed8::read(reader)?;
-    let inner_shadow = reader.read_bit()?;
-    let knockout = reader.read_bit()?;
-    let composite_source = reader.read_bit()?;
-    let passes = reader.read_ub8(5)?;
-    Ok(DropShadowFilter {
-        color,
-        blur_x,
-        blur_y,
-        angle,
-        distance,
-        strength,
-        inner_shadow,
-        knockout,
-        composite_source,
         passes,
     })
 }
