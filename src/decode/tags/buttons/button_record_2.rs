@@ -1,6 +1,7 @@
 use crate::decode::tags::buttons::button_record::ButtonRecord;
 use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithAlpha;
-use crate::decode::tags::display_list::{BlendMode, Filter};
+use crate::decode::tags::display_list::filter::Filter;
+use crate::decode::tags::display_list::BlendMode;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct ButtonRecord2 {

@@ -3,6 +3,7 @@ pub mod blur_filter;
 pub mod color_matrix_filter;
 pub mod convolution_filter;
 pub mod drop_shadow_filter;
+pub mod filter;
 pub mod glow_filter;
 pub mod gradient_bevel_filter;
 pub mod gradient_glow_filter;
@@ -13,14 +14,7 @@ use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithA
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::common::string::String;
-use bevel_filter::BevelFilter;
-use blur_filter::BlurFilter;
-use color_matrix_filter::ColorMatrixFilter;
-use convolution_filter::ConvolutionFilter;
-use drop_shadow_filter::DropShadowFilter;
-use glow_filter::GlowFilter;
-use gradient_bevel_filter::GradientBevelFilter;
-use gradient_glow_filter::GradientGlowFilter;
+use filter::Filter;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 /// Adds a character to the display list.
@@ -168,18 +162,6 @@ pub enum BlendMode {
     Erase = 12,
     Overlay = 13,
     Hardlight = 14,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub enum Filter {
-    DropShadow(DropShadowFilter),
-    Blur(BlurFilter),
-    Glow(GlowFilter),
-    Bevel(BevelFilter),
-    GradientGlow(GradientGlowFilter),
-    Convolution(ConvolutionFilter),
-    ColorMatrix(ColorMatrixFilter),
-    GradientBevel(GradientBevelFilter),
 }
 
 bitflags! {
