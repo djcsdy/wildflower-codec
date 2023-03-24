@@ -1,8 +1,8 @@
-use crate::decode::tags::common::string;
+use crate::decode::tags::common::string::String;
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum PushValue {
-    String(string::String),
+    String(String),
     Float(f32),
     Null,
     Undefined,
