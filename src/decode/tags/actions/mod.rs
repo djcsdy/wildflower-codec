@@ -7,6 +7,7 @@ pub mod r#if;
 pub mod jump;
 pub mod push;
 pub mod push_value;
+pub mod send_vars_method;
 pub mod set_target;
 pub mod wait_for_frame;
 
@@ -134,14 +135,6 @@ pub enum ActionRecord {
     ImplementsOp,
     Try(Try),
     Throw,
-}
-
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
-#[repr(u8)]
-pub enum SendVarsMethod {
-    None = 0,
-    Get = 1,
-    Post = 2,
 }
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
