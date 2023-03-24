@@ -1,5 +1,5 @@
 /// A pointer into an ActionList buffer.
-#[derive(Clone, PartialEq, Debug)]
+#[derive(Clone, Copy, PartialEq, PartialOrd, Eq, Ord, Debug, Hash)]
 pub struct ActionPointer(usize);
 
 impl ActionPointer {
