@@ -1,5 +1,6 @@
 pub mod do_abc;
 pub mod get_url;
+pub mod get_url_2;
 pub mod go_to_frame;
 pub mod go_to_label;
 pub mod r#if;
@@ -11,6 +12,7 @@ pub mod wait_for_frame;
 
 use crate::decode::tags::common::string::String;
 use get_url::GetUrl;
+use get_url_2::GetUrl2;
 use go_to_frame::GoToFrame;
 use go_to_label::GoToLabel;
 use jump::Jump;
@@ -132,13 +134,6 @@ pub enum ActionRecord {
     ImplementsOp,
     Try(Try),
     Throw,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct GetUrl2 {
-    pub send_vars_method: SendVarsMethod,
-    pub load_target: LoadTarget,
-    pub load_variables: bool,
 }
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
