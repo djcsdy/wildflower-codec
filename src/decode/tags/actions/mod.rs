@@ -1,12 +1,14 @@
 pub mod do_abc;
 pub mod get_url;
 pub mod go_to_frame;
+pub mod go_to_label;
 pub mod set_target;
 pub mod wait_for_frame;
 
 use crate::decode::tags::common::string::String;
 use get_url::GetUrl;
 use go_to_frame::GoToFrame;
+use go_to_label::GoToLabel;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use set_target::SetTarget;
 use wait_for_frame::WaitForFrame;
@@ -123,11 +125,6 @@ pub enum ActionRecord {
     ImplementsOp,
     Try(Try),
     Throw,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct GoToLabel {
-    pub label: String,
 }
 
 #[derive(Clone, PartialEq, Debug)]
