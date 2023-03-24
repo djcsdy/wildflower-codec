@@ -15,10 +15,11 @@ use crate::decode::tags::display_list::color_matrix_filter::ColorMatrixFilter;
 use crate::decode::tags::display_list::convolution_filter::ConvolutionFilter;
 use crate::decode::tags::display_list::drop_shadow_filter::DropShadowFilter;
 use crate::decode::tags::display_list::glow_filter::GlowFilter;
+use crate::decode::tags::display_list::gradient_bevel_filter::GradientBevelFilter;
 use crate::decode::tags::display_list::gradient_glow_filter::GradientGlowFilter;
 use crate::decode::tags::display_list::{
-    ClipActionRecord, ClipActions, ClipEventFlags, Filter, GradientBevelFilter, PlaceObject2Tag,
-    PlaceObject3Tag, PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag,
+    ClipActionRecord, ClipActions, ClipEventFlags, Filter, PlaceObject2Tag, PlaceObject3Tag,
+    PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag,
 };
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Result};

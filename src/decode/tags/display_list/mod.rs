@@ -4,13 +4,12 @@ pub mod color_matrix_filter;
 pub mod convolution_filter;
 pub mod drop_shadow_filter;
 pub mod glow_filter;
+pub mod gradient_bevel_filter;
 pub mod gradient_glow_filter;
 
 use super::actions::ActionRecord;
 use crate::decode::tags::common::color_transform::ColorTransform;
 use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithAlpha;
-use crate::decode::tags::common::fixed_16::Fixed16;
-use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::common::string::String;
@@ -20,6 +19,7 @@ use color_matrix_filter::ColorMatrixFilter;
 use convolution_filter::ConvolutionFilter;
 use drop_shadow_filter::DropShadowFilter;
 use glow_filter::GlowFilter;
+use gradient_bevel_filter::GradientBevelFilter;
 use gradient_glow_filter::GradientGlowFilter;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
@@ -180,22 +180,6 @@ pub enum Filter {
     Convolution(ConvolutionFilter),
     ColorMatrix(ColorMatrixFilter),
     GradientBevel(GradientBevelFilter),
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct GradientBevelFilter {
-    pub colors: Vec<Rgba>,
-    pub ratio: Vec<u8>,
-    pub blur_x: Fixed16,
-    pub blur_y: Fixed16,
-    pub angle: Fixed16,
-    pub distance: Fixed16,
-    pub strength: Fixed8,
-    pub inner_shadow: bool,
-    pub knockout: bool,
-    pub composite_source: bool,
-    pub on_top: bool,
-    pub passes: u8,
 }
 
 bitflags! {
