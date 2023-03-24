@@ -1,6 +1,8 @@
 pub mod do_abc;
+pub mod go_to_frame;
 
 use crate::decode::tags::common::string::String;
+use go_to_frame::GoToFrame;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 #[derive(Clone, PartialEq, Debug)]
@@ -115,11 +117,6 @@ pub enum ActionRecord {
     ImplementsOp,
     Try(Try),
     Throw,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct GoToFrame {
-    pub frame: u16,
 }
 
 #[derive(Clone, PartialEq, Debug)]
