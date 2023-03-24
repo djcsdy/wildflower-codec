@@ -12,6 +12,7 @@ pub mod jump;
 pub mod load_target;
 pub mod push;
 pub mod push_value;
+pub mod register_param;
 pub mod send_vars_method;
 pub mod set_target;
 pub mod store_register;
@@ -19,7 +20,6 @@ pub mod wait_for_frame;
 pub mod wait_for_frame_2;
 pub mod with;
 
-use crate::decode::tags::common::string::String;
 use constant_pool::ConstantPool;
 use define_function::DefineFunction;
 use define_function_2::DefineFunction2;
@@ -31,6 +31,7 @@ use go_to_label::GoToLabel;
 use jump::Jump;
 use push::Push;
 use r#if::If;
+use register_param::RegisterParam;
 use set_target::SetTarget;
 use store_register::StoreRegister;
 use wait_for_frame::WaitForFrame;
@@ -149,12 +150,6 @@ pub enum ActionRecord {
     ImplementsOp,
     Try(Try),
     Throw,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub enum RegisterParam {
-    Register(u8),
-    Name(String),
 }
 
 #[derive(Clone, PartialEq, Debug)]

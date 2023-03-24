@@ -13,14 +13,13 @@ use crate::decode::tags::actions::jump::Jump;
 use crate::decode::tags::actions::push::Push;
 use crate::decode::tags::actions::push_value::PushValue;
 use crate::decode::tags::actions::r#if::If;
+use crate::decode::tags::actions::register_param::RegisterParam;
 use crate::decode::tags::actions::set_target::SetTarget;
 use crate::decode::tags::actions::store_register::StoreRegister;
 use crate::decode::tags::actions::wait_for_frame::WaitForFrame;
 use crate::decode::tags::actions::wait_for_frame_2::WaitForFrame2;
 use crate::decode::tags::actions::with::With;
-use crate::decode::tags::actions::{
-    ActionRecord, DoActionTag, DoInitActionTag, RegisterParam, Try,
-};
+use crate::decode::tags::actions::{ActionRecord, DoActionTag, DoInitActionTag, Try};
 use crate::decode::tags::common::string::String;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Result};

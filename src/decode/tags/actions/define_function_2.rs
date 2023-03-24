@@ -1,4 +1,5 @@
-use crate::decode::tags::actions::{ActionRecord, RegisterParam};
+use crate::decode::tags::actions::register_param::RegisterParam;
+use crate::decode::tags::actions::ActionRecord;
 use crate::decode::tags::common::string::String;
 
 #[derive(Clone, PartialEq, Debug)]
