@@ -1,3 +1,4 @@
+pub mod blur_filter;
 pub mod color_matrix_filter;
 pub mod convolution_filter;
 
@@ -9,6 +10,7 @@ use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::common::string::String;
+use blur_filter::BlurFilter;
 use color_matrix_filter::ColorMatrixFilter;
 use convolution_filter::ConvolutionFilter;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
@@ -170,13 +172,6 @@ pub enum Filter {
     Convolution(ConvolutionFilter),
     ColorMatrix(ColorMatrixFilter),
     GradientBevel(GradientBevelFilter),
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct BlurFilter {
-    pub blur_x: Fixed16,
-    pub blur_y: Fixed16,
-    pub passes: u8,
 }
 
 #[derive(Clone, PartialEq, Debug)]

@@ -9,11 +9,12 @@ use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::common::string::String;
+use crate::decode::tags::display_list::blur_filter::BlurFilter;
 use crate::decode::tags::display_list::color_matrix_filter::ColorMatrixFilter;
 use crate::decode::tags::display_list::convolution_filter::ConvolutionFilter;
 use crate::decode::tags::display_list::{
-    BevelFilter, BlurFilter, ClipActionRecord, ClipActions, ClipEventFlags, DropShadowFilter,
-    Filter, GlowFilter, GradientBevelFilter, GradientGlowFilter, PlaceObject2Tag, PlaceObject3Tag,
+    BevelFilter, ClipActionRecord, ClipActions, ClipEventFlags, DropShadowFilter, Filter,
+    GlowFilter, GradientBevelFilter, GradientGlowFilter, PlaceObject2Tag, PlaceObject3Tag,
     PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag,
 };
 use std::io::ErrorKind::InvalidData;
