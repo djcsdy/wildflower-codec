@@ -13,6 +13,7 @@ pub mod push;
 pub mod push_value;
 pub mod send_vars_method;
 pub mod set_target;
+pub mod store_register;
 pub mod wait_for_frame;
 pub mod wait_for_frame_2;
 pub mod with;
@@ -29,6 +30,7 @@ use jump::Jump;
 use push::Push;
 use r#if::If;
 use set_target::SetTarget;
+use store_register::StoreRegister;
 use wait_for_frame::WaitForFrame;
 use wait_for_frame_2::WaitForFrame2;
 use with::With;
@@ -145,11 +147,6 @@ pub enum ActionRecord {
     ImplementsOp,
     Try(Try),
     Throw,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct StoreRegister {
-    pub register_number: u8,
 }
 
 #[derive(Clone, PartialEq, Debug)]
