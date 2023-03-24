@@ -2,6 +2,7 @@ pub mod do_abc;
 pub mod get_url;
 pub mod go_to_frame;
 pub mod go_to_label;
+pub mod jump;
 pub mod push;
 pub mod push_value;
 pub mod set_target;
@@ -11,6 +12,7 @@ use crate::decode::tags::common::string::String;
 use get_url::GetUrl;
 use go_to_frame::GoToFrame;
 use go_to_label::GoToLabel;
+use jump::Jump;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use push::Push;
 use set_target::SetTarget;
@@ -128,11 +130,6 @@ pub enum ActionRecord {
     ImplementsOp,
     Try(Try),
     Throw,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct Jump {
-    pub offset: i16,
 }
 
 #[derive(Clone, PartialEq, Debug)]
