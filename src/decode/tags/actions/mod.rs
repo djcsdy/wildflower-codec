@@ -2,6 +2,7 @@ pub mod do_abc;
 pub mod get_url;
 pub mod get_url_2;
 pub mod go_to_frame;
+pub mod go_to_frame_2;
 pub mod go_to_label;
 pub mod r#if;
 pub mod jump;
@@ -16,6 +17,7 @@ use crate::decode::tags::common::string::String;
 use get_url::GetUrl;
 use get_url_2::GetUrl2;
 use go_to_frame::GoToFrame;
+use go_to_frame_2::GoToFrame2;
 use go_to_label::GoToLabel;
 use jump::Jump;
 use push::Push;
@@ -135,12 +137,6 @@ pub enum ActionRecord {
     ImplementsOp,
     Try(Try),
     Throw,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct GoToFrame2 {
-    pub play: bool,
-    pub scene_bias: u16,
 }
 
 #[derive(Clone, PartialEq, Debug)]
