@@ -7,13 +7,13 @@ use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithA
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::common::string::String;
+use crate::decode::tags::display_list::blend_mode::BlendMode;
 use crate::decode::tags::display_list::filter::Filter;
 use crate::decode::tags::display_list::{
     ClipActionRecord, ClipActions, ClipEventFlags, PlaceObject2Tag, PlaceObject3Tag,
     PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag,
 };
-use std::io::ErrorKind::InvalidData;
-use std::io::{Error, Result};
+use std::io::Result;
 
 pub fn read_place_object_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjectTag> {
     let character_id = reader.read_u16()?;
@@ -193,12 +193,7 @@ pub fn read_place_object_3_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjec
         None
     };
     let blend_mode = if has_blend_mode {
-        Some(
-            reader
-                .read_u8()?
-                .try_into()
-                .map_err(|_| Error::from(InvalidData))?,
-        )
+        Some(BlendMode::read(reader)?)
     } else {
         None
     };
