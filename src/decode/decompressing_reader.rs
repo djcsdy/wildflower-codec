@@ -1,6 +1,6 @@
 use crate::decode::decompressing_reader::DecompressingReader::{Deflate, Uncompressed};
 use inflate::DeflateDecoderBuf;
-use std::io::{BufRead, IoSliceMut, Read};
+use std::io::{BufRead, IoSliceMut, Read, Result};
 
 pub enum DecompressingReader<R: BufRead> {
     Uncompressed(R),
@@ -18,35 +18,35 @@ impl<R: BufRead> DecompressingReader<R> {
 }
 
 impl<R: BufRead> Read for DecompressingReader<R> {
-    fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
+    fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
         match self {
             Uncompressed(inner) => inner.read(buf),
             Deflate(inner) => inner.read(buf),
         }
     }
 
-    fn read_vectored(&mut self, bufs: &mut [IoSliceMut<'_>]) -> std::io::Result<usize> {
+    fn read_vectored(&mut self, bufs: &mut [IoSliceMut<'_>]) -> Result<usize> {
         match self {
             Uncompressed(inner) => inner.read_vectored(bufs),
             Deflate(inner) => inner.read_vectored(bufs),
         }
     }
 
-    fn read_to_end(&mut self, buf: &mut Vec<u8>) -> std::io::Result<usize> {
+    fn read_to_end(&mut self, buf: &mut Vec<u8>) -> Result<usize> {
         match self {
             Uncompressed(inner) => inner.read_to_end(buf),
             Deflate(inner) => inner.read_to_end(buf),
         }
     }
 
-    fn read_to_string(&mut self, buf: &mut String) -> std::io::Result<usize> {
+    fn read_to_string(&mut self, buf: &mut String) -> Result<usize> {
         match self {
             Uncompressed(inner) => inner.read_to_string(buf),
             Deflate(inner) => inner.read_to_string(buf),
         }
     }
 
-    fn read_exact(&mut self, buf: &mut [u8]) -> std::io::Result<()> {
+    fn read_exact(&mut self, buf: &mut [u8]) -> Result<()> {
         match self {
             Uncompressed(inner) => inner.read_exact(buf),
             Deflate(inner) => inner.read_exact(buf),
