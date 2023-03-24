@@ -4,6 +4,7 @@ pub mod color_matrix_filter;
 pub mod convolution_filter;
 pub mod drop_shadow_filter;
 pub mod glow_filter;
+pub mod gradient_glow_filter;
 
 use super::actions::ActionRecord;
 use crate::decode::tags::common::color_transform::ColorTransform;
@@ -19,6 +20,7 @@ use color_matrix_filter::ColorMatrixFilter;
 use convolution_filter::ConvolutionFilter;
 use drop_shadow_filter::DropShadowFilter;
 use glow_filter::GlowFilter;
+use gradient_glow_filter::GradientGlowFilter;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 /// Adds a character to the display list.
@@ -178,22 +180,6 @@ pub enum Filter {
     Convolution(ConvolutionFilter),
     ColorMatrix(ColorMatrixFilter),
     GradientBevel(GradientBevelFilter),
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct GradientGlowFilter {
-    pub colors: Vec<Rgba>,
-    pub ratio: Vec<u8>,
-    pub blur_x: Fixed16,
-    pub blur_y: Fixed16,
-    pub angle: Fixed16,
-    pub distance: Fixed16,
-    pub strength: Fixed8,
-    pub inner_shadow: bool,
-    pub knockout: bool,
-    pub composite_source: bool,
-    pub on_top: bool,
-    pub passes: u8,
 }
 
 #[derive(Clone, PartialEq, Debug)]
