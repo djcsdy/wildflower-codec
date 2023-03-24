@@ -29,4 +29,12 @@ impl ButtonRecord {
             })
         })
     }
+
+    pub fn read_list(reader: &mut SwfSliceReader) -> Result<Vec<Self>> {
+        let mut list = Vec::new();
+        while let Some(record) = ButtonRecord::read(reader)? {
+            list.push(record);
+        }
+        Ok(list)
+    }
 }
