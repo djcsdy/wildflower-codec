@@ -271,7 +271,7 @@ fn read_filter(reader: &mut SwfSliceReader) -> Result<Filter> {
         2 => Filter::Glow(GlowFilter::read(reader)?),
         3 => Filter::Bevel(BevelFilter::read(reader)?),
         4 => Filter::GradientGlow(GradientGlowFilter::read(reader)?),
-        5 => Filter::Convolution(read_convolution_filter(reader)?),
+        5 => Filter::Convolution(ConvolutionFilter::read(reader)?),
         6 => Filter::ColorMatrix(read_color_matrix_filter(reader)?),
         7 => Filter::GradientBevel(read_gradient_bevel_filter(reader)?),
         _ => return Err(Error::from(InvalidData)),
@@ -282,30 +282,6 @@ fn read_color_matrix_filter(reader: &mut SwfSliceReader) -> Result<ColorMatrixFi
     let mut matrix = [0f32; 20];
     reader.read_f32_into(&mut matrix)?;
     Ok(ColorMatrixFilter { matrix })
-}
-
-fn read_convolution_filter(reader: &mut SwfSliceReader) -> Result<ConvolutionFilter> {
-    let matrix_x = reader.read_u8()?;
-    let matrix_y = reader.read_u8()?;
-    let divisor = reader.read_f32()?;
-    let bias = reader.read_f32()?;
-    let mut matrix = vec![0f32; (matrix_x as usize) * (matrix_y as usize)];
-    reader.read_f32_into(&mut matrix)?;
-    let default_color = Rgba::read(reader)?;
-    reader.read_ub8(6)?;
-    let clamp = reader.read_bit()?;
-    let preserve_alpha = reader.read_bit()?;
-    Ok(ConvolutionFilter {
-        divisor,
-        bias,
-        matrix: matrix
-            .chunks(matrix_x as usize)
-            .map(|chunk| chunk.into())
-            .collect(),
-        default_color,
-        clamp,
-        preserve_alpha,
-    })
 }
 
 fn read_gradient_bevel_filter(reader: &mut SwfSliceReader) -> Result<GradientBevelFilter> {
