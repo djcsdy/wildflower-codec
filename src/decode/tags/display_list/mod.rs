@@ -1,3 +1,5 @@
+pub mod color_matrix_filter;
+
 use super::actions::ActionRecord;
 use crate::decode::tags::common::color_transform::ColorTransform;
 use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithAlpha;
@@ -6,6 +8,7 @@ use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::common::string::String;
+use color_matrix_filter::ColorMatrixFilter;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 /// Adds a character to the display list.
@@ -165,11 +168,6 @@ pub enum Filter {
     Convolution(ConvolutionFilter),
     ColorMatrix(ColorMatrixFilter),
     GradientBevel(GradientBevelFilter),
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct ColorMatrixFilter {
-    pub matrix: [f32; 20],
 }
 
 #[derive(Clone, PartialEq, Debug)]
