@@ -4,8 +4,6 @@ use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::actions::read_action_records;
 use crate::decode::tags::common::color_transform::ColorTransform;
 use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithAlpha;
-use crate::decode::tags::common::fixed_16::Fixed16;
-use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::common::string::String;
@@ -273,44 +271,8 @@ fn read_filter(reader: &mut SwfSliceReader) -> Result<Filter> {
         4 => Filter::GradientGlow(GradientGlowFilter::read(reader)?),
         5 => Filter::Convolution(ConvolutionFilter::read(reader)?),
         6 => Filter::ColorMatrix(ColorMatrixFilter::read(reader)?),
-        7 => Filter::GradientBevel(read_gradient_bevel_filter(reader)?),
+        7 => Filter::GradientBevel(GradientBevelFilter::read(reader)?),
         _ => return Err(Error::from(InvalidData)),
-    })
-}
-
-fn read_gradient_bevel_filter(reader: &mut SwfSliceReader) -> Result<GradientBevelFilter> {
-    let num_colors = reader.read_u8()?;
-    let mut colors = Vec::with_capacity(num_colors as usize);
-    for _ in 0..num_colors {
-        colors.push(Rgba::read(reader)?);
-    }
-    let mut ratio = Vec::with_capacity(num_colors as usize);
-    for _ in 0..num_colors {
-        ratio.push(reader.read_u8()?);
-    }
-    let blur_x = Fixed16::read(reader)?;
-    let blur_y = Fixed16::read(reader)?;
-    let angle = Fixed16::read(reader)?;
-    let distance = Fixed16::read(reader)?;
-    let strength = Fixed8::read(reader)?;
-    let inner_shadow = reader.read_bit()?;
-    let knockout = reader.read_bit()?;
-    let composite_source = reader.read_bit()?;
-    let on_top = reader.read_bit()?;
-    let passes = reader.read_ub8(4)?;
-    Ok(GradientBevelFilter {
-        colors,
-        ratio,
-        blur_x,
-        blur_y,
-        angle,
-        distance,
-        strength,
-        inner_shadow,
-        knockout,
-        composite_source,
-        on_top,
-        passes,
     })
 }
 
