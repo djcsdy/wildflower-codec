@@ -1,11 +1,13 @@
 pub mod do_abc;
 pub mod get_url;
 pub mod go_to_frame;
+pub mod wait_for_frame;
 
 use crate::decode::tags::common::string::String;
 use get_url::GetUrl;
 use go_to_frame::GoToFrame;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
+use wait_for_frame::WaitForFrame;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DoActionTag {
@@ -119,12 +121,6 @@ pub enum ActionRecord {
     ImplementsOp,
     Try(Try),
     Throw,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct WaitForFrame {
-    pub frame: u16,
-    pub skip_count: u8,
 }
 
 #[derive(Clone, PartialEq, Debug)]
