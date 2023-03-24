@@ -16,6 +16,7 @@ pub mod register_param;
 pub mod send_vars_method;
 pub mod set_target;
 pub mod store_register;
+pub mod r#try;
 pub mod wait_for_frame;
 pub mod wait_for_frame_2;
 pub mod with;
@@ -31,7 +32,7 @@ use go_to_label::GoToLabel;
 use jump::Jump;
 use push::Push;
 use r#if::If;
-use register_param::RegisterParam;
+use r#try::Try;
 use set_target::SetTarget;
 use store_register::StoreRegister;
 use wait_for_frame::WaitForFrame;
@@ -150,12 +151,4 @@ pub enum ActionRecord {
     ImplementsOp,
     Try(Try),
     Throw,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct Try {
-    pub catch_parameter: RegisterParam,
-    pub try_body: Vec<ActionRecord>,
-    pub catch_body: Option<Vec<ActionRecord>>,
-    pub finally_body: Option<Vec<ActionRecord>>,
 }
