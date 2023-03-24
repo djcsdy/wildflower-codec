@@ -15,30 +15,33 @@ pub struct ButtonRecord2 {
 }
 
 impl ButtonRecord2 {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
-        let button_record = ButtonRecord::read(reader)?;
-        let color_transform = ColorTransformWithAlpha::read(reader)?;
-        let filter_list = if button_record
-            .flags
-            .contains(ButtonRecordFlags::HAS_FILTER_LIST)
-        {
-            Filter::read_list(reader)?
+    pub fn read(reader: &mut SwfSliceReader) -> Result<Option<Self>> {
+        if let Some(button_record) = ButtonRecord::read(reader)? {
+            let color_transform = ColorTransformWithAlpha::read(reader)?;
+            let filter_list = if button_record
+                .flags
+                .contains(ButtonRecordFlags::HAS_FILTER_LIST)
+            {
+                Filter::read_list(reader)?
+            } else {
+                vec![]
+            };
+            let blend_mode = if button_record
+                .flags
+                .contains(ButtonRecordFlags::HAS_BLEND_MODE)
+            {
+                BlendMode::read(reader)?
+            } else {
+                BlendMode::Normal
+            };
+            Ok(Some(Self {
+                button_record,
+                color_transform,
+                filter_list,
+                blend_mode,
+            }))
         } else {
-            vec![]
-        };
-        let blend_mode = if button_record
-            .flags
-            .contains(ButtonRecordFlags::HAS_BLEND_MODE)
-        {
-            BlendMode::read(reader)?
-        } else {
-            BlendMode::Normal
-        };
-        Ok(Self {
-            button_record,
-            color_transform,
-            filter_list,
-            blend_mode,
-        })
+            Ok(None)
+        }
     }
 }
