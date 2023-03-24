@@ -7,15 +7,7 @@ use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithA
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::common::string::String;
-use crate::decode::tags::display_list::bevel_filter::BevelFilter;
-use crate::decode::tags::display_list::blur_filter::BlurFilter;
-use crate::decode::tags::display_list::color_matrix_filter::ColorMatrixFilter;
-use crate::decode::tags::display_list::convolution_filter::ConvolutionFilter;
-use crate::decode::tags::display_list::drop_shadow_filter::DropShadowFilter;
 use crate::decode::tags::display_list::filter::Filter;
-use crate::decode::tags::display_list::glow_filter::GlowFilter;
-use crate::decode::tags::display_list::gradient_bevel_filter::GradientBevelFilter;
-use crate::decode::tags::display_list::gradient_glow_filter::GradientGlowFilter;
 use crate::decode::tags::display_list::{
     ClipActionRecord, ClipActions, ClipEventFlags, PlaceObject2Tag, PlaceObject3Tag,
     PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag,
@@ -256,24 +248,9 @@ fn read_filter_list(reader: &mut SwfSliceReader) -> Result<Vec<Filter>> {
     let number_of_filters = reader.read_u8()?;
     let mut filters = Vec::with_capacity(number_of_filters as usize);
     for _ in 0..number_of_filters {
-        filters.push(read_filter(reader)?);
+        filters.push(Filter::read(reader)?);
     }
     Ok(filters)
-}
-
-fn read_filter(reader: &mut SwfSliceReader) -> Result<Filter> {
-    let filter_id = reader.read_u8()?;
-    Ok(match filter_id {
-        0 => Filter::DropShadow(DropShadowFilter::read(reader)?),
-        1 => Filter::Blur(BlurFilter::read(reader)?),
-        2 => Filter::Glow(GlowFilter::read(reader)?),
-        3 => Filter::Bevel(BevelFilter::read(reader)?),
-        4 => Filter::GradientGlow(GradientGlowFilter::read(reader)?),
-        5 => Filter::Convolution(ConvolutionFilter::read(reader)?),
-        6 => Filter::ColorMatrix(ColorMatrixFilter::read(reader)?),
-        7 => Filter::GradientBevel(GradientBevelFilter::read(reader)?),
-        _ => return Err(Error::from(InvalidData)),
-    })
 }
 
 pub fn read_remove_object_tag(reader: &mut SwfSliceReader) -> Result<RemoveObjectTag> {
