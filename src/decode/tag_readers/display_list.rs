@@ -268,7 +268,7 @@ fn read_filter(reader: &mut SwfSliceReader) -> Result<Filter> {
     Ok(match filter_id {
         0 => Filter::DropShadow(DropShadowFilter::read(reader)?),
         1 => Filter::Blur(BlurFilter::read(reader)?),
-        2 => Filter::Glow(read_glow_filter(reader)?),
+        2 => Filter::Glow(GlowFilter::read(reader)?),
         3 => Filter::Bevel(read_bevel_filter(reader)?),
         4 => Filter::GradientGlow(read_gradient_glow_filter(reader)?),
         5 => Filter::Convolution(read_convolution_filter(reader)?),
@@ -305,27 +305,6 @@ fn read_convolution_filter(reader: &mut SwfSliceReader) -> Result<ConvolutionFil
         default_color,
         clamp,
         preserve_alpha,
-    })
-}
-
-fn read_glow_filter(reader: &mut SwfSliceReader) -> Result<GlowFilter> {
-    let color = Rgba::read(reader)?;
-    let blur_x = Fixed16::read(reader)?;
-    let blur_y = Fixed16::read(reader)?;
-    let strength = Fixed8::read(reader)?;
-    let inner_glow = reader.read_bit()?;
-    let knockout = reader.read_bit()?;
-    let composite_source = reader.read_bit()?;
-    let passes = reader.read_ub8(5)?;
-    Ok(GlowFilter {
-        color,
-        blur_x,
-        blur_y,
-        strength,
-        inner_glow,
-        knockout,
-        composite_source,
-        passes,
     })
 }
 
