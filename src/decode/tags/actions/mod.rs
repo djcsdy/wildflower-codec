@@ -1,5 +1,6 @@
 pub mod constant_pool;
 pub mod define_function;
+pub mod define_function_2;
 pub mod do_abc;
 pub mod get_url;
 pub mod get_url_2;
@@ -21,6 +22,7 @@ pub mod with;
 use crate::decode::tags::common::string::String;
 use constant_pool::ConstantPool;
 use define_function::DefineFunction;
+use define_function_2::DefineFunction2;
 use get_url::GetUrl;
 use get_url_2::GetUrl2;
 use go_to_frame::GoToFrame;
@@ -147,23 +149,6 @@ pub enum ActionRecord {
     ImplementsOp,
     Try(Try),
     Throw,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct DefineFunction2 {
-    pub function_name: String,
-    pub register_count: u8,
-    pub preload_parent: bool,
-    pub preload_root: bool,
-    pub suppress_super: bool,
-    pub preload_super: bool,
-    pub suppress_arguments: bool,
-    pub preload_arguments: bool,
-    pub suppress_this: bool,
-    pub preload_this: bool,
-    pub preload_global: bool,
-    pub parameters: Vec<RegisterParam>,
-    pub body: Vec<ActionRecord>,
 }
 
 #[derive(Clone, PartialEq, Debug)]

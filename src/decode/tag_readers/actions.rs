@@ -3,6 +3,7 @@ use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::constant_pool::ConstantPool;
 use crate::decode::tags::actions::define_function::DefineFunction;
+use crate::decode::tags::actions::define_function_2::DefineFunction2;
 use crate::decode::tags::actions::get_url::GetUrl;
 use crate::decode::tags::actions::get_url_2::GetUrl2;
 use crate::decode::tags::actions::go_to_frame::GoToFrame;
@@ -18,7 +19,7 @@ use crate::decode::tags::actions::wait_for_frame::WaitForFrame;
 use crate::decode::tags::actions::wait_for_frame_2::WaitForFrame2;
 use crate::decode::tags::actions::with::With;
 use crate::decode::tags::actions::{
-    ActionRecord, DefineFunction2, DoActionTag, DoInitActionTag, RegisterParam, Try,
+    ActionRecord, DoActionTag, DoInitActionTag, RegisterParam, Try,
 };
 use crate::decode::tags::common::string::String;
 use std::io::ErrorKind::InvalidData;
