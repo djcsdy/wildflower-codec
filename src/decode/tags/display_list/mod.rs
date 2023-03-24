@@ -1,4 +1,5 @@
 pub mod bevel_filter;
+pub mod blend_mode;
 pub mod blur_filter;
 pub mod color_matrix_filter;
 pub mod convolution_filter;
@@ -14,8 +15,8 @@ use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithA
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::common::string::String;
+use blend_mode::BlendMode;
 use filter::Filter;
-use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 /// Adds a character to the display list.
 #[derive(Clone, PartialEq, Debug)]
@@ -143,25 +144,6 @@ pub struct PlaceObject3Tag {
     pub visible: Option<bool>,
 
     pub background_color: Option<Rgba>,
-}
-
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
-#[repr(u8)]
-pub enum BlendMode {
-    Normal = 1,
-    Layer = 2,
-    Multiply = 3,
-    Screen = 4,
-    Lighten = 5,
-    Darken = 6,
-    Difference = 7,
-    Add = 8,
-    Subtract = 9,
-    Invert = 10,
-    Alpha = 11,
-    Erase = 12,
-    Overlay = 13,
-    Hardlight = 14,
 }
 
 bitflags! {
