@@ -7,6 +7,7 @@ use std::io::{Error, Result};
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
 #[repr(u8)]
 pub enum BlendMode {
+    #[num_enum(alternatives = [0])]
     Normal = 1,
     Layer = 2,
     Multiply = 3,
