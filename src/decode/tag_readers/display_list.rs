@@ -272,16 +272,10 @@ fn read_filter(reader: &mut SwfSliceReader) -> Result<Filter> {
         3 => Filter::Bevel(BevelFilter::read(reader)?),
         4 => Filter::GradientGlow(GradientGlowFilter::read(reader)?),
         5 => Filter::Convolution(ConvolutionFilter::read(reader)?),
-        6 => Filter::ColorMatrix(read_color_matrix_filter(reader)?),
+        6 => Filter::ColorMatrix(ColorMatrixFilter::read(reader)?),
         7 => Filter::GradientBevel(read_gradient_bevel_filter(reader)?),
         _ => return Err(Error::from(InvalidData)),
     })
-}
-
-fn read_color_matrix_filter(reader: &mut SwfSliceReader) -> Result<ColorMatrixFilter> {
-    let mut matrix = [0f32; 20];
-    reader.read_f32_into(&mut matrix)?;
-    Ok(ColorMatrixFilter { matrix })
 }
 
 fn read_gradient_bevel_filter(reader: &mut SwfSliceReader) -> Result<GradientBevelFilter> {
