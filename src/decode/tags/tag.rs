@@ -3,9 +3,7 @@ use super::bitmaps::{
     DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsJpeg4Tag, DefineBitsLossless2Tag,
     DefineBitsLosslessTag, DefineBitsTag, JpegTablesTag,
 };
-use super::buttons::{
-    DefineButton2Tag, DefineButtonColorTransformTag, DefineButtonSoundTag, DefineButtonTag,
-};
+use super::buttons::{DefineButton2Tag, DefineButtonColorTransformTag, DefineButtonSoundTag};
 use super::control::{
     DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, EnableDebugger2Tag, EnableDebuggerTag,
     EndTag, ExportAssetsTag, FrameLabelTag, ImportAssets2Tag, ImportAssetsTag, MetadataTag,
@@ -21,6 +19,7 @@ use super::shapes::{DefineShape2Tag, DefineShape3Tag, DefineShape4Tag, DefineSha
 use super::sprites::DefineSpriteTag;
 use super::video::DefineVideoStreamTag;
 use crate::decode::tags::actions::do_abc::DoAbcTag;
+use crate::decode::tags::buttons::define_button::DefineButtonTag;
 use crate::decode::tags::fonts::define_font::DefineFontTag;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::define_font_3::DefineFont3Tag;

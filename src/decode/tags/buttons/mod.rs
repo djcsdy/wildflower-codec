@@ -1,19 +1,12 @@
 pub mod button_record;
 pub mod button_record_2;
 pub mod button_record_flags;
+pub mod define_button;
 
 use super::actions::ActionRecord;
 use crate::decode::tags::common::color_transform::ColorTransform;
 use crate::decode::tags::sounds::sound_info::SoundInfo;
-use button_record::ButtonRecord;
 use button_record_2::ButtonRecord2;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct DefineButtonTag {
-    pub button_id: u16,
-    pub characters: Vec<ButtonRecord>,
-    pub actions: Vec<ActionRecord>,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineButton2Tag {
