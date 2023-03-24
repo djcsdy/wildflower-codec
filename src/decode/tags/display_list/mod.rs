@@ -1,6 +1,7 @@
 pub mod blur_filter;
 pub mod color_matrix_filter;
 pub mod convolution_filter;
+pub mod drop_shadow_filter;
 
 use super::actions::ActionRecord;
 use crate::decode::tags::common::color_transform::ColorTransform;
@@ -13,6 +14,7 @@ use crate::decode::tags::common::string::String;
 use blur_filter::BlurFilter;
 use color_matrix_filter::ColorMatrixFilter;
 use convolution_filter::ConvolutionFilter;
+use drop_shadow_filter::DropShadowFilter;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 /// Adds a character to the display list.
@@ -172,20 +174,6 @@ pub enum Filter {
     Convolution(ConvolutionFilter),
     ColorMatrix(ColorMatrixFilter),
     GradientBevel(GradientBevelFilter),
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct DropShadowFilter {
-    pub color: Rgba,
-    pub blur_x: Fixed16,
-    pub blur_y: Fixed16,
-    pub angle: Fixed16,
-    pub distance: Fixed16,
-    pub strength: Fixed8,
-    pub inner_shadow: bool,
-    pub knockout: bool,
-    pub composite_source: bool,
-    pub passes: u8,
 }
 
 #[derive(Clone, PartialEq, Debug)]
