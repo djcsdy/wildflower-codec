@@ -3,6 +3,7 @@ pub mod get_url;
 pub mod go_to_frame;
 pub mod go_to_label;
 pub mod push;
+pub mod push_value;
 pub mod set_target;
 pub mod wait_for_frame;
 
@@ -127,19 +128,6 @@ pub enum ActionRecord {
     ImplementsOp,
     Try(Try),
     Throw,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub enum PushValue {
-    String(String),
-    Float(f32),
-    Null,
-    Undefined,
-    RegisterNumber(u8),
-    Boolean(bool),
-    Double(f64),
-    Integer(u32),
-    Constant(u16),
 }
 
 #[derive(Clone, PartialEq, Debug)]
