@@ -8,11 +8,11 @@ pub struct ActionPointer(usize);
 impl ActionPointer {
     pub const START: Self = ActionPointer(0);
 
-    pub fn index_buffer<'buffer, Buffer: Into<&'buffer [u8]>>(
+    pub fn index_buffer<'buffer, Buffer: AsRef<[u8]>>(
         &self,
-        buffer: Buffer,
+        buffer: &'buffer Buffer,
     ) -> &'buffer [u8] {
-        &buffer.into()[self.0..]
+        &buffer.as_ref()[self.0..]
     }
 }
 
