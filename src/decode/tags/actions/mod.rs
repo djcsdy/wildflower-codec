@@ -12,6 +12,7 @@ pub mod push_value;
 pub mod send_vars_method;
 pub mod set_target;
 pub mod wait_for_frame;
+pub mod wait_for_frame_2;
 
 use crate::decode::tags::common::string::String;
 use get_url::GetUrl;
@@ -24,6 +25,7 @@ use push::Push;
 use r#if::If;
 use set_target::SetTarget;
 use wait_for_frame::WaitForFrame;
+use wait_for_frame_2::WaitForFrame2;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DoActionTag {
@@ -137,11 +139,6 @@ pub enum ActionRecord {
     ImplementsOp,
     Try(Try),
     Throw,
-}
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct WaitForFrame2 {
-    pub skip_count: u8,
 }
 
 #[derive(Clone, PartialEq, Debug)]
