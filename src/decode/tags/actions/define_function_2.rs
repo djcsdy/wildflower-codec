@@ -1,5 +1,5 @@
+use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::actions::register_param::RegisterParam;
-use crate::decode::tags::actions::ActionRecord;
 use crate::decode::tags::common::string::String;
 
 #[derive(Clone, PartialEq, Debug)]
@@ -16,5 +16,5 @@ pub struct DefineFunction2 {
     pub preload_this: bool,
     pub preload_global: bool,
     pub parameters: Vec<RegisterParam>,
-    pub body: Vec<ActionRecord>,
+    pub body: ActionList<Vec<u8>>,
 }
