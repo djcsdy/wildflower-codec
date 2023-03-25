@@ -1,4 +1,4 @@
-use crate::decode::tags::actions::ActionRecord;
+use crate::decode::tags::actions::action_record::ActionRecord;
 use crate::decode::tags::buttons::button_record::ButtonRecord;
 
 #[derive(Clone, PartialEq, Debug)]

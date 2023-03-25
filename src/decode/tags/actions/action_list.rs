@@ -2,7 +2,7 @@ use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::actions::read_action_record;
 use crate::decode::tags::actions::action_pointer::ActionPointer;
-use crate::decode::tags::actions::ActionRecord;
+use crate::decode::tags::actions::action_record::ActionRecord;
 use std::io::Result;
 
 #[derive(Clone, PartialEq, Debug)]
