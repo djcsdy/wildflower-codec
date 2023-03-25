@@ -123,7 +123,7 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
         0x68 => ActionRecord::StringGreater,
         0x69 => ActionRecord::Extends,
         0x81 => ActionRecord::GoToFrame(GoToFrame::read(&mut body_reader)?),
-        0x83 => ActionRecord::GetUrl(read_get_url(&mut body_reader)?),
+        0x83 => ActionRecord::GetUrl(GetUrl::read(&mut body_reader)?),
         0x87 => ActionRecord::StoreRegister(read_store_register(&mut body_reader)?),
         0x88 => ActionRecord::ConstantPool(read_constant_pool(&mut body_reader)?),
         0x8a => ActionRecord::WaitForFrame(read_wait_for_frame(&mut body_reader)?),
@@ -144,12 +144,6 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
     };
 
     Ok(action_record)
-}
-
-fn read_get_url(reader: &mut SwfSliceReader) -> Result<GetUrl> {
-    let url = String::read(reader)?;
-    let target = String::read(reader)?;
-    Ok(GetUrl { url, target })
 }
 
 fn read_wait_for_frame(reader: &mut SwfSliceReader) -> Result<WaitForFrame> {
