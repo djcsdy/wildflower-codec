@@ -1,7 +1,6 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::actions::constant_pool::ConstantPool;
 use crate::decode::tags::actions::define_function::DefineFunction;
 use crate::decode::tags::actions::define_function_2::DefineFunction2;
@@ -130,7 +129,7 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
         0x8b => ActionRecord::SetTarget(read_set_target(&mut body_reader)?),
         0x8c => ActionRecord::GoToLabel(read_go_to_label(&mut body_reader)?),
         0x8d => ActionRecord::WaitForFrame2(read_wait_for_frame_2(&mut body_reader)?),
-        0x8e => ActionRecord::DefineFunction2(read_define_function_2(&mut body_reader)?),
+        0x8e => ActionRecord::DefineFunction2(DefineFunction2::read(&mut body_reader)?),
         0x8f => ActionRecord::Try(read_try(&mut body_reader)?),
         0x94 => ActionRecord::With(read_with(&mut body_reader)?),
         0x96 => ActionRecord::Push(read_push(&mut body_reader)?),
@@ -268,43 +267,6 @@ pub fn read_do_init_action_tag(reader: &mut SwfSliceReader) -> Result<DoInitActi
     let sprite_id = reader.read_u16()?;
     let actions = read_action_records(reader)?;
     Ok(DoInitActionTag { sprite_id, actions })
-}
-
-fn read_define_function_2(reader: &mut SwfSliceReader) -> Result<DefineFunction2> {
-    let function_name = String::read(reader)?;
-    let num_params = reader.read_u16()?;
-    let register_count = reader.read_u8()?;
-    let preload_parent = reader.read_bit()?;
-    let preload_root = reader.read_bit()?;
-    let suppress_super = reader.read_bit()?;
-    let preload_super = reader.read_bit()?;
-    let suppress_arguments = reader.read_bit()?;
-    let preload_arguments = reader.read_bit()?;
-    let suppress_this = reader.read_bit()?;
-    let preload_this = reader.read_bit()?;
-    reader.read_ub8(7)?;
-    let preload_global = reader.read_bit()?;
-    let mut parameters = Vec::with_capacity(num_params as usize);
-    for _ in 0..num_params {
-        parameters.push(RegisterParam::read(reader)?);
-    }
-    let code_size = reader.read_u16()?;
-    let body = ActionList::read(reader, code_size as usize)?;
-    Ok(DefineFunction2 {
-        function_name,
-        register_count,
-        preload_parent,
-        preload_root,
-        suppress_super,
-        preload_super,
-        suppress_arguments,
-        preload_arguments,
-        suppress_this,
-        preload_this,
-        preload_global,
-        parameters,
-        body,
-    })
 }
 
 fn read_try(reader: &mut SwfSliceReader) -> Result<Try> {
