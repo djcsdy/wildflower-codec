@@ -1,5 +1,5 @@
+use crate::decode::tags::buttons::button_condition_action_list::ButtonConditionActionList;
 use crate::decode::tags::buttons::button_record_2::ButtonRecord2;
-use crate::decode::tags::buttons::ButtonConditionActionList;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineButton2Tag {
