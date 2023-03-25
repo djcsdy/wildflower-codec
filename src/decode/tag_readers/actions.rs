@@ -1,6 +1,7 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
+use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::actions::constant_pool::ConstantPool;
 use crate::decode::tags::actions::define_function::DefineFunction;
 use crate::decode::tags::actions::define_function_2::DefineFunction2;
@@ -282,16 +283,14 @@ fn read_try(reader: &mut SwfSliceReader) -> Result<Try> {
     } else {
         RegisterParam::Name(String::read(reader)?)
     };
-    let try_body = read_action_records(&mut reader.slice(try_size as usize))?;
+    let try_body = ActionList::read(reader, try_size as usize)?;
     let catch_body = if has_catch_block {
-        Some(read_action_records(&mut reader.slice(catch_size as usize))?)
+        Some(ActionList::read(reader, catch_size as usize)?)
     } else {
         None
     };
     let finally_body = if has_finally_block {
-        Some(read_action_records(
-            &mut reader.slice(finally_size as usize),
-        )?)
+        Some(ActionList::read(reader, finally_size as usize)?)
     } else {
         None
     };
