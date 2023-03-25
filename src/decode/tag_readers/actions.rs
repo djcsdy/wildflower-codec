@@ -136,18 +136,13 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
         0x99 => ActionRecord::Jump(Jump::read(&mut body_reader)?),
         0x9a => ActionRecord::GetUrl2(read_get_url_2(&mut body_reader)?),
         0x9b => ActionRecord::DefineFunction(DefineFunction::read(&mut body_reader)?),
-        0x9d => ActionRecord::If(read_if(&mut body_reader)?),
+        0x9d => ActionRecord::If(If::read(&mut body_reader)?),
         0x9e => ActionRecord::Call,
         0x9f => ActionRecord::GoToFrame2(read_go_to_frame_2(&mut body_reader)?),
         _ => return Err(Error::from(InvalidData)),
     };
 
     Ok(action_record)
-}
-
-fn read_if(reader: &mut SwfSliceReader) -> Result<If> {
-    let offset = reader.read_i16()?;
-    Ok(If { offset })
 }
 
 fn read_get_url_2(reader: &mut SwfSliceReader) -> Result<GetUrl2> {
