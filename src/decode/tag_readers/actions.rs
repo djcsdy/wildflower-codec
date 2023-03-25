@@ -145,14 +145,6 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
     Ok(action_record)
 }
 
-pub fn read_action_records(reader: &mut SwfSliceReader) -> Result<Vec<ActionRecord>> {
-    let mut actions = Vec::new();
-    while reader.bytes_remaining() > 0 {
-        actions.push(read_action_record(reader)?);
-    }
-    Ok(actions)
-}
-
 fn read_go_to_frame(reader: &mut SwfSliceReader) -> Result<GoToFrame> {
     let frame = reader.read_u16()?;
     Ok(GoToFrame { frame })
