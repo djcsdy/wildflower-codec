@@ -1,7 +1,6 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::actions::constant_pool::ConstantPool;
 use crate::decode::tags::actions::define_function::DefineFunction;
 use crate::decode::tags::actions::define_function_2::DefineFunction2;
@@ -136,7 +135,7 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
         0x96 => ActionRecord::Push(read_push(&mut body_reader)?),
         0x99 => ActionRecord::Jump(read_jump(&mut body_reader)?),
         0x9a => ActionRecord::GetUrl2(read_get_url_2(&mut body_reader)?),
-        0x9b => ActionRecord::DefineFunction(read_define_function(&mut body_reader)?),
+        0x9b => ActionRecord::DefineFunction(DefineFunction::read(&mut body_reader)?),
         0x9d => ActionRecord::If(read_if(&mut body_reader)?),
         0x9e => ActionRecord::Call,
         0x9f => ActionRecord::GoToFrame2(read_go_to_frame_2(&mut body_reader)?),
@@ -251,22 +250,6 @@ fn read_constant_pool(reader: &mut SwfSliceReader) -> Result<ConstantPool> {
         constant_pool.push(String::read(reader)?);
     }
     Ok(ConstantPool { constant_pool })
-}
-
-fn read_define_function(reader: &mut SwfSliceReader) -> Result<DefineFunction> {
-    let function_name = String::read(reader)?;
-    let num_params = reader.read_u16()?;
-    let mut params = Vec::with_capacity(num_params as usize);
-    for _ in 0..num_params {
-        params.push(String::read(reader)?);
-    }
-    let code_size = reader.read_u16()?;
-    let body = ActionList::read(reader, code_size as usize)?;
-    Ok(DefineFunction {
-        function_name,
-        params,
-        body,
-    })
 }
 
 fn read_with(reader: &mut SwfSliceReader) -> Result<With> {
