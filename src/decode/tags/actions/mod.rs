@@ -24,6 +24,7 @@ pub mod wait_for_frame;
 pub mod wait_for_frame_2;
 pub mod with;
 
+use crate::decode::tags::actions::action_list::ActionList;
 use constant_pool::ConstantPool;
 use define_function::DefineFunction;
 use define_function_2::DefineFunction2;
@@ -44,7 +45,7 @@ use with::With;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DoActionTag {
-    pub actions: Vec<ActionRecord>,
+    pub actions: ActionList<Vec<u8>>,
 }
 
 #[derive(Clone, PartialEq, Debug)]

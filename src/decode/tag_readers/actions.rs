@@ -1,6 +1,7 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
+use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::actions::constant_pool::ConstantPool;
 use crate::decode::tags::actions::define_function::DefineFunction;
 use crate::decode::tags::actions::define_function_2::DefineFunction2;
@@ -25,7 +26,7 @@ use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Result};
 
 pub fn read_do_action_tag(reader: &mut SwfSliceReader) -> Result<DoActionTag> {
-    let actions = read_action_records(reader)?;
+    let actions = ActionList::read_to_end(reader)?;
     Ok(DoActionTag { actions })
 }
 
