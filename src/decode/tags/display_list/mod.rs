@@ -9,7 +9,7 @@ pub mod glow_filter;
 pub mod gradient_bevel_filter;
 pub mod gradient_glow_filter;
 
-use super::actions::ActionRecord;
+use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::common::color_transform::ColorTransform;
 use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithAlpha;
 use crate::decode::tags::common::matrix::Matrix;
@@ -105,7 +105,7 @@ pub struct ClipActions {
 pub struct ClipActionRecord {
     pub event_flags: ClipEventFlags,
     pub key_code: Option<u8>,
-    pub actions: Vec<ActionRecord>,
+    pub actions: ActionList<Vec<u8>>,
 }
 
 /// Adds a character to the display list.

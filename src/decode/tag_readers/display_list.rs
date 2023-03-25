@@ -1,7 +1,7 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::actions::read_action_records;
+use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::common::color_transform::ColorTransform;
 use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithAlpha;
 use crate::decode::tags::common::matrix::Matrix;
@@ -126,7 +126,7 @@ fn read_clip_action_record(reader: &mut SwfSliceReader) -> Result<Option<ClipAct
         } else {
             None
         };
-        let actions = read_action_records(&mut action_record_reader)?;
+        let actions = ActionList::read_to_end(&mut action_record_reader)?;
         Ok(Some(ClipActionRecord {
             event_flags,
             key_code,
