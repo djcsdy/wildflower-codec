@@ -127,7 +127,7 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
         0x87 => ActionRecord::StoreRegister(read_store_register(&mut body_reader)?),
         0x88 => ActionRecord::ConstantPool(read_constant_pool(&mut body_reader)?),
         0x8a => ActionRecord::WaitForFrame(WaitForFrame::read(&mut body_reader)?),
-        0x8b => ActionRecord::SetTarget(read_set_target(&mut body_reader)?),
+        0x8b => ActionRecord::SetTarget(SetTarget::read(&mut body_reader)?),
         0x8c => ActionRecord::GoToLabel(read_go_to_label(&mut body_reader)?),
         0x8d => ActionRecord::WaitForFrame2(read_wait_for_frame_2(&mut body_reader)?),
         0x8e => ActionRecord::DefineFunction2(DefineFunction2::read(&mut body_reader)?),
@@ -144,11 +144,6 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
     };
 
     Ok(action_record)
-}
-
-fn read_set_target(reader: &mut SwfSliceReader) -> Result<SetTarget> {
-    let target_name = String::read(reader)?;
-    Ok(SetTarget { target_name })
 }
 
 fn read_go_to_label(reader: &mut SwfSliceReader) -> Result<GoToLabel> {
