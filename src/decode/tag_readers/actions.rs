@@ -127,7 +127,7 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
         0x8a => ActionRecord::WaitForFrame(WaitForFrame::read(&mut body_reader)?),
         0x8b => ActionRecord::SetTarget(SetTarget::read(&mut body_reader)?),
         0x8c => ActionRecord::GoToLabel(GoToLabel::read(&mut body_reader)?),
-        0x8d => ActionRecord::WaitForFrame2(read_wait_for_frame_2(&mut body_reader)?),
+        0x8d => ActionRecord::WaitForFrame2(WaitForFrame2::read(&mut body_reader)?),
         0x8e => ActionRecord::DefineFunction2(DefineFunction2::read(&mut body_reader)?),
         0x8f => ActionRecord::Try(Try::read(&mut body_reader)?),
         0x94 => ActionRecord::With(With::read(&mut body_reader)?),
@@ -142,11 +142,6 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
     };
 
     Ok(action_record)
-}
-
-fn read_wait_for_frame_2(reader: &mut SwfSliceReader) -> Result<WaitForFrame2> {
-    let skip_count = reader.read_u8()?;
-    Ok(WaitForFrame2 { skip_count })
 }
 
 fn read_constant_pool(reader: &mut SwfSliceReader) -> Result<ConstantPool> {
