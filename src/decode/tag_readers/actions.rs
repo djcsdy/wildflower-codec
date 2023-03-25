@@ -121,7 +121,7 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
         0x69 => ActionRecord::Extends,
         0x81 => ActionRecord::GoToFrame(GoToFrame::read(&mut body_reader)?),
         0x83 => ActionRecord::GetUrl(GetUrl::read(&mut body_reader)?),
-        0x87 => ActionRecord::StoreRegister(read_store_register(&mut body_reader)?),
+        0x87 => ActionRecord::StoreRegister(StoreRegister::read(&mut body_reader)?),
         0x88 => ActionRecord::ConstantPool(ConstantPool::read(&mut body_reader)?),
         0x8a => ActionRecord::WaitForFrame(WaitForFrame::read(&mut body_reader)?),
         0x8b => ActionRecord::SetTarget(SetTarget::read(&mut body_reader)?),
@@ -141,11 +141,6 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
     };
 
     Ok(action_record)
-}
-
-fn read_store_register(reader: &mut SwfSliceReader) -> Result<StoreRegister> {
-    let register_number = reader.read_u8()?;
-    Ok(StoreRegister { register_number })
 }
 
 pub fn read_do_init_action_tag(reader: &mut SwfSliceReader) -> Result<DoInitActionTag> {
