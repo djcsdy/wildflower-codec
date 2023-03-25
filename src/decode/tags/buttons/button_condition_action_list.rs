@@ -22,4 +22,12 @@ impl ButtonConditionActionList {
             Ok(Some(Self { condition, actions }))
         }
     }
+
+    pub fn read_list(reader: &mut SwfSliceReader) -> Result<Vec<Self>> {
+        let mut actions = Vec::new();
+        while let Some(action) = Self::read(reader)? {
+            actions.push(action);
+        }
+        Ok(actions)
+    }
 }
