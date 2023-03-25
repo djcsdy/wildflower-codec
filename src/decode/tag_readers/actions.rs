@@ -13,7 +13,6 @@ use crate::decode::tags::actions::go_to_frame_2::GoToFrame2;
 use crate::decode::tags::actions::go_to_label::GoToLabel;
 use crate::decode::tags::actions::jump::Jump;
 use crate::decode::tags::actions::push::Push;
-use crate::decode::tags::actions::push_value::PushValue;
 use crate::decode::tags::actions::r#if::If;
 use crate::decode::tags::actions::r#try::Try;
 use crate::decode::tags::actions::set_target::SetTarget;
@@ -133,7 +132,7 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
         0x8e => ActionRecord::DefineFunction2(DefineFunction2::read(&mut body_reader)?),
         0x8f => ActionRecord::Try(Try::read(&mut body_reader)?),
         0x94 => ActionRecord::With(With::read(&mut body_reader)?),
-        0x96 => ActionRecord::Push(read_push(&mut body_reader)?),
+        0x96 => ActionRecord::Push(Push::read(&mut body_reader)?),
         0x99 => ActionRecord::Jump(read_jump(&mut body_reader)?),
         0x9a => ActionRecord::GetUrl2(read_get_url_2(&mut body_reader)?),
         0x9b => ActionRecord::DefineFunction(DefineFunction::read(&mut body_reader)?),
@@ -144,24 +143,6 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
     };
 
     Ok(action_record)
-}
-
-fn read_push(reader: &mut SwfSliceReader) -> Result<Push> {
-    let value_type = reader.read_u8()?;
-    let value = match value_type {
-        0 => PushValue::String(String::read(reader)?),
-        1 => PushValue::Float(reader.read_f32()?),
-        2 => PushValue::Null,
-        3 => PushValue::Undefined,
-        4 => PushValue::RegisterNumber(reader.read_u8()?),
-        5 => PushValue::Boolean(reader.read_u8()? != 0),
-        6 => PushValue::Double(reader.read_f64()?),
-        7 => PushValue::Integer(reader.read_u32()?),
-        8 => PushValue::Constant(reader.read_u8()? as u16),
-        9 => PushValue::Constant(reader.read_u16()?),
-        _ => return Err(Error::from(InvalidData)),
-    };
-    Ok(Push { value })
 }
 
 fn read_jump(reader: &mut SwfSliceReader) -> Result<Jump> {
