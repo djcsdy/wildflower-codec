@@ -259,6 +259,6 @@ fn read_store_register(reader: &mut SwfSliceReader) -> Result<StoreRegister> {
 
 pub fn read_do_init_action_tag(reader: &mut SwfSliceReader) -> Result<DoInitActionTag> {
     let sprite_id = reader.read_u16()?;
-    let actions = read_action_records(reader)?;
+    let actions = ActionList::read_to_end(reader)?;
     Ok(DoInitActionTag { sprite_id, actions })
 }
