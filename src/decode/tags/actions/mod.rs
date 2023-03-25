@@ -7,6 +7,7 @@ pub mod define_function;
 pub mod define_function_2;
 pub mod do_abc;
 pub mod do_action;
+pub mod do_init_action;
 pub mod get_url;
 pub mod get_url_2;
 pub mod go_to_frame;
@@ -25,11 +26,3 @@ pub mod r#try;
 pub mod wait_for_frame;
 pub mod wait_for_frame_2;
 pub mod with;
-
-use crate::decode::tags::actions::action_list::ActionList;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct DoInitActionTag {
-    pub sprite_id: u16,
-    pub actions: ActionList<Vec<u8>>,
-}
