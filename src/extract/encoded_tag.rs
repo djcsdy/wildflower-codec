@@ -1,5 +1,5 @@
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::actions::{read_do_action_tag, read_do_init_action_tag};
+use crate::decode::tag_readers::actions::read_do_init_action_tag;
 use crate::decode::tag_readers::bitmaps::{
     read_define_bits_jpeg_2_tag, read_define_bits_jpeg_3_tag, read_define_bits_jpeg_4_tag,
     read_define_bits_lossless_2_tag, read_define_bits_lossless_tag, read_define_bits_tag,
@@ -24,6 +24,7 @@ use crate::decode::tag_readers::shapes::{
     read_define_shape_tag,
 };
 use crate::decode::tags::actions::do_abc::DoAbcTag;
+use crate::decode::tags::actions::do_action::DoActionTag;
 use crate::decode::tags::fonts::define_font::DefineFontTag;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::define_font_info::DefineFontInfoTag;
@@ -76,7 +77,7 @@ impl EncodedTag {
                 .map(Tag::DefineFont)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineText => Tag::Unknown(self.into_unknown()),
-            TagType::DoAction => read_do_action_tag(&mut slice_reader)
+            TagType::DoAction => DoActionTag::read(&mut slice_reader)
                 .map(Tag::DoAction)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineFontInfo => DefineFontInfoTag::read(&mut slice_reader)
