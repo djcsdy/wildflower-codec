@@ -134,7 +134,7 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
         0x94 => ActionRecord::With(With::read(&mut body_reader)?),
         0x96 => ActionRecord::Push(Push::read(&mut body_reader)?),
         0x99 => ActionRecord::Jump(Jump::read(&mut body_reader)?),
-        0x9a => ActionRecord::GetUrl2(read_get_url_2(&mut body_reader)?),
+        0x9a => ActionRecord::GetUrl2(GetUrl2::read(&mut body_reader)?),
         0x9b => ActionRecord::DefineFunction(DefineFunction::read(&mut body_reader)?),
         0x9d => ActionRecord::If(If::read(&mut body_reader)?),
         0x9e => ActionRecord::Call,
@@ -143,24 +143,6 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
     };
 
     Ok(action_record)
-}
-
-fn read_get_url_2(reader: &mut SwfSliceReader) -> Result<GetUrl2> {
-    let send_vars_method = reader
-        .read_ub8(2)?
-        .try_into()
-        .map_err(|_| Error::from(InvalidData))?;
-    reader.read_ub8(4)?;
-    let load_target = reader
-        .read_ub8(1)?
-        .try_into()
-        .map_err(|_| Error::from(InvalidData))?;
-    let load_variables = reader.read_bit()?;
-    Ok(GetUrl2 {
-        send_vars_method,
-        load_target,
-        load_variables,
-    })
 }
 
 fn read_go_to_frame_2(reader: &mut SwfSliceReader) -> Result<GoToFrame2> {
