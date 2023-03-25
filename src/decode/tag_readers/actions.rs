@@ -20,7 +20,6 @@ use crate::decode::tags::actions::wait_for_frame::WaitForFrame;
 use crate::decode::tags::actions::wait_for_frame_2::WaitForFrame2;
 use crate::decode::tags::actions::with::With;
 use crate::decode::tags::actions::{DoActionTag, DoInitActionTag};
-use crate::decode::tags::common::string::String;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Result};
 
@@ -123,7 +122,7 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
         0x81 => ActionRecord::GoToFrame(GoToFrame::read(&mut body_reader)?),
         0x83 => ActionRecord::GetUrl(GetUrl::read(&mut body_reader)?),
         0x87 => ActionRecord::StoreRegister(read_store_register(&mut body_reader)?),
-        0x88 => ActionRecord::ConstantPool(read_constant_pool(&mut body_reader)?),
+        0x88 => ActionRecord::ConstantPool(ConstantPool::read(&mut body_reader)?),
         0x8a => ActionRecord::WaitForFrame(WaitForFrame::read(&mut body_reader)?),
         0x8b => ActionRecord::SetTarget(SetTarget::read(&mut body_reader)?),
         0x8c => ActionRecord::GoToLabel(GoToLabel::read(&mut body_reader)?),
@@ -142,15 +141,6 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
     };
 
     Ok(action_record)
-}
-
-fn read_constant_pool(reader: &mut SwfSliceReader) -> Result<ConstantPool> {
-    let count = reader.read_u16()?;
-    let mut constant_pool = Vec::with_capacity(count as usize);
-    for _ in 0..count {
-        constant_pool.push(String::read(reader)?);
-    }
-    Ok(ConstantPool { constant_pool })
 }
 
 fn read_store_register(reader: &mut SwfSliceReader) -> Result<StoreRegister> {
