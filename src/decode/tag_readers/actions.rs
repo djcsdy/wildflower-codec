@@ -1,6 +1,7 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
+use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::actions::constant_pool::ConstantPool;
 use crate::decode::tags::actions::define_function::DefineFunction;
 use crate::decode::tags::actions::define_function_2::DefineFunction2;
@@ -253,7 +254,7 @@ fn read_constant_pool(reader: &mut SwfSliceReader) -> Result<ConstantPool> {
 
 fn read_with(reader: &mut SwfSliceReader) -> Result<With> {
     let size = reader.read_u16()?;
-    let body = read_action_records(&mut reader.slice(size as usize))?;
+    let body = ActionList::read(reader, size as usize)?;
     Ok(With { body })
 }
 
