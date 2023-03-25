@@ -1,4 +1,7 @@
+use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::buttons::button_condition_key_press::ButtonConditionKeyPress;
+use std::io::Result;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct ButtonCondition {
@@ -6,6 +9,11 @@ pub struct ButtonCondition {
 }
 
 impl ButtonCondition {
+    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+        let flags = reader.read_u16()?;
+        Ok(Self { flags })
+    }
+
     pub fn idle_to_over_down(&self) -> bool {
         self.flags & 0x8000 == 0x8000
     }
