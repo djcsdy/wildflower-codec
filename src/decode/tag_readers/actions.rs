@@ -286,7 +286,7 @@ fn read_define_function_2(reader: &mut SwfSliceReader) -> Result<DefineFunction2
     let preload_global = reader.read_bit()?;
     let mut parameters = Vec::with_capacity(num_params as usize);
     for _ in 0..num_params {
-        parameters.push(read_register_param(reader)?);
+        parameters.push(RegisterParam::read(reader)?);
     }
     let code_size = reader.read_u16()?;
     let body = ActionList::read(reader, code_size as usize)?;
@@ -304,16 +304,6 @@ fn read_define_function_2(reader: &mut SwfSliceReader) -> Result<DefineFunction2
         preload_global,
         parameters,
         body,
-    })
-}
-
-fn read_register_param(reader: &mut SwfSliceReader) -> Result<RegisterParam> {
-    let register = reader.read_u8()?;
-    let name = String::read(reader)?;
-    Ok(if register == 0 {
-        RegisterParam::Name(name)
-    } else {
-        RegisterParam::Register(register)
     })
 }
 
