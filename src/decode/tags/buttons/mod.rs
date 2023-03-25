@@ -13,11 +13,11 @@ pub struct DefineButton2Tag {
     pub button_id: u16,
     pub track_as_menu: bool,
     pub characters: Vec<ButtonRecord2>,
-    pub actions: Vec<ButtonConditionActionRecord>,
+    pub actions: Vec<ButtonConditionActionList>,
 }
 
 #[derive(Clone, PartialEq, Debug)]
-pub struct ButtonConditionActionRecord {
+pub struct ButtonConditionActionList {
     pub condition_idle_to_over_down: bool,
     pub condition_out_down_to_idle: bool,
     pub condition_out_down_to_over_down: bool,
