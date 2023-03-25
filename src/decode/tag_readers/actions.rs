@@ -1,7 +1,6 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::actions::constant_pool::ConstantPool;
 use crate::decode::tags::actions::define_function::DefineFunction;
 use crate::decode::tags::actions::define_function_2::DefineFunction2;
@@ -15,7 +14,6 @@ use crate::decode::tags::actions::push::Push;
 use crate::decode::tags::actions::push_value::PushValue;
 use crate::decode::tags::actions::r#if::If;
 use crate::decode::tags::actions::r#try::Try;
-use crate::decode::tags::actions::register_param::RegisterParam;
 use crate::decode::tags::actions::set_target::SetTarget;
 use crate::decode::tags::actions::store_register::StoreRegister;
 use crate::decode::tags::actions::wait_for_frame::WaitForFrame;
@@ -131,7 +129,7 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
         0x8c => ActionRecord::GoToLabel(read_go_to_label(&mut body_reader)?),
         0x8d => ActionRecord::WaitForFrame2(read_wait_for_frame_2(&mut body_reader)?),
         0x8e => ActionRecord::DefineFunction2(DefineFunction2::read(&mut body_reader)?),
-        0x8f => ActionRecord::Try(read_try(&mut body_reader)?),
+        0x8f => ActionRecord::Try(Try::read(&mut body_reader)?),
         0x94 => ActionRecord::With(read_with(&mut body_reader)?),
         0x96 => ActionRecord::Push(read_push(&mut body_reader)?),
         0x99 => ActionRecord::Jump(read_jump(&mut body_reader)?),
@@ -268,36 +266,4 @@ pub fn read_do_init_action_tag(reader: &mut SwfSliceReader) -> Result<DoInitActi
     let sprite_id = reader.read_u16()?;
     let actions = read_action_records(reader)?;
     Ok(DoInitActionTag { sprite_id, actions })
-}
-
-fn read_try(reader: &mut SwfSliceReader) -> Result<Try> {
-    reader.read_ub8(5)?;
-    let catch_in_register = reader.read_bit()?;
-    let has_finally_block = reader.read_bit()?;
-    let has_catch_block = reader.read_bit()?;
-    let try_size = reader.read_u16()?;
-    let catch_size = reader.read_u16()?;
-    let finally_size = reader.read_u16()?;
-    let catch_parameter = if catch_in_register {
-        RegisterParam::Register(reader.read_u8()?)
-    } else {
-        RegisterParam::Name(String::read(reader)?)
-    };
-    let try_body = ActionList::read(reader, try_size as usize)?;
-    let catch_body = if has_catch_block {
-        Some(ActionList::read(reader, catch_size as usize)?)
-    } else {
-        None
-    };
-    let finally_body = if has_finally_block {
-        Some(ActionList::read(reader, finally_size as usize)?)
-    } else {
-        None
-    };
-    Ok(Try {
-        catch_parameter,
-        try_body,
-        catch_body,
-        finally_body,
-    })
 }
