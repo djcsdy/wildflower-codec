@@ -3,7 +3,7 @@ pub mod button_record_2;
 pub mod button_record_flags;
 pub mod define_button;
 
-use crate::decode::tags::actions::action_record::ActionRecord;
+use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::common::color_transform::ColorTransform;
 use crate::decode::tags::sounds::sound_info::SoundInfo;
 use button_record_2::ButtonRecord2;
@@ -28,7 +28,7 @@ pub struct ButtonConditionActionRecord {
     pub condition_idle_to_over_up: bool,
     pub condition_key_press: u8,
     pub condition_over_down_to_idle: bool,
-    pub actions: Vec<ActionRecord>,
+    pub actions: ActionList<Vec<u8>>,
 }
 
 #[derive(Clone, PartialEq, Debug)]
