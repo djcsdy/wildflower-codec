@@ -1,7 +1,8 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::action_list::ActionList;
-use crate::decode::tags::actions::{DoActionTag, DoInitActionTag};
+use crate::decode::tags::actions::do_action::DoActionTag;
+use crate::decode::tags::actions::DoInitActionTag;
 use std::io::Result;
 
 pub fn read_do_action_tag(reader: &mut SwfSliceReader) -> Result<DoActionTag> {

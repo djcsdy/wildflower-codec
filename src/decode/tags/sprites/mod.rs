@@ -1,9 +1,10 @@
-use super::actions::{DoActionTag, DoInitActionTag};
+use super::actions::DoInitActionTag;
 use super::control::{EndTag, FrameLabelTag};
 use super::display_list::{
     PlaceObject2Tag, PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag, ShowFrameTag,
 };
 use crate::decode::tags::actions::do_abc::DoAbcTag;
+use crate::decode::tags::actions::do_action::DoActionTag;
 use crate::decode::tags::sounds::sound_stream_block::SoundStreamBlockTag;
 use crate::decode::tags::sounds::sound_stream_head::SoundStreamHeadTag;
 use crate::decode::tags::sounds::sound_stream_head_2::SoundStreamHead2Tag;
