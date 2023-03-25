@@ -16,6 +16,11 @@ impl ActionList<Vec<u8>> {
         reader.read_u8_into(&mut buffer)?;
         Ok(Self { buffer })
     }
+
+    pub fn read_to_end(reader: &mut SwfSliceReader) -> Result<Self> {
+        let buffer = reader.read_u8_to_end()?;
+        Ok(Self { buffer })
+    }
 }
 
 impl<Buffer: AsRef<[u8]>> ActionList<Buffer> {
