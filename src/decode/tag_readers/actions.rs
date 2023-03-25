@@ -1,4 +1,3 @@
-use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::action_list::ActionList;
@@ -138,23 +137,11 @@ pub fn read_action_record(reader: &mut SwfSliceReader) -> Result<ActionRecord> {
         0x9b => ActionRecord::DefineFunction(DefineFunction::read(&mut body_reader)?),
         0x9d => ActionRecord::If(If::read(&mut body_reader)?),
         0x9e => ActionRecord::Call,
-        0x9f => ActionRecord::GoToFrame2(read_go_to_frame_2(&mut body_reader)?),
+        0x9f => ActionRecord::GoToFrame2(GoToFrame2::read(&mut body_reader)?),
         _ => return Err(Error::from(InvalidData)),
     };
 
     Ok(action_record)
-}
-
-fn read_go_to_frame_2(reader: &mut SwfSliceReader) -> Result<GoToFrame2> {
-    reader.read_ub8(6)?;
-    let scene_bias_flag = reader.read_bit()?;
-    let play = reader.read_bit()?;
-    let scene_bias = if scene_bias_flag {
-        reader.read_u16()?
-    } else {
-        0
-    };
-    Ok(GoToFrame2 { play, scene_bias })
 }
 
 fn read_wait_for_frame_2(reader: &mut SwfSliceReader) -> Result<WaitForFrame2> {
