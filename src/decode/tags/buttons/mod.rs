@@ -1,4 +1,5 @@
 pub mod button_condition_action_list;
+pub mod button_condition_key_press;
 pub mod button_record;
 pub mod button_record_2;
 pub mod button_record_flags;
