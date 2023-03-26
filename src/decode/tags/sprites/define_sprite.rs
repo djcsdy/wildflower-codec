@@ -1,4 +1,4 @@
-use crate::decode::tags::sprites::ControlTag;
+use crate::decode::tags::sprites::control_tag::ControlTag;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineSpriteTag {
