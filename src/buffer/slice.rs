@@ -1,10 +1,10 @@
 use crate::buffer::block::SwfBlock;
+use crate::buffer::block_index::SwfBlockIndex;
 use crate::buffer::offset::SwfOffset;
-use crate::buffer::pointer::SwfPointer;
 use std::sync::Arc;
 
 pub struct SwfSlice {
-    start_pointer: SwfPointer,
+    first_block_index: SwfBlockIndex,
     blocks: Vec<Arc<SwfBlock>>,
     start_offset: SwfOffset,
     end_offset: SwfOffset,
@@ -12,13 +12,13 @@ pub struct SwfSlice {
 
 impl SwfSlice {
     pub(super) fn new(
-        start_pointer: SwfPointer,
+        first_block_index: SwfBlockIndex,
         blocks: Vec<Arc<SwfBlock>>,
         start_offset: SwfOffset,
         end_offset: SwfOffset,
     ) -> Self {
         Self {
-            start_pointer,
+            first_block_index,
             blocks,
             start_offset,
             end_offset,
