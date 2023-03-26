@@ -1,4 +1,4 @@
-use std::ops::Add;
+use std::ops::{Add, Sub};
 
 /// A byte-offset from a [SwfPointer][super::pointer::SwfPointer].
 pub struct SwfOffset(i32);
@@ -8,5 +8,13 @@ impl Add for SwfOffset {
 
     fn add(self, rhs: Self) -> Self {
         Self(self.0 + rhs.0)
+    }
+}
+
+impl Sub for SwfOffset {
+    type Output = Self;
+
+    fn sub(self, rhs: Self) -> Self {
+        Self(self.0 - rhs.0)
     }
 }
