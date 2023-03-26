@@ -29,3 +29,11 @@ impl Sub<SwfOffset> for SwfPointer {
         Self(self.0.checked_add_signed(-rhs.0).unwrap())
     }
 }
+
+impl Sub for SwfPointer {
+    type Output = SwfOffset;
+
+    fn sub(self, rhs: Self) -> Self::Output {
+        SwfOffset(self.0.wrapping_sub(rhs.0) as i32)
+    }
+}
