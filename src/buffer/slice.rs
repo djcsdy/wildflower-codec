@@ -1,6 +1,7 @@
 use crate::buffer::block::SwfBlock;
 use crate::buffer::block_index::SwfBlockIndex;
 use crate::buffer::offset::SwfOffset;
+use crate::buffer::pointer::SwfPointer;
 use std::sync::Arc;
 
 #[derive(Clone, Debug)]
@@ -26,5 +27,10 @@ impl SwfSlice {
             end_offset,
             read_offset: start_offset,
         }
+    }
+
+    /// Returns a [SwfPointer] to the start of this slice within the SWF file.
+    pub fn start_pointer(&self) -> SwfPointer {
+        self.first_block_index.as_pointer() + self.start_offset
     }
 }
