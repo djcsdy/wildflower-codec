@@ -1,4 +1,4 @@
-use crate::decode::tags::buttons::ButtonSound;
+use crate::decode::tags::buttons::button_sound::ButtonSound;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineButtonSoundTag {
