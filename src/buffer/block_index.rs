@@ -5,6 +5,7 @@
 ///
 /// The first SwfBlock starts at the first byte after the end of the
 /// [Header][crate::decode::tags::header::Header].
+#[derive(Clone, Copy, PartialEq, PartialOrd, Eq, Ord, Debug, Hash)]
 pub struct SwfBlockIndex(u32);
 
 impl SwfBlockIndex {
