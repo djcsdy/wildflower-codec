@@ -19,3 +19,9 @@ impl Sub for SwfOffset {
         Self(self.0 - rhs.0)
     }
 }
+
+impl Into<usize> for SwfOffset {
+    fn into(self) -> usize {
+        self.0 as usize
+    }
+}
