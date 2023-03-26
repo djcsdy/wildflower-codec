@@ -32,6 +32,7 @@ use crate::decode::tags::fonts::define_font_info::DefineFontInfoTag;
 use crate::decode::tags::fonts::define_font_info_2::DefineFontInfo2Tag;
 use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
 use crate::decode::tags::tag::Tag;
+use crate::decode::tags::text::define_text::DefineTextTag;
 use crate::extract::tag_type::TagType;
 
 #[derive(Clone, PartialEq, Eq, Debug, Hash)]
@@ -79,7 +80,9 @@ impl EncodedTag {
             TagType::DefineFont => DefineFontTag::read(&mut slice_reader)
                 .map(Tag::DefineFont)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineText => Tag::Unknown(self.into_unknown()),
+            TagType::DefineText => DefineTextTag::read(&mut slice_reader)
+                .map(Tag::DefineText)
+                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DoAction => DoActionTag::read(&mut slice_reader)
                 .map(Tag::DoAction)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
