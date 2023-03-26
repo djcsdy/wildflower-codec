@@ -1,4 +1,4 @@
-use std::ops::Index;
+use std::ops::{Index, Range};
 
 pub(super) const BLOCK_SIZE: usize = 1 << 15;
 
@@ -15,6 +15,14 @@ impl Index<usize> for SwfBlock {
     type Output = u8;
 
     fn index(&self, index: usize) -> &Self::Output {
+        &self.bytes[index]
+    }
+}
+
+impl Index<Range<usize>> for SwfBlock {
+    type Output = [u8];
+
+    fn index(&self, index: Range<usize>) -> &Self::Output {
         &self.bytes[index]
     }
 }
