@@ -26,6 +26,7 @@ use crate::decode::tags::actions::do_abc::DoAbcTag;
 use crate::decode::tags::actions::do_action::DoActionTag;
 use crate::decode::tags::actions::do_init_action::DoInitActionTag;
 use crate::decode::tags::buttons::define_button::DefineButtonTag;
+use crate::decode::tags::buttons::define_button_color_transform::DefineButtonColorTransformTag;
 use crate::decode::tags::buttons::define_button_sound::DefineButtonSoundTag;
 use crate::decode::tags::fonts::define_font::DefineFontTag;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
@@ -115,7 +116,11 @@ impl EncodedTag {
             TagType::DefineShape2 => read_define_shape_2_tag(&mut slice_reader)
                 .map(Tag::DefineShape2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineButtonColorTransform => Tag::Unknown(self.into_unknown()),
+            TagType::DefineButtonColorTransform => {
+                DefineButtonColorTransformTag::read(&mut slice_reader)
+                    .map(Tag::DefineButtonColorTransform)
+                    .unwrap_or_else(|_| Tag::Invalid(self.into_invalid()))
+            }
             TagType::Protect => Tag::Unknown(self.into_unknown()),
             TagType::PlaceObject2 => read_place_object_2_tag(&mut slice_reader)
                 .map(Tag::PlaceObject2)
