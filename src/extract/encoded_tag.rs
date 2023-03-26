@@ -40,6 +40,7 @@ use crate::decode::tags::sounds::sound_stream_block::SoundStreamBlockTag;
 use crate::decode::tags::sounds::sound_stream_head::SoundStreamHeadTag;
 use crate::decode::tags::sounds::sound_stream_head_2::SoundStreamHead2Tag;
 use crate::decode::tags::tag::Tag;
+use crate::decode::tags::text::csm_text_settings::CsmTextSettingsTag;
 use crate::decode::tags::text::define_edit_text::DefineEditTextTag;
 use crate::decode::tags::text::define_text::DefineTextTag;
 use crate::decode::tags::text::define_text_2::DefineText2Tag;
@@ -202,7 +203,9 @@ impl EncodedTag {
             TagType::DefineFontAlignZones => DefineFontAlignZonesTag::read(&mut slice_reader)
                 .map(Tag::DefineFontAlignZones)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::CsmTextSettings => Tag::Unknown(self.into_unknown()),
+            TagType::CsmTextSettings => CsmTextSettingsTag::read(&mut slice_reader)
+                .map(Tag::CsmTextSettings)
+                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineFont3 => Tag::Unknown(self.into_unknown()),
             TagType::SymbolClass => read_symbol_class_tag(&mut slice_reader)
                 .map(Tag::SymbolClass)
