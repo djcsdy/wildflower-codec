@@ -43,6 +43,7 @@ use crate::decode::tags::sounds::sound_stream_block::SoundStreamBlockTag;
 use crate::decode::tags::sounds::sound_stream_head::SoundStreamHeadTag;
 use crate::decode::tags::sounds::sound_stream_head_2::SoundStreamHead2Tag;
 use crate::decode::tags::sounds::start_sound_2::StartSound2Tag;
+use crate::decode::tags::sprites::define_sprite::DefineSpriteTag;
 use crate::decode::tags::tag::Tag;
 use crate::decode::tags::text::csm_text_settings::CsmTextSettingsTag;
 use crate::decode::tags::text::define_edit_text::DefineEditTextTag;
@@ -156,7 +157,9 @@ impl EncodedTag {
             TagType::DefineEditText => DefineEditTextTag::read(&mut slice_reader)
                 .map(Tag::DefineEditText)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineSprite => Tag::Unknown(self.into_unknown()),
+            TagType::DefineSprite => DefineSpriteTag::read(&mut slice_reader)
+                .map(Tag::DefineSprite)
+                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::FrameLabel => read_frame_label_tag(&mut slice_reader)
                 .map(Tag::FrameLabel)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
