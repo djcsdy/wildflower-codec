@@ -1,3 +1,5 @@
+use std::ops::Index;
+
 pub(super) const BLOCK_SIZE: usize = 1 << 15;
 
 /// A 64k block of opaque SWF data.
@@ -7,4 +9,12 @@ pub(super) const BLOCK_SIZE: usize = 1 << 15;
 #[derive(Clone, PartialEq, Eq, Debug, Hash)]
 pub struct SwfBlock {
     pub(super) bytes: [u8; BLOCK_SIZE],
+}
+
+impl Index<usize> for SwfBlock {
+    type Output = u8;
+
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.bytes[index]
+    }
 }
