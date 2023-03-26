@@ -31,6 +31,7 @@ use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::define_font_info::DefineFontInfoTag;
 use crate::decode::tags::fonts::define_font_info_2::DefineFontInfo2Tag;
 use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
+use crate::decode::tags::sounds::define_sound::DefineSoundTag;
 use crate::decode::tags::tag::Tag;
 use crate::decode::tags::text::define_text::DefineTextTag;
 use crate::extract::tag_type::TagType;
@@ -89,7 +90,9 @@ impl EncodedTag {
             TagType::DefineFontInfo => DefineFontInfoTag::read(&mut slice_reader)
                 .map(Tag::DefineFontInfo)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineSound => Tag::Unknown(self.into_unknown()),
+            TagType::DefineSound => DefineSoundTag::read(&mut slice_reader)
+                .map(Tag::DefineSound)
+                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::StartSound => Tag::Unknown(self.into_unknown()),
             TagType::DefineButtonSound => Tag::Unknown(self.into_unknown()),
             TagType::SoundStreamHead => Tag::Unknown(self.into_unknown()),
