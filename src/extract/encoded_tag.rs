@@ -26,6 +26,7 @@ use crate::decode::tags::actions::do_abc::DoAbcTag;
 use crate::decode::tags::actions::do_action::DoActionTag;
 use crate::decode::tags::actions::do_init_action::DoInitActionTag;
 use crate::decode::tags::buttons::define_button::DefineButtonTag;
+use crate::decode::tags::buttons::define_button_2::DefineButton2Tag;
 use crate::decode::tags::buttons::define_button_color_transform::DefineButtonColorTransformTag;
 use crate::decode::tags::buttons::define_button_sound::DefineButtonSoundTag;
 use crate::decode::tags::fonts::define_font::DefineFontTag;
@@ -135,7 +136,9 @@ impl EncodedTag {
             TagType::DefineText2 => DefineText2Tag::read(&mut slice_reader)
                 .map(Tag::DefineText2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineButton2 => Tag::Unknown(self.into_unknown()),
+            TagType::DefineButton2 => DefineButton2Tag::read(&mut slice_reader)
+                .map(Tag::DefineButton2)
+                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineBitsJpeg3 => read_define_bits_jpeg_3_tag(&mut slice_reader)
                 .map(Tag::DefineBitsJpeg3)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
