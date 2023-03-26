@@ -6,5 +6,5 @@ pub(super) const BLOCK_SIZE: usize = 1 << 15;
 /// than the maximum offset of an AVM1 branch instruction.
 #[derive(Clone, PartialEq, Eq, Debug, Hash)]
 pub struct SwfBlock {
-    pub bytes: [u8; BLOCK_SIZE],
+    pub(super) bytes: [u8; BLOCK_SIZE],
 }
