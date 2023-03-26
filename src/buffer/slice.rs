@@ -58,4 +58,11 @@ impl SwfSlice {
     pub fn length(&self) -> SwfOffset {
         self.end_offset - self.start_offset
     }
+
+    /// Returns the remaining number of readable bytes in this slice as a
+    /// [SwfOffset] from the current read position to the byte after the end
+    /// of the slice.
+    pub fn remaining(&self) -> SwfOffset {
+        self.end_offset - self.read_offset
+    }
 }
