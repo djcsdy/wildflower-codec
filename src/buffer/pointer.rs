@@ -2,6 +2,7 @@
 ///
 /// [ZERO][SwfPointer::ZERO] refers to the first byte of the SWF file after
 /// the [Header][crate::decode::tags::header::Header].
+#[derive(Clone, Copy, PartialEq, PartialOrd, Eq, Ord, Debug, Hash)]
 pub struct SwfPointer(u32);
 
 impl SwfPointer {
