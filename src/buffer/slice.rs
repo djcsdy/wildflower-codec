@@ -46,4 +46,10 @@ impl SwfSlice {
     pub fn position_pointer(&self) -> SwfPointer {
         self.first_block_index.as_pointer() + self.read_offset
     }
+
+    /// Returns the current read position of this slice as a [SwfOffset] from
+    /// the start of the slice.
+    pub fn position(&self) -> SwfOffset {
+        self.read_offset
+    }
 }
