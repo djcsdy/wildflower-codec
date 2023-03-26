@@ -8,6 +8,7 @@ pub struct SwfSlice {
     blocks: Vec<Arc<SwfBlock>>,
     start_offset: SwfOffset,
     end_offset: SwfOffset,
+    read_offset: SwfOffset,
 }
 
 impl SwfSlice {
@@ -22,6 +23,7 @@ impl SwfSlice {
             blocks,
             start_offset,
             end_offset,
+            read_offset: start_offset,
         }
     }
 }
