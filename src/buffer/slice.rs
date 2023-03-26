@@ -3,6 +3,7 @@ use crate::buffer::block_index::SwfBlockIndex;
 use crate::buffer::offset::SwfOffset;
 use std::sync::Arc;
 
+#[derive(Clone, Debug)]
 pub struct SwfSlice {
     first_block_index: SwfBlockIndex,
     blocks: Vec<Arc<SwfBlock>>,
