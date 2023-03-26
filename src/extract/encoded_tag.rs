@@ -33,6 +33,7 @@ use crate::decode::tags::fonts::define_font_info::DefineFontInfoTag;
 use crate::decode::tags::fonts::define_font_info_2::DefineFontInfo2Tag;
 use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
 use crate::decode::tags::sounds::define_sound::DefineSoundTag;
+use crate::decode::tags::sounds::sound_stream_block::SoundStreamBlockTag;
 use crate::decode::tags::sounds::sound_stream_head::SoundStreamHeadTag;
 use crate::decode::tags::tag::Tag;
 use crate::decode::tags::text::define_text::DefineTextTag;
@@ -102,7 +103,9 @@ impl EncodedTag {
             TagType::SoundStreamHead => SoundStreamHeadTag::read(&mut slice_reader)
                 .map(Tag::SoundStreamHead)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::SoundStreamBlock => Tag::Unknown(self.into_unknown()),
+            TagType::SoundStreamBlock => SoundStreamBlockTag::read(&mut slice_reader)
+                .map(Tag::SoundStreamBlock)
+                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineBitsLossless => read_define_bits_lossless_tag(&mut slice_reader)
                 .map(Tag::DefineBitsLossless)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
