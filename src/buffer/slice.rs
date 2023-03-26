@@ -33,4 +33,10 @@ impl SwfSlice {
     pub fn start_pointer(&self) -> SwfPointer {
         self.first_block_index.as_pointer() + self.start_offset
     }
+
+    /// Returns a [SwfPointer] to the byte after the end of this slice within
+    /// the SWF file.
+    pub fn end_pointer(&self) -> SwfPointer {
+        self.first_block_index.as_pointer() + self.end_offset
+    }
 }
