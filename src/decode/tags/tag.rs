@@ -2,7 +2,7 @@ use super::bitmaps::{
     DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsJpeg4Tag, DefineBitsLossless2Tag,
     DefineBitsLosslessTag, DefineBitsTag, JpegTablesTag,
 };
-use super::buttons::{DefineButtonColorTransformTag, DefineButtonSoundTag};
+use super::buttons::DefineButtonSoundTag;
 use super::control::{
     DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, EnableDebugger2Tag, EnableDebuggerTag,
     EndTag, ExportAssetsTag, FrameLabelTag, ImportAssets2Tag, ImportAssetsTag, MetadataTag,
@@ -22,6 +22,7 @@ use crate::decode::tags::actions::do_action::DoActionTag;
 use crate::decode::tags::actions::do_init_action::DoInitActionTag;
 use crate::decode::tags::buttons::define_button::DefineButtonTag;
 use crate::decode::tags::buttons::define_button_2::DefineButton2Tag;
+use crate::decode::tags::buttons::define_button_color_transform::DefineButtonColorTransformTag;
 use crate::decode::tags::fonts::define_font::DefineFontTag;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::define_font_3::DefineFont3Tag;

@@ -7,15 +7,9 @@ pub mod button_record_flags;
 pub mod define_button;
 pub mod define_button_2;
 pub mod define_button_2_flags;
+pub mod define_button_color_transform;
 
-use crate::decode::tags::common::color_transform::ColorTransform;
 use crate::decode::tags::sounds::sound_info::SoundInfo;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct DefineButtonColorTransformTag {
-    pub button_id: u16,
-    pub button_color_transform: ColorTransform,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineButtonSoundTag {
