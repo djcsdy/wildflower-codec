@@ -31,9 +31,11 @@ use crate::decode::tags::buttons::define_button_color_transform::DefineButtonCol
 use crate::decode::tags::buttons::define_button_sound::DefineButtonSoundTag;
 use crate::decode::tags::fonts::define_font::DefineFontTag;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
+use crate::decode::tags::fonts::define_font_3::DefineFont3Tag;
 use crate::decode::tags::fonts::define_font_align_zones::DefineFontAlignZonesTag;
 use crate::decode::tags::fonts::define_font_info::DefineFontInfoTag;
 use crate::decode::tags::fonts::define_font_info_2::DefineFontInfo2Tag;
+use crate::decode::tags::fonts::define_font_name::DefineFontNameTag;
 use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
 use crate::decode::tags::sounds::define_sound::DefineSoundTag;
 use crate::decode::tags::sounds::sound_stream_block::SoundStreamBlockTag;
@@ -206,7 +208,9 @@ impl EncodedTag {
             TagType::CsmTextSettings => CsmTextSettingsTag::read(&mut slice_reader)
                 .map(Tag::CsmTextSettings)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineFont3 => Tag::Unknown(self.into_unknown()),
+            TagType::DefineFont3 => DefineFont3Tag::read(&mut slice_reader)
+                .map(Tag::DefineFont3)
+                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::SymbolClass => read_symbol_class_tag(&mut slice_reader)
                 .map(Tag::SymbolClass)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
@@ -231,7 +235,9 @@ impl EncodedTag {
                     .unwrap_or_else(|_| Tag::Invalid(self.into_invalid()))
             }
             TagType::DefineBinaryData => Tag::Unknown(self.into_unknown()),
-            TagType::DefineFontName => Tag::Unknown(self.into_unknown()),
+            TagType::DefineFontName => DefineFontNameTag::read(&mut slice_reader)
+                .map(Tag::DefineFontName)
+                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::StartSound2 => Tag::Unknown(self.into_unknown()),
             TagType::DefineBitsJpeg4 => read_define_bits_jpeg_4_tag(&mut slice_reader)
                 .map(Tag::DefineBitsJpeg4)
