@@ -31,6 +31,7 @@ use crate::decode::tags::buttons::define_button_color_transform::DefineButtonCol
 use crate::decode::tags::buttons::define_button_sound::DefineButtonSoundTag;
 use crate::decode::tags::fonts::define_font::DefineFontTag;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
+use crate::decode::tags::fonts::define_font_align_zones::DefineFontAlignZonesTag;
 use crate::decode::tags::fonts::define_font_info::DefineFontInfoTag;
 use crate::decode::tags::fonts::define_font_info_2::DefineFontInfo2Tag;
 use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
@@ -198,7 +199,9 @@ impl EncodedTag {
             TagType::ImportAssets2 => read_import_assets_2_tag(&mut slice_reader)
                 .map(Tag::ImportAssets2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineFontAlignZones => Tag::Unknown(self.into_unknown()),
+            TagType::DefineFontAlignZones => DefineFontAlignZonesTag::read(&mut slice_reader)
+                .map(Tag::DefineFontAlignZones)
+                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::CsmTextSettings => Tag::Unknown(self.into_unknown()),
             TagType::DefineFont3 => Tag::Unknown(self.into_unknown()),
             TagType::SymbolClass => read_symbol_class_tag(&mut slice_reader)
