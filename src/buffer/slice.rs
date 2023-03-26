@@ -52,4 +52,10 @@ impl SwfSlice {
     pub fn position(&self) -> SwfOffset {
         self.read_offset
     }
+
+    /// Returns the length of this slice as a [SwfOffset] from the start of
+    /// the slice to the byte after the end of the slice.
+    pub fn length(&self) -> SwfOffset {
+        self.end_offset - self.start_offset
+    }
 }
