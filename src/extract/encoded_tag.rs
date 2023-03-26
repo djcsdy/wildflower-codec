@@ -37,6 +37,7 @@ use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
 use crate::decode::tags::sounds::define_sound::DefineSoundTag;
 use crate::decode::tags::sounds::sound_stream_block::SoundStreamBlockTag;
 use crate::decode::tags::sounds::sound_stream_head::SoundStreamHeadTag;
+use crate::decode::tags::sounds::sound_stream_head_2::SoundStreamHead2Tag;
 use crate::decode::tags::tag::Tag;
 use crate::decode::tags::text::define_edit_text::DefineEditTextTag;
 use crate::decode::tags::text::define_text::DefineTextTag;
@@ -153,7 +154,9 @@ impl EncodedTag {
             TagType::FrameLabel => read_frame_label_tag(&mut slice_reader)
                 .map(Tag::FrameLabel)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::SoundStreamHead2 => Tag::Unknown(self.into_unknown()),
+            TagType::SoundStreamHead2 => SoundStreamHead2Tag::read(&mut slice_reader)
+                .map(Tag::SoundStreamHead2)
+                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineMorphShape => read_define_morph_shape_tag(&mut slice_reader)
                 .map(Tag::DefineMorphShape)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
