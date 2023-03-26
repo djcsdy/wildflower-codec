@@ -39,4 +39,11 @@ impl SwfSlice {
     pub fn end_pointer(&self) -> SwfPointer {
         self.first_block_index.as_pointer() + self.end_offset
     }
+
+    /// Returns the current read position of this slice as a [SwfPointer].
+    ///
+    /// The pointer points to the next byte to be read within the SWF file.
+    pub fn position_pointer(&self) -> SwfPointer {
+        self.first_block_index.as_pointer() + self.read_offset
+    }
 }
