@@ -1,3 +1,5 @@
+pub mod define_sprite;
+
 use super::control::{EndTag, FrameLabelTag};
 use super::display_list::{
     PlaceObject2Tag, PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag, ShowFrameTag,
@@ -9,13 +11,6 @@ use crate::decode::tags::sounds::sound_stream_block::SoundStreamBlockTag;
 use crate::decode::tags::sounds::sound_stream_head::SoundStreamHeadTag;
 use crate::decode::tags::sounds::sound_stream_head_2::SoundStreamHead2Tag;
 use crate::decode::tags::sounds::start_sound::StartSoundTag;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct DefineSpriteTag {
-    pub sprite_id: u16,
-    pub frame_count: u16,
-    pub control_tags: Vec<ControlTag>,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum ControlTag {
