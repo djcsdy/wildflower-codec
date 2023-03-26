@@ -1,3 +1,6 @@
+use crate::buffer::block::BLOCK_SIZE;
+use crate::buffer::pointer::SwfPointer;
+
 /// An index into the list of [SwfBlock][super::block::SwfBlock]s contained by
 /// a SWF file.
 ///
@@ -15,4 +18,9 @@ impl SwfBlockIndex {
     /// The first SwfBlock starts at the first byte after the end of the
     /// [Header][crate::decode::tags::header::Header].
     pub const ZERO: Self = Self(0);
+
+    /// Returns a [SwfPointer] to the first byte contained by this block.
+    pub fn as_pointer(&self) -> SwfPointer {
+        SwfPointer(self.0 * BLOCK_SIZE as u32)
+    }
 }

@@ -1,4 +1,4 @@
-const BLOCK_SIZE: usize = 1 << 15;
+pub(super) const BLOCK_SIZE: usize = 1 << 15;
 
 /// A 64k block of opaque SWF data.
 ///

@@ -6,7 +6,7 @@ use std::ops::{Add, Sub};
 /// [ZERO][SwfPointer::ZERO] refers to the first byte of the SWF file after
 /// the [Header][crate::decode::tags::header::Header].
 #[derive(Clone, Copy, PartialEq, PartialOrd, Eq, Ord, Debug, Hash)]
-pub struct SwfPointer(u32);
+pub struct SwfPointer(pub(super) u32);
 
 impl SwfPointer {
     /// A pointer to the first byte of a SWF file after the
