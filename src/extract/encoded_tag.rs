@@ -38,6 +38,7 @@ use crate::decode::tags::sounds::sound_stream_block::SoundStreamBlockTag;
 use crate::decode::tags::sounds::sound_stream_head::SoundStreamHeadTag;
 use crate::decode::tags::tag::Tag;
 use crate::decode::tags::text::define_text::DefineTextTag;
+use crate::decode::tags::text::define_text_2::DefineText2Tag;
 use crate::extract::tag_type::TagType;
 
 #[derive(Clone, PartialEq, Eq, Debug, Hash)]
@@ -131,7 +132,9 @@ impl EncodedTag {
             TagType::DefineShape3 => read_define_shape_3_tag(&mut slice_reader)
                 .map(Tag::DefineShape3)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineText2 => Tag::Unknown(self.into_unknown()),
+            TagType::DefineText2 => DefineText2Tag::read(&mut slice_reader)
+                .map(Tag::DefineText2)
+                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineButton2 => Tag::Unknown(self.into_unknown()),
             TagType::DefineBitsJpeg3 => read_define_bits_jpeg_3_tag(&mut slice_reader)
                 .map(Tag::DefineBitsJpeg3)
