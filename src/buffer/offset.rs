@@ -1,6 +1,7 @@
 use std::ops::{Add, Sub};
 
 /// A byte-offset from a [SwfPointer][super::pointer::SwfPointer].
+#[derive(Clone, Copy, PartialEq, PartialOrd, Eq, Ord, Debug, Hash)]
 pub struct SwfOffset(i32);
 
 impl Add for SwfOffset {
