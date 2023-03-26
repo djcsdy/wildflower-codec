@@ -38,6 +38,7 @@ use crate::decode::tags::sounds::define_sound::DefineSoundTag;
 use crate::decode::tags::sounds::sound_stream_block::SoundStreamBlockTag;
 use crate::decode::tags::sounds::sound_stream_head::SoundStreamHeadTag;
 use crate::decode::tags::tag::Tag;
+use crate::decode::tags::text::define_edit_text::DefineEditTextTag;
 use crate::decode::tags::text::define_text::DefineTextTag;
 use crate::decode::tags::text::define_text_2::DefineText2Tag;
 use crate::extract::tag_type::TagType;
@@ -145,7 +146,9 @@ impl EncodedTag {
             TagType::DefineBitsLossless2 => read_define_bits_lossless_2_tag(&mut slice_reader)
                 .map(Tag::DefineBitsLossless2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineEditText => Tag::Unknown(self.into_unknown()),
+            TagType::DefineEditText => DefineEditTextTag::read(&mut slice_reader)
+                .map(Tag::DefineEditText)
+                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineSprite => Tag::Unknown(self.into_unknown()),
             TagType::FrameLabel => read_frame_label_tag(&mut slice_reader)
                 .map(Tag::FrameLabel)
