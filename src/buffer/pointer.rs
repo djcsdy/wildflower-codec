@@ -1,5 +1,5 @@
 use crate::buffer::offset::SwfOffset;
-use std::ops::Add;
+use std::ops::{Add, Sub};
 
 /// A pointer to a specific byte within a SWF file.
 ///
@@ -19,5 +19,13 @@ impl Add<SwfOffset> for SwfPointer {
 
     fn add(self, rhs: SwfOffset) -> Self {
         Self(self.0.checked_add_signed(rhs.0).unwrap())
+    }
+}
+
+impl Sub<SwfOffset> for SwfPointer {
+    type Output = Self;
+
+    fn sub(self, rhs: SwfOffset) -> Self {
+        Self(self.0.checked_add_signed(-rhs.0).unwrap())
     }
 }
