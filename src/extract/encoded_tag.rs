@@ -26,6 +26,7 @@ use crate::decode::tags::actions::do_abc::DoAbcTag;
 use crate::decode::tags::actions::do_action::DoActionTag;
 use crate::decode::tags::actions::do_init_action::DoInitActionTag;
 use crate::decode::tags::buttons::define_button::DefineButtonTag;
+use crate::decode::tags::buttons::define_button_sound::DefineButtonSoundTag;
 use crate::decode::tags::fonts::define_font::DefineFontTag;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::define_font_info::DefineFontInfoTag;
@@ -94,7 +95,9 @@ impl EncodedTag {
                 .map(Tag::DefineSound)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::StartSound => Tag::Unknown(self.into_unknown()),
-            TagType::DefineButtonSound => Tag::Unknown(self.into_unknown()),
+            TagType::DefineButtonSound => DefineButtonSoundTag::read(&mut slice_reader)
+                .map(Tag::DefineButtonSound)
+                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::SoundStreamHead => Tag::Unknown(self.into_unknown()),
             TagType::SoundStreamBlock => Tag::Unknown(self.into_unknown()),
             TagType::DefineBitsLossless => read_define_bits_lossless_tag(&mut slice_reader)
