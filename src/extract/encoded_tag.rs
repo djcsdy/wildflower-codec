@@ -32,6 +32,7 @@ use crate::decode::tags::buttons::define_button_sound::DefineButtonSoundTag;
 use crate::decode::tags::fonts::define_font::DefineFontTag;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::define_font_3::DefineFont3Tag;
+use crate::decode::tags::fonts::define_font_4::DefineFont4Tag;
 use crate::decode::tags::fonts::define_font_align_zones::DefineFontAlignZonesTag;
 use crate::decode::tags::fonts::define_font_info::DefineFontInfoTag;
 use crate::decode::tags::fonts::define_font_info_2::DefineFontInfo2Tag;
@@ -245,7 +246,9 @@ impl EncodedTag {
             TagType::DefineBitsJpeg4 => read_define_bits_jpeg_4_tag(&mut slice_reader)
                 .map(Tag::DefineBitsJpeg4)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineFont4 => Tag::Unknown(self.into_unknown()),
+            TagType::DefineFont4 => DefineFont4Tag::read(&mut slice_reader)
+                .map(Tag::DefineFont4)
+                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::EnableTelemetry => Tag::Unknown(self.into_unknown()),
             TagType::Unknown(_) => Tag::Unknown(self.into_unknown()),
         }
