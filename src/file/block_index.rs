@@ -1,6 +1,6 @@
 use crate::file::block::BLOCK_SIZE;
 use crate::file::pointer::SwfPointer;
-use std::ops::AddAssign;
+use std::ops::{AddAssign, Range};
 
 /// An index into the list of [SwfBlock][super::block::SwfBlock]s contained by
 /// a SWF file.
@@ -30,6 +30,13 @@ impl SwfBlockIndex {
     pub(super) fn of_pointer(pointer: SwfPointer) -> SwfBlockIndex {
         SwfBlockIndex((usize::from(pointer) / BLOCK_SIZE) as u32)
     }
+
+    pub(super) fn iterate(range: Range<Self>) -> SwfBlockIndexRangeIterator {
+        SwfBlockIndexRangeIterator {
+            position: range.start,
+            end: range.end,
+        }
+    }
 }
 
 impl AddAssign<u32> for SwfBlockIndex {
@@ -41,5 +48,24 @@ impl AddAssign<u32> for SwfBlockIndex {
 impl From<SwfBlockIndex> for usize {
     fn from(value: SwfBlockIndex) -> Self {
         value.0 as usize
+    }
+}
+
+pub(super) struct SwfBlockIndexRangeIterator {
+    position: SwfBlockIndex,
+    end: SwfBlockIndex,
+}
+
+impl Iterator for SwfBlockIndexRangeIterator {
+    type Item = SwfBlockIndex;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.position < self.end {
+            let item = self.position;
+            self.position += 1;
+            Some(item)
+        } else {
+            None
+        }
     }
 }
