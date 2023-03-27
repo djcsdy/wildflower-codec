@@ -9,6 +9,12 @@ pub(super) const BLOCK_SIZE: usize = 1 << 15;
 #[derive(Clone, PartialEq, Eq, Debug, Hash)]
 pub(super) struct SwfBlock(pub(super) [u8; BLOCK_SIZE]);
 
+impl SwfBlock {
+    pub(super) fn buffer(&self) -> &[u8; BLOCK_SIZE] {
+        &self.0
+    }
+}
+
 impl Index<usize> for SwfBlock {
     type Output = u8;
 
