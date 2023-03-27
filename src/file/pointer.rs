@@ -1,3 +1,6 @@
+use crate::file::block::BLOCK_SIZE;
+use crate::file::block_index::SwfBlockIndex;
+use crate::file::block_pointer::SwfBlockPointer;
 use crate::file::offset::SwfOffset;
 use std::ops::{Add, Sub};
 
@@ -12,6 +15,13 @@ impl SwfPointer {
     /// A pointer to the first byte of a SWF file after the
     /// [Header][crate::decode::tags::header::Header].
     pub const ZERO: Self = Self(0);
+
+    pub(super) fn as_block_index_and_pointer(self) -> (SwfBlockIndex, SwfBlockPointer) {
+        (
+            SwfBlockIndex::of_pointer(self),
+            SwfBlockPointer((self.0 as usize % BLOCK_SIZE) as u16),
+        )
+    }
 }
 
 impl Add<SwfOffset> for SwfPointer {
