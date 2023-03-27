@@ -47,3 +47,9 @@ impl Sub for SwfPointer {
         SwfOffset(self.0.wrapping_sub(rhs.0) as i32)
     }
 }
+
+impl From<SwfPointer> for usize {
+    fn from(value: SwfPointer) -> Self {
+        value.0 as usize
+    }
+}
