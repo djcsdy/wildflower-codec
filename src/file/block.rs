@@ -9,6 +9,8 @@ pub(super) const BLOCK_SIZE: usize = 1 << 15;
 pub(super) struct SwfBlock([u8; BLOCK_SIZE]);
 
 impl SwfBlock {
+    pub(super) const EMPTY: Self = Self([0u8; BLOCK_SIZE]);
+
     pub(super) fn new(buffer: [u8; BLOCK_SIZE]) -> Self {
         Self(buffer)
     }
