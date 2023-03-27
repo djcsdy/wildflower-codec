@@ -1,3 +1,4 @@
+use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use std::io::Result;
 

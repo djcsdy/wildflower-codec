@@ -42,12 +42,6 @@ impl<'buffer> SwfSliceReader<'buffer> {
         Self::new(self.inner.slice(self.bytes_remaining()), self.swf_version)
     }
 
-    pub fn read_u8_to_end(&mut self) -> Result<Vec<u8>> {
-        let mut buffer = Vec::new();
-        self.read_to_end(&mut buffer)?;
-        Ok(buffer)
-    }
-
     pub fn read_u16_to_end(&mut self) -> Result<Vec<u16>> {
         let mut buffer = Vec::new();
         while self.bytes_remaining() > 0 {
