@@ -1,6 +1,6 @@
-use crate::decode::bit_read::BitRead;
-use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::bit_read::{bit_read, BitRead, BitReadOptions, BitReadState};
 use std::io::{BufRead, IoSliceMut, Read, Result};
+use crate::decode::read_ext::SwfTypesReadExt;
 
 pub struct BitReader<R: Read> {
     inner: R,
@@ -45,26 +45,19 @@ impl<R: Read> BitRead for BitReader<R> {
     }
 
     fn read_ub(&mut self, bits: u8) -> Result<u32> {
-        if bits > 32 {
-            panic!();
-        }
-
-        if bits <= self.partial_bit_count {
-            self.partial_bit_count = self.partial_bit_count - bits;
-            Ok((self.partial_byte as u32) >> self.partial_bit_count)
-        } else {
-            let mut result = self.partial_byte as u32;
-            let mut bits_remaining = bits - self.partial_bit_count;
-            while bits_remaining > 8 {
-                result = (result << 8) | self.inner.read_u8()? as u32;
-                bits_remaining = bits_remaining - 8;
+        let (state, result) = bit_read(
+            &mut BitReadOptions {
+                read_byte: || self.inner.read_u8(),
+                state: BitReadState {
+                    partial_byte: self.partial_byte,
+                    partial_bit_count: self.partial_bit_count,
+                },
+                bits,
             }
-
-            self.partial_byte = self.inner.read_u8()?;
-            self.partial_bit_count = 8 - bits_remaining;
-
-            Ok((result << bits_remaining) | ((self.partial_byte as u32) >> self.partial_bit_count))
-        }
+        );
+        self.partial_byte = state.partial_byte;
+        self.partial_bit_count = state.partial_bit_count;
+        result
     }
 }
 
