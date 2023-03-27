@@ -1,10 +1,10 @@
 use crate::decode::bit_read::{bit_read, BitRead, BitReadOptions, BitReadState};
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::file::file::SwfFile;
 use crate::file::offset::SwfOffset;
 use crate::file::pointer::SwfPointer;
 use std::cmp::max;
 use std::io::{Read, Result};
-use crate::file::file::SwfFile;
 
 #[derive(Clone)]
 pub struct SwfSlice<'file> {

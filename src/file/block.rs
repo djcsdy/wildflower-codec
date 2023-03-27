@@ -1,3 +1,5 @@
+use crate::decode::read_ext::SwfTypesReadExt;
+use std::io::{Read, Result};
 use std::ops::{Index, Range, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive};
 
 pub(super) const BLOCK_SIZE: usize = 1 << 15;
@@ -9,6 +11,12 @@ pub(super) struct SwfBlock([u8; BLOCK_SIZE]);
 impl SwfBlock {
     pub(super) fn new(buffer: [u8; BLOCK_SIZE]) -> Self {
         Self(buffer)
+    }
+
+    pub(super) fn read<R: Read>(reader: &mut R) -> Result<Self> {
+        let mut buffer = [0u8; BLOCK_SIZE];
+        reader.read_u8_into(&mut buffer)?;
+        Ok(Self(buffer))
     }
 
     pub(super) fn buffer(&self) -> &[u8; BLOCK_SIZE] {

@@ -1,11 +1,11 @@
-use std::collections::Bound;
 use crate::decode::header::Header;
 use crate::decode::read_ext::SwfTypesReadExt;
-use std::io::{BufRead, Result};
-use std::ops::RangeBounds;
 use crate::file::offset::SwfOffset;
 use crate::file::pointer::SwfPointer;
 use crate::file::slice::SwfSlice;
+use std::collections::Bound;
+use std::io::{BufRead, Result};
+use std::ops::RangeBounds;
 
 pub struct SwfFile {
     header: Header,
