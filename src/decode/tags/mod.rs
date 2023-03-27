@@ -5,7 +5,6 @@ pub mod common;
 pub mod control;
 pub mod display_list;
 pub mod fonts;
-pub mod header;
 pub mod invalid;
 pub mod metadata;
 pub mod shape_morphing;
