@@ -27,7 +27,7 @@ impl SwfBlockIndex {
     /// Returns the [SwfBlockIndex] of the [SwfBlock][super::block::SwfBlock]
     /// that contains the byte pointed to by the specified [SwfPointer].
     pub(super) fn of_pointer(pointer: SwfPointer) -> SwfBlockIndex {
-        SwfBlockIndex((pointer.0 as usize / BLOCK_SIZE) as u32)
+        SwfBlockIndex((usize::from(pointer) / BLOCK_SIZE) as u32)
     }
 }
 

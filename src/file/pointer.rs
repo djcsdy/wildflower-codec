@@ -19,7 +19,7 @@ impl SwfPointer {
     pub(super) fn as_block_index_and_pointer(self) -> (SwfBlockIndex, SwfBlockPointer) {
         (
             SwfBlockIndex::of_pointer(self),
-            SwfBlockPointer((self.0 as usize % BLOCK_SIZE) as u32),
+            SwfBlockPointer((usize::from(self) % BLOCK_SIZE) as u32),
         )
     }
 }

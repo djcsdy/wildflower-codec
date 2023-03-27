@@ -31,7 +31,7 @@ impl Index<SwfBlockPointer> for SwfBlock {
     type Output = u8;
 
     fn index(&self, index: SwfBlockPointer) -> &Self::Output {
-        &self.0[index.0 as usize]
+        &self.0[usize::from(index)]
     }
 }
 
@@ -39,7 +39,7 @@ impl Index<Range<SwfBlockPointer>> for SwfBlock {
     type Output = [u8];
 
     fn index(&self, index: Range<SwfBlockPointer>) -> &Self::Output {
-        &self.0[index.start.0 as usize..index.end.0 as usize]
+        &self.0[index.start.into()..index.end.into()]
     }
 }
 
@@ -47,7 +47,7 @@ impl Index<RangeInclusive<SwfBlockPointer>> for SwfBlock {
     type Output = [u8];
 
     fn index(&self, index: RangeInclusive<SwfBlockPointer>) -> &Self::Output {
-        &self.0[index.start().0 as usize..=index.end().0 as usize]
+        &self.0[(*index.start()).into()..=(*index.end()).into()]
     }
 }
 
@@ -55,7 +55,7 @@ impl Index<RangeFrom<SwfBlockPointer>> for SwfBlock {
     type Output = [u8];
 
     fn index(&self, index: RangeFrom<SwfBlockPointer>) -> &Self::Output {
-        &self.0[index.start.0 as usize..]
+        &self.0[index.start.into()..]
     }
 }
 
@@ -63,7 +63,7 @@ impl Index<RangeTo<SwfBlockPointer>> for SwfBlock {
     type Output = [u8];
 
     fn index(&self, index: RangeTo<SwfBlockPointer>) -> &Self::Output {
-        &self.0[..index.end.0 as usize]
+        &self.0[..index.end.into()]
     }
 }
 
@@ -71,7 +71,7 @@ impl Index<RangeToInclusive<SwfBlockPointer>> for SwfBlock {
     type Output = [u8];
 
     fn index(&self, index: RangeToInclusive<SwfBlockPointer>) -> &Self::Output {
-        &self.0[..=index.end.0 as usize]
+        &self.0[..=index.end.into()]
     }
 }
 
