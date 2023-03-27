@@ -1,5 +1,6 @@
 use crate::file::block::BLOCK_SIZE;
 use crate::file::pointer::SwfPointer;
+use std::ops::AddAssign;
 
 /// An index into the list of [SwfBlock][super::block::SwfBlock]s contained by
 /// a SWF file.
@@ -28,6 +29,12 @@ impl SwfBlockIndex {
     /// that contains the byte pointed to by the specified [SwfPointer].
     pub(super) fn of_pointer(pointer: SwfPointer) -> SwfBlockIndex {
         SwfBlockIndex((usize::from(pointer) / BLOCK_SIZE) as u32)
+    }
+}
+
+impl AddAssign<u32> for SwfBlockIndex {
+    fn add_assign(&mut self, rhs: u32) {
+        self.0 += rhs
     }
 }
 
