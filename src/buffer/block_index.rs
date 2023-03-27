@@ -9,7 +9,7 @@ use crate::buffer::pointer::SwfPointer;
 /// The first SwfBlock starts at the first byte after the end of the
 /// [Header][crate::decode::tags::header::Header].
 #[derive(Clone, Copy, PartialEq, PartialOrd, Eq, Ord, Debug, Hash)]
-pub struct SwfBlockIndex(u32);
+pub(super) struct SwfBlockIndex(pub(super) u32);
 
 impl SwfBlockIndex {
     /// The index of the first [SwfBlock][super::block::SwfBlock] in a SWF
@@ -17,10 +17,10 @@ impl SwfBlockIndex {
     ///
     /// The first SwfBlock starts at the first byte after the end of the
     /// [Header][crate::decode::tags::header::Header].
-    pub const ZERO: Self = Self(0);
+    pub(super) const ZERO: Self = Self(0);
 
     /// Returns a [SwfPointer] to the first byte contained by this block.
-    pub fn as_pointer(&self) -> SwfPointer {
+    pub(super) fn as_pointer(&self) -> SwfPointer {
         SwfPointer(self.0 * BLOCK_SIZE as u32)
     }
 }
