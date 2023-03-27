@@ -1,7 +1,9 @@
-use crate::buffer::block::SwfBlock;
+use crate::buffer::block::{SwfBlock, BLOCK_SIZE};
 use crate::buffer::block_index::SwfBlockIndex;
 use crate::buffer::offset::SwfOffset;
 use crate::buffer::pointer::SwfPointer;
+use std::cmp::max;
+use std::io::{Read, Result};
 use std::sync::Arc;
 
 #[derive(Clone, Debug)]
@@ -64,5 +66,34 @@ impl SwfSlice {
     /// of the slice.
     pub fn remaining(&self) -> SwfOffset {
         self.end_offset - self.read_offset
+    }
+}
+
+impl Read for SwfSlice {
+    fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
+        let length = max(buf.len(), self.remaining().into());
+        let mut block_index = self.read_offset.0 as usize / BLOCK_SIZE;
+        let block = &self.blocks[block_index];
+        let block_position = self.read_offset.0 as usize % BLOCK_SIZE;
+        let block_remaining = BLOCK_SIZE - block_position;
+        if block_remaining > length {
+            buf[..length].copy_from_slice(&block[block_position..block_position + length]);
+            return Ok(length);
+        } else {
+            buf[..block_remaining].copy_from_slice(&block[block_position..]);
+            let mut pos = block_remaining;
+            loop {
+                block_index += 1;
+                let remaining = pos - length;
+                let block = &self.blocks[block_index];
+                if BLOCK_SIZE > remaining {
+                    buf[pos..length].copy_from_slice(&block[..remaining]);
+                    return Ok(length);
+                } else {
+                    buf[pos..pos + BLOCK_SIZE].copy_from_slice(block.buffer());
+                    pos += BLOCK_SIZE
+                }
+            }
+        }
     }
 }
