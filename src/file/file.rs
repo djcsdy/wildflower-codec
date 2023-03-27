@@ -4,7 +4,7 @@ use std::io::{BufRead, Result};
 
 pub struct SwfFile {
     header: Header,
-    payload: Vec<u8>,
+    pub(super) payload: Vec<u8>,
 }
 
 impl SwfFile {

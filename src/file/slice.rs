@@ -1,37 +1,32 @@
 use crate::decode::bit_read::{bit_read, BitRead, BitReadOptions, BitReadState};
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::file::block::{SwfBlock, BLOCK_SIZE};
-use crate::file::block_index::SwfBlockIndex;
 use crate::file::offset::SwfOffset;
 use crate::file::pointer::SwfPointer;
 use std::cmp::max;
 use std::io::{Read, Result};
-use std::sync::Arc;
+use crate::file::file::SwfFile;
 
-#[derive(Clone, Debug)]
-pub struct SwfSlice {
-    first_block_index: SwfBlockIndex,
-    blocks: Vec<Arc<SwfBlock>>,
-    start_offset: SwfOffset,
-    end_offset: SwfOffset,
-    read_offset: SwfOffset,
+#[derive(Clone)]
+pub struct SwfSlice<'file> {
+    file: &'file SwfFile,
+    start_pointer: SwfPointer,
+    end_pointer: SwfPointer,
+    read_pointer: SwfPointer,
     partial_byte: u8,
     partial_bit_count: u8,
 }
 
-impl SwfSlice {
+impl<'file> SwfSlice<'file> {
     pub(super) fn new(
-        first_block_index: SwfBlockIndex,
-        blocks: Vec<Arc<SwfBlock>>,
-        start_offset: SwfOffset,
-        end_offset: SwfOffset,
+        file: &'file SwfFile,
+        start_pointer: SwfPointer,
+        end_pointer: SwfPointer,
     ) -> Self {
         Self {
-            first_block_index,
-            blocks,
-            start_offset,
-            end_offset,
-            read_offset: start_offset,
+            file,
+            start_pointer,
+            end_pointer,
+            read_pointer: start_pointer,
             partial_byte: 0,
             partial_bit_count: 0,
         }
@@ -39,73 +34,54 @@ impl SwfSlice {
 
     /// Returns a [SwfPointer] to the start of this slice within the SWF file.
     pub fn start_pointer(&self) -> SwfPointer {
-        self.first_block_index.as_pointer() + self.start_offset
+        self.start_pointer
     }
 
     /// Returns a [SwfPointer] to the byte after the end of this slice within
     /// the SWF file.
     pub fn end_pointer(&self) -> SwfPointer {
-        self.first_block_index.as_pointer() + self.end_offset
+        self.end_pointer
     }
 
     /// Returns the current read position of this slice as a [SwfPointer].
     ///
     /// The pointer points to the next byte to be read within the SWF file.
     pub fn position_pointer(&self) -> SwfPointer {
-        self.first_block_index.as_pointer() + self.read_offset
+        self.read_pointer
     }
 
     /// Returns the current read position of this slice as a [SwfOffset] from
     /// the start of the slice.
     pub fn position(&self) -> SwfOffset {
-        self.read_offset
+        self.read_pointer - self.start_pointer
     }
 
     /// Returns the length of this slice as a [SwfOffset] from the start of
     /// the slice to the byte after the end of the slice.
     pub fn length(&self) -> SwfOffset {
-        self.end_offset - self.start_offset
+        self.end_pointer - self.start_pointer
     }
 
     /// Returns the remaining number of readable bytes in this slice as a
     /// [SwfOffset] from the current read position to the byte after the end
     /// of the slice.
     pub fn remaining(&self) -> SwfOffset {
-        self.end_offset - self.read_offset
+        self.end_pointer - self.read_pointer
     }
 }
 
-impl Read for SwfSlice {
+impl<'file> Read for SwfSlice<'file> {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
         self.align_byte();
         let length = max(buf.len(), self.remaining().into());
-        let mut block_index = self.read_offset.0 as usize / BLOCK_SIZE;
-        let block = &self.blocks[block_index];
-        let block_position = self.read_offset.0 as usize % BLOCK_SIZE;
-        let block_remaining = BLOCK_SIZE - block_position;
-        if block_remaining > length {
-            buf[..length].copy_from_slice(&block[block_position..block_position + length]);
-            return Ok(length);
-        } else {
-            buf[..block_remaining].copy_from_slice(&block[block_position..]);
-            let mut pos = block_remaining;
-            loop {
-                block_index += 1;
-                let remaining = pos - length;
-                let block = &self.blocks[block_index];
-                if BLOCK_SIZE > remaining {
-                    buf[pos..length].copy_from_slice(&block[..remaining]);
-                    return Ok(length);
-                } else {
-                    buf[pos..pos + BLOCK_SIZE].copy_from_slice(block.buffer());
-                    pos += BLOCK_SIZE
-                }
-            }
-        }
+        let start = self.read_pointer.0 as usize;
+        let end = start + length;
+        buf.copy_from_slice(&self.file.payload[start..end]);
+        Ok(length)
     }
 }
 
-impl BitRead for SwfSlice {
+impl<'file> BitRead for SwfSlice<'file> {
     fn align_byte(&mut self) {
         self.partial_byte = 0;
         self.partial_bit_count = 0;
