@@ -1,5 +1,4 @@
 use crate::decode::decompressing_reader::DecompressingReader;
-use crate::decode::header::read_header;
 use crate::decode::header::Header;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::extract::encoded_tag::EncodedTag;
@@ -13,7 +12,7 @@ pub struct ExtractTagsReader<'reader, R: BufRead> {
 
 impl<'reader, R: BufRead> ExtractTagsReader<'reader, R> {
     pub fn extract_tags(reader: &'reader mut R) -> Result<Self> {
-        read_header(reader).map(|(header, reader)| ExtractTagsReader { reader, header })
+        Header::read(reader).map(|(header, reader)| ExtractTagsReader { reader, header })
     }
 
     pub fn read_tag(&mut self) -> Result<EncodedTag> {
