@@ -30,3 +30,9 @@ impl SwfBlockIndex {
         SwfBlockIndex((pointer.0 as usize / BLOCK_SIZE) as u32)
     }
 }
+
+impl Into<usize> for SwfBlockIndex {
+    fn into(self) -> usize {
+        self.0 as usize
+    }
+}
