@@ -1,4 +1,4 @@
-use std::ops::{Index, Range, RangeInclusive};
+use std::ops::{Index, Range, RangeFrom, RangeInclusive};
 
 pub(super) const BLOCK_SIZE: usize = 1 << 15;
 
@@ -29,6 +29,14 @@ impl Index<RangeInclusive<usize>> for SwfBlock {
     type Output = [u8];
 
     fn index(&self, index: RangeInclusive<usize>) -> &Self::Output {
+        &self.0[index]
+    }
+}
+
+impl Index<RangeFrom<usize>> for SwfBlock {
+    type Output = [u8];
+
+    fn index(&self, index: RangeFrom<usize>) -> &Self::Output {
         &self.0[index]
     }
 }
