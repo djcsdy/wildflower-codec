@@ -73,7 +73,7 @@ impl<'file> SwfSlice<'file> {
 impl<'file> Read for SwfSlice<'file> {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
         self.align_byte();
-        let length = max(buf.len(), self.remaining().into());
+        let length = max(buf.len(), self.remaining().0 as usize);
         let start = self.read_pointer.0 as usize;
         let end = start + length;
         buf.copy_from_slice(&self.file.payload[start..end]);
