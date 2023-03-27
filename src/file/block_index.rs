@@ -1,6 +1,6 @@
 use crate::file::block::BLOCK_SIZE;
 use crate::file::pointer::SwfPointer;
-use std::ops::{Add, AddAssign, Range};
+use std::ops::{Add, AddAssign, Range, Sub};
 
 /// An index into the list of [SwfBlock][super::block::SwfBlock]s contained by
 /// a SWF file.
@@ -44,6 +44,14 @@ impl Add<u32> for SwfBlockIndex {
 
     fn add(self, rhs: u32) -> Self {
         Self(self.0 + rhs)
+    }
+}
+
+impl Sub<u32> for SwfBlockIndex {
+    type Output = Self;
+
+    fn sub(self, rhs: u32) -> Self {
+        Self(self.0 - rhs)
     }
 }
 
