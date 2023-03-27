@@ -7,9 +7,13 @@ pub(super) const BLOCK_SIZE: usize = 1 << 15;
 /// This block size is chosen because it is the next larger power of 2
 /// than the maximum offset of an AVM1 branch instruction.
 #[derive(Clone, PartialEq, Eq, Debug, Hash)]
-pub(super) struct SwfBlock(pub(super) [u8; BLOCK_SIZE]);
+pub(super) struct SwfBlock([u8; BLOCK_SIZE]);
 
 impl SwfBlock {
+    pub(super) fn new(buffer: [u8; BLOCK_SIZE]) -> Self {
+        Self(buffer)
+    }
+
     pub(super) fn buffer(&self) -> &[u8; BLOCK_SIZE] {
         &self.0
     }
