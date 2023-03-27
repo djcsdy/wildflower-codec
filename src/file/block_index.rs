@@ -1,5 +1,5 @@
-use crate::buffer::block::BLOCK_SIZE;
-use crate::buffer::pointer::SwfPointer;
+use crate::file::block::BLOCK_SIZE;
+use crate::file::pointer::SwfPointer;
 
 /// An index into the list of [SwfBlock][super::block::SwfBlock]s contained by
 /// a SWF file.

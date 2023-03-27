@@ -1,12 +1,12 @@
-use crate::buffer::block::{SwfBlock, BLOCK_SIZE};
-use crate::buffer::block_index::SwfBlockIndex;
-use crate::buffer::offset::SwfOffset;
-use crate::buffer::pointer::SwfPointer;
+use crate::decode::bit_read::{bit_read, BitRead, BitReadOptions, BitReadState};
+use crate::decode::read_ext::SwfTypesReadExt;
+use crate::file::block::{SwfBlock, BLOCK_SIZE};
+use crate::file::block_index::SwfBlockIndex;
+use crate::file::offset::SwfOffset;
+use crate::file::pointer::SwfPointer;
 use std::cmp::max;
 use std::io::{Read, Result};
 use std::sync::Arc;
-use crate::decode::bit_read::{bit_read, BitRead, BitReadOptions, BitReadState};
-use crate::decode::read_ext::SwfTypesReadExt;
 
 #[derive(Clone, Debug)]
 pub struct SwfSlice {

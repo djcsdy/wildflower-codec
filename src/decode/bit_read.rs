@@ -1,4 +1,4 @@
-use std::io::{Result};
+use std::io::Result;
 
 pub trait BitRead {
     fn align_byte(&mut self);
@@ -58,20 +58,33 @@ pub struct BitReadState {
     pub partial_bit_count: u8,
 }
 
-pub fn bit_read<ReadByte: FnMut() -> Result<u8>>(options: &mut BitReadOptions<ReadByte>) -> (BitReadState, Result<u32>) {
-    bit_read_internal(options).map(|(state, value)| (state, Ok(value)))
-        .unwrap_or_else(|err| (BitReadState {
-            partial_byte: 0,
-            partial_bit_count: 0,
-        }, Err(err)))
+pub fn bit_read<ReadByte: FnMut() -> Result<u8>>(
+    options: &mut BitReadOptions<ReadByte>,
+) -> (BitReadState, Result<u32>) {
+    bit_read_internal(options)
+        .map(|(state, value)| (state, Ok(value)))
+        .unwrap_or_else(|err| {
+            (
+                BitReadState {
+                    partial_byte: 0,
+                    partial_bit_count: 0,
+                },
+                Err(err),
+            )
+        })
 }
 
-fn bit_read_internal<ReadByte: FnMut() -> Result<u8>>(options: &mut BitReadOptions<ReadByte>) -> Result<(BitReadState, u32)> {
+fn bit_read_internal<ReadByte: FnMut() -> Result<u8>>(
+    options: &mut BitReadOptions<ReadByte>,
+) -> Result<(BitReadState, u32)> {
     if options.bits > 32 {
         panic!();
     }
 
-    let BitReadState { mut partial_byte, mut partial_bit_count } = options.state;
+    let BitReadState {
+        mut partial_byte,
+        mut partial_bit_count,
+    } = options.state;
 
     if options.bits <= partial_bit_count {
         Ok((
@@ -79,7 +92,7 @@ fn bit_read_internal<ReadByte: FnMut() -> Result<u8>>(options: &mut BitReadOptio
                 partial_byte,
                 partial_bit_count: partial_bit_count - options.bits,
             },
-            (partial_byte as u32) >> partial_bit_count
+            (partial_byte as u32) >> partial_bit_count,
         ))
     } else {
         let mut result = partial_byte as u32;
@@ -97,7 +110,7 @@ fn bit_read_internal<ReadByte: FnMut() -> Result<u8>>(options: &mut BitReadOptio
                 partial_byte,
                 partial_bit_count,
             },
-            (result << bits_remaining) | ((partial_byte as u32) >> partial_bit_count)
+            (result << bits_remaining) | ((partial_byte as u32) >> partial_bit_count),
         ))
     }
 }

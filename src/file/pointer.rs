@@ -1,4 +1,4 @@
-use crate::buffer::offset::SwfOffset;
+use crate::file::offset::SwfOffset;
 use std::ops::{Add, Sub};
 
 /// A pointer to a specific byte within a SWF file.
