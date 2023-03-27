@@ -20,8 +20,8 @@ impl Sub for SwfOffset {
     }
 }
 
-impl Into<usize> for SwfOffset {
-    fn into(self) -> usize {
-        self.0 as usize
+impl From<SwfOffset> for usize {
+    fn from(value: SwfOffset) -> Self {
+        value.0 as usize
     }
 }

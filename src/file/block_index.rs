@@ -31,8 +31,8 @@ impl SwfBlockIndex {
     }
 }
 
-impl Into<usize> for SwfBlockIndex {
-    fn into(self) -> usize {
-        self.0 as usize
+impl From<SwfBlockIndex> for usize {
+    fn from(value: SwfBlockIndex) -> Self {
+        value.0 as usize
     }
 }
