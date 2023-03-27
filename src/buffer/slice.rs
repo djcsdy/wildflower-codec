@@ -5,6 +5,8 @@ use crate::buffer::pointer::SwfPointer;
 use std::cmp::max;
 use std::io::{Read, Result};
 use std::sync::Arc;
+use crate::decode::bit_read::{bit_read, BitRead, BitReadOptions, BitReadState};
+use crate::decode::read_ext::SwfTypesReadExt;
 
 #[derive(Clone, Debug)]
 pub struct SwfSlice {
@@ -13,6 +15,8 @@ pub struct SwfSlice {
     start_offset: SwfOffset,
     end_offset: SwfOffset,
     read_offset: SwfOffset,
+    partial_byte: u8,
+    partial_bit_count: u8,
 }
 
 impl SwfSlice {
@@ -28,6 +32,8 @@ impl SwfSlice {
             start_offset,
             end_offset,
             read_offset: start_offset,
+            partial_byte: 0,
+            partial_bit_count: 0,
         }
     }
 
@@ -71,6 +77,7 @@ impl SwfSlice {
 
 impl Read for SwfSlice {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
+        self.align_byte();
         let length = max(buf.len(), self.remaining().into());
         let mut block_index = self.read_offset.0 as usize / BLOCK_SIZE;
         let block = &self.blocks[block_index];
@@ -95,5 +102,27 @@ impl Read for SwfSlice {
                 }
             }
         }
+    }
+}
+
+impl BitRead for SwfSlice {
+    fn align_byte(&mut self) {
+        self.partial_byte = 0;
+        self.partial_bit_count = 0;
+    }
+
+    fn read_ub(&mut self, bits: u8) -> Result<u32> {
+        let state = BitReadState {
+            partial_byte: self.partial_byte,
+            partial_bit_count: self.partial_bit_count,
+        };
+        let (new_state, result) = bit_read(&mut BitReadOptions {
+            read_byte: || self.read_u8(),
+            state,
+            bits,
+        });
+        self.partial_byte = new_state.partial_byte;
+        self.partial_bit_count = new_state.partial_bit_count;
+        result
     }
 }
