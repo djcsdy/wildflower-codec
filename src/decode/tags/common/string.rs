@@ -26,7 +26,7 @@ impl String {
     }
 
     pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
-        Ok(Self::from_bytes(reader.read_null_terminated_bytes()?))
+        Ok(Self::from_bytes(reader.read_u8_until_null()?))
     }
 
     pub fn read_fixed_length(reader: &mut SwfSliceReader, length_bytes: usize) -> Result<Self> {
