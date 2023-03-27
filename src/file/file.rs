@@ -1,4 +1,4 @@
-use crate::decode::tags::header::Header;
+use crate::decode::header::Header;
 
 pub struct SwfFile {
     header: Header,

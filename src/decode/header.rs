@@ -3,9 +3,19 @@ use crate::decode::decompressing_reader::DecompressingReader;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::rectangle::Rectangle;
-use crate::decode::tags::header::{Compression, Header};
+use crate::decode::tags::header::Compression;
 use std::io::ErrorKind::InvalidData;
 use std::io::{BufRead, Error, Result};
+
+#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash)]
+pub struct Header {
+    pub compression: Compression,
+    pub version: u8,
+    pub file_length: u32,
+    pub frame_size: Rectangle,
+    pub frame_rate: Fixed8,
+    pub frame_count: u16,
+}
 
 pub fn read_header<R: BufRead>(mut reader: R) -> Result<(Header, DecompressingReader<R>)> {
     let mut signature = [0u8; 3];
