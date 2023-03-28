@@ -21,36 +21,36 @@ impl SwfBlockList {
         if range.start >= range.end {
             Vec::new()
         } else {
-            let start_pointer = range.start;
-            let end_pointer = range.end;
+            let mut buffer = Vec::with_capacity((range.end - range.start).0 as usize);
+            self.read_bytes_into(range.start, &mut buffer);
+            buffer
+        }
+    }
 
-            let (start_block_index, start_block_pointer) =
-                start_pointer.as_block_index_and_pointer();
-            let (end_block_index, end_block_pointer) = end_pointer.as_block_index_and_pointer();
+    pub fn read_bytes_into(&self, start_pointer: SwfPointer, buffer: &mut [u8]) -> () {
+        let end_pointer =
+            SwfPointer(u32::try_from(usize::from(start_pointer) + buffer.len()).unwrap());
 
-            let start_block = &self.0[usize::from(start_block_index)];
+        let (start_block_index, start_block_pointer) = start_pointer.as_block_index_and_pointer();
+        let (end_block_index, end_block_pointer) = end_pointer.as_block_index_and_pointer();
 
-            if start_block_index == end_block_index {
-                start_block[start_block_pointer..end_block_pointer].to_vec()
-            } else {
-                let mut buffer = Vec::with_capacity((end_pointer - start_pointer).0 as usize);
-                let mut buffer_position = BLOCK_SIZE - usize::from(start_block_pointer);
-                buffer[..buffer_position].copy_from_slice(&start_block[start_block_pointer..]);
+        let start_block = &self.0[usize::from(start_block_index)];
 
-                for block_index in
-                SwfBlockIndex::iterate(start_block_index + 1..end_block_index - 1)
-                {
-                    let block = &self.0[usize::from(block_index)];
-                    let new_buffer_position = buffer_position + BLOCK_SIZE;
-                    buffer[buffer_position..new_buffer_position].copy_from_slice(&block[..]);
-                    buffer_position = new_buffer_position;
-                }
+        if start_block_index == end_block_index {
+            buffer.copy_from_slice(&start_block[start_block_pointer..end_block_pointer]);
+        } else {
+            let mut buffer_position = BLOCK_SIZE - usize::from(start_block_pointer);
+            buffer[..buffer_position].copy_from_slice(&start_block[start_block_pointer..]);
 
-                let end_block = &self.0[usize::from(end_block_index - 1)];
-                buffer[buffer_position..].copy_from_slice(&end_block[..end_block_pointer]);
-
-                buffer
+            for block_index in SwfBlockIndex::iterate(start_block_index + 1..end_block_index - 1) {
+                let block = &self.0[usize::from(block_index)];
+                let new_buffer_position = buffer_position + BLOCK_SIZE;
+                buffer[buffer_position..new_buffer_position].copy_from_slice(&block[..]);
+                buffer_position = new_buffer_position;
             }
+
+            let end_block = &self.0[usize::from(end_block_index - 1)];
+            buffer[buffer_position..].copy_from_slice(&end_block[..end_block_pointer]);
         }
     }
 }
