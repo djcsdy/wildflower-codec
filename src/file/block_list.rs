@@ -2,7 +2,6 @@ use crate::file::block::{SwfBlock, BLOCK_SIZE};
 use crate::file::block_index::SwfBlockIndex;
 use crate::file::pointer::SwfPointer;
 use std::io::{Read, Result};
-use std::ops::Range;
 
 #[derive(Clone, Debug)]
 pub(super) struct SwfBlockList(Vec<SwfBlock>);
@@ -15,16 +14,6 @@ impl SwfBlockList {
             blocks.push(SwfBlock::read(reader)?);
         }
         Ok(Self(blocks))
-    }
-
-    pub(super) fn read_byte_range(&self, range: Range<SwfPointer>) -> Vec<u8> {
-        if range.start >= range.end {
-            Vec::new()
-        } else {
-            let mut buffer = Vec::with_capacity((range.end - range.start).0 as usize);
-            self.read_bytes_into(range.start, &mut buffer);
-            buffer
-        }
     }
 
     pub(super) fn read_bytes_into(&self, start_pointer: SwfPointer, buffer: &mut [u8]) -> () {
