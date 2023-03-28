@@ -8,7 +8,7 @@ use std::ops::Range;
 pub(super) struct SwfBlockList(Vec<SwfBlock>);
 
 impl SwfBlockList {
-    pub fn read<R: Read>(reader: &mut R, length: u32) -> Result<Self> {
+    pub(super) fn read<R: Read>(reader: &mut R, length: u32) -> Result<Self> {
         let block_count = length as usize / BLOCK_SIZE;
         let mut blocks = Vec::with_capacity(block_count);
         for _ in 0..block_count {
@@ -17,7 +17,7 @@ impl SwfBlockList {
         Ok(Self(blocks))
     }
 
-    pub fn read_byte_range(&self, range: Range<SwfPointer>) -> Vec<u8> {
+    pub(super) fn read_byte_range(&self, range: Range<SwfPointer>) -> Vec<u8> {
         if range.start >= range.end {
             Vec::new()
         } else {
@@ -27,7 +27,7 @@ impl SwfBlockList {
         }
     }
 
-    pub fn read_bytes_into(&self, start_pointer: SwfPointer, buffer: &mut [u8]) -> () {
+    pub(super) fn read_bytes_into(&self, start_pointer: SwfPointer, buffer: &mut [u8]) -> () {
         let end_pointer =
             SwfPointer(u32::try_from(usize::from(start_pointer) + buffer.len()).unwrap());
 
