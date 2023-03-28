@@ -78,7 +78,6 @@ impl<'file> Read for SwfSlice<'file> {
             (self.end_pointer.0 - self.read_pointer.0) as usize,
         );
         self.file
-            .payload
             .read_bytes_into(self.read_pointer, &mut buf[..length]);
         Ok(length)
     }

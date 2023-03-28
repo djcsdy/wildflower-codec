@@ -9,7 +9,7 @@ use std::ops::RangeBounds;
 
 pub struct SwfFile {
     header: Header,
-    pub(super) payload: SwfBlockList,
+    payload: SwfBlockList,
 }
 
 impl SwfFile {
@@ -31,5 +31,9 @@ impl SwfFile {
             Bound::Unbounded => SwfPointer(self.header.file_length),
         };
         SwfSlice::new(&self, start_pointer, end_pointer)
+    }
+
+    pub(super) fn read_bytes_into(&self, start_pointer: SwfPointer, buffer: &mut [u8]) -> () {
+        self.payload.read_bytes_into(start_pointer, buffer)
     }
 }
