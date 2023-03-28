@@ -3,7 +3,7 @@ use crate::decode::read_ext::SwfTypesReadExt;
 use crate::file::file::SwfFile;
 use crate::file::offset::SwfOffset;
 use crate::file::pointer::SwfPointer;
-use std::cmp::max;
+use std::cmp::min;
 use std::io::{Read, Result};
 
 #[derive(Clone)]
@@ -73,10 +73,13 @@ impl<'file> SwfSlice<'file> {
 impl<'file> Read for SwfSlice<'file> {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
         self.align_byte();
-        let length = max(buf.len(), self.remaining().0 as usize);
-        let start = self.read_pointer.into();
-        let end = start + length;
-        buf.copy_from_slice(&self.file.payload[start..end]);
+        let length = min(
+            buf.len(),
+            (self.end_pointer.0 - self.read_pointer.0) as usize,
+        );
+        self.file
+            .payload
+            .read_bytes_into(self.read_pointer, &mut buf[..length]);
         Ok(length)
     }
 }

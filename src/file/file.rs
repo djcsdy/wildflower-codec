@@ -1,5 +1,5 @@
 use crate::decode::header::Header;
-use crate::decode::read_ext::SwfTypesReadExt;
+use crate::file::block_list::SwfBlockList;
 use crate::file::offset::SwfOffset;
 use crate::file::pointer::SwfPointer;
 use crate::file::slice::SwfSlice;
@@ -9,13 +9,13 @@ use std::ops::RangeBounds;
 
 pub struct SwfFile {
     header: Header,
-    pub(super) payload: Vec<u8>,
+    pub(super) payload: SwfBlockList,
 }
 
 impl SwfFile {
-    pub fn read<R: BufRead>(reader: R) -> Result<Self> {
+    pub fn read<R: BufRead>(reader: &mut R) -> Result<Self> {
         let (header, mut reader) = Header::read(reader)?;
-        let payload = reader.read_u8_to_end()?;
+        let payload = SwfBlockList::read(&mut reader, header.file_length)?;
         Ok(Self { header, payload })
     }
 
@@ -28,7 +28,7 @@ impl SwfFile {
         let end_pointer = match range.end_bound() {
             Bound::Included(&pointer) => pointer + SwfOffset(1),
             Bound::Excluded(&pointer) => pointer,
-            Bound::Unbounded => SwfPointer(self.payload.len() as u32),
+            Bound::Unbounded => SwfPointer(self.header.file_length),
         };
         SwfSlice::new(&self, start_pointer, end_pointer)
     }
