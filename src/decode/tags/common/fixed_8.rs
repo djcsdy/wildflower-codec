@@ -1,4 +1,5 @@
 use crate::decode::bit_read::BitRead;
+use crate::decode::read_ext::SwfTypesReadExt;
 use byteorder::{ByteOrder, LittleEndian};
 use std::fmt::{Debug, Display, Formatter};
 use std::io::{Read, Result};
@@ -18,7 +19,7 @@ impl Fixed8 {
 
     pub fn read<R: Read + ?Sized>(reader: &mut R) -> Result<Self> {
         let mut buf = [0u8; 2];
-        reader.read_exact(&mut buf)?;
+        reader.read_u8_into(&mut buf)?;
         Ok(Self::from_bytes(&buf))
     }
 

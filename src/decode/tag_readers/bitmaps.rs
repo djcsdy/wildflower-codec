@@ -17,7 +17,7 @@ pub fn read_define_bits_jpeg_3_tag<R: Read>(reader: &mut R) -> Result<DefineBits
     let character_id = reader.read_u16()?;
     let alpha_data_offset = reader.read_u32()? as usize;
     let mut image_data = vec![0u8; alpha_data_offset];
-    reader.read_exact(&mut image_data)?;
+    reader.read_u8_into(&mut image_data)?;
     let bitmap_alpha_data = reader.read_u8_to_end()?;
     Ok(DefineBitsJpeg3Tag {
         character_id,
@@ -227,7 +227,7 @@ pub fn read_define_bits_jpeg_4_tag(reader: &mut SwfSliceReader) -> Result<Define
     let alpha_data_offset = reader.read_u32()? as usize;
     let deblock_param = Fixed8::read(reader)?;
     let mut image_data = vec![0u8; alpha_data_offset];
-    reader.read_exact(&mut image_data)?;
+    reader.read_u8_into(&mut image_data)?;
     let bitmap_alpha_data = reader.read_u8_to_end()?;
     Ok(DefineBitsJpeg4Tag {
         character_id,
