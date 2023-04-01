@@ -4,8 +4,7 @@ use crate::decode::tag_readers::bitmaps::{
 };
 use crate::decode::tag_readers::control::{
     read_define_scaling_grid_tag, read_define_scene_and_frame_label_data_tag,
-    read_file_attributes_tag, read_frame_label_tag, read_import_assets_2_tag, read_metadata_tag,
-    read_symbol_class_tag,
+    read_file_attributes_tag, read_frame_label_tag, read_metadata_tag, read_symbol_class_tag,
 };
 use crate::decode::tag_readers::display_list::{
     read_place_object_2_tag, read_place_object_3_tag, read_place_object_tag,
@@ -34,6 +33,7 @@ use crate::decode::tags::control::enable_debugger::EnableDebuggerTag;
 use crate::decode::tags::control::enable_debugger_2::EnableDebugger2Tag;
 use crate::decode::tags::control::export_assets::ExportAssetsTag;
 use crate::decode::tags::control::import_assets::ImportAssetsTag;
+use crate::decode::tags::control::import_assets_2::ImportAssets2Tag;
 use crate::decode::tags::control::script_limits::ScriptLimitsTag;
 use crate::decode::tags::control::set_background_color::SetBackgroundColorTag;
 use crate::decode::tags::control::set_tab_index::SetTabIndexTag;
@@ -212,7 +212,7 @@ impl EncodedTag {
             TagType::PlaceObject3 => read_place_object_3_tag(&mut slice_reader)
                 .map(Tag::PlaceObject3)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::ImportAssets2 => read_import_assets_2_tag(&mut slice_reader)
+            TagType::ImportAssets2 => ImportAssets2Tag::read(&mut slice_reader)
                 .map(Tag::ImportAssets2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineFontAlignZones => DefineFontAlignZonesTag::read(&mut slice_reader)

@@ -7,9 +7,7 @@ use crate::decode::tags::control::define_scaling_grid::DefineScalingGridTag;
 use crate::decode::tags::control::define_scene_and_frame_label_data::DefineSceneAndFrameLabelDataTag;
 use crate::decode::tags::control::frame_label::FrameLabelTag;
 use crate::decode::tags::control::frame_label_record::FrameLabelRecord;
-use crate::decode::tags::control::import_assets_2::ImportAssets2Tag;
 use crate::decode::tags::control::metadata::MetadataTag;
-use crate::decode::tags::control::portable_character_record::PortableCharacterRecord;
 use crate::decode::tags::control::scene_record::SceneRecord;
 use crate::decode::tags::control::symbol_class::SymbolClassTag;
 use crate::decode::tags::control::symbol_class_record::SymbolClassRecord;
@@ -25,17 +23,6 @@ pub fn read_frame_label_tag(reader: &mut SwfSliceReader) -> Result<FrameLabelTag
 pub fn read_file_attributes_tag<R: Read>(reader: &mut R) -> Result<FileAttributesTag> {
     let flags = FileAttributesFlags::from_bits_truncate(reader.read_u32()?);
     Ok(FileAttributesTag { flags })
-}
-
-pub fn read_import_assets_2_tag<R: Read>(reader: &mut R) -> Result<ImportAssets2Tag> {
-    let url = String::read(reader)?;
-    reader.read_u16()?;
-    let count = reader.read_u16()?;
-    let mut imports = Vec::with_capacity(count as usize);
-    for _ in 0..count {
-        imports.push(PortableCharacterRecord::read(reader)?);
-    }
-    Ok(ImportAssets2Tag { url, imports })
 }
 
 pub fn read_symbol_class_tag<R: Read>(reader: &mut R) -> Result<SymbolClassTag> {
