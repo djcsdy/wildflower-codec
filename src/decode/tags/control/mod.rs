@@ -5,18 +5,12 @@ pub mod frame_label;
 pub mod import_assets;
 pub mod portable_character_record;
 pub mod protect;
+pub mod script_limits;
 pub mod set_background_color;
 
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::string::String;
 use portable_character_record::PortableCharacterRecord;
-
-/// Overrides the default limits for AVM scripts.
-#[derive(Clone, PartialEq, Debug)]
-pub struct ScriptLimitsTag {
-    pub max_recursion_depth: u16,
-    pub script_timeout_seconds: u16,
-}
 
 /// Sets the tab ordering of the character at the specified depth.
 #[derive(Clone, PartialEq, Debug)]
