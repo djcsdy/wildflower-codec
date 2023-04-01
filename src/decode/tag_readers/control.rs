@@ -102,7 +102,7 @@ fn read_symbol_class_record<R: Read>(reader: &mut R) -> Result<SymbolClassRecord
     })
 }
 
-pub fn read_metadata_tag(reader: &mut SwfSliceReader) -> Result<MetadataTag> {
+pub fn read_metadata_tag<R: Read>(reader: &mut R) -> Result<MetadataTag> {
     let metadata = String::read(reader)?;
     Ok(MetadataTag { metadata })
 }
