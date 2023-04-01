@@ -84,7 +84,7 @@ pub fn read_import_assets_2_tag<R: Read>(reader: &mut R) -> Result<ImportAssets2
     Ok(ImportAssets2Tag { url, imports })
 }
 
-pub fn read_symbol_class_tag(reader: &mut SwfSliceReader) -> Result<SymbolClassTag> {
+pub fn read_symbol_class_tag<R: Read>(reader: &mut R) -> Result<SymbolClassTag> {
     let num_symbols = reader.read_u16()?;
     let mut records = Vec::with_capacity(num_symbols as usize);
     for _ in 0..num_symbols {
