@@ -68,7 +68,7 @@ pub fn read_set_tab_index_tag<R: Read>(reader: &mut R) -> Result<SetTabIndexTag>
     Ok(SetTabIndexTag { depth, tab_index })
 }
 
-pub fn read_file_attributes_tag(reader: &mut SwfSliceReader) -> Result<FileAttributesTag> {
+pub fn read_file_attributes_tag<R: Read>(reader: &mut R) -> Result<FileAttributesTag> {
     let flags = FileAttributesFlags::from_bits_truncate(reader.read_u32()?);
     Ok(FileAttributesTag { flags })
 }
