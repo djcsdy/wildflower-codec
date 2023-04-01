@@ -5,10 +5,6 @@ pub mod set_background_color;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::string::String;
 
-/// Marks the end of a SWF file or of a sprite definition.
-#[derive(Clone, PartialEq, Debug)]
-pub struct EndTag {}
-
 /// Makes portions of the SWF file available for import by other SWF files
 /// using `ImportAssetsTag`.
 #[derive(Clone, PartialEq, Debug)]

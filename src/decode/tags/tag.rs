@@ -1,7 +1,7 @@
 use super::bitmaps::DefineBitsLossless2Tag;
 use super::control::{
     DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, EnableDebugger2Tag, EnableDebuggerTag,
-    EndTag, ExportAssetsTag, ImportAssets2Tag, ImportAssetsTag, MetadataTag, ScriptLimitsTag,
+    ExportAssetsTag, ImportAssets2Tag, ImportAssetsTag, MetadataTag, ScriptLimitsTag,
     SetTabIndexTag, SymbolClassTag,
 };
 use super::display_list::{
@@ -61,7 +61,8 @@ pub enum Tag {
     SetBackgroundColor(SetBackgroundColorTag),
     FrameLabel(FrameLabelTag),
     Protect(ProtectTag),
-    End(EndTag),
+    /// Marks the end of a SWF file.
+    End,
     ExportAssets(ExportAssetsTag),
     ImportAssets(ImportAssetsTag),
     EnableDebugger(EnableDebuggerTag),

@@ -2,7 +2,6 @@ use crate::decode::tags::actions::do_abc::DoAbcTag;
 use crate::decode::tags::actions::do_action::DoActionTag;
 use crate::decode::tags::actions::do_init_action::DoInitActionTag;
 use crate::decode::tags::control::frame_label::FrameLabelTag;
-use crate::decode::tags::control::EndTag;
 use crate::decode::tags::display_list::{
     PlaceObject2Tag, PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag, ShowFrameTag,
 };
@@ -26,5 +25,6 @@ pub enum ControlTag {
     SoundStreamHead(SoundStreamHeadTag),
     SoundStreamHead2(SoundStreamHead2Tag),
     SoundStreamBlock(SoundStreamBlockTag),
-    End(EndTag),
+    /// Marks the end of a sprite definition.
+    End,
 }
