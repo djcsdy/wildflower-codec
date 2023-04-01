@@ -5,7 +5,7 @@ use crate::decode::tag_readers::bitmaps::{
 use crate::decode::tag_readers::control::{
     read_define_scaling_grid_tag, read_define_scene_and_frame_label_data_tag,
     read_enable_debugger_2_tag, read_enable_debugger_tag, read_file_attributes_tag,
-    read_frame_label_tag, read_import_assets_2_tag, read_import_assets_tag, read_metadata_tag,
+    read_frame_label_tag, read_import_assets_2_tag, read_metadata_tag,
     read_script_limits_tag, read_set_tab_index_tag, read_symbol_class_tag,
 };
 use crate::decode::tag_readers::display_list::{
@@ -32,6 +32,7 @@ use crate::decode::tags::buttons::define_button_2::DefineButton2Tag;
 use crate::decode::tags::buttons::define_button_color_transform::DefineButtonColorTransformTag;
 use crate::decode::tags::buttons::define_button_sound::DefineButtonSoundTag;
 use crate::decode::tags::control::export_assets::ExportAssetsTag;
+use crate::decode::tags::control::import_assets::ImportAssetsTag;
 use crate::decode::tags::control::set_background_color::SetBackgroundColorTag;
 use crate::decode::tags::fonts::define_font::DefineFontTag;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
@@ -179,7 +180,7 @@ impl EncodedTag {
             TagType::ExportAssets => ExportAssetsTag::read(&mut slice_reader)
                 .map(Tag::ExportAssets)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::ImportAssets => read_import_assets_tag(&mut slice_reader)
+            TagType::ImportAssets => ImportAssetsTag::read(&mut slice_reader)
                 .map(Tag::ImportAssets)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::EnableDebugger => read_enable_debugger_tag(&mut slice_reader)

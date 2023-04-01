@@ -9,7 +9,6 @@ use crate::decode::tags::control::enable_debugger::EnableDebuggerTag;
 use crate::decode::tags::control::enable_debugger_2::EnableDebugger2Tag;
 use crate::decode::tags::control::frame_label::FrameLabelTag;
 use crate::decode::tags::control::frame_label_record::FrameLabelRecord;
-use crate::decode::tags::control::import_assets::ImportAssetsTag;
 use crate::decode::tags::control::import_assets_2::ImportAssets2Tag;
 use crate::decode::tags::control::metadata::MetadataTag;
 use crate::decode::tags::control::portable_character_record::PortableCharacterRecord;
@@ -25,16 +24,6 @@ pub fn read_frame_label_tag(reader: &mut SwfSliceReader) -> Result<FrameLabelTag
     let name = String::read(reader)?;
     let named_anchor = reader.bytes_remaining() > 0 && reader.read_u8()? == 1;
     Ok(FrameLabelTag { name, named_anchor })
-}
-
-pub fn read_import_assets_tag<R: Read>(reader: &mut R) -> Result<ImportAssetsTag> {
-    let url = String::read(reader)?;
-    let count = reader.read_u16()?;
-    let mut imports = Vec::with_capacity(count as usize);
-    for _ in 0..count {
-        imports.push(PortableCharacterRecord::read(reader)?);
-    }
-    Ok(ImportAssetsTag { url, imports })
 }
 
 pub fn read_enable_debugger_tag<R: Read>(reader: &mut R) -> Result<EnableDebuggerTag> {
