@@ -1,3 +1,4 @@
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::rectangle::Rectangle;
@@ -107,7 +108,7 @@ pub fn read_metadata_tag<R: Read>(reader: &mut R) -> Result<MetadataTag> {
     Ok(MetadataTag { metadata })
 }
 
-pub fn read_define_scaling_grid_tag(reader: &mut SwfSliceReader) -> Result<DefineScalingGridTag> {
+pub fn read_define_scaling_grid_tag<R: BitRead>(reader: &mut R) -> Result<DefineScalingGridTag> {
     let character_id = reader.read_u16()?;
     let splitter = Rectangle::read(reader)?;
     Ok(DefineScalingGridTag {
