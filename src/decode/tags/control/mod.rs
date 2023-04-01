@@ -1,12 +1,7 @@
-use crate::decode::tags::common::rectangle::Rectangle;
-use crate::decode::tags::common::rgb::Rgb;
-use crate::decode::tags::common::string::String;
+pub mod set_background_color;
 
-/// Sets the background color of the display.
-#[derive(Clone, PartialEq, Debug)]
-pub struct SetBackgroundColorTag {
-    pub color: Rgb,
-}
+use crate::decode::tags::common::rectangle::Rectangle;
+use crate::decode::tags::common::string::String;
 
 /// Labels the current frame with the specified name.
 #[derive(Clone, PartialEq, Debug)]

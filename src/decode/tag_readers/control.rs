@@ -3,11 +3,12 @@ use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::string::String;
+use crate::decode::tags::control::set_background_color::SetBackgroundColorTag;
 use crate::decode::tags::control::{
     DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, EnableDebugger2Tag, EnableDebuggerTag,
     ExportAssetsTag, FrameLabelRecord, FrameLabelTag, ImportAssets2Tag, ImportAssetsTag,
-    MetadataTag, PortableCharacterRecord, SceneRecord, ScriptLimitsTag, SetBackgroundColorTag,
-    SetTabIndexTag, SymbolClassRecord, SymbolClassTag,
+    MetadataTag, PortableCharacterRecord, SceneRecord, ScriptLimitsTag, SetTabIndexTag,
+    SymbolClassRecord, SymbolClassTag,
 };
 use crate::decode::tags::metadata::{FileAttributesFlags, FileAttributesTag};
 use std::io::{Read, Result};
