@@ -136,7 +136,7 @@ pub fn read_define_scene_and_frame_label_data_tag(
     })
 }
 
-fn read_scene_record(reader: &mut SwfSliceReader) -> Result<SceneRecord> {
+fn read_scene_record<R: Read>(reader: &mut R) -> Result<SceneRecord> {
     let offset = reader.read_encoded_u32()?;
     let name = String::read(reader)?;
     Ok(SceneRecord { offset, name })
