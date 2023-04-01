@@ -29,18 +29,9 @@ pub fn read_symbol_class_tag<R: Read>(reader: &mut R) -> Result<SymbolClassTag> 
     let num_symbols = reader.read_u16()?;
     let mut records = Vec::with_capacity(num_symbols as usize);
     for _ in 0..num_symbols {
-        records.push(read_symbol_class_record(reader)?);
+        records.push(SymbolClassRecord::read(reader)?);
     }
     Ok(SymbolClassTag { records })
-}
-
-fn read_symbol_class_record<R: Read>(reader: &mut R) -> Result<SymbolClassRecord> {
-    let character_id = reader.read_u16()?;
-    let class_name = String::read(reader)?;
-    Ok(SymbolClassRecord {
-        character_id,
-        class_name,
-    })
 }
 
 pub fn read_metadata_tag<R: Read>(reader: &mut R) -> Result<MetadataTag> {
