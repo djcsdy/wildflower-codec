@@ -36,7 +36,7 @@ pub fn read_import_assets_tag(reader: &mut SwfSliceReader) -> Result<ImportAsset
     Ok(ImportAssetsTag { url, imports })
 }
 
-fn read_portable_character_record(reader: &mut SwfSliceReader) -> Result<PortableCharacterRecord> {
+fn read_portable_character_record<R: Read>(reader: &mut R) -> Result<PortableCharacterRecord> {
     let character_id = reader.read_u16()?;
     let name = String::read(reader)?;
     Ok(PortableCharacterRecord { character_id, name })
