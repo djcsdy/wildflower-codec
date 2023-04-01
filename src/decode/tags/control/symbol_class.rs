@@ -1,4 +1,4 @@
-use crate::decode::tags::control::SymbolClassRecord;
+use crate::decode::tags::control::symbol_class_record::SymbolClassRecord;
 
 /// Creates associations between characters in the SWF file and ActionScript 3
 /// classes.
