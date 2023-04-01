@@ -9,6 +9,7 @@ pub mod import_assets_2;
 pub mod metadata;
 pub mod portable_character_record;
 pub mod protect;
+pub mod scene_record;
 pub mod script_limits;
 pub mod set_background_color;
 pub mod set_tab_index;
@@ -16,12 +17,6 @@ pub mod symbol_class;
 pub mod symbol_class_record;
 
 use crate::decode::tags::common::string::String;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct SceneRecord {
-    pub offset: u32,
-    pub name: String,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct FrameLabelRecord {
