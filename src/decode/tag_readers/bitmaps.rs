@@ -69,26 +69,20 @@ pub fn read_define_bits_lossless_tag(reader: &mut SwfSliceReader) -> Result<Defi
 
 struct ReadColorMapDataOptions<
     'reader,
-    'buffer,
     'read_color,
+    Reader: Read,
     Color,
-    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
+    ReadColor: Fn(&mut Reader) -> Result<Color>,
 > {
-    reader: &'reader mut SwfSliceReader<'buffer>,
+    reader: &'reader mut Reader,
     read_color: &'read_color ReadColor,
     color_table_size: usize,
     bitmap_width: u16,
     bitmap_height: u16,
 }
 
-fn read_colormap_data<
-    'reader,
-    'buffer,
-    'read_color,
-    Color,
-    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
->(
-    options: ReadColorMapDataOptions<'reader, 'buffer, 'read_color, Color, ReadColor>,
+fn read_colormap_data<Reader: Read, Color, ReadColor: Fn(&mut Reader) -> Result<Color>>(
+    options: ReadColorMapDataOptions<Reader, Color, ReadColor>,
 ) -> Result<ColorMapData<Color>> {
     let mut color_table = Vec::with_capacity(options.color_table_size);
     for _ in 0..options.color_table_size {
