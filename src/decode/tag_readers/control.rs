@@ -3,12 +3,12 @@ use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::string::String;
+use crate::decode::tags::control::export_assets::ExportAssetsTag;
 use crate::decode::tags::control::frame_label::FrameLabelTag;
 use crate::decode::tags::control::{
     DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, EnableDebugger2Tag, EnableDebuggerTag,
-    ExportAssetsTag, FrameLabelRecord, ImportAssets2Tag, ImportAssetsTag, MetadataTag,
-    PortableCharacterRecord, SceneRecord, ScriptLimitsTag, SetTabIndexTag, SymbolClassRecord,
-    SymbolClassTag,
+    FrameLabelRecord, ImportAssets2Tag, ImportAssetsTag, MetadataTag, PortableCharacterRecord,
+    SceneRecord, ScriptLimitsTag, SetTabIndexTag, SymbolClassRecord, SymbolClassTag,
 };
 use crate::decode::tags::metadata::{FileAttributesFlags, FileAttributesTag};
 use std::io::{Read, Result};
