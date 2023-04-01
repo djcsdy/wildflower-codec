@@ -1,7 +1,7 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use std::fmt::{Debug, Formatter};
-use std::io::Result;
+use std::io::{Read, Result};
 
 /// A sequence of bytes representing a character string.
 ///
@@ -25,7 +25,7 @@ impl String {
         String(buf.into())
     }
 
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         Ok(Self::from_bytes(reader.read_u8_until_null()?))
     }
 
