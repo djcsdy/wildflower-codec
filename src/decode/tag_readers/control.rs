@@ -53,7 +53,7 @@ pub fn read_enable_debugger_2_tag<R: Read>(reader: &mut R) -> Result<EnableDebug
     Ok(EnableDebugger2Tag { password_md5 })
 }
 
-pub fn read_script_limits_tag(reader: &mut SwfSliceReader) -> Result<ScriptLimitsTag> {
+pub fn read_script_limits_tag<R: Read>(reader: &mut R) -> Result<ScriptLimitsTag> {
     let max_recursion_depth = reader.read_u16()?;
     let script_timeout_seconds = reader.read_u16()?;
     Ok(ScriptLimitsTag {
