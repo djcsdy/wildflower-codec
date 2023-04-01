@@ -3,8 +3,7 @@ use crate::decode::tag_readers::bitmaps::{
     read_define_bits_lossless_2_tag, read_define_bits_lossless_tag,
 };
 use crate::decode::tag_readers::control::{
-    read_define_scaling_grid_tag, read_define_scene_and_frame_label_data_tag,
-    read_file_attributes_tag, read_frame_label_tag,
+    read_define_scene_and_frame_label_data_tag, read_file_attributes_tag, read_frame_label_tag,
 };
 use crate::decode::tag_readers::display_list::{
     read_place_object_2_tag, read_place_object_3_tag, read_place_object_tag,
@@ -29,6 +28,7 @@ use crate::decode::tags::buttons::define_button::DefineButtonTag;
 use crate::decode::tags::buttons::define_button_2::DefineButton2Tag;
 use crate::decode::tags::buttons::define_button_color_transform::DefineButtonColorTransformTag;
 use crate::decode::tags::buttons::define_button_sound::DefineButtonSoundTag;
+use crate::decode::tags::control::define_scaling_grid::DefineScalingGridTag;
 use crate::decode::tags::control::enable_debugger::EnableDebuggerTag;
 use crate::decode::tags::control::enable_debugger_2::EnableDebugger2Tag;
 use crate::decode::tags::control::export_assets::ExportAssetsTag;
@@ -232,7 +232,7 @@ impl EncodedTag {
             TagType::Metadata => MetadataTag::read(&mut slice_reader)
                 .map(Tag::Metadata)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineScalingGrid => read_define_scaling_grid_tag(&mut slice_reader)
+            TagType::DefineScalingGrid => DefineScalingGridTag::read(&mut slice_reader)
                 .map(Tag::DefineScalingGrid)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DoAbc => DoAbcTag::read(&mut slice_reader)

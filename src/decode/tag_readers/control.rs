@@ -1,9 +1,6 @@
-use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::string::String;
-use crate::decode::tags::control::define_scaling_grid::DefineScalingGridTag;
 use crate::decode::tags::control::define_scene_and_frame_label_data::DefineSceneAndFrameLabelDataTag;
 use crate::decode::tags::control::frame_label::FrameLabelTag;
 use crate::decode::tags::control::frame_label_record::FrameLabelRecord;
@@ -20,15 +17,6 @@ pub fn read_frame_label_tag(reader: &mut SwfSliceReader) -> Result<FrameLabelTag
 pub fn read_file_attributes_tag<R: Read>(reader: &mut R) -> Result<FileAttributesTag> {
     let flags = FileAttributesFlags::from_bits_truncate(reader.read_u32()?);
     Ok(FileAttributesTag { flags })
-}
-
-pub fn read_define_scaling_grid_tag<R: BitRead>(reader: &mut R) -> Result<DefineScalingGridTag> {
-    let character_id = reader.read_u16()?;
-    let splitter = Rectangle::read(reader)?;
-    Ok(DefineScalingGridTag {
-        character_id,
-        splitter,
-    })
 }
 
 pub fn read_define_scene_and_frame_label_data_tag<R: Read>(
