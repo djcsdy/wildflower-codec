@@ -1,19 +1,11 @@
 pub mod define_bits;
 pub mod define_bits_jpeg_2;
 pub mod define_bits_jpeg_3;
+pub mod define_bits_jpeg_4;
 pub mod define_bits_lossless;
 pub mod jpeg_tables;
 
-use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::rgba::Rgba;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct DefineBitsJpeg4Tag {
-    pub character_id: u16,
-    pub deblock_param: Fixed8,
-    pub image_data: Vec<u8>,
-    pub bitmap_alpha_data: Vec<u8>,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineBitsLossless2Tag {
