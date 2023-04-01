@@ -1,8 +1,9 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
+use crate::decode::tags::bitmaps::define_bits_lossless::DefineBitsLosslessTag;
 use crate::decode::tags::bitmaps::{
-    BitmapData, ColorMapData, DefineBitsJpeg4Tag, DefineBitsLossless2Tag, DefineBitsLosslessTag,
+    BitmapData, ColorMapData, DefineBitsJpeg4Tag, DefineBitsLossless2Tag,
 };
 use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::rgb::Rgb;

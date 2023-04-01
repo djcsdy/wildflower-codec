@@ -1,4 +1,4 @@
-use super::bitmaps::{DefineBitsJpeg4Tag, DefineBitsLossless2Tag, DefineBitsLosslessTag};
+use super::bitmaps::{DefineBitsJpeg4Tag, DefineBitsLossless2Tag};
 use super::control::{
     DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, EnableDebugger2Tag, EnableDebuggerTag,
     EndTag, ExportAssetsTag, FrameLabelTag, ImportAssets2Tag, ImportAssetsTag, MetadataTag,
@@ -18,6 +18,7 @@ use crate::decode::tags::actions::do_init_action::DoInitActionTag;
 use crate::decode::tags::bitmaps::define_bits::DefineBitsTag;
 use crate::decode::tags::bitmaps::define_bits_jpeg_2::DefineBitsJpeg2Tag;
 use crate::decode::tags::bitmaps::define_bits_jpeg_3::DefineBitsJpeg3Tag;
+use crate::decode::tags::bitmaps::define_bits_lossless::DefineBitsLosslessTag;
 use crate::decode::tags::bitmaps::jpeg_tables::JpegTablesTag;
 use crate::decode::tags::buttons::define_button::DefineButtonTag;
 use crate::decode::tags::buttons::define_button_2::DefineButton2Tag;
