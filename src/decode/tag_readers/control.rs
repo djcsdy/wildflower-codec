@@ -117,8 +117,8 @@ pub fn read_define_scaling_grid_tag<R: BitRead>(reader: &mut R) -> Result<Define
     })
 }
 
-pub fn read_define_scene_and_frame_label_data_tag(
-    reader: &mut SwfSliceReader,
+pub fn read_define_scene_and_frame_label_data_tag<R: Read>(
+    reader: &mut R,
 ) -> Result<DefineSceneAndFrameLabelDataTag> {
     let scene_count = reader.read_encoded_u32()?;
     let mut scenes = Vec::with_capacity(scene_count as usize);
