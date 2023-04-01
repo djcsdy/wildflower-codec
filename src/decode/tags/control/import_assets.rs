@@ -1,8 +1,8 @@
-use std::io::Read;
-use std::io;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tags::common::string::String;
 use crate::decode::tags::control::portable_character_record::PortableCharacterRecord;
+use std::io;
+use std::io::Read;
 
 /// Imports characters from another SWF file.
 #[derive(Clone, PartialEq, Debug)]

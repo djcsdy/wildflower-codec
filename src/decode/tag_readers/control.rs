@@ -5,7 +5,6 @@ use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::string::String;
 use crate::decode::tags::control::define_scaling_grid::DefineScalingGridTag;
 use crate::decode::tags::control::define_scene_and_frame_label_data::DefineSceneAndFrameLabelDataTag;
-use crate::decode::tags::control::enable_debugger::EnableDebuggerTag;
 use crate::decode::tags::control::enable_debugger_2::EnableDebugger2Tag;
 use crate::decode::tags::control::frame_label::FrameLabelTag;
 use crate::decode::tags::control::frame_label_record::FrameLabelRecord;
@@ -24,11 +23,6 @@ pub fn read_frame_label_tag(reader: &mut SwfSliceReader) -> Result<FrameLabelTag
     let name = String::read(reader)?;
     let named_anchor = reader.bytes_remaining() > 0 && reader.read_u8()? == 1;
     Ok(FrameLabelTag { name, named_anchor })
-}
-
-pub fn read_enable_debugger_tag<R: Read>(reader: &mut R) -> Result<EnableDebuggerTag> {
-    let password_md5 = reader.read_u8_until_null()?;
-    Ok(EnableDebuggerTag { password_md5 })
 }
 
 pub fn read_enable_debugger_2_tag<R: Read>(reader: &mut R) -> Result<EnableDebugger2Tag> {
