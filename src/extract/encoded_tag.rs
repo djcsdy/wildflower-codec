@@ -6,8 +6,8 @@ use crate::decode::tag_readers::control::{
     read_define_scaling_grid_tag, read_define_scene_and_frame_label_data_tag,
     read_enable_debugger_2_tag, read_enable_debugger_tag, read_export_assets_tag,
     read_file_attributes_tag, read_frame_label_tag, read_import_assets_2_tag,
-    read_import_assets_tag, read_metadata_tag, read_script_limits_tag,
-    read_set_background_color_tag, read_set_tab_index_tag, read_symbol_class_tag,
+    read_import_assets_tag, read_metadata_tag, read_script_limits_tag, read_set_tab_index_tag,
+    read_symbol_class_tag,
 };
 use crate::decode::tag_readers::display_list::{
     read_place_object_2_tag, read_place_object_3_tag, read_place_object_tag,
@@ -32,6 +32,7 @@ use crate::decode::tags::buttons::define_button::DefineButtonTag;
 use crate::decode::tags::buttons::define_button_2::DefineButton2Tag;
 use crate::decode::tags::buttons::define_button_color_transform::DefineButtonColorTransformTag;
 use crate::decode::tags::buttons::define_button_sound::DefineButtonSoundTag;
+use crate::decode::tags::control::set_background_color::SetBackgroundColorTag;
 use crate::decode::tags::fonts::define_font::DefineFontTag;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::define_font_3::DefineFont3Tag;
@@ -93,7 +94,7 @@ impl EncodedTag {
             TagType::JpegTables => JpegTablesTag::read(&mut slice_reader)
                 .map(Tag::JpegTables)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::SetBackgroundColor => read_set_background_color_tag(&mut slice_reader)
+            TagType::SetBackgroundColor => SetBackgroundColorTag::read(&mut slice_reader)
                 .map(Tag::SetBackgroundColor)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineFont => DefineFontTag::read(&mut slice_reader)

@@ -1,9 +1,7 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::rectangle::Rectangle;
-use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::string::String;
-use crate::decode::tags::control::set_background_color::SetBackgroundColorTag;
 use crate::decode::tags::control::{
     DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, EnableDebugger2Tag, EnableDebuggerTag,
     ExportAssetsTag, FrameLabelRecord, FrameLabelTag, ImportAssets2Tag, ImportAssetsTag,
@@ -11,12 +9,7 @@ use crate::decode::tags::control::{
     SymbolClassRecord, SymbolClassTag,
 };
 use crate::decode::tags::metadata::{FileAttributesFlags, FileAttributesTag};
-use std::io::{Read, Result};
-
-pub fn read_set_background_color_tag<R: Read>(reader: &mut R) -> Result<SetBackgroundColorTag> {
-    let color = Rgb::read(reader)?;
-    Ok(SetBackgroundColorTag { color })
-}
+use std::io::Result;
 
 pub fn read_frame_label_tag(reader: &mut SwfSliceReader) -> Result<FrameLabelTag> {
     let name = String::read(reader)?;
