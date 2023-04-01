@@ -1,3 +1,4 @@
+pub mod define_scaling_grid;
 pub mod enable_debugger;
 pub mod enable_debugger_2;
 pub mod export_assets;
@@ -13,16 +14,7 @@ pub mod set_tab_index;
 pub mod symbol_class;
 pub mod symbol_class_record;
 
-use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::string::String;
-
-/// Defines a 9-slice grid that should be applied when scaling the specified
-/// character.
-#[derive(Clone, PartialEq, Debug)]
-pub struct DefineScalingGridTag {
-    pub character_id: u16,
-    pub splitter: Rectangle,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineSceneAndFrameLabelDataTag {
