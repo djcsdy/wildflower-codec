@@ -62,7 +62,7 @@ pub fn read_script_limits_tag<R: Read>(reader: &mut R) -> Result<ScriptLimitsTag
     })
 }
 
-pub fn read_set_tab_index_tag(reader: &mut SwfSliceReader) -> Result<SetTabIndexTag> {
+pub fn read_set_tab_index_tag<R: Read>(reader: &mut R) -> Result<SetTabIndexTag> {
     let depth = reader.read_u16()?;
     let tab_index = reader.read_u16()?;
     Ok(SetTabIndexTag { depth, tab_index })
