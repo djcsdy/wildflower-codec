@@ -26,7 +26,7 @@ pub fn read_export_assets_tag<R: Read>(reader: &mut R) -> Result<ExportAssetsTag
     Ok(ExportAssetsTag { exports })
 }
 
-pub fn read_import_assets_tag(reader: &mut SwfSliceReader) -> Result<ImportAssetsTag> {
+pub fn read_import_assets_tag<R: Read>(reader: &mut R) -> Result<ImportAssetsTag> {
     let url = String::read(reader)?;
     let count = reader.read_u16()?;
     let mut imports = Vec::with_capacity(count as usize);
