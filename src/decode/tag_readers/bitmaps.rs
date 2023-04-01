@@ -1,7 +1,6 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tags::bitmaps::jpeg_tables::JpegTablesTag;
 use crate::decode::tags::bitmaps::{
     BitmapData, ColorMapData, DefineBitsJpeg2Tag, DefineBitsJpeg3Tag, DefineBitsJpeg4Tag,
     DefineBitsLossless2Tag, DefineBitsLosslessTag,
@@ -13,11 +12,6 @@ use inflate::DeflateDecoder;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Read, Result};
-
-pub fn read_jpeg_tables_tag<R: Read>(reader: &mut R) -> Result<JpegTablesTag> {
-    let jpeg_data = reader.read_u8_to_end()?;
-    Ok(JpegTablesTag { jpeg_data })
-}
 
 pub fn read_define_bits_jpeg_2_tag(reader: &mut SwfSliceReader) -> Result<DefineBitsJpeg2Tag> {
     let character_id = reader.read_u16()?;
