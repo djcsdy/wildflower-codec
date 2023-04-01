@@ -11,7 +11,6 @@ use crate::decode::tags::control::import_assets_2::ImportAssets2Tag;
 use crate::decode::tags::control::metadata::MetadataTag;
 use crate::decode::tags::control::portable_character_record::PortableCharacterRecord;
 use crate::decode::tags::control::scene_record::SceneRecord;
-use crate::decode::tags::control::script_limits::ScriptLimitsTag;
 use crate::decode::tags::control::set_tab_index::SetTabIndexTag;
 use crate::decode::tags::control::symbol_class::SymbolClassTag;
 use crate::decode::tags::control::symbol_class_record::SymbolClassRecord;
@@ -22,15 +21,6 @@ pub fn read_frame_label_tag(reader: &mut SwfSliceReader) -> Result<FrameLabelTag
     let name = String::read(reader)?;
     let named_anchor = reader.bytes_remaining() > 0 && reader.read_u8()? == 1;
     Ok(FrameLabelTag { name, named_anchor })
-}
-
-pub fn read_script_limits_tag<R: Read>(reader: &mut R) -> Result<ScriptLimitsTag> {
-    let max_recursion_depth = reader.read_u16()?;
-    let script_timeout_seconds = reader.read_u16()?;
-    Ok(ScriptLimitsTag {
-        max_recursion_depth,
-        script_timeout_seconds,
-    })
 }
 
 pub fn read_set_tab_index_tag<R: Read>(reader: &mut R) -> Result<SetTabIndexTag> {
