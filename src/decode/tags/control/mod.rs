@@ -1,13 +1,9 @@
 pub mod frame_label;
+pub mod protect;
 pub mod set_background_color;
 
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::string::String;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct ProtectTag {
-    pub password_md5: Vec<u8>,
-}
 
 /// Marks the end of a SWF file or of a sprite definition.
 #[derive(Clone, PartialEq, Debug)]
