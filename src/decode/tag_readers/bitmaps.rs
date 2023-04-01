@@ -1,7 +1,6 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tags::bitmaps::define_bits_jpeg_3::DefineBitsJpeg3Tag;
 use crate::decode::tags::bitmaps::{
     BitmapData, ColorMapData, DefineBitsJpeg4Tag, DefineBitsLossless2Tag, DefineBitsLosslessTag,
 };
@@ -12,19 +11,6 @@ use inflate::DeflateDecoder;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Read, Result};
-
-pub fn read_define_bits_jpeg_3_tag<R: Read>(reader: &mut R) -> Result<DefineBitsJpeg3Tag> {
-    let character_id = reader.read_u16()?;
-    let alpha_data_offset = reader.read_u32()? as usize;
-    let mut image_data = vec![0u8; alpha_data_offset];
-    reader.read_u8_into(&mut image_data)?;
-    let bitmap_alpha_data = reader.read_u8_to_end()?;
-    Ok(DefineBitsJpeg3Tag {
-        character_id,
-        image_data,
-        bitmap_alpha_data,
-    })
-}
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
 #[repr(u8)]

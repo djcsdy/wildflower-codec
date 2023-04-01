@@ -1,7 +1,6 @@
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::bitmaps::{
-    read_define_bits_jpeg_3_tag, read_define_bits_jpeg_4_tag, read_define_bits_lossless_2_tag,
-    read_define_bits_lossless_tag,
+    read_define_bits_jpeg_4_tag, read_define_bits_lossless_2_tag, read_define_bits_lossless_tag,
 };
 use crate::decode::tag_readers::control::{
     read_define_scaling_grid_tag, read_define_scene_and_frame_label_data_tag,
@@ -26,6 +25,7 @@ use crate::decode::tags::actions::do_action::DoActionTag;
 use crate::decode::tags::actions::do_init_action::DoInitActionTag;
 use crate::decode::tags::bitmaps::define_bits::DefineBitsTag;
 use crate::decode::tags::bitmaps::define_bits_jpeg_2::DefineBitsJpeg2Tag;
+use crate::decode::tags::bitmaps::define_bits_jpeg_3::DefineBitsJpeg3Tag;
 use crate::decode::tags::bitmaps::jpeg_tables::JpegTablesTag;
 use crate::decode::tags::buttons::define_button::DefineButtonTag;
 use crate::decode::tags::buttons::define_button_2::DefineButton2Tag;
@@ -150,7 +150,7 @@ impl EncodedTag {
             TagType::DefineButton2 => DefineButton2Tag::read(&mut slice_reader)
                 .map(Tag::DefineButton2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineBitsJpeg3 => read_define_bits_jpeg_3_tag(&mut slice_reader)
+            TagType::DefineBitsJpeg3 => DefineBitsJpeg3Tag::read(&mut slice_reader)
                 .map(Tag::DefineBitsJpeg3)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineBitsLossless2 => read_define_bits_lossless_2_tag(&mut slice_reader)
