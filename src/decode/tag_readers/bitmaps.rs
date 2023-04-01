@@ -1,10 +1,8 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tags::bitmaps::define_bits_jpeg_4::DefineBitsJpeg4Tag;
 use crate::decode::tags::bitmaps::define_bits_lossless::DefineBitsLosslessTag;
 use crate::decode::tags::bitmaps::{BitmapData, ColorMapData, DefineBitsLossless2Tag};
-use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::rgba::Rgba;
 use inflate::DeflateDecoder;
@@ -205,20 +203,5 @@ pub fn read_define_bits_lossless_2_tag(
         bitmap_width,
         bitmap_height,
         bitmap_data,
-    })
-}
-
-pub fn read_define_bits_jpeg_4_tag<R: Read>(reader: &mut R) -> Result<DefineBitsJpeg4Tag> {
-    let character_id = reader.read_u16()?;
-    let alpha_data_offset = reader.read_u32()? as usize;
-    let deblock_param = Fixed8::read(reader)?;
-    let mut image_data = vec![0u8; alpha_data_offset];
-    reader.read_u8_into(&mut image_data)?;
-    let bitmap_alpha_data = reader.read_u8_to_end()?;
-    Ok(DefineBitsJpeg4Tag {
-        character_id,
-        deblock_param,
-        image_data,
-        bitmap_alpha_data,
     })
 }
