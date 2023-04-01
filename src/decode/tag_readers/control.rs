@@ -17,7 +17,7 @@ pub fn read_frame_label_tag(reader: &mut SwfSliceReader) -> Result<FrameLabelTag
     Ok(FrameLabelTag { name, named_anchor })
 }
 
-pub fn read_export_assets_tag(reader: &mut SwfSliceReader) -> Result<ExportAssetsTag> {
+pub fn read_export_assets_tag<R: Read>(reader: &mut R) -> Result<ExportAssetsTag> {
     let count = reader.read_u16()?;
     let mut exports = Vec::with_capacity(count as usize);
     for _ in 0..count {
