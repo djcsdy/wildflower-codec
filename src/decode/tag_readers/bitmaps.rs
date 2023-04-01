@@ -1,7 +1,7 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tags::bitmaps::color_map_data::ColorMapData;
+use crate::decode::tags::bitmaps::color_map_data::{ColorMapData, ReadColorMapDataOptions};
 use crate::decode::tags::bitmaps::define_bits_lossless::DefineBitsLosslessTag;
 use crate::decode::tags::bitmaps::{BitmapData, DefineBitsLossless2Tag};
 use crate::decode::tags::common::rgb::Rgb;
@@ -39,13 +39,14 @@ pub fn read_define_bits_lossless_tag(reader: &mut SwfSliceReader) -> Result<Defi
     let mut bitmap_data_reader = SwfSliceReader::new(&decompressed_bitmap_data, swf_version);
     let bitmap_data = match bitmap_format {
         BitmapFormat::ColorMap8 => {
-            BitmapData::ColorMap8(read_colormap_data(ReadColorMapDataOptions {
+            let options = ReadColorMapDataOptions {
                 reader: &mut bitmap_data_reader,
                 read_color: &Rgb::read,
                 color_table_size,
                 bitmap_width,
                 bitmap_height,
-            })?)
+            };
+            BitmapData::ColorMap8(ColorMapData::read(options)?)
         }
         BitmapFormat::Rgb15 => read_bitmap_data(&mut ReadBitmapDataOptions {
             reader: &mut bitmap_data_reader,
@@ -65,40 +66,6 @@ pub fn read_define_bits_lossless_tag(reader: &mut SwfSliceReader) -> Result<Defi
         bitmap_width,
         bitmap_height,
         bitmap_data,
-    })
-}
-
-struct ReadColorMapDataOptions<
-    'reader,
-    'read_color,
-    Reader: Read,
-    Color,
-    ReadColor: Fn(&mut Reader) -> Result<Color>,
-> {
-    reader: &'reader mut Reader,
-    read_color: &'read_color ReadColor,
-    color_table_size: usize,
-    bitmap_width: u16,
-    bitmap_height: u16,
-}
-
-fn read_colormap_data<Reader: Read, Color, ReadColor: Fn(&mut Reader) -> Result<Color>>(
-    options: ReadColorMapDataOptions<Reader, Color, ReadColor>,
-) -> Result<ColorMapData<Color>> {
-    let mut color_table = Vec::with_capacity(options.color_table_size);
-    for _ in 0..options.color_table_size {
-        color_table.push((options.read_color)(options.reader)?);
-    }
-    let mut pixel_data =
-        Vec::with_capacity((options.bitmap_width as usize) * (options.bitmap_height as usize));
-    for _ in 0..options.bitmap_height {
-        for _ in 0..((options.bitmap_width + 3) & 4) {
-            pixel_data.push(options.reader.read_u8()?);
-        }
-    }
-    Ok(ColorMapData {
-        color_table,
-        pixel_data,
     })
 }
 
@@ -177,13 +144,14 @@ pub fn read_define_bits_lossless_2_tag(
     let mut bitmap_data_reader = SwfSliceReader::new(&decompressed_bitmap_data, swf_version);
     let bitmap_data = match bitmap_format {
         BitmapFormat::ColorMap8 => {
-            BitmapData::ColorMap8(read_colormap_data(ReadColorMapDataOptions {
+            let options = ReadColorMapDataOptions {
                 reader: &mut bitmap_data_reader,
                 read_color: &Rgba::read,
                 color_table_size,
                 bitmap_width,
                 bitmap_height,
-            })?)
+            };
+            BitmapData::ColorMap8(ColorMapData::read(options)?)
         }
         BitmapFormat::Rgb15 => return Err(Error::from(InvalidData)),
         BitmapFormat::Rgb24 => read_bitmap_data(&mut ReadBitmapDataOptions {
