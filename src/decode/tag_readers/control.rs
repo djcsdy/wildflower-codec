@@ -142,7 +142,7 @@ fn read_scene_record<R: Read>(reader: &mut R) -> Result<SceneRecord> {
     Ok(SceneRecord { offset, name })
 }
 
-fn read_frame_label_record(reader: &mut SwfSliceReader) -> Result<FrameLabelRecord> {
+fn read_frame_label_record<R: Read>(reader: &mut R) -> Result<FrameLabelRecord> {
     let frame_num = reader.read_encoded_u32()?;
     let frame_label = String::read(reader)?;
     Ok(FrameLabelRecord {
