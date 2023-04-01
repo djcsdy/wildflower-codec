@@ -7,7 +7,6 @@ use crate::decode::tags::control::define_scaling_grid::DefineScalingGridTag;
 use crate::decode::tags::control::define_scene_and_frame_label_data::DefineSceneAndFrameLabelDataTag;
 use crate::decode::tags::control::enable_debugger::EnableDebuggerTag;
 use crate::decode::tags::control::enable_debugger_2::EnableDebugger2Tag;
-use crate::decode::tags::control::export_assets::ExportAssetsTag;
 use crate::decode::tags::control::frame_label::FrameLabelTag;
 use crate::decode::tags::control::frame_label_record::FrameLabelRecord;
 use crate::decode::tags::control::import_assets::ImportAssetsTag;
@@ -26,15 +25,6 @@ pub fn read_frame_label_tag(reader: &mut SwfSliceReader) -> Result<FrameLabelTag
     let name = String::read(reader)?;
     let named_anchor = reader.bytes_remaining() > 0 && reader.read_u8()? == 1;
     Ok(FrameLabelTag { name, named_anchor })
-}
-
-pub fn read_export_assets_tag<R: Read>(reader: &mut R) -> Result<ExportAssetsTag> {
-    let count = reader.read_u16()?;
-    let mut exports = Vec::with_capacity(count as usize);
-    for _ in 0..count {
-        exports.push(PortableCharacterRecord::read(reader)?);
-    }
-    Ok(ExportAssetsTag { exports })
 }
 
 pub fn read_import_assets_tag<R: Read>(reader: &mut R) -> Result<ImportAssetsTag> {
