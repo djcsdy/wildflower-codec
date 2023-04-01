@@ -1,4 +1,5 @@
 pub mod define_scaling_grid;
+pub mod define_scene_and_frame_label_data;
 pub mod enable_debugger;
 pub mod enable_debugger_2;
 pub mod export_assets;
@@ -15,12 +16,6 @@ pub mod symbol_class;
 pub mod symbol_class_record;
 
 use crate::decode::tags::common::string::String;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct DefineSceneAndFrameLabelDataTag {
-    pub scenes: Vec<SceneRecord>,
-    pub frame_labels: Vec<FrameLabelRecord>,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct SceneRecord {

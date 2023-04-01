@@ -1,5 +1,4 @@
 use super::bitmaps::DefineBitsLossless2Tag;
-use super::control::DefineSceneAndFrameLabelDataTag;
 use super::display_list::{
     PlaceObject2Tag, PlaceObject3Tag, PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag,
     ShowFrameTag,
@@ -22,6 +21,7 @@ use crate::decode::tags::buttons::define_button_2::DefineButton2Tag;
 use crate::decode::tags::buttons::define_button_color_transform::DefineButtonColorTransformTag;
 use crate::decode::tags::buttons::define_button_sound::DefineButtonSoundTag;
 use crate::decode::tags::control::define_scaling_grid::DefineScalingGridTag;
+use crate::decode::tags::control::define_scene_and_frame_label_data::DefineSceneAndFrameLabelDataTag;
 use crate::decode::tags::control::enable_debugger::EnableDebuggerTag;
 use crate::decode::tags::control::enable_debugger_2::EnableDebugger2Tag;
 use crate::decode::tags::control::export_assets::ExportAssetsTag;
