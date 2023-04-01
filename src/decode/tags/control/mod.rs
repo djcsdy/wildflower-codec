@@ -4,6 +4,7 @@ pub mod enable_debugger;
 pub mod enable_debugger_2;
 pub mod export_assets;
 pub mod frame_label;
+pub mod frame_label_record;
 pub mod import_assets;
 pub mod import_assets_2;
 pub mod metadata;
@@ -15,11 +16,3 @@ pub mod set_background_color;
 pub mod set_tab_index;
 pub mod symbol_class;
 pub mod symbol_class_record;
-
-use crate::decode::tags::common::string::String;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct FrameLabelRecord {
-    pub frame_num: u32,
-    pub frame_label: String,
-}

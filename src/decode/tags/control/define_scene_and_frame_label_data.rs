@@ -1,5 +1,5 @@
+use crate::decode::tags::control::frame_label_record::FrameLabelRecord;
 use crate::decode::tags::control::scene_record::SceneRecord;
-use crate::decode::tags::control::FrameLabelRecord;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineSceneAndFrameLabelDataTag {
