@@ -32,7 +32,7 @@ pub fn read_export_assets_tag<R: Read>(reader: &mut R) -> Result<ExportAssetsTag
     let count = reader.read_u16()?;
     let mut exports = Vec::with_capacity(count as usize);
     for _ in 0..count {
-        exports.push(read_portable_character_record(reader)?);
+        exports.push(PortableCharacterRecord::read(reader)?);
     }
     Ok(ExportAssetsTag { exports })
 }
@@ -42,15 +42,9 @@ pub fn read_import_assets_tag<R: Read>(reader: &mut R) -> Result<ImportAssetsTag
     let count = reader.read_u16()?;
     let mut imports = Vec::with_capacity(count as usize);
     for _ in 0..count {
-        imports.push(read_portable_character_record(reader)?);
+        imports.push(PortableCharacterRecord::read(reader)?);
     }
     Ok(ImportAssetsTag { url, imports })
-}
-
-fn read_portable_character_record<R: Read>(reader: &mut R) -> Result<PortableCharacterRecord> {
-    let character_id = reader.read_u16()?;
-    let name = String::read(reader)?;
-    Ok(PortableCharacterRecord { character_id, name })
 }
 
 pub fn read_enable_debugger_tag<R: Read>(reader: &mut R) -> Result<EnableDebuggerTag> {
@@ -90,7 +84,7 @@ pub fn read_import_assets_2_tag<R: Read>(reader: &mut R) -> Result<ImportAssets2
     let count = reader.read_u16()?;
     let mut imports = Vec::with_capacity(count as usize);
     for _ in 0..count {
-        imports.push(read_portable_character_record(reader)?);
+        imports.push(PortableCharacterRecord::read(reader)?);
     }
     Ok(ImportAssets2Tag { url, imports })
 }
