@@ -1,15 +1,8 @@
+pub mod frame_label;
 pub mod set_background_color;
 
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::string::String;
-
-/// Labels the current frame with the specified name.
-#[derive(Clone, PartialEq, Debug)]
-pub struct FrameLabelTag {
-    pub name: String,
-
-    pub named_anchor: bool,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct ProtectTag {

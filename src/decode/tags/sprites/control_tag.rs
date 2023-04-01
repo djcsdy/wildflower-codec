@@ -1,7 +1,8 @@
 use crate::decode::tags::actions::do_abc::DoAbcTag;
 use crate::decode::tags::actions::do_action::DoActionTag;
 use crate::decode::tags::actions::do_init_action::DoInitActionTag;
-use crate::decode::tags::control::{EndTag, FrameLabelTag};
+use crate::decode::tags::control::frame_label::FrameLabelTag;
+use crate::decode::tags::control::EndTag;
 use crate::decode::tags::display_list::{
     PlaceObject2Tag, PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag, ShowFrameTag,
 };
