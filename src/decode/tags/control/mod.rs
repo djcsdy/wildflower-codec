@@ -9,16 +9,10 @@ pub mod protect;
 pub mod script_limits;
 pub mod set_background_color;
 pub mod set_tab_index;
+pub mod symbol_class;
 
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::string::String;
-
-/// Creates associations between characters in the SWF file and ActionScript 3
-/// classes.
-#[derive(Clone, PartialEq, Debug)]
-pub struct SymbolClassTag {
-    pub records: Vec<SymbolClassRecord>,
-}
 
 /// Associates an ActionScript 3 class with a character.
 #[derive(Clone, PartialEq, Debug)]
