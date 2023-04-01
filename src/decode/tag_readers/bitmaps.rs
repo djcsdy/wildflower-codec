@@ -209,7 +209,7 @@ pub fn read_define_bits_lossless_2_tag(
     })
 }
 
-pub fn read_define_bits_jpeg_4_tag(reader: &mut SwfSliceReader) -> Result<DefineBitsJpeg4Tag> {
+pub fn read_define_bits_jpeg_4_tag<R: Read>(reader: &mut R) -> Result<DefineBitsJpeg4Tag> {
     let character_id = reader.read_u16()?;
     let alpha_data_offset = reader.read_u32()? as usize;
     let deblock_param = Fixed8::read(reader)?;
