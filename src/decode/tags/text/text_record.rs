@@ -5,9 +5,9 @@ use crate::decode::tags::text::text_record_font::TextRecordFont;
 use std::io::Result;
 
 #[derive(Clone, PartialEq, Debug)]
-pub struct TextRecord<TColor> {
+pub struct TextRecord<Color> {
     pub font: Option<TextRecordFont>,
-    pub text_color: Option<TColor>,
+    pub text_color: Option<Color>,
     pub x_offset: Option<i16>,
     pub y_offset: Option<i16>,
     pub glyph_entries: Vec<GlyphEntry>,

@@ -18,7 +18,7 @@ pub struct DefineBitsLossless2Tag {
 }
 
 #[derive(Clone, PartialEq, Debug)]
-pub enum BitmapData<TColor> {
-    ColorMap8(ColorMapData<TColor>),
-    Rgb(Vec<TColor>),
+pub enum BitmapData<Color> {
+    ColorMap8(ColorMapData<Color>),
+    Rgb(Vec<Color>),
 }

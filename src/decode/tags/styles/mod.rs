@@ -4,19 +4,19 @@ use crate::decode::tags::common::rgba::Rgba;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 #[derive(Clone, PartialEq, Debug)]
-pub enum FillStyle<TColor> {
-    Solid(TColor),
+pub enum FillStyle<Color> {
+    Solid(Color),
     LinearGradient {
         matrix: Matrix,
-        gradient: Gradient<TColor>,
+        gradient: Gradient<Color>,
     },
     RadialGradient {
         matrix: Matrix,
-        gradient: Gradient<TColor>,
+        gradient: Gradient<Color>,
     },
     FocalRadialGradient {
         matrix: Matrix,
-        gradient: FocalGradient<TColor>,
+        gradient: FocalGradient<Color>,
     },
     RepeatingBitmap {
         bitmap_id: u16,
@@ -37,9 +37,9 @@ pub enum FillStyle<TColor> {
 }
 
 #[derive(Clone, PartialEq, Debug)]
-pub struct LineStyle<TColor> {
+pub struct LineStyle<Color> {
     pub width: u16,
-    pub color: TColor,
+    pub color: Color,
 }
 
 #[derive(Clone, PartialEq, Debug)]
@@ -56,17 +56,17 @@ pub struct LineStyle2 {
 }
 
 #[derive(Clone, PartialEq, Debug)]
-pub struct Gradient<TColor> {
+pub struct Gradient<Color> {
     pub spread_mode: SpreadMode,
     pub interpolation_mode: InterpolationMode,
-    pub gradient_records: Vec<GradientRecord<TColor>>,
+    pub gradient_records: Vec<GradientRecord<Color>>,
 }
 
 #[derive(Clone, PartialEq, Debug)]
-pub struct FocalGradient<TColor> {
+pub struct FocalGradient<Color> {
     pub spread_mode: SpreadMode,
     pub interpolation_mode: InterpolationMode,
-    pub gradient_records: Vec<GradientRecord<TColor>>,
+    pub gradient_records: Vec<GradientRecord<Color>>,
     pub focal_point: Fixed8,
 }
 
@@ -86,9 +86,9 @@ pub enum InterpolationMode {
 }
 
 #[derive(Clone, PartialEq, Debug)]
-pub struct GradientRecord<TColor> {
+pub struct GradientRecord<Color> {
     pub ratio: u8,
-    pub color: TColor,
+    pub color: Color,
 }
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]

@@ -36,33 +36,33 @@ pub struct DefineShape4Tag {
 }
 
 #[derive(Clone, PartialEq, Debug)]
-pub struct Shape<TColor, TLineStyle> {
-    pub shape_records: Vec<ShapeRecord<TColor, TLineStyle>>,
+pub struct Shape<Color, LineStyle> {
+    pub shape_records: Vec<ShapeRecord<Color, LineStyle>>,
 }
 
 #[derive(Clone, PartialEq, Debug)]
-pub struct ShapeWithStyle<TColor, TLineStyle> {
-    pub fill_styles: Vec<FillStyle<TColor>>,
-    pub line_styles: Vec<TLineStyle>,
-    pub shape_records: Vec<ShapeRecord<TColor, TLineStyle>>,
+pub struct ShapeWithStyle<Color, LineStyle> {
+    pub fill_styles: Vec<FillStyle<Color>>,
+    pub line_styles: Vec<LineStyle>,
+    pub shape_records: Vec<ShapeRecord<Color, LineStyle>>,
 }
 
 #[derive(Clone, PartialEq, Debug)]
-pub enum ShapeRecord<TColor, TLineStyle> {
+pub enum ShapeRecord<Color, LineStyle> {
     EndShape,
-    StyleChange(StyleChangeRecord<TColor, TLineStyle>),
+    StyleChange(StyleChangeRecord<Color, LineStyle>),
     StraightEdge(StraightEdgeRecord),
     CurvedEdge(CurvedEdgeRecord),
 }
 
 #[derive(Clone, PartialEq, Debug)]
-pub struct StyleChangeRecord<TColor, TLineStyle> {
+pub struct StyleChangeRecord<Color, LineStyle> {
     pub move_delta: (i16, i16),
     pub fill_style_0: u16,
     pub fill_style_1: u16,
     pub line_style: u16,
-    pub fill_styles: Option<Vec<FillStyle<TColor>>>,
-    pub line_styles: Option<Vec<TLineStyle>>,
+    pub fill_styles: Option<Vec<FillStyle<Color>>>,
+    pub line_styles: Option<Vec<LineStyle>>,
 }
 
 #[derive(Clone, PartialEq, Debug)]
