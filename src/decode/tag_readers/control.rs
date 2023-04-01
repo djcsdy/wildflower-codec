@@ -9,7 +9,7 @@ use crate::decode::tags::control::{
     SymbolClassRecord, SymbolClassTag,
 };
 use crate::decode::tags::metadata::{FileAttributesFlags, FileAttributesTag};
-use std::io::Result;
+use std::io::{Read, Result};
 
 pub fn read_frame_label_tag(reader: &mut SwfSliceReader) -> Result<FrameLabelTag> {
     let name = String::read(reader)?;
@@ -42,7 +42,7 @@ fn read_portable_character_record(reader: &mut SwfSliceReader) -> Result<Portabl
     Ok(PortableCharacterRecord { character_id, name })
 }
 
-pub fn read_enable_debugger_tag(reader: &mut SwfSliceReader) -> Result<EnableDebuggerTag> {
+pub fn read_enable_debugger_tag<R: Read>(reader: &mut R) -> Result<EnableDebuggerTag> {
     let password_md5 = reader.read_u8_until_null()?;
     Ok(EnableDebuggerTag { password_md5 })
 }
