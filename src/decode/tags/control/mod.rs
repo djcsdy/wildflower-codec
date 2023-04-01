@@ -1,19 +1,11 @@
 pub mod export_assets;
 pub mod frame_label;
+pub mod import_assets;
 pub mod protect;
 pub mod set_background_color;
 
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::string::String;
-
-/// Imports characters from another SWF file.
-#[derive(Clone, PartialEq, Debug)]
-pub struct ImportAssetsTag {
-    /// URL of the source SWF file.
-    pub url: String,
-
-    pub imports: Vec<PortableCharacterRecord>,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct PortableCharacterRecord {
