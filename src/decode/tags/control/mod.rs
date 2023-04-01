@@ -1,3 +1,4 @@
+pub mod enable_debugger;
 pub mod export_assets;
 pub mod frame_label;
 pub mod import_assets;
@@ -8,11 +9,6 @@ pub mod set_background_color;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::string::String;
 use portable_character_record::PortableCharacterRecord;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct EnableDebuggerTag {
-    pub password_md5: Vec<u8>,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct EnableDebugger2Tag {
