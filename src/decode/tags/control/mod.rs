@@ -4,6 +4,7 @@ pub mod export_assets;
 pub mod frame_label;
 pub mod import_assets;
 pub mod import_assets_2;
+pub mod metadata;
 pub mod portable_character_record;
 pub mod protect;
 pub mod script_limits;
@@ -14,11 +15,6 @@ pub mod symbol_class_record;
 
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::string::String;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct MetadataTag {
-    pub metadata: String,
-}
 
 /// Defines a 9-slice grid that should be applied when scaling the specified
 /// character.

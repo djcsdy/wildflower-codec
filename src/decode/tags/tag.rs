@@ -1,5 +1,5 @@
 use super::bitmaps::DefineBitsLossless2Tag;
-use super::control::{DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, MetadataTag};
+use super::control::{DefineScalingGridTag, DefineSceneAndFrameLabelDataTag};
 use super::display_list::{
     PlaceObject2Tag, PlaceObject3Tag, PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag,
     ShowFrameTag,
@@ -27,6 +27,7 @@ use crate::decode::tags::control::export_assets::ExportAssetsTag;
 use crate::decode::tags::control::frame_label::FrameLabelTag;
 use crate::decode::tags::control::import_assets::ImportAssetsTag;
 use crate::decode::tags::control::import_assets_2::ImportAssets2Tag;
+use crate::decode::tags::control::metadata::MetadataTag;
 use crate::decode::tags::control::protect::ProtectTag;
 use crate::decode::tags::control::script_limits::ScriptLimitsTag;
 use crate::decode::tags::control::set_background_color::SetBackgroundColorTag;
