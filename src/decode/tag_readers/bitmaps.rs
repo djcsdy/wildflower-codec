@@ -13,7 +13,7 @@ use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Read, Result};
 
-pub fn read_define_bits_tag(reader: &mut SwfSliceReader) -> Result<DefineBitsTag> {
+pub fn read_define_bits_tag<R: Read>(reader: &mut R) -> Result<DefineBitsTag> {
     let character_id = reader.read_u16()?;
     let jpeg_data = reader.read_u8_to_end()?;
     Ok(DefineBitsTag {
