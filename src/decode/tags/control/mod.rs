@@ -7,17 +7,11 @@ pub mod portable_character_record;
 pub mod protect;
 pub mod script_limits;
 pub mod set_background_color;
+pub mod set_tab_index;
 
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::string::String;
 use portable_character_record::PortableCharacterRecord;
-
-/// Sets the tab ordering of the character at the specified depth.
-#[derive(Clone, PartialEq, Debug)]
-pub struct SetTabIndexTag {
-    pub depth: u16,
-    pub tab_index: u16,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct ImportAssets2Tag {

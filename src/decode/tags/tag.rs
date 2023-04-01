@@ -1,7 +1,7 @@
 use super::bitmaps::DefineBitsLossless2Tag;
 use super::control::{
     DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, ImportAssets2Tag, MetadataTag,
-    SetTabIndexTag, SymbolClassTag,
+    SymbolClassTag,
 };
 use super::display_list::{
     PlaceObject2Tag, PlaceObject3Tag, PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag,
@@ -32,6 +32,7 @@ use crate::decode::tags::control::import_assets::ImportAssetsTag;
 use crate::decode::tags::control::protect::ProtectTag;
 use crate::decode::tags::control::script_limits::ScriptLimitsTag;
 use crate::decode::tags::control::set_background_color::SetBackgroundColorTag;
+use crate::decode::tags::control::set_tab_index::SetTabIndexTag;
 use crate::decode::tags::fonts::define_font::DefineFontTag;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::define_font_3::DefineFont3Tag;
