@@ -3,6 +3,7 @@ pub mod enable_debugger_2;
 pub mod export_assets;
 pub mod frame_label;
 pub mod import_assets;
+pub mod import_assets_2;
 pub mod portable_character_record;
 pub mod protect;
 pub mod script_limits;
@@ -11,13 +12,6 @@ pub mod set_tab_index;
 
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::string::String;
-use portable_character_record::PortableCharacterRecord;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct ImportAssets2Tag {
-    pub url: String,
-    pub imports: Vec<PortableCharacterRecord>,
-}
 
 /// Creates associations between characters in the SWF file and ActionScript 3
 /// classes.

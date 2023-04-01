@@ -8,12 +8,13 @@ use crate::decode::tags::control::enable_debugger_2::EnableDebugger2Tag;
 use crate::decode::tags::control::export_assets::ExportAssetsTag;
 use crate::decode::tags::control::frame_label::FrameLabelTag;
 use crate::decode::tags::control::import_assets::ImportAssetsTag;
+use crate::decode::tags::control::import_assets_2::ImportAssets2Tag;
 use crate::decode::tags::control::portable_character_record::PortableCharacterRecord;
 use crate::decode::tags::control::script_limits::ScriptLimitsTag;
 use crate::decode::tags::control::set_tab_index::SetTabIndexTag;
 use crate::decode::tags::control::{
-    DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, FrameLabelRecord, ImportAssets2Tag,
-    MetadataTag, SceneRecord, SymbolClassRecord, SymbolClassTag,
+    DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, FrameLabelRecord, MetadataTag,
+    SceneRecord, SymbolClassRecord, SymbolClassTag,
 };
 use crate::decode::tags::metadata::{FileAttributesFlags, FileAttributesTag};
 use std::io::{Read, Result};
