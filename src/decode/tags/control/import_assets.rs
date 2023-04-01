@@ -1,5 +1,5 @@
 use crate::decode::tags::common::string::String;
-use crate::decode::tags::control::PortableCharacterRecord;
+use crate::decode::tags::control::portable_character_record::PortableCharacterRecord;
 
 /// Imports characters from another SWF file.
 #[derive(Clone, PartialEq, Debug)]
