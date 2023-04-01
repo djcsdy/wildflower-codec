@@ -14,7 +14,7 @@ use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Read, Result};
 
-pub fn read_jpeg_tables_tag(reader: &mut SwfSliceReader) -> Result<JpegTablesTag> {
+pub fn read_jpeg_tables_tag<R: Read>(reader: &mut R) -> Result<JpegTablesTag> {
     let jpeg_data = reader.read_u8_to_end()?;
     Ok(JpegTablesTag { jpeg_data })
 }
