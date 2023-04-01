@@ -73,7 +73,7 @@ pub fn read_file_attributes_tag<R: Read>(reader: &mut R) -> Result<FileAttribute
     Ok(FileAttributesTag { flags })
 }
 
-pub fn read_import_assets_2_tag(reader: &mut SwfSliceReader) -> Result<ImportAssets2Tag> {
+pub fn read_import_assets_2_tag<R: Read>(reader: &mut R) -> Result<ImportAssets2Tag> {
     let url = String::read(reader)?;
     reader.read_u16()?;
     let count = reader.read_u16()?;
