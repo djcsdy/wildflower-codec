@@ -4,7 +4,7 @@ use crate::decode::tag_readers::bitmaps::{
 };
 use crate::decode::tag_readers::control::{
     read_define_scaling_grid_tag, read_define_scene_and_frame_label_data_tag,
-    read_file_attributes_tag, read_frame_label_tag, read_metadata_tag, read_symbol_class_tag,
+    read_file_attributes_tag, read_frame_label_tag, read_metadata_tag,
 };
 use crate::decode::tag_readers::display_list::{
     read_place_object_2_tag, read_place_object_3_tag, read_place_object_tag,
@@ -37,6 +37,7 @@ use crate::decode::tags::control::import_assets_2::ImportAssets2Tag;
 use crate::decode::tags::control::script_limits::ScriptLimitsTag;
 use crate::decode::tags::control::set_background_color::SetBackgroundColorTag;
 use crate::decode::tags::control::set_tab_index::SetTabIndexTag;
+use crate::decode::tags::control::symbol_class::SymbolClassTag;
 use crate::decode::tags::fonts::define_font::DefineFontTag;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::define_font_3::DefineFont3Tag;
@@ -224,7 +225,7 @@ impl EncodedTag {
             TagType::DefineFont3 => DefineFont3Tag::read(&mut slice_reader)
                 .map(Tag::DefineFont3)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::SymbolClass => read_symbol_class_tag(&mut slice_reader)
+            TagType::SymbolClass => SymbolClassTag::read(&mut slice_reader)
                 .map(Tag::SymbolClass)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::Metadata => read_metadata_tag(&mut slice_reader)

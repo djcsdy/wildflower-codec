@@ -9,8 +9,6 @@ use crate::decode::tags::control::frame_label::FrameLabelTag;
 use crate::decode::tags::control::frame_label_record::FrameLabelRecord;
 use crate::decode::tags::control::metadata::MetadataTag;
 use crate::decode::tags::control::scene_record::SceneRecord;
-use crate::decode::tags::control::symbol_class::SymbolClassTag;
-use crate::decode::tags::control::symbol_class_record::SymbolClassRecord;
 use crate::decode::tags::metadata::{FileAttributesFlags, FileAttributesTag};
 use std::io::{Read, Result};
 
@@ -23,15 +21,6 @@ pub fn read_frame_label_tag(reader: &mut SwfSliceReader) -> Result<FrameLabelTag
 pub fn read_file_attributes_tag<R: Read>(reader: &mut R) -> Result<FileAttributesTag> {
     let flags = FileAttributesFlags::from_bits_truncate(reader.read_u32()?);
     Ok(FileAttributesTag { flags })
-}
-
-pub fn read_symbol_class_tag<R: Read>(reader: &mut R) -> Result<SymbolClassTag> {
-    let num_symbols = reader.read_u16()?;
-    let mut records = Vec::with_capacity(num_symbols as usize);
-    for _ in 0..num_symbols {
-        records.push(SymbolClassRecord::read(reader)?);
-    }
-    Ok(SymbolClassTag { records })
 }
 
 pub fn read_metadata_tag<R: Read>(reader: &mut R) -> Result<MetadataTag> {
