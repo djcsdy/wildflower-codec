@@ -7,7 +7,6 @@ use crate::decode::tags::control::define_scaling_grid::DefineScalingGridTag;
 use crate::decode::tags::control::define_scene_and_frame_label_data::DefineSceneAndFrameLabelDataTag;
 use crate::decode::tags::control::frame_label::FrameLabelTag;
 use crate::decode::tags::control::frame_label_record::FrameLabelRecord;
-use crate::decode::tags::control::metadata::MetadataTag;
 use crate::decode::tags::control::scene_record::SceneRecord;
 use crate::decode::tags::metadata::{FileAttributesFlags, FileAttributesTag};
 use std::io::{Read, Result};
@@ -21,11 +20,6 @@ pub fn read_frame_label_tag(reader: &mut SwfSliceReader) -> Result<FrameLabelTag
 pub fn read_file_attributes_tag<R: Read>(reader: &mut R) -> Result<FileAttributesTag> {
     let flags = FileAttributesFlags::from_bits_truncate(reader.read_u32()?);
     Ok(FileAttributesTag { flags })
-}
-
-pub fn read_metadata_tag<R: Read>(reader: &mut R) -> Result<MetadataTag> {
-    let metadata = String::read(reader)?;
-    Ok(MetadataTag { metadata })
 }
 
 pub fn read_define_scaling_grid_tag<R: BitRead>(reader: &mut R) -> Result<DefineScalingGridTag> {
