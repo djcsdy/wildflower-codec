@@ -93,7 +93,7 @@ pub fn read_symbol_class_tag(reader: &mut SwfSliceReader) -> Result<SymbolClassT
     Ok(SymbolClassTag { records })
 }
 
-fn read_symbol_class_record(reader: &mut SwfSliceReader) -> Result<SymbolClassRecord> {
+fn read_symbol_class_record<R: Read>(reader: &mut R) -> Result<SymbolClassRecord> {
     let character_id = reader.read_u16()?;
     let class_name = String::read(reader)?;
     Ok(SymbolClassRecord {
