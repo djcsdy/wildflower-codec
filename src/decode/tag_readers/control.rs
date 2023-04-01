@@ -10,9 +10,9 @@ use crate::decode::tags::control::{
     SetTabIndexTag, SymbolClassRecord, SymbolClassTag,
 };
 use crate::decode::tags::metadata::{FileAttributesFlags, FileAttributesTag};
-use std::io::Result;
+use std::io::{Read, Result};
 
-pub fn read_set_background_color_tag(reader: &mut SwfSliceReader) -> Result<SetBackgroundColorTag> {
+pub fn read_set_background_color_tag<R: Read>(reader: &mut R) -> Result<SetBackgroundColorTag> {
     let color = Rgb::read(reader)?;
     Ok(SetBackgroundColorTag { color })
 }
