@@ -1,6 +1,6 @@
-use std::io::Result;
+use std::io::{Read, Result};
 
-pub trait BitRead {
+pub trait BitRead: Read {
     fn align_byte(&mut self);
 
     fn read_bit(&mut self) -> Result<bool> {
