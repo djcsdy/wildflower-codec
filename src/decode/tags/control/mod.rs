@@ -1,4 +1,5 @@
 pub mod enable_debugger;
+pub mod enable_debugger_2;
 pub mod export_assets;
 pub mod frame_label;
 pub mod import_assets;
@@ -9,11 +10,6 @@ pub mod set_background_color;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::string::String;
 use portable_character_record::PortableCharacterRecord;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct EnableDebugger2Tag {
-    pub password_md5: Vec<u8>,
-}
 
 /// Overrides the default limits for AVM scripts.
 #[derive(Clone, PartialEq, Debug)]

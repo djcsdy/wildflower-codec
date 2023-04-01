@@ -4,14 +4,14 @@ use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::string::String;
 use crate::decode::tags::control::enable_debugger::EnableDebuggerTag;
+use crate::decode::tags::control::enable_debugger_2::EnableDebugger2Tag;
 use crate::decode::tags::control::export_assets::ExportAssetsTag;
 use crate::decode::tags::control::frame_label::FrameLabelTag;
 use crate::decode::tags::control::import_assets::ImportAssetsTag;
 use crate::decode::tags::control::portable_character_record::PortableCharacterRecord;
 use crate::decode::tags::control::{
-    DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, EnableDebugger2Tag, FrameLabelRecord,
-    ImportAssets2Tag, MetadataTag, SceneRecord, ScriptLimitsTag, SetTabIndexTag, SymbolClassRecord,
-    SymbolClassTag,
+    DefineScalingGridTag, DefineSceneAndFrameLabelDataTag, FrameLabelRecord, ImportAssets2Tag,
+    MetadataTag, SceneRecord, ScriptLimitsTag, SetTabIndexTag, SymbolClassRecord, SymbolClassTag,
 };
 use crate::decode::tags::metadata::{FileAttributesFlags, FileAttributesTag};
 use std::io::{Read, Result};
