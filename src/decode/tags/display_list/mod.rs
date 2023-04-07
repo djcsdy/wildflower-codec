@@ -16,10 +16,3 @@ pub mod place_object_2;
 pub mod place_object_3;
 pub mod remove_object;
 pub mod remove_object_2;
-
-/// Instructs the player to display the contents of the display list.
-///
-/// The player will wait at least the duration of one frame before the next
-/// ShowFrame tag_readers takes effect.
-#[derive(Clone, PartialEq, Debug)]
-pub struct ShowFrameTag {}

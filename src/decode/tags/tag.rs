@@ -1,5 +1,4 @@
 use super::bitmaps::DefineBitsLossless2Tag;
-use super::display_list::ShowFrameTag;
 use super::metadata::{DefineBinaryDataTag, EnableTelemetryTag};
 use super::shape_morphing::{DefineMorphShape2Tag, DefineMorphShapeTag};
 use super::shapes::{DefineShape2Tag, DefineShape3Tag, DefineShape4Tag, DefineShapeTag};
@@ -65,7 +64,11 @@ pub enum Tag {
     PlaceObject3(PlaceObject3Tag),
     RemoveObject(RemoveObjectTag),
     RemoveObject2(RemoveObject2Tag),
-    ShowFrame(ShowFrameTag),
+    /// Instructs the player to display the contents of the display list.
+    ///
+    /// The player will wait at least the duration of one frame before the next
+    /// ShowFrame tag takes effect.
+    ShowFrame,
     SetBackgroundColor(SetBackgroundColorTag),
     FrameLabel(FrameLabelTag),
     Protect(ProtectTag),

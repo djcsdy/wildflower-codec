@@ -6,7 +6,6 @@ use crate::decode::tags::display_list::place_object::PlaceObjectTag;
 use crate::decode::tags::display_list::place_object_2::PlaceObject2Tag;
 use crate::decode::tags::display_list::remove_object::RemoveObjectTag;
 use crate::decode::tags::display_list::remove_object_2::RemoveObject2Tag;
-use crate::decode::tags::display_list::ShowFrameTag;
 use crate::decode::tags::sounds::sound_stream_block::SoundStreamBlockTag;
 use crate::decode::tags::sounds::sound_stream_head::SoundStreamHeadTag;
 use crate::decode::tags::sounds::sound_stream_head_2::SoundStreamHead2Tag;
@@ -14,7 +13,11 @@ use crate::decode::tags::sounds::start_sound::StartSoundTag;
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum ControlTag {
-    ShowFrame(ShowFrameTag),
+    /// Instructs the player to display the contents of the display list.
+    ///
+    /// The player will wait at least the duration of one frame before the next
+    /// ShowFrame tag takes effect.
+    ShowFrame,
     PlaceObject(PlaceObjectTag),
     PlaceObject2(PlaceObject2Tag),
     RemoveObject(RemoveObjectTag),
