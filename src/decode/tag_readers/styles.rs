@@ -233,15 +233,9 @@ pub fn read_focal_gradient<
     })
 }
 
-fn read_gradient_record<
-    'reader,
-    'buffer,
-    'read_color,
-    Color,
-    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
->(
-    reader: &'reader mut SwfSliceReader<'buffer>,
-    read_color: &'read_color ReadColor,
+fn read_gradient_record<R: Read, Color, ReadColor: Fn(&mut R) -> Result<Color>>(
+    reader: &mut R,
+    read_color: &ReadColor,
 ) -> Result<GradientRecord<Color>> {
     let ratio = reader.read_u8()?;
     let color = read_color(reader)?;
