@@ -183,15 +183,9 @@ pub fn read_cap_style(reader: &mut SwfSliceReader) -> Result<CapStyle> {
     CapStyle::try_from(reader.read_ub8(2)?).map_err(|_| Error::from(InvalidData))
 }
 
-pub fn read_gradient<
-    'reader,
-    'buffer,
-    'read_color,
-    Color,
-    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
->(
-    reader: &'reader mut SwfSliceReader<'buffer>,
-    read_color: &'read_color ReadColor,
+pub fn read_gradient<Read: BitRead, Color, ReadColor: Fn(&mut Read) -> Result<Color>>(
+    reader: &mut Read,
+    read_color: &ReadColor,
 ) -> Result<Gradient<Color>> {
     let spread_mode = reader
         .read_ub8(2)?
