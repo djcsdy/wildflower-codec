@@ -1,7 +1,6 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tags::common::fixed_8::Fixed8;
-use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::styles::cap_style::CapStyle;
@@ -20,7 +19,8 @@ pub fn read_fill_style_array<R: BitRead>(reader: &mut R) -> Result<Vec<FillStyle
     let fill_style_count = reader.read_u8()?;
     let mut fill_styles = Vec::with_capacity(fill_style_count as usize);
     for _ in 0..fill_style_count {
-        fill_styles.push(read_fill_style(reader, &Rgb::read)?);
+        let read_color = &Rgb::read;
+        fill_styles.push(FillStyle::read(reader, read_color)?);
     }
     Ok(fill_styles)
 }
@@ -39,54 +39,9 @@ pub fn read_extended_fill_style_array<
     }
     let mut fill_styles = Vec::with_capacity(fill_style_count as usize);
     for _ in 0..fill_style_count {
-        fill_styles.push(read_fill_style(reader, &read_color)?);
+        fill_styles.push(FillStyle::read(reader, &read_color)?);
     }
     Ok(fill_styles)
-}
-
-pub fn read_fill_style<Read: BitRead, Color, ReadColor: Fn(&mut Read) -> Result<Color>>(
-    reader: &mut Read,
-    read_color: &ReadColor,
-) -> Result<FillStyle<Color>> {
-    let fill_style_type = read_fill_style_type(reader)?;
-    Ok(match fill_style_type {
-        FillStyleType::Solid => FillStyle::Solid(read_color(reader)?),
-        FillStyleType::LinearGradient => {
-            let matrix = Matrix::read(reader)?;
-            let gradient = read_gradient(reader, &read_color)?;
-            FillStyle::LinearGradient { matrix, gradient }
-        }
-        FillStyleType::RadialGradient => {
-            let matrix = Matrix::read(reader)?;
-            let gradient = read_gradient(reader, &read_color)?;
-            FillStyle::RadialGradient { matrix, gradient }
-        }
-        FillStyleType::FocalRadialGradient => {
-            let matrix = Matrix::read(reader)?;
-            let gradient = read_focal_gradient(reader, &read_color)?;
-            FillStyle::FocalRadialGradient { matrix, gradient }
-        }
-        FillStyleType::RepeatingBitmap => {
-            let bitmap_id = reader.read_u16()?;
-            let matrix = Matrix::read(reader)?;
-            FillStyle::RepeatingBitmap { bitmap_id, matrix }
-        }
-        FillStyleType::ClippedBitmap => {
-            let bitmap_id = reader.read_u16()?;
-            let matrix = Matrix::read(reader)?;
-            FillStyle::ClippedBitmap { bitmap_id, matrix }
-        }
-        FillStyleType::NonSmoothedRepeatingBitmap => {
-            let bitmap_id = reader.read_u16()?;
-            let matrix = Matrix::read(reader)?;
-            FillStyle::NonSmoothedRepeatingBitmap { bitmap_id, matrix }
-        }
-        FillStyleType::NonSmoothedClippedBitmap => {
-            let bitmap_id = reader.read_u16()?;
-            let matrix = Matrix::read(reader)?;
-            FillStyle::NonSmoothedClippedBitmap { bitmap_id, matrix }
-        }
-    })
 }
 
 pub(crate) fn read_fill_style_type<R: Read>(reader: &mut R) -> Result<FillStyleType> {
@@ -141,7 +96,8 @@ pub fn read_line_style_2<R: BitRead>(reader: &mut R) -> Result<LineStyle2> {
         None
     };
     let fill_style = if has_fill {
-        read_fill_style(reader, &Rgba::read)?
+        let read_color = &Rgba::read;
+        FillStyle::read(reader, read_color)?
     } else {
         FillStyle::Solid(Rgba::read(reader)?)
     };
