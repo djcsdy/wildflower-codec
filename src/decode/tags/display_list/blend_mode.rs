@@ -1,8 +1,7 @@
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::io::ErrorKind::InvalidData;
-use std::io::{Error, Result};
+use std::io::{Error, Read, Result};
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
 #[repr(u8)]
@@ -25,7 +24,7 @@ pub enum BlendMode {
 }
 
 impl BlendMode {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         Self::try_from(reader.read_u8()?).map_err(|_| Error::from(InvalidData))
     }
 }
