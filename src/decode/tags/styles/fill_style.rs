@@ -1,6 +1,6 @@
 use crate::decode::tags::common::matrix::Matrix;
+use crate::decode::tags::styles::focal_gradient::FocalGradient;
 use crate::decode::tags::styles::gradient::Gradient;
-use crate::decode::tags::styles::FocalGradient;
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum FillStyle<Color> {

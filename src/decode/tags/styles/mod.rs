@@ -1,18 +1,11 @@
 pub mod fill_style;
+pub mod focal_gradient;
 pub mod gradient;
 pub mod line_style;
 pub mod line_style_2;
 
 use crate::decode::tags::common::fixed_8::Fixed8;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct FocalGradient<Color> {
-    pub spread_mode: SpreadMode,
-    pub interpolation_mode: InterpolationMode,
-    pub gradient_records: Vec<GradientRecord<Color>>,
-    pub focal_point: Fixed8,
-}
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
 #[repr(u8)]
