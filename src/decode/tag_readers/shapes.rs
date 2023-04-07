@@ -341,7 +341,9 @@ pub fn read_define_shape_4_tag(reader: &mut SwfSliceReader) -> Result<DefineShap
     let uses_scaling_strokes = reader.read_bit()?;
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
-        read_line_style_array: &|reader| read_line_style_array(reader, &read_line_style_2),
+        read_line_style_array: &|reader| {
+            read_line_style_array(reader, &|reader| read_line_style_2(reader))
+        },
         read_fill_style_array: &|reader| read_extended_fill_style_array(reader, &Rgba::read),
     })?;
     Ok(DefineShape4Tag {
