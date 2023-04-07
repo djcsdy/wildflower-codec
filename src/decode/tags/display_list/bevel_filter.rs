@@ -1,5 +1,4 @@
 use crate::decode::bit_read::BitRead;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::fixed_16::Fixed16;
 use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::rgba::Rgba;
@@ -22,7 +21,7 @@ pub struct BevelFilter {
 }
 
 impl BevelFilter {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: BitRead>(reader: &mut R) -> Result<Self> {
         let shadow_color = Rgba::read(reader)?;
         let highlight_color = Rgba::read(reader)?;
         let blur_x = Fixed16::read(reader)?;
