@@ -3,7 +3,7 @@ use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::shapes::read_shape;
 use crate::decode::tag_readers::styles::{
-    read_cap_style, read_fill_style_type, read_line_style_array, FillStyleType,
+    read_cap_style, read_fill_style_type, read_line_style_array,
 };
 use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::matrix::Matrix;
@@ -13,6 +13,7 @@ use crate::decode::tags::shape_morphing::{
     DefineMorphShape2Tag, DefineMorphShapeTag, MorphFillStyle, MorphFocalGradient, MorphGradient,
     MorphGradientRecord, MorphLineStyle, MorphLineStyle2,
 };
+use crate::decode::tags::styles::fill_style_type::FillStyleType;
 use crate::decode::tags::styles::join_style::JoinStyle;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Result};

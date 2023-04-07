@@ -7,13 +7,13 @@ use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::styles::cap_style::CapStyle;
 use crate::decode::tags::styles::fill_style::FillStyle;
+use crate::decode::tags::styles::fill_style_type::FillStyleType;
 use crate::decode::tags::styles::focal_gradient::FocalGradient;
 use crate::decode::tags::styles::gradient::Gradient;
 use crate::decode::tags::styles::gradient_record::GradientRecord;
 use crate::decode::tags::styles::join_style::JoinStyle;
 use crate::decode::tags::styles::line_style::LineStyle;
 use crate::decode::tags::styles::line_style_2::LineStyle2;
-use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Result};
 
@@ -98,20 +98,7 @@ pub fn read_fill_style<
     })
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
-#[repr(u8)]
-pub enum FillStyleType {
-    Solid = 0x00,
-    LinearGradient = 0x10,
-    RadialGradient = 0x12,
-    FocalRadialGradient = 0x13,
-    RepeatingBitmap = 0x40,
-    ClippedBitmap = 0x41,
-    NonSmoothedRepeatingBitmap = 0x42,
-    NonSmoothedClippedBitmap = 0x43,
-}
-
-pub fn read_fill_style_type(reader: &mut SwfSliceReader) -> Result<FillStyleType> {
+pub(crate) fn read_fill_style_type(reader: &mut SwfSliceReader) -> Result<FillStyleType> {
     reader
         .read_u8()?
         .try_into()

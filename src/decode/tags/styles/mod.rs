@@ -1,5 +1,6 @@
 pub mod cap_style;
 pub mod fill_style;
+pub(crate) mod fill_style_type;
 pub mod focal_gradient;
 pub mod gradient;
 pub mod gradient_record;
