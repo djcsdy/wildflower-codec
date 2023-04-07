@@ -1,9 +1,10 @@
 use super::shapes::Shape;
-use super::styles::{CapStyle, JoinStyle};
+use super::styles::JoinStyle;
 use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgba::Rgba;
+use crate::decode::tags::styles::cap_style::CapStyle;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineMorphShapeTag {

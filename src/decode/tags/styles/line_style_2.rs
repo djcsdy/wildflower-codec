@@ -1,6 +1,7 @@
 use crate::decode::tags::common::rgba::Rgba;
+use crate::decode::tags::styles::cap_style::CapStyle;
 use crate::decode::tags::styles::fill_style::FillStyle;
-use crate::decode::tags::styles::{CapStyle, JoinStyle};
+use crate::decode::tags::styles::JoinStyle;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct LineStyle2 {
