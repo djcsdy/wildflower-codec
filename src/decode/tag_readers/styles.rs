@@ -7,9 +7,8 @@ use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::styles::fill_style::FillStyle;
 use crate::decode::tags::styles::line_style::LineStyle;
-use crate::decode::tags::styles::{
-    CapStyle, FocalGradient, Gradient, GradientRecord, JoinStyle, LineStyle2,
-};
+use crate::decode::tags::styles::line_style_2::LineStyle2;
+use crate::decode::tags::styles::{CapStyle, FocalGradient, Gradient, GradientRecord, JoinStyle};
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Result};
