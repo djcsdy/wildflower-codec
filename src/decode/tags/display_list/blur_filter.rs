@@ -1,5 +1,4 @@
 use crate::decode::bit_read::BitRead;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::fixed_16::Fixed16;
 use std::io::Result;
 
@@ -11,7 +10,7 @@ pub struct BlurFilter {
 }
 
 impl BlurFilter {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: BitRead>(reader: &mut R) -> Result<Self> {
         let blur_x = Fixed16::read(reader)?;
         let blur_y = Fixed16::read(reader)?;
         let passes = reader.read_ub8(5)?;
