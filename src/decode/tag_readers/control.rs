@@ -30,19 +30,10 @@ pub fn read_define_scene_and_frame_label_data_tag<R: Read>(
     let frame_label_count = reader.read_encoded_u32()?;
     let mut frame_labels = Vec::with_capacity(frame_label_count as usize);
     for _ in 0..frame_label_count {
-        frame_labels.push(read_frame_label_record(reader)?);
+        frame_labels.push(FrameLabelRecord::read(reader)?);
     }
     Ok(DefineSceneAndFrameLabelDataTag {
         scenes,
         frame_labels,
-    })
-}
-
-fn read_frame_label_record<R: Read>(reader: &mut R) -> Result<FrameLabelRecord> {
-    let frame_num = reader.read_encoded_u32()?;
-    let frame_label = String::read(reader)?;
-    Ok(FrameLabelRecord {
-        frame_num,
-        frame_label,
     })
 }
