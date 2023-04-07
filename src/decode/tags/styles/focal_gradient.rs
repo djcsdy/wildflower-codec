@@ -1,5 +1,6 @@
 use crate::decode::tags::common::fixed_8::Fixed8;
-use crate::decode::tags::styles::{GradientRecord, InterpolationMode, SpreadMode};
+use crate::decode::tags::styles::spread_mode::SpreadMode;
+use crate::decode::tags::styles::{GradientRecord, InterpolationMode};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct FocalGradient<Color> {

@@ -3,17 +3,10 @@ pub mod focal_gradient;
 pub mod gradient;
 pub mod line_style;
 pub mod line_style_2;
+pub mod spread_mode;
 
 use crate::decode::tags::common::fixed_8::Fixed8;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
-
-#[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
-#[repr(u8)]
-pub enum SpreadMode {
-    Pad,
-    Reflect,
-    Repeat,
-}
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
 #[repr(u8)]
