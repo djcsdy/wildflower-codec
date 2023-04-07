@@ -1,4 +1,5 @@
-use crate::decode::tags::display_list::{ClipActionRecord, ClipEventFlags};
+use crate::decode::tags::display_list::clip_action_record::ClipActionRecord;
+use crate::decode::tags::display_list::ClipEventFlags;
 
 /// Defines one or more event handlers to be invoked when their
 /// corresponding events occur.

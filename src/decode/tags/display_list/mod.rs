@@ -1,6 +1,7 @@
 pub mod bevel_filter;
 pub mod blend_mode;
 pub mod blur_filter;
+pub mod clip_action_record;
 pub mod clip_actions;
 pub mod color_matrix_filter;
 pub mod convolution_filter;
@@ -12,19 +13,11 @@ pub mod gradient_glow_filter;
 pub mod place_object;
 pub mod place_object_2;
 
-use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::common::string::String;
 use blend_mode::BlendMode;
 use filter::Filter;
 use place_object_2::PlaceObject2Tag;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct ClipActionRecord {
-    pub event_flags: ClipEventFlags,
-    pub key_code: Option<u8>,
-    pub actions: ActionList<Vec<u8>>,
-}
 
 /// Adds a character to the display list.
 ///
