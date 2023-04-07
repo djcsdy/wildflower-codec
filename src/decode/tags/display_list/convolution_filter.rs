@@ -1,6 +1,5 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::rgba::Rgba;
 use std::io::Result;
 
@@ -15,7 +14,7 @@ pub struct ConvolutionFilter {
 }
 
 impl ConvolutionFilter {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: BitRead>(reader: &mut R) -> Result<Self> {
         let matrix_x = reader.read_u8()?;
         let matrix_y = reader.read_u8()?;
         let divisor = reader.read_f32()?;
