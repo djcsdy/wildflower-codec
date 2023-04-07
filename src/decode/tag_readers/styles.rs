@@ -27,14 +27,12 @@ pub fn read_fill_style_array<R: BitRead>(reader: &mut R) -> Result<Vec<FillStyle
 }
 
 pub fn read_extended_fill_style_array<
-    'reader,
-    'buffer,
-    'read_color,
+    Read: BitRead,
     Color,
-    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
+    ReadColor: Fn(&mut Read) -> Result<Color>,
 >(
-    reader: &'reader mut SwfSliceReader<'buffer>,
-    read_color: &'read_color ReadColor,
+    reader: &mut Read,
+    read_color: &ReadColor,
 ) -> Result<Vec<FillStyle<Color>>> {
     let mut fill_style_count = reader.read_u8()? as u16;
     if fill_style_count == 0xff {
