@@ -1,15 +1,10 @@
 pub mod fill_style;
+pub mod line_style;
 
 use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::rgba::Rgba;
 use fill_style::FillStyle;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct LineStyle<Color> {
-    pub width: u16,
-    pub color: Color,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct LineStyle2 {
