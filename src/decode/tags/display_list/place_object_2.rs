@@ -1,7 +1,7 @@
 use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithAlpha;
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::string;
-use crate::decode::tags::display_list::ClipActions;
+use crate::decode::tags::display_list::clip_actions::ClipActions;
 
 /// Adds a character to the display list.
 ///

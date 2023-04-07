@@ -1,6 +1,7 @@
 pub mod bevel_filter;
 pub mod blend_mode;
 pub mod blur_filter;
+pub mod clip_actions;
 pub mod color_matrix_filter;
 pub mod convolution_filter;
 pub mod drop_shadow_filter;
@@ -17,14 +18,6 @@ use crate::decode::tags::common::string::String;
 use blend_mode::BlendMode;
 use filter::Filter;
 use place_object_2::PlaceObject2Tag;
-
-/// Defines one or more event handlers to be invoked when their
-/// corresponding events occur.
-#[derive(Clone, PartialEq, Debug)]
-pub struct ClipActions {
-    pub all_event_flags: ClipEventFlags,
-    pub clip_action_records: Vec<ClipActionRecord>,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct ClipActionRecord {
