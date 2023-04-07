@@ -1,6 +1,5 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::fixed_16::Fixed16;
 use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::rgba::Rgba;
@@ -23,7 +22,7 @@ pub struct GradientBevelFilter {
 }
 
 impl GradientBevelFilter {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: BitRead>(reader: &mut R) -> Result<Self> {
         let num_colors = reader.read_u8()?;
         let mut colors = Vec::with_capacity(num_colors as usize);
         for _ in 0..num_colors {
