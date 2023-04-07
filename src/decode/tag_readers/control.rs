@@ -1,10 +1,7 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::string::String;
-use crate::decode::tags::control::define_scene_and_frame_label_data::DefineSceneAndFrameLabelDataTag;
 use crate::decode::tags::control::frame_label::FrameLabelTag;
-use crate::decode::tags::control::frame_label_record::FrameLabelRecord;
-use crate::decode::tags::control::scene_record::SceneRecord;
 use crate::decode::tags::metadata::{FileAttributesFlags, FileAttributesTag};
 use std::io::{Read, Result};
 
@@ -17,23 +14,4 @@ pub fn read_frame_label_tag(reader: &mut SwfSliceReader) -> Result<FrameLabelTag
 pub fn read_file_attributes_tag<R: Read>(reader: &mut R) -> Result<FileAttributesTag> {
     let flags = FileAttributesFlags::from_bits_truncate(reader.read_u32()?);
     Ok(FileAttributesTag { flags })
-}
-
-pub fn read_define_scene_and_frame_label_data_tag<R: Read>(
-    reader: &mut R,
-) -> Result<DefineSceneAndFrameLabelDataTag> {
-    let scene_count = reader.read_encoded_u32()?;
-    let mut scenes = Vec::with_capacity(scene_count as usize);
-    for _ in 0..scene_count {
-        scenes.push(SceneRecord::read(reader)?);
-    }
-    let frame_label_count = reader.read_encoded_u32()?;
-    let mut frame_labels = Vec::with_capacity(frame_label_count as usize);
-    for _ in 0..frame_label_count {
-        frame_labels.push(FrameLabelRecord::read(reader)?);
-    }
-    Ok(DefineSceneAndFrameLabelDataTag {
-        scenes,
-        frame_labels,
-    })
 }
