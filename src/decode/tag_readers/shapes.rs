@@ -288,7 +288,7 @@ pub fn read_define_shape_tag(reader: &mut SwfSliceReader) -> Result<DefineShapeT
         read_line_style_array: &|reader| {
             read_line_style_array(reader, &|reader| read_line_style(reader, &Rgb::read))
         },
-        read_fill_style_array: &read_fill_style_array,
+        read_fill_style_array: &|reader| read_fill_style_array(reader),
     })?;
     Ok(DefineShapeTag {
         shape_id,
