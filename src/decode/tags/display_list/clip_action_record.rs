@@ -1,5 +1,5 @@
 use crate::decode::tags::actions::action_list::ActionList;
-use crate::decode::tags::display_list::ClipEventFlags;
+use crate::decode::tags::display_list::clip_event_flags::ClipEventFlags;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct ClipActionRecord {

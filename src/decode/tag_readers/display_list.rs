@@ -10,11 +10,12 @@ use crate::decode::tags::common::string::String;
 use crate::decode::tags::display_list::blend_mode::BlendMode;
 use crate::decode::tags::display_list::clip_action_record::ClipActionRecord;
 use crate::decode::tags::display_list::clip_actions::ClipActions;
+use crate::decode::tags::display_list::clip_event_flags::ClipEventFlags;
 use crate::decode::tags::display_list::filter::Filter;
 use crate::decode::tags::display_list::place_object::PlaceObjectTag;
 use crate::decode::tags::display_list::place_object_2::PlaceObject2Tag;
 use crate::decode::tags::display_list::place_object_3::PlaceObject3Tag;
-use crate::decode::tags::display_list::{ClipEventFlags, RemoveObject2Tag, RemoveObjectTag};
+use crate::decode::tags::display_list::{RemoveObject2Tag, RemoveObjectTag};
 use std::io::Result;
 
 pub fn read_place_object_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjectTag> {
