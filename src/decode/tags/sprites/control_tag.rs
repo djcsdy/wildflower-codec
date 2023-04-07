@@ -2,8 +2,9 @@ use crate::decode::tags::actions::do_abc::DoAbcTag;
 use crate::decode::tags::actions::do_action::DoActionTag;
 use crate::decode::tags::actions::do_init_action::DoInitActionTag;
 use crate::decode::tags::control::frame_label::FrameLabelTag;
+use crate::decode::tags::display_list::place_object::PlaceObjectTag;
 use crate::decode::tags::display_list::{
-    PlaceObject2Tag, PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag, ShowFrameTag,
+    PlaceObject2Tag, RemoveObject2Tag, RemoveObjectTag, ShowFrameTag,
 };
 use crate::decode::tags::sounds::sound_stream_block::SoundStreamBlockTag;
 use crate::decode::tags::sounds::sound_stream_head::SoundStreamHeadTag;

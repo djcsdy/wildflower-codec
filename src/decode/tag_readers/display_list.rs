@@ -9,9 +9,10 @@ use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::common::string::String;
 use crate::decode::tags::display_list::blend_mode::BlendMode;
 use crate::decode::tags::display_list::filter::Filter;
+use crate::decode::tags::display_list::place_object::PlaceObjectTag;
 use crate::decode::tags::display_list::{
     ClipActionRecord, ClipActions, ClipEventFlags, PlaceObject2Tag, PlaceObject3Tag,
-    PlaceObjectTag, RemoveObject2Tag, RemoveObjectTag,
+    RemoveObject2Tag, RemoveObjectTag,
 };
 use std::io::Result;
 
