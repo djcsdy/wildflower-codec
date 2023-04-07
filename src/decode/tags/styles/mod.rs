@@ -8,4 +8,5 @@ pub mod interpolation_mode;
 pub mod join_style;
 pub mod line_style;
 pub mod line_style_2;
+pub mod line_style_array;
 pub mod spread_mode;
