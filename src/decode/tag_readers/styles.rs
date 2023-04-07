@@ -4,7 +4,6 @@ use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::styles::cap_style::CapStyle;
 use crate::decode::tags::styles::fill_style::FillStyle;
-use crate::decode::tags::styles::fill_style_type::FillStyleType;
 use crate::decode::tags::styles::focal_gradient::FocalGradient;
 use crate::decode::tags::styles::gradient::Gradient;
 use crate::decode::tags::styles::gradient_record::GradientRecord;
@@ -13,13 +12,6 @@ use crate::decode::tags::styles::line_style::LineStyle;
 use crate::decode::tags::styles::line_style_2::LineStyle2;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Read, Result};
-
-pub(crate) fn read_fill_style_type<R: Read>(reader: &mut R) -> Result<FillStyleType> {
-    reader
-        .read_u8()?
-        .try_into()
-        .map_err(|_| Error::from(InvalidData))
-}
 
 pub fn read_line_style_array<
     Read: BitRead,
