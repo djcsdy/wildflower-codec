@@ -14,17 +14,7 @@ pub mod gradient_glow_filter;
 pub mod place_object;
 pub mod place_object_2;
 pub mod place_object_3;
-
-/// Removes the specified character at the specified depth from the display
-/// list.
-#[derive(Clone, PartialEq, Debug)]
-pub struct RemoveObjectTag {
-    /// ID of character to remove.
-    pub character_id: u16,
-
-    /// Depth of character to remove.
-    pub depth: u16,
-}
+pub mod remove_object;
 
 /// Removes the character at the specified depth from the display list.
 #[derive(Clone, PartialEq, Debug)]
