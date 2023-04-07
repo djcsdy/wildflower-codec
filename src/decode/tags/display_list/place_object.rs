@@ -6,7 +6,7 @@ use crate::decode::tags::common::matrix::Matrix;
 pub struct PlaceObjectTag {
     /// The ID of the character to place.
     ///
-    /// The character must have previously be defined by another tag_readers.
+    /// The character must have previously be defined by another tag.
     pub character_id: u16,
 
     /// Depth of the character.

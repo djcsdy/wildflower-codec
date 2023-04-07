@@ -8,10 +8,10 @@ use crate::decode::tags::display_list::clip_actions::ClipActions;
 /// Equivalent to PlaceObjectTag, but with extended functionality.
 #[derive(Clone, PartialEq, Debug)]
 pub struct PlaceObject2Tag {
-    /// If true, then this tag_readers modifies or replaces an existing character at
+    /// If true, then this tag modifies or replaces an existing character at
     /// the specified depth.
     ///
-    /// If false, then this tag_readers creates a new character at the specified depth.
+    /// If false, then this tag creates a new character at the specified depth.
     /// There must not be an existing character at the specified depth.
     ///
     /// Called `PlaceFlagMove` in the SWF Specification.
@@ -25,7 +25,7 @@ pub struct PlaceObject2Tag {
 
     /// The ID of the character to place.
     ///
-    /// The character must have previously been defined by another tag_readers.
+    /// The character must have previously been defined by another tag.
     ///
     /// Required if `modify` is false, otherwise optional.
     pub character_id: Option<u16>,
