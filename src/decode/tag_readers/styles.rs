@@ -115,15 +115,9 @@ pub fn read_line_style_array<
     Ok(line_styles)
 }
 
-pub fn read_line_style<
-    'reader,
-    'buffer,
-    'read_color,
-    Color,
-    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
->(
-    reader: &'reader mut SwfSliceReader<'buffer>,
-    read_color: &'read_color ReadColor,
+pub fn read_line_style<Read: BitRead, Color, ReadColor: Fn(&mut Read) -> Result<Color>>(
+    reader: &mut Read,
+    read_color: &ReadColor,
 ) -> Result<LineStyle<Color>> {
     let width = reader.read_u16()?;
     let color = read_color(reader)?;
