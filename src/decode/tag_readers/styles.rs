@@ -8,7 +8,6 @@ use crate::decode::tags::styles::focal_gradient::FocalGradient;
 use crate::decode::tags::styles::gradient::Gradient;
 use crate::decode::tags::styles::gradient_record::GradientRecord;
 use crate::decode::tags::styles::join_style::JoinStyle;
-use crate::decode::tags::styles::line_style::LineStyle;
 use crate::decode::tags::styles::line_style_2::LineStyle2;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Read, Result};
@@ -30,15 +29,6 @@ pub fn read_line_style_array<
         line_styles.push(read_line_style(reader)?);
     }
     Ok(line_styles)
-}
-
-pub fn read_line_style<Read: BitRead, Color, ReadColor: Fn(&mut Read) -> Result<Color>>(
-    reader: &mut Read,
-    read_color: &ReadColor,
-) -> Result<LineStyle<Color>> {
-    let width = reader.read_u16()?;
-    let color = read_color(reader)?;
-    Ok(LineStyle { width, color })
 }
 
 pub fn read_line_style_2<R: BitRead>(reader: &mut R) -> Result<LineStyle2> {

@@ -1,9 +1,7 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::styles::{
-    read_line_style, read_line_style_2, read_line_style_array,
-};
+use crate::decode::tag_readers::styles::{read_line_style_2, read_line_style_array};
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::rgba::Rgba;
@@ -12,6 +10,7 @@ use crate::decode::tags::shapes::{
     ShapeRecord, ShapeWithStyle, StraightEdgeRecord, StyleChangeRecord,
 };
 use crate::decode::tags::styles::fill_style::FillStyle;
+use crate::decode::tags::styles::line_style::LineStyle;
 use std::io::Result;
 
 pub fn read_shape(reader: &mut SwfSliceReader) -> Result<Shape<(), ()>> {
@@ -285,7 +284,7 @@ pub fn read_define_shape_tag(reader: &mut SwfSliceReader) -> Result<DefineShapeT
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
         read_line_style_array: &|reader| {
-            read_line_style_array(reader, &|reader| read_line_style(reader, &Rgb::read))
+            read_line_style_array(reader, &|reader| LineStyle::read(reader, &Rgb::read))
         },
         read_fill_style_array: &|reader| FillStyle::read_array(reader),
     })?;
@@ -302,12 +301,9 @@ pub fn read_define_shape_2_tag(reader: &mut SwfSliceReader) -> Result<DefineShap
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
         read_line_style_array: &|reader| {
-            read_line_style_array(reader, &|reader| read_line_style(reader, &Rgb::read))
+            read_line_style_array(reader, &|reader| LineStyle::read(reader, &Rgb::read))
         },
-        read_fill_style_array: &|reader| {
-            let read_color = &Rgb::read;
-            FillStyle::read_extended_array(reader, read_color)
-        },
+        read_fill_style_array: &|reader| FillStyle::read_extended_array(reader, &Rgb::read),
     })?;
     Ok(DefineShape2Tag {
         shape_id,
@@ -322,7 +318,7 @@ pub fn read_define_shape_3_tag(reader: &mut SwfSliceReader) -> Result<DefineShap
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
         read_line_style_array: &|reader| {
-            read_line_style_array(reader, &|reader| read_line_style(reader, &Rgba::read))
+            read_line_style_array(reader, &|reader| LineStyle::read(reader, &Rgba::read))
         },
         read_fill_style_array: &|reader| {
             let read_color = &Rgba::read;
