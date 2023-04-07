@@ -10,9 +10,10 @@ use crate::decode::tags::common::string::String;
 use crate::decode::tags::display_list::blend_mode::BlendMode;
 use crate::decode::tags::display_list::filter::Filter;
 use crate::decode::tags::display_list::place_object::PlaceObjectTag;
+use crate::decode::tags::display_list::place_object_2::PlaceObject2Tag;
 use crate::decode::tags::display_list::{
-    ClipActionRecord, ClipActions, ClipEventFlags, PlaceObject2Tag, PlaceObject3Tag,
-    RemoveObject2Tag, RemoveObjectTag,
+    ClipActionRecord, ClipActions, ClipEventFlags, PlaceObject3Tag, RemoveObject2Tag,
+    RemoveObjectTag,
 };
 use std::io::Result;
 

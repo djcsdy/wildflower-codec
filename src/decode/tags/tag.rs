@@ -1,7 +1,5 @@
 use super::bitmaps::DefineBitsLossless2Tag;
-use super::display_list::{
-    PlaceObject2Tag, PlaceObject3Tag, RemoveObject2Tag, RemoveObjectTag, ShowFrameTag,
-};
+use super::display_list::{PlaceObject3Tag, RemoveObject2Tag, RemoveObjectTag, ShowFrameTag};
 use super::metadata::{DefineBinaryDataTag, EnableTelemetryTag};
 use super::shape_morphing::{DefineMorphShape2Tag, DefineMorphShapeTag};
 use super::shapes::{DefineShape2Tag, DefineShape3Tag, DefineShape4Tag, DefineShapeTag};
@@ -34,6 +32,7 @@ use crate::decode::tags::control::set_background_color::SetBackgroundColorTag;
 use crate::decode::tags::control::set_tab_index::SetTabIndexTag;
 use crate::decode::tags::control::symbol_class::SymbolClassTag;
 use crate::decode::tags::display_list::place_object::PlaceObjectTag;
+use crate::decode::tags::display_list::place_object_2::PlaceObject2Tag;
 use crate::decode::tags::fonts::define_font::DefineFontTag;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::define_font_3::DefineFont3Tag;
