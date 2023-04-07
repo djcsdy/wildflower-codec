@@ -1,6 +1,5 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgb::Rgb;
@@ -98,10 +97,11 @@ pub(crate) fn read_fill_style_type<R: Read>(reader: &mut R) -> Result<FillStyleT
 }
 
 pub fn read_line_style_array<
+    Read: BitRead,
     LineStyle,
-    ReadLineStyle: Fn(&mut SwfSliceReader) -> Result<LineStyle>,
+    ReadLineStyle: Fn(&mut Read) -> Result<LineStyle>,
 >(
-    reader: &mut SwfSliceReader,
+    reader: &mut Read,
     read_line_style: &ReadLineStyle,
 ) -> Result<Vec<LineStyle>> {
     let mut count = reader.read_u8()? as u16;
