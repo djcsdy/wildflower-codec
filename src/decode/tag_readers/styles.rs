@@ -14,25 +14,6 @@ use crate::decode::tags::styles::line_style_2::LineStyle2;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Read, Result};
 
-pub fn read_extended_fill_style_array<
-    Read: BitRead,
-    Color,
-    ReadColor: Fn(&mut Read) -> Result<Color>,
->(
-    reader: &mut Read,
-    read_color: &ReadColor,
-) -> Result<Vec<FillStyle<Color>>> {
-    let mut fill_style_count = reader.read_u8()? as u16;
-    if fill_style_count == 0xff {
-        fill_style_count = reader.read_u16()?;
-    }
-    let mut fill_styles = Vec::with_capacity(fill_style_count as usize);
-    for _ in 0..fill_style_count {
-        fill_styles.push(FillStyle::read(reader, &read_color)?);
-    }
-    Ok(fill_styles)
-}
-
 pub(crate) fn read_fill_style_type<R: Read>(reader: &mut R) -> Result<FillStyleType> {
     reader
         .read_u8()?

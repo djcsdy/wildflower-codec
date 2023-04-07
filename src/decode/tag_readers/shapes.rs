@@ -2,7 +2,7 @@ use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::styles::{
-    read_extended_fill_style_array, read_line_style, read_line_style_2, read_line_style_array,
+    read_line_style, read_line_style_2, read_line_style_array,
 };
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgb::Rgb;
@@ -304,7 +304,10 @@ pub fn read_define_shape_2_tag(reader: &mut SwfSliceReader) -> Result<DefineShap
         read_line_style_array: &|reader| {
             read_line_style_array(reader, &|reader| read_line_style(reader, &Rgb::read))
         },
-        read_fill_style_array: &|reader| read_extended_fill_style_array(reader, &Rgb::read),
+        read_fill_style_array: &|reader| {
+            let read_color = &Rgb::read;
+            FillStyle::read_extended_array(reader, read_color)
+        },
     })?;
     Ok(DefineShape2Tag {
         shape_id,
@@ -321,7 +324,10 @@ pub fn read_define_shape_3_tag(reader: &mut SwfSliceReader) -> Result<DefineShap
         read_line_style_array: &|reader| {
             read_line_style_array(reader, &|reader| read_line_style(reader, &Rgba::read))
         },
-        read_fill_style_array: &|reader| read_extended_fill_style_array(reader, &Rgba::read),
+        read_fill_style_array: &|reader| {
+            let read_color = &Rgba::read;
+            FillStyle::read_extended_array(reader, read_color)
+        },
     })?;
     Ok(DefineShape3Tag {
         shape_id,
@@ -343,7 +349,10 @@ pub fn read_define_shape_4_tag(reader: &mut SwfSliceReader) -> Result<DefineShap
         read_line_style_array: &|reader| {
             read_line_style_array(reader, &|reader| read_line_style_2(reader))
         },
-        read_fill_style_array: &|reader| read_extended_fill_style_array(reader, &Rgba::read),
+        read_fill_style_array: &|reader| {
+            let read_color = &Rgba::read;
+            FillStyle::read_extended_array(reader, read_color)
+        },
     })?;
     Ok(DefineShape4Tag {
         shape_id,

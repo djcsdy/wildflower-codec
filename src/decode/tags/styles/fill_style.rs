@@ -86,6 +86,21 @@ impl<Color> FillStyle<Color> {
             }
         })
     }
+
+    pub fn read_extended_array<Read: BitRead, ReadColor: Fn(&mut Read) -> Result<Color>>(
+        reader: &mut Read,
+        read_color: &ReadColor,
+    ) -> Result<Vec<Self>> {
+        let mut fill_style_count = reader.read_u8()? as u16;
+        if fill_style_count == 0xff {
+            fill_style_count = reader.read_u16()?;
+        }
+        let mut fill_styles = Vec::with_capacity(fill_style_count as usize);
+        for _ in 0..fill_style_count {
+            fill_styles.push(Self::read(reader, &read_color)?);
+        }
+        Ok(fill_styles)
+    }
 }
 
 impl FillStyle<Rgb> {
