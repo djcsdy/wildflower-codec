@@ -25,7 +25,7 @@ pub fn read_define_scene_and_frame_label_data_tag<R: Read>(
     let scene_count = reader.read_encoded_u32()?;
     let mut scenes = Vec::with_capacity(scene_count as usize);
     for _ in 0..scene_count {
-        scenes.push(read_scene_record(reader)?);
+        scenes.push(SceneRecord::read(reader)?);
     }
     let frame_label_count = reader.read_encoded_u32()?;
     let mut frame_labels = Vec::with_capacity(frame_label_count as usize);
@@ -36,12 +36,6 @@ pub fn read_define_scene_and_frame_label_data_tag<R: Read>(
         scenes,
         frame_labels,
     })
-}
-
-fn read_scene_record<R: Read>(reader: &mut R) -> Result<SceneRecord> {
-    let offset = reader.read_encoded_u32()?;
-    let name = String::read(reader)?;
-    Ok(SceneRecord { offset, name })
 }
 
 fn read_frame_label_record<R: Read>(reader: &mut R) -> Result<FrameLabelRecord> {
