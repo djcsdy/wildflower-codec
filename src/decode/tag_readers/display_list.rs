@@ -16,7 +16,7 @@ use crate::decode::tags::display_list::place_object::PlaceObjectTag;
 use crate::decode::tags::display_list::place_object_2::PlaceObject2Tag;
 use crate::decode::tags::display_list::place_object_3::PlaceObject3Tag;
 use crate::decode::tags::display_list::remove_object::RemoveObjectTag;
-use crate::decode::tags::display_list::RemoveObject2Tag;
+use crate::decode::tags::display_list::remove_object_2::RemoveObject2Tag;
 use std::io::Result;
 
 pub fn read_place_object_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjectTag> {

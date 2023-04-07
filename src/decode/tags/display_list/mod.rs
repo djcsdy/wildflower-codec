@@ -15,13 +15,7 @@ pub mod place_object;
 pub mod place_object_2;
 pub mod place_object_3;
 pub mod remove_object;
-
-/// Removes the character at the specified depth from the display list.
-#[derive(Clone, PartialEq, Debug)]
-pub struct RemoveObject2Tag {
-    /// Depth of character to remove.
-    pub depth: u16,
-}
+pub mod remove_object_2;
 
 /// Instructs the player to display the contents of the display list.
 ///
