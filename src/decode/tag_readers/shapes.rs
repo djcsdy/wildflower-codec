@@ -2,8 +2,7 @@ use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::styles::{
-    read_extended_fill_style_array, read_fill_style_array, read_line_style, read_line_style_2,
-    read_line_style_array,
+    read_extended_fill_style_array, read_line_style, read_line_style_2, read_line_style_array,
 };
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgb::Rgb;
@@ -288,7 +287,7 @@ pub fn read_define_shape_tag(reader: &mut SwfSliceReader) -> Result<DefineShapeT
         read_line_style_array: &|reader| {
             read_line_style_array(reader, &|reader| read_line_style(reader, &Rgb::read))
         },
-        read_fill_style_array: &|reader| read_fill_style_array(reader),
+        read_fill_style_array: &|reader| FillStyle::read_array(reader),
     })?;
     Ok(DefineShapeTag {
         shape_id,

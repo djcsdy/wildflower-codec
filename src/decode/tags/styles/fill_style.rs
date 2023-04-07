@@ -2,6 +2,7 @@ use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_readers::styles;
 use crate::decode::tags::common::matrix::Matrix;
+use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::styles::fill_style_type::FillStyleType;
 use crate::decode::tags::styles::focal_gradient::FocalGradient;
 use crate::decode::tags::styles::gradient::Gradient;
@@ -84,5 +85,17 @@ impl<Color> FillStyle<Color> {
                 Self::NonSmoothedClippedBitmap { bitmap_id, matrix }
             }
         })
+    }
+}
+
+impl FillStyle<Rgb> {
+    pub fn read_array<R: BitRead>(reader: &mut R) -> Result<Vec<Self>> {
+        let fill_style_count = reader.read_u8()?;
+        let mut fill_styles = Vec::with_capacity(fill_style_count as usize);
+        for _ in 0..fill_style_count {
+            let read_color = &Rgb::read;
+            fill_styles.push(Self::read(reader, read_color)?);
+        }
+        Ok(fill_styles)
     }
 }
