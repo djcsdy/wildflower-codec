@@ -1,3 +1,4 @@
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::display_list::bevel_filter::BevelFilter;
@@ -24,7 +25,7 @@ pub enum Filter {
 }
 
 impl Filter {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Filter> {
+    pub fn read<R: BitRead>(reader: &mut R) -> Result<Filter> {
         let filter_id = reader.read_u8()?;
         Ok(match filter_id {
             0 => Filter::DropShadow(DropShadowFilter::read(reader)?),
