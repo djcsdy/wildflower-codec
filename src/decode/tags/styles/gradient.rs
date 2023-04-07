@@ -1,6 +1,6 @@
+use crate::decode::tags::styles::gradient_record::GradientRecord;
 use crate::decode::tags::styles::interpolation_mode::InterpolationMode;
 use crate::decode::tags::styles::spread_mode::SpreadMode;
-use crate::decode::tags::styles::GradientRecord;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct Gradient<Color> {

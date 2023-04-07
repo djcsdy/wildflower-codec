@@ -1,6 +1,7 @@
 pub mod fill_style;
 pub mod focal_gradient;
 pub mod gradient;
+pub mod gradient_record;
 pub mod interpolation_mode;
 pub mod line_style;
 pub mod line_style_2;
@@ -8,12 +9,6 @@ pub mod spread_mode;
 
 use crate::decode::tags::common::fixed_8::Fixed8;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct GradientRecord<Color> {
-    pub ratio: u8,
-    pub color: Color,
-}
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
 #[repr(u8)]
