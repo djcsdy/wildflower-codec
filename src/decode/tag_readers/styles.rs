@@ -165,7 +165,7 @@ pub fn read_line_style_2(reader: &mut SwfSliceReader) -> Result<LineStyle2> {
     })
 }
 
-pub fn read_cap_style(reader: &mut SwfSliceReader) -> Result<CapStyle> {
+pub fn read_cap_style<R: BitRead>(reader: &mut R) -> Result<CapStyle> {
     CapStyle::try_from(reader.read_ub8(2)?).map_err(|_| Error::from(InvalidData))
 }
 
