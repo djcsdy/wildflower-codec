@@ -13,7 +13,7 @@ use crate::decode::tags::shape_morphing::{
     DefineMorphShape2Tag, DefineMorphShapeTag, MorphFillStyle, MorphFocalGradient, MorphGradient,
     MorphGradientRecord, MorphLineStyle, MorphLineStyle2,
 };
-use crate::decode::tags::styles::JoinStyle;
+use crate::decode::tags::styles::join_style::JoinStyle;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Result};
 
