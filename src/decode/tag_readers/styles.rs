@@ -47,15 +47,9 @@ pub fn read_extended_fill_style_array<
     Ok(fill_styles)
 }
 
-pub fn read_fill_style<
-    'reader,
-    'buffer,
-    'read_color,
-    Color,
-    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
->(
-    reader: &'reader mut SwfSliceReader<'buffer>,
-    read_color: &'read_color ReadColor,
+pub fn read_fill_style<Read: BitRead, Color, ReadColor: Fn(&mut Read) -> Result<Color>>(
+    reader: &mut Read,
+    read_color: &ReadColor,
 ) -> Result<FillStyle<Color>> {
     let fill_style_type = read_fill_style_type(reader)?;
     Ok(match fill_style_type {
