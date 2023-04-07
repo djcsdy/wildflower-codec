@@ -207,15 +207,9 @@ pub fn read_gradient<Read: BitRead, Color, ReadColor: Fn(&mut Read) -> Result<Co
     })
 }
 
-pub fn read_focal_gradient<
-    'reader,
-    'buffer,
-    'read_color,
-    Color,
-    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
->(
-    reader: &'reader mut SwfSliceReader<'buffer>,
-    read_color: &'read_color ReadColor,
+pub fn read_focal_gradient<Read: BitRead, Color, ReadColor: Fn(&mut Read) -> Result<Color>>(
+    reader: &mut Read,
+    read_color: &ReadColor,
 ) -> Result<FocalGradient<Color>> {
     let gradient = read_gradient(reader, read_color)?;
     let focal_point = Fixed8::read(reader)?;
