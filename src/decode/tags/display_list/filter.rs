@@ -1,6 +1,5 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::display_list::bevel_filter::BevelFilter;
 use crate::decode::tags::display_list::blur_filter::BlurFilter;
 use crate::decode::tags::display_list::color_matrix_filter::ColorMatrixFilter;
@@ -40,7 +39,7 @@ impl Filter {
         })
     }
 
-    pub fn read_list(reader: &mut SwfSliceReader) -> Result<Vec<Filter>> {
+    pub fn read_list<R: BitRead>(reader: &mut R) -> Result<Vec<Filter>> {
         let number_of_filters = reader.read_u8()?;
         let mut filters = Vec::with_capacity(number_of_filters as usize);
         for _ in 0..number_of_filters {
