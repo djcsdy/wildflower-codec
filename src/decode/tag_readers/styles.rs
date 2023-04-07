@@ -15,7 +15,7 @@ use crate::decode::tags::styles::join_style::JoinStyle;
 use crate::decode::tags::styles::line_style::LineStyle;
 use crate::decode::tags::styles::line_style_2::LineStyle2;
 use std::io::ErrorKind::InvalidData;
-use std::io::{Error, Result};
+use std::io::{Error, Read, Result};
 
 pub fn read_fill_style_array(reader: &mut SwfSliceReader) -> Result<Vec<FillStyle<Rgb>>> {
     let fill_style_count = reader.read_u8()?;
@@ -98,7 +98,7 @@ pub fn read_fill_style<
     })
 }
 
-pub(crate) fn read_fill_style_type(reader: &mut SwfSliceReader) -> Result<FillStyleType> {
+pub(crate) fn read_fill_style_type<R: Read>(reader: &mut R) -> Result<FillStyleType> {
     reader
         .read_u8()?
         .try_into()
