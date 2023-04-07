@@ -1,40 +1,9 @@
-use crate::decode::tags::common::fixed_8::Fixed8;
-use crate::decode::tags::common::matrix::Matrix;
-use crate::decode::tags::common::rgba::Rgba;
-use num_enum::{IntoPrimitive, TryFromPrimitive};
+pub mod fill_style;
 
-#[derive(Clone, PartialEq, Debug)]
-pub enum FillStyle<Color> {
-    Solid(Color),
-    LinearGradient {
-        matrix: Matrix,
-        gradient: Gradient<Color>,
-    },
-    RadialGradient {
-        matrix: Matrix,
-        gradient: Gradient<Color>,
-    },
-    FocalRadialGradient {
-        matrix: Matrix,
-        gradient: FocalGradient<Color>,
-    },
-    RepeatingBitmap {
-        bitmap_id: u16,
-        matrix: Matrix,
-    },
-    ClippedBitmap {
-        bitmap_id: u16,
-        matrix: Matrix,
-    },
-    NonSmoothedRepeatingBitmap {
-        bitmap_id: u16,
-        matrix: Matrix,
-    },
-    NonSmoothedClippedBitmap {
-        bitmap_id: u16,
-        matrix: Matrix,
-    },
-}
+use crate::decode::tags::common::fixed_8::Fixed8;
+use crate::decode::tags::common::rgba::Rgba;
+use fill_style::FillStyle;
+use num_enum::{IntoPrimitive, TryFromPrimitive};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct LineStyle<Color> {

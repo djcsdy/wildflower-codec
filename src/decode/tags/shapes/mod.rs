@@ -1,7 +1,8 @@
-use super::styles::{FillStyle, LineStyle, LineStyle2};
+use super::styles::{LineStyle, LineStyle2};
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::rgba::Rgba;
+use crate::decode::tags::styles::fill_style::FillStyle;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineShapeTag {

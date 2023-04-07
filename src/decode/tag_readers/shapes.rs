@@ -12,7 +12,7 @@ use crate::decode::tags::shapes::{
     CurvedEdgeRecord, DefineShape2Tag, DefineShape3Tag, DefineShape4Tag, DefineShapeTag, Shape,
     ShapeRecord, ShapeWithStyle, StraightEdgeRecord, StyleChangeRecord,
 };
-use crate::decode::tags::styles::FillStyle;
+use crate::decode::tags::styles::fill_style::FillStyle;
 use std::io::Result;
 
 pub fn read_shape(reader: &mut SwfSliceReader) -> Result<Shape<(), ()>> {
