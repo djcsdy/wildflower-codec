@@ -7,7 +7,8 @@ use crate::decode::tags::bitmaps::bitmap_format::BitmapFormat;
 use crate::decode::tags::bitmaps::color_map_data::{ColorMapData, ReadColorMapDataOptions};
 use crate::decode::tags::bitmaps::define_bits_lossless::DefineBitsLosslessTag;
 use crate::decode::tags::bitmaps::define_bits_lossless_2::DefineBitsLossless2Tag;
-use crate::decode::tags::bitmaps::{pix15, pix24};
+use crate::decode::tags::bitmaps::pix15::read_pix15;
+use crate::decode::tags::bitmaps::pix24::read_pix24;
 use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::rgba::Rgba;
 use inflate::DeflateDecoder;
@@ -45,13 +46,13 @@ pub fn read_define_bits_lossless_tag<R: SizedRead>(
         }
         BitmapFormat::Rgb15 => BitmapData::read(ReadBitmapDataOptions {
             reader: &mut bitmap_data_reader,
-            read_color: &pix15::read_pix15,
+            read_color: &read_pix15,
             bitmap_width,
             bitmap_height,
         })?,
         BitmapFormat::Rgb24 => BitmapData::read(ReadBitmapDataOptions {
             reader: &mut bitmap_data_reader,
-            read_color: &pix24::read_pix24,
+            read_color: &read_pix24,
             bitmap_width,
             bitmap_height,
         })?,
