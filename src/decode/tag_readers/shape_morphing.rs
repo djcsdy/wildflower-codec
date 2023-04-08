@@ -2,7 +2,6 @@ use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::shapes::read_shape;
-use crate::decode::tag_readers::styles::read_cap_style;
 use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rectangle::Rectangle;
@@ -11,6 +10,7 @@ use crate::decode::tags::shape_morphing::{
     DefineMorphShape2Tag, DefineMorphShapeTag, MorphFillStyle, MorphFocalGradient, MorphGradient,
     MorphGradientRecord, MorphLineStyle, MorphLineStyle2,
 };
+use crate::decode::tags::styles::cap_style::CapStyle;
 use crate::decode::tags::styles::fill_style_type::{read_fill_style_type, FillStyleType};
 use crate::decode::tags::styles::join_style::JoinStyle;
 use crate::decode::tags::styles::line_style_array::read_line_style_array;
@@ -211,7 +211,7 @@ fn read_morph_line_style(reader: &mut SwfSliceReader) -> Result<MorphLineStyle> 
 fn read_morph_line_style_2(reader: &mut SwfSliceReader) -> Result<MorphLineStyle2> {
     let start_width = reader.read_u16()?;
     let end_width = reader.read_u16()?;
-    let start_cap_style = read_cap_style(reader)?;
+    let start_cap_style = CapStyle::read(reader)?;
     let join_style = reader.read_ub8(2)?;
     let has_fill = reader.read_bit()?;
     let no_h_scale = reader.read_bit()?;
@@ -219,7 +219,7 @@ fn read_morph_line_style_2(reader: &mut SwfSliceReader) -> Result<MorphLineStyle
     let pixel_hinting = reader.read_bit()?;
     reader.read_ub8(5)?;
     let no_close = reader.read_bit()?;
-    let end_cap_style = read_cap_style(reader)?;
+    let end_cap_style = CapStyle::read(reader)?;
     let miter_limit_factor = if join_style == 2 {
         Some(Fixed8::read(reader)?)
     } else {

@@ -1,16 +1,11 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tags::common::fixed_8::Fixed8;
-use crate::decode::tags::styles::cap_style::CapStyle;
 use crate::decode::tags::styles::focal_gradient::FocalGradient;
 use crate::decode::tags::styles::gradient::Gradient;
 use crate::decode::tags::styles::gradient_record::GradientRecord;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Read, Result};
-
-pub fn read_cap_style<R: BitRead>(reader: &mut R) -> Result<CapStyle> {
-    CapStyle::try_from(reader.read_ub8(2)?).map_err(|_| Error::from(InvalidData))
-}
 
 pub fn read_gradient<Read: BitRead, Color, ReadColor: Fn(&mut Read) -> Result<Color>>(
     reader: &mut Read,

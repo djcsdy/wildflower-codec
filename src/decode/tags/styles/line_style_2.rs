@@ -1,6 +1,5 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::tag_readers::styles;
 use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::styles::cap_style::CapStyle;
@@ -25,7 +24,7 @@ pub struct LineStyle2 {
 impl LineStyle2 {
     pub fn read<R: BitRead>(reader: &mut R) -> Result<Self> {
         let width = reader.read_u16()?;
-        let start_cap_style = styles::read_cap_style(reader)?;
+        let start_cap_style = CapStyle::read(reader)?;
         let join_style = reader.read_ub8(2)?;
         let has_fill = reader.read_bit()?;
         let no_h_scale = reader.read_bit()?;
@@ -33,7 +32,7 @@ impl LineStyle2 {
         let pixel_hinting = reader.read_bit()?;
         reader.read_ub8(5)?;
         let no_close = reader.read_bit()?;
-        let end_cap_style = styles::read_cap_style(reader)?;
+        let end_cap_style = CapStyle::read(reader)?;
         let miter_limit_factor = if join_style == 2 {
             Some(Fixed8::read(reader)?)
         } else {
