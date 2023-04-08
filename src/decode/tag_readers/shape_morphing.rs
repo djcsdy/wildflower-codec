@@ -175,7 +175,7 @@ fn read_morph_gradient<R: Read>(reader: &mut R) -> Result<MorphGradient> {
     Ok(MorphGradient { gradient_records })
 }
 
-fn read_morph_focal_gradient(reader: &mut SwfSliceReader) -> Result<MorphFocalGradient> {
+fn read_morph_focal_gradient<R: Read>(reader: &mut R) -> Result<MorphFocalGradient> {
     let morph_gradient = read_morph_gradient(reader)?;
     let start_focal_point = Fixed8::read(reader)?;
     let end_focal_point = Fixed8::read(reader)?;
