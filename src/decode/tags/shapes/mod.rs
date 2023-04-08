@@ -3,17 +3,10 @@ pub mod define_shape_2;
 pub mod define_shape_3;
 pub mod define_shape_4;
 pub mod shape;
+pub mod shape_record;
 pub mod shape_with_style;
 
 use crate::decode::tags::styles::fill_style::FillStyle;
-
-#[derive(Clone, PartialEq, Debug)]
-pub enum ShapeRecord<Color, LineStyle> {
-    EndShape,
-    StyleChange(StyleChangeRecord<Color, LineStyle>),
-    StraightEdge(StraightEdgeRecord),
-    CurvedEdge(CurvedEdgeRecord),
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct StyleChangeRecord<Color, LineStyle> {

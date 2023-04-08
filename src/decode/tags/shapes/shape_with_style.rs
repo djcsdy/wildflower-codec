@@ -1,4 +1,4 @@
-use crate::decode::tags::shapes::ShapeRecord;
+use crate::decode::tags::shapes::shape_record::ShapeRecord;
 use crate::decode::tags::styles::fill_style::FillStyle;
 
 #[derive(Clone, PartialEq, Debug)]
