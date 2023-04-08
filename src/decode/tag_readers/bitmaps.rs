@@ -5,7 +5,7 @@ use crate::decode::tags::bitmaps::bitmap_format::BitmapFormat;
 use crate::decode::tags::bitmaps::color_map_data::{ColorMapData, ReadColorMapDataOptions};
 use crate::decode::tags::bitmaps::define_bits_lossless::DefineBitsLosslessTag;
 use crate::decode::tags::bitmaps::define_bits_lossless_2::DefineBitsLossless2Tag;
-use crate::decode::tags::bitmaps::pix15;
+use crate::decode::tags::bitmaps::{pix15, pix24};
 use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::rgba::Rgba;
 use inflate::DeflateDecoder;
@@ -46,7 +46,7 @@ pub fn read_define_bits_lossless_tag(reader: &mut SwfSliceReader) -> Result<Defi
         })?,
         BitmapFormat::Rgb24 => read_bitmap_data(&mut ReadBitmapDataOptions {
             reader: &mut bitmap_data_reader,
-            read_color: &read_pix24,
+            read_color: &pix24::read_pix24,
             bitmap_width,
             bitmap_height,
         })?,
@@ -94,14 +94,6 @@ fn read_bitmap_data<
         }
     }
     Ok(BitmapData::Rgb(pixel_data))
-}
-
-fn read_pix24(reader: &mut SwfSliceReader) -> Result<Rgb> {
-    reader.read_u8()?;
-    let red = reader.read_u8()?;
-    let green = reader.read_u8()?;
-    let blue = reader.read_u8()?;
-    Ok(Rgb { red, green, blue })
 }
 
 pub fn read_define_bits_lossless_2_tag(

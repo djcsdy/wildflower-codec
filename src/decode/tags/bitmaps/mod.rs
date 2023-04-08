@@ -9,3 +9,4 @@ pub mod define_bits_lossless;
 pub mod define_bits_lossless_2;
 pub mod jpeg_tables;
 pub(crate) mod pix15;
+pub(crate) mod pix24;
