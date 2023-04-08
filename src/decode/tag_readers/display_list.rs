@@ -1,6 +1,8 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::read_options::ReadOptions;
 use crate::decode::slice_reader::SwfSliceReader;
+use crate::decode::swf_version::SwfVersion;
 use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::common::color_transform::ColorTransform;
 use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithAlpha;
@@ -17,7 +19,7 @@ use crate::decode::tags::display_list::place_object_2::PlaceObject2Tag;
 use crate::decode::tags::display_list::place_object_3::PlaceObject3Tag;
 use crate::decode::tags::display_list::remove_object::RemoveObjectTag;
 use crate::decode::tags::display_list::remove_object_2::RemoveObject2Tag;
-use std::io::Result;
+use std::io::{Read, Result};
 
 pub fn read_place_object_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjectTag> {
     let character_id = reader.read_u16()?;
@@ -97,7 +99,11 @@ pub fn read_place_object_2_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjec
 
 fn read_clip_actions(reader: &mut SwfSliceReader) -> Result<ClipActions> {
     reader.read_u16()?;
-    let all_event_flags = read_clip_event_flags(reader)?;
+    let swf_version = SwfVersion(reader.swf_version());
+    let all_event_flags = read_clip_event_flags(ReadOptions {
+        reader,
+        swf_version,
+    })?;
     let mut clip_action_records = Vec::new();
     while let Some(clip_action_record) = read_clip_action_record(reader)? {
         clip_action_records.push(clip_action_record);
@@ -108,9 +114,14 @@ fn read_clip_actions(reader: &mut SwfSliceReader) -> Result<ClipActions> {
     })
 }
 
-fn read_clip_event_flags(reader: &mut SwfSliceReader) -> Result<ClipEventFlags> {
+fn read_clip_event_flags<R: Read>(
+    ReadOptions {
+        reader,
+        swf_version,
+    }: ReadOptions<R>,
+) -> Result<ClipEventFlags> {
     Ok(ClipEventFlags::from_bits_truncate(
-        if reader.swf_version() >= 6 {
+        if swf_version >= SwfVersion(6) {
             reader.read_u32()?
         } else {
             reader.read_u16()? as u32
@@ -119,7 +130,11 @@ fn read_clip_event_flags(reader: &mut SwfSliceReader) -> Result<ClipEventFlags> 
 }
 
 fn read_clip_action_record(reader: &mut SwfSliceReader) -> Result<Option<ClipActionRecord>> {
-    let event_flags = read_clip_event_flags(reader)?;
+    let swf_version = SwfVersion(reader.swf_version());
+    let event_flags = read_clip_event_flags(ReadOptions {
+        reader,
+        swf_version,
+    })?;
     if event_flags.is_empty() {
         Ok(None)
     } else {
