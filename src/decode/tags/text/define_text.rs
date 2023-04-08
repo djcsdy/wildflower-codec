@@ -21,7 +21,7 @@ impl DefineTextTag {
         let text_matrix = Matrix::read(reader)?;
         let glyph_bits = reader.read_u8()?;
         let advance_bits = reader.read_u8()?;
-        let text_records = TextRecord::read_all(&mut ReadTextRecordOptions {
+        let text_records = TextRecord::read_all(ReadTextRecordOptions {
             reader,
             glyph_bits,
             advance_bits,

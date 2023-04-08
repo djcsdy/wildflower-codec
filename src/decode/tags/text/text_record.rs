@@ -43,47 +43,52 @@ impl Flags {
 
 impl<Color> TextRecord<Color> {
     pub fn read<'reader, 'buffer, ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>>(
-        options: &mut ReadTextRecordOptions<'reader, 'buffer, Color, ReadColor>,
+        ReadTextRecordOptions {
+            reader,
+            glyph_bits,
+            advance_bits,
+            read_color,
+        }: ReadTextRecordOptions<'reader, 'buffer, Color, ReadColor>,
     ) -> Result<Option<Self>> {
-        let flags = Flags::read(options.reader)?;
+        let flags = Flags::read(reader)?;
         Ok(if flags.is_empty() {
             None
         } else {
             let font_id = if flags.contains(Flags::HAS_FONT) {
-                Some(options.reader.read_u16()?)
+                Some(reader.read_u16()?)
             } else {
                 None
             };
             let text_color = if flags.contains(Flags::HAS_COLOR) {
-                Some((options.read_color)(options.reader)?)
+                Some(read_color(reader)?)
             } else {
                 None
             };
             let x_offset = if flags.contains(Flags::HAS_X_OFFSET) {
-                Some(options.reader.read_i16()?)
+                Some(reader.read_i16()?)
             } else {
                 None
             };
             let y_offset = if flags.contains(Flags::HAS_Y_OFFSET) {
-                Some(options.reader.read_i16()?)
+                Some(reader.read_i16()?)
             } else {
                 None
             };
             let font = if let Some(font_id) = font_id {
                 Some(TextRecordFont {
                     font_id,
-                    text_height: options.reader.read_u16()?,
+                    text_height: reader.read_u16()?,
                 })
             } else {
                 None
             };
-            let glyph_count = options.reader.read_u8()?;
+            let glyph_count = reader.read_u8()?;
             let mut glyph_entries = Vec::with_capacity(glyph_count as usize);
             for _ in 0..glyph_count {
                 glyph_entries.push(GlyphEntry::read(ReadGlyphEntryOptions {
-                    reader: options.reader,
-                    glyph_bits: options.glyph_bits,
-                    advance_bits: options.advance_bits,
+                    reader,
+                    glyph_bits,
+                    advance_bits,
                 })?);
             }
             Some(TextRecord {
@@ -101,10 +106,20 @@ impl<Color> TextRecord<Color> {
         'buffer,
         ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
     >(
-        options: &mut ReadTextRecordOptions<'reader, 'buffer, Color, ReadColor>,
+        ReadTextRecordOptions {
+            reader,
+            glyph_bits,
+            advance_bits,
+            read_color,
+        }: ReadTextRecordOptions<'reader, 'buffer, Color, ReadColor>,
     ) -> Result<Vec<Self>> {
         let mut records = Vec::new();
-        while let Some(record) = Self::read(options)? {
+        while let Some(record) = Self::read(ReadTextRecordOptions {
+            reader,
+            glyph_bits,
+            advance_bits,
+            read_color: &read_color,
+        })? {
             records.push(record)
         }
         Ok(records)
