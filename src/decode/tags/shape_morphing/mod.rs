@@ -1,20 +1,13 @@
 pub mod define_morph_shape;
 pub mod define_morph_shape_2;
 pub mod morph_fill_style;
+pub mod morph_focal_gradient;
 pub mod morph_gradient;
 
-use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::styles::cap_style::CapStyle;
 use crate::decode::tags::styles::join_style::JoinStyle;
 use morph_fill_style::MorphFillStyle;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct MorphFocalGradient {
-    pub gradient_records: Vec<MorphGradientRecord>,
-    pub start_focal_point: Fixed8,
-    pub end_focal_point: Fixed8,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct MorphGradientRecord {
