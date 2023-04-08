@@ -79,7 +79,7 @@ impl EncodedTag {
     }
 
     pub fn decode(self) -> Tag {
-        let mut slice_reader = SwfSliceReader::new(&self.body, self.swf_version);
+        let mut slice_reader = SwfSliceReader::new(&self.body);
         match self.tag_type {
             TagType::End => Tag::Unknown(self.into_unknown()),
             TagType::ShowFrame => Tag::Unknown(self.into_unknown()),
@@ -129,12 +129,9 @@ impl EncodedTag {
             TagType::SoundStreamBlock => SoundStreamBlockTag::read(&mut slice_reader)
                 .map(Tag::SoundStreamBlock)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineBitsLossless => DefineBitsLosslessTag::read(ReadOptions {
-                reader: &mut slice_reader,
-                swf_version: self.swf_version,
-            })
-            .map(Tag::DefineBitsLossless)
-            .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
+            TagType::DefineBitsLossless => DefineBitsLosslessTag::read(&mut slice_reader)
+                .map(Tag::DefineBitsLossless)
+                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineBitsJpeg2 => DefineBitsJpeg2Tag::read(&mut slice_reader)
                 .map(Tag::DefineBitsJpeg2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
@@ -168,12 +165,9 @@ impl EncodedTag {
             TagType::DefineBitsJpeg3 => DefineBitsJpeg3Tag::read(&mut slice_reader)
                 .map(Tag::DefineBitsJpeg3)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineBitsLossless2 => DefineBitsLossless2Tag::read(ReadOptions {
-                reader: &mut slice_reader,
-                swf_version: self.swf_version,
-            })
-            .map(Tag::DefineBitsLossless2)
-            .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
+            TagType::DefineBitsLossless2 => DefineBitsLossless2Tag::read(&mut slice_reader)
+                .map(Tag::DefineBitsLossless2)
+                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineEditText => DefineEditTextTag::read(&mut slice_reader)
                 .map(Tag::DefineEditText)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),

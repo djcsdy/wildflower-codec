@@ -1,5 +1,4 @@
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::read_options::ReadOptions;
 use crate::decode::sized_read::SizedRead;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::bitmaps::bitmap_data::{BitmapData, ReadBitmapDataOptions};
@@ -19,12 +18,7 @@ pub struct DefineBitsLossless2Tag {
 }
 
 impl DefineBitsLossless2Tag {
-    pub fn read<R: SizedRead>(
-        ReadOptions {
-            reader,
-            swf_version,
-        }: ReadOptions<R>,
-    ) -> Result<Self> {
+    pub fn read<R: SizedRead>(reader: &mut R) -> Result<Self> {
         let character_id = reader.read_u16()?;
         let bitmap_format = BitmapFormat::read(reader)?;
         let bitmap_width = reader.read_u16()?;
@@ -37,7 +31,7 @@ impl DefineBitsLossless2Tag {
         let mut decompressed_bitmap_data = Vec::with_capacity(reader.remaining_bytes() * 2);
         let mut zlib_reader = DeflateDecoder::from_zlib(reader);
         zlib_reader.read_to_end(&mut decompressed_bitmap_data)?;
-        let mut bitmap_data_reader = SwfSliceReader::new(&decompressed_bitmap_data, swf_version);
+        let mut bitmap_data_reader = SwfSliceReader::new(&decompressed_bitmap_data);
         let bitmap_data = match bitmap_format {
             BitmapFormat::ColorMap8 => {
                 BitmapData::ColorMap8(ColorMapData::read(ReadColorMapDataOptions {

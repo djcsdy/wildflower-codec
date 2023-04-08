@@ -2,26 +2,19 @@ use crate::decode::bit_read::BitRead;
 use crate::decode::bit_reader::BitReader;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::sized_read::SizedRead;
-use crate::decode::swf_version::SwfVersion;
 use std::io::{IoSliceMut, Read, Result};
 
 pub struct SwfSliceReader<'buffer> {
     buffer: &'buffer [u8],
     inner: BitReader<&'buffer [u8]>,
-    swf_version: SwfVersion,
 }
 
 impl<'buffer> SwfSliceReader<'buffer> {
-    pub fn new(buffer: &'buffer [u8], swf_version: SwfVersion) -> Self {
+    pub fn new(buffer: &'buffer [u8]) -> Self {
         SwfSliceReader {
             buffer,
             inner: BitReader::new(buffer),
-            swf_version,
         }
-    }
-
-    pub fn swf_version(&self) -> SwfVersion {
-        self.swf_version
     }
 
     pub fn seek(&mut self, position: usize) {
@@ -29,11 +22,11 @@ impl<'buffer> SwfSliceReader<'buffer> {
     }
 
     pub fn slice(&mut self, length: usize) -> Self {
-        Self::new(self.inner.slice(length), self.swf_version)
+        Self::new(self.inner.slice(length))
     }
 
     pub fn remaining_slice(mut self) -> Self {
-        Self::new(self.inner.slice(self.remaining_bytes()), self.swf_version)
+        Self::new(self.inner.slice(self.remaining_bytes()))
     }
 
     pub fn read_u16_to_end(&mut self) -> Result<Vec<u16>> {
