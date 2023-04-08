@@ -47,8 +47,8 @@ pub fn extend_sign(value: u32, bits: u8) -> i32 {
     }
 }
 
-pub struct BitReadOptions<ReadByte: FnMut() -> Result<u8>> {
-    pub read_byte: ReadByte,
+pub struct BitReadOptions<'read_byte, ReadByte: FnMut() -> Result<u8>> {
+    pub read_byte: &'read_byte mut ReadByte,
     pub state: BitReadState,
     pub bits: u8,
 }
@@ -76,7 +76,7 @@ pub fn bit_read<ReadByte: FnMut() -> Result<u8>>(
 
 fn bit_read_internal<ReadByte: FnMut() -> Result<u8>>(
     BitReadOptions {
-        mut read_byte,
+        read_byte,
         state:
             BitReadState {
                 mut partial_byte,

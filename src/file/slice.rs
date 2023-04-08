@@ -95,7 +95,7 @@ impl<'file> BitRead for SwfSlice<'file> {
             partial_bit_count: self.partial_bit_count,
         };
         let (new_state, result) = bit_read(BitReadOptions {
-            read_byte: || self.read_u8(),
+            read_byte: &mut || self.read_u8(),
             state,
             bits,
         });

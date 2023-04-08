@@ -46,7 +46,7 @@ impl<R: Read> BitRead for BitReader<R> {
 
     fn read_ub(&mut self, bits: u8) -> Result<u32> {
         let (state, result) = bit_read(BitReadOptions {
-            read_byte: || self.inner.read_u8(),
+            read_byte: &mut || self.inner.read_u8(),
             state: BitReadState {
                 partial_byte: self.partial_byte,
                 partial_bit_count: self.partial_bit_count,
