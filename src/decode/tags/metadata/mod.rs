@@ -1,7 +1,4 @@
-#[derive(Clone, PartialEq, Debug)]
-pub struct FileAttributesTag {
-    pub flags: FileAttributesFlags,
-}
+pub mod file_attributes;
 
 bitflags! {
     pub struct FileAttributesFlags: u32 {

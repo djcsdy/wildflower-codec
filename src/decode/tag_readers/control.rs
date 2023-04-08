@@ -2,7 +2,8 @@ use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::string::String;
 use crate::decode::tags::control::frame_label::FrameLabelTag;
-use crate::decode::tags::metadata::{FileAttributesFlags, FileAttributesTag};
+use crate::decode::tags::metadata::file_attributes::FileAttributesTag;
+use crate::decode::tags::metadata::FileAttributesFlags;
 use std::io::{Read, Result};
 
 pub fn read_frame_label_tag(reader: &mut SwfSliceReader) -> Result<FrameLabelTag> {
