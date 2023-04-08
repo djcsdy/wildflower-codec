@@ -3,7 +3,6 @@ use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::read_options::ReadOptions;
 use crate::decode::sized_read::SizedRead;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::swf_version::SwfVersion;
 use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::common::color_transform::ColorTransform;
 use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithAlpha;
@@ -100,7 +99,7 @@ pub fn read_place_object_2_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjec
 
 fn read_clip_actions(reader: &mut SwfSliceReader) -> Result<ClipActions> {
     reader.read_u16()?;
-    let swf_version = SwfVersion(reader.swf_version());
+    let swf_version = reader.swf_version();
     let all_event_flags = ClipEventFlags::read(ReadOptions {
         reader,
         swf_version,
@@ -116,7 +115,7 @@ fn read_clip_actions(reader: &mut SwfSliceReader) -> Result<ClipActions> {
 }
 
 fn read_clip_action_record(reader: &mut SwfSliceReader) -> Result<Option<ClipActionRecord>> {
-    let swf_version = SwfVersion(reader.swf_version());
+    let swf_version = reader.swf_version();
     let event_flags = ClipEventFlags::read(ReadOptions {
         reader,
         swf_version,

@@ -32,7 +32,7 @@ pub fn read_define_bits_lossless_tag<R: SizedRead>(
     let mut decompressed_bitmap_data = Vec::with_capacity(reader.remaining_bytes() * 2);
     let mut zlib_reader = DeflateDecoder::from_zlib(reader);
     zlib_reader.read_to_end(&mut decompressed_bitmap_data)?;
-    let mut bitmap_data_reader = SwfSliceReader::new(&decompressed_bitmap_data, swf_version.0);
+    let mut bitmap_data_reader = SwfSliceReader::new(&decompressed_bitmap_data, swf_version);
     let bitmap_data = match bitmap_format {
         BitmapFormat::ColorMap8 => {
             BitmapData::ColorMap8(ColorMapData::read(ReadColorMapDataOptions {

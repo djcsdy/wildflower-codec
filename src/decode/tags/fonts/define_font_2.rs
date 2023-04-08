@@ -1,5 +1,6 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
+use crate::decode::swf_version::SwfVersion;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::string::String;
 use crate::decode::tags::fonts::code_table_and_layout::CodeTableAndLayout;
@@ -47,7 +48,10 @@ impl DefineFont2Tag {
         &self,
         swf_version: u8,
     ) -> Result<GlyphsAndCodeTableAndLayout> {
-        let mut reader = SwfSliceReader::new(&self.glyphs_and_code_table_and_layout, swf_version);
+        let mut reader = SwfSliceReader::new(
+            &self.glyphs_and_code_table_and_layout,
+            SwfVersion(swf_version),
+        );
         let mut offset_table = Vec::with_capacity(self.num_glyphs as usize + 1);
         for _ in 0..self.num_glyphs + 1 {
             offset_table.push(if self.flags.contains(DefineFontFlags::WIDE_OFFSETS) {
