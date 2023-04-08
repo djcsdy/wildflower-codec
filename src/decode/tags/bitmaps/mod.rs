@@ -1,4 +1,5 @@
 pub mod bitmap_data;
+pub(crate) mod bitmap_format;
 pub mod color_map_data;
 pub mod define_bits;
 pub mod define_bits_jpeg_2;
