@@ -5,13 +5,8 @@ pub mod define_shape_4;
 pub mod shape;
 pub mod shape_record;
 pub mod shape_with_style;
+pub mod straight_edge_record;
 pub mod style_change_record;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct StraightEdgeRecord {
-    pub delta_x: i32,
-    pub delta_y: i32,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct CurvedEdgeRecord {
