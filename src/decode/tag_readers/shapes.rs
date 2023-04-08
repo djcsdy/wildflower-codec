@@ -112,27 +112,28 @@ fn read_shape_records<
 ) -> Result<Vec<ShapeRecord<Color, LineStyle>>> {
     let mut shape_records = Vec::new();
     while reader.remaining_bytes() > 0 {
-        let options = ReadInternalShapeRecordOptions {
-            reader,
-            num_fill_bits,
-            num_line_bits,
-            read_line_style_array,
-            read_fill_style_array,
-        };
-        shape_records.push(match InternalShapeRecord::read(options)? {
-            InternalShapeRecord::EndShape => ShapeRecord::EndShape,
-            InternalShapeRecord::StyleChange {
-                style_change_record,
-                num_fill_bits: new_num_fill_bits,
-                num_line_bits: new_num_line_bits,
-            } => {
-                num_fill_bits = new_num_fill_bits;
-                num_line_bits = new_num_line_bits;
-                ShapeRecord::StyleChange(style_change_record)
-            }
-            InternalShapeRecord::StraightEdge(edge) => ShapeRecord::StraightEdge(edge),
-            InternalShapeRecord::CurvedEdge(edge) => ShapeRecord::CurvedEdge(edge),
-        });
+        shape_records.push(
+            match InternalShapeRecord::read(ReadInternalShapeRecordOptions {
+                reader,
+                num_fill_bits,
+                num_line_bits,
+                read_line_style_array,
+                read_fill_style_array,
+            })? {
+                InternalShapeRecord::EndShape => ShapeRecord::EndShape,
+                InternalShapeRecord::StyleChange {
+                    style_change_record,
+                    num_fill_bits: new_num_fill_bits,
+                    num_line_bits: new_num_line_bits,
+                } => {
+                    num_fill_bits = new_num_fill_bits;
+                    num_line_bits = new_num_line_bits;
+                    ShapeRecord::StyleChange(style_change_record)
+                }
+                InternalShapeRecord::StraightEdge(edge) => ShapeRecord::StraightEdge(edge),
+                InternalShapeRecord::CurvedEdge(edge) => ShapeRecord::CurvedEdge(edge),
+            },
+        );
     }
     Ok(shape_records)
 }
