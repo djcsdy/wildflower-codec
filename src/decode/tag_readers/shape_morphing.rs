@@ -14,7 +14,7 @@ use crate::decode::tags::styles::cap_style::CapStyle;
 use crate::decode::tags::styles::join_style::JoinStyle;
 use crate::decode::tags::styles::line_style_array::read_line_style_array;
 use std::io::ErrorKind::InvalidData;
-use std::io::{Error, Read, Result};
+use std::io::{Error, Result};
 
 pub fn read_define_morph_shape_tag(reader: &mut SwfSliceReader) -> Result<DefineMorphShapeTag> {
     let character_id = reader.read_u16()?;
@@ -22,7 +22,7 @@ pub fn read_define_morph_shape_tag(reader: &mut SwfSliceReader) -> Result<Define
     let end_bounds = Rectangle::read(reader)?;
     let offset = reader.read_u32()? as usize;
     let fill_styles = MorphFillStyle::read_array(reader)?;
-    let line_styles = read_line_style_array(reader, &read_morph_line_style)?;
+    let line_styles = read_line_style_array(reader, &MorphLineStyle::read)?;
     let start_edges = read_shape(&mut reader.slice(offset))?;
     let end_edges = read_shape(reader)?;
     Ok(DefineMorphShapeTag {
@@ -62,19 +62,6 @@ pub fn read_define_morph_shape_2_tag(reader: &mut SwfSliceReader) -> Result<Defi
         line_styles,
         start_edges,
         end_edges,
-    })
-}
-
-fn read_morph_line_style<R: Read>(reader: &mut R) -> Result<MorphLineStyle> {
-    let start_width = reader.read_u16()?;
-    let end_width = reader.read_u16()?;
-    let start_color = Rgba::read(reader)?;
-    let end_color = Rgba::read(reader)?;
-    Ok(MorphLineStyle {
-        start_width,
-        end_width,
-        start_color,
-        end_color,
     })
 }
 
