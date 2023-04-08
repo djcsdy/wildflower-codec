@@ -4,9 +4,10 @@ use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::rgba::Rgba;
+use crate::decode::tags::shapes::define_shape::DefineShapeTag;
 use crate::decode::tags::shapes::{
-    CurvedEdgeRecord, DefineShape2Tag, DefineShape3Tag, DefineShape4Tag, DefineShapeTag, Shape,
-    ShapeRecord, ShapeWithStyle, StraightEdgeRecord, StyleChangeRecord,
+    CurvedEdgeRecord, DefineShape2Tag, DefineShape3Tag, DefineShape4Tag, Shape, ShapeRecord,
+    ShapeWithStyle, StraightEdgeRecord, StyleChangeRecord,
 };
 use crate::decode::tags::styles::fill_style::FillStyle;
 use crate::decode::tags::styles::line_style::LineStyle;
