@@ -7,9 +7,9 @@ use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::shapes::define_shape::DefineShapeTag;
 use crate::decode::tags::shapes::define_shape_2::DefineShape2Tag;
 use crate::decode::tags::shapes::define_shape_3::DefineShape3Tag;
+use crate::decode::tags::shapes::define_shape_4::DefineShape4Tag;
 use crate::decode::tags::shapes::{
-    CurvedEdgeRecord, DefineShape4Tag, Shape, ShapeRecord, ShapeWithStyle, StraightEdgeRecord,
-    StyleChangeRecord,
+    CurvedEdgeRecord, Shape, ShapeRecord, ShapeWithStyle, StraightEdgeRecord, StyleChangeRecord,
 };
 use crate::decode::tags::styles::fill_style::FillStyle;
 use crate::decode::tags::styles::line_style::LineStyle;
