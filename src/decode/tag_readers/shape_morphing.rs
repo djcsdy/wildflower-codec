@@ -3,18 +3,14 @@ use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::shapes::read_shape;
 use crate::decode::tags::common::fixed_8::Fixed8;
-use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::shape_morphing::define_morph_shape::DefineMorphShapeTag;
 use crate::decode::tags::shape_morphing::define_morph_shape_2::DefineMorphShape2Tag;
 use crate::decode::tags::shape_morphing::morph_fill_style::MorphFillStyle;
-use crate::decode::tags::shape_morphing::morph_focal_gradient::MorphFocalGradient;
-use crate::decode::tags::shape_morphing::morph_gradient::MorphGradient;
 use crate::decode::tags::shape_morphing::morph_line_style::MorphLineStyle;
 use crate::decode::tags::shape_morphing::morph_line_style_2::MorphLineStyle2;
 use crate::decode::tags::styles::cap_style::CapStyle;
-use crate::decode::tags::styles::fill_style_type::FillStyleType;
 use crate::decode::tags::styles::join_style::JoinStyle;
 use crate::decode::tags::styles::line_style_array::read_line_style_array;
 use std::io::ErrorKind::InvalidData;
@@ -76,93 +72,9 @@ fn read_morph_fill_style_array<R: BitRead>(reader: &mut R) -> Result<Vec<MorphFi
     }
     let mut fill_styles = Vec::with_capacity(count);
     for _ in 0..count {
-        fill_styles.push(read_morph_fill_style(reader)?);
+        fill_styles.push(MorphFillStyle::read(reader)?);
     }
     Ok(fill_styles)
-}
-
-fn read_morph_fill_style<R: BitRead>(reader: &mut R) -> Result<MorphFillStyle> {
-    let fill_style_type = FillStyleType::read(reader)?;
-    Ok(match fill_style_type {
-        FillStyleType::Solid => {
-            let start_color = Rgba::read(reader)?;
-            let end_color = Rgba::read(reader)?;
-            MorphFillStyle::Solid {
-                start_color,
-                end_color,
-            }
-        }
-        FillStyleType::LinearGradient => {
-            let start_matrix = Matrix::read(reader)?;
-            let end_matrix = Matrix::read(reader)?;
-            let gradient = MorphGradient::read(reader)?;
-            MorphFillStyle::LinearGradient {
-                start_matrix,
-                end_matrix,
-                gradient,
-            }
-        }
-        FillStyleType::RadialGradient => {
-            let start_matrix = Matrix::read(reader)?;
-            let end_matrix = Matrix::read(reader)?;
-            let gradient = MorphGradient::read(reader)?;
-            MorphFillStyle::RadialGradient {
-                start_matrix,
-                end_matrix,
-                gradient,
-            }
-        }
-        FillStyleType::FocalRadialGradient => {
-            let start_matrix = Matrix::read(reader)?;
-            let end_matrix = Matrix::read(reader)?;
-            let gradient = MorphFocalGradient::read(reader)?;
-            MorphFillStyle::FocalRadialGradient {
-                start_matrix,
-                end_matrix,
-                gradient,
-            }
-        }
-        FillStyleType::RepeatingBitmap => {
-            let bitmap_id = reader.read_u16()?;
-            let start_matrix = Matrix::read(reader)?;
-            let end_matrix = Matrix::read(reader)?;
-            MorphFillStyle::RepeatingBitmap {
-                bitmap_id,
-                start_matrix,
-                end_matrix,
-            }
-        }
-        FillStyleType::ClippedBitmap => {
-            let bitmap_id = reader.read_u16()?;
-            let start_matrix = Matrix::read(reader)?;
-            let end_matrix = Matrix::read(reader)?;
-            MorphFillStyle::ClippedBitmap {
-                bitmap_id,
-                start_matrix,
-                end_matrix,
-            }
-        }
-        FillStyleType::NonSmoothedRepeatingBitmap => {
-            let bitmap_id = reader.read_u16()?;
-            let start_matrix = Matrix::read(reader)?;
-            let end_matrix = Matrix::read(reader)?;
-            MorphFillStyle::NonSmoothedRepeatingBitmap {
-                bitmap_id,
-                start_matrix,
-                end_matrix,
-            }
-        }
-        FillStyleType::NonSmoothedClippedBitmap => {
-            let bitmap_id = reader.read_u16()?;
-            let start_matrix = Matrix::read(reader)?;
-            let end_matrix = Matrix::read(reader)?;
-            MorphFillStyle::NonSmoothedClippedBitmap {
-                bitmap_id,
-                start_matrix,
-                end_matrix,
-            }
-        }
-    })
 }
 
 fn read_morph_line_style<R: Read>(reader: &mut R) -> Result<MorphLineStyle> {
@@ -196,7 +108,7 @@ fn read_morph_line_style_2<R: BitRead>(reader: &mut R) -> Result<MorphLineStyle2
         None
     };
     let fill_style = if has_fill {
-        read_morph_fill_style(reader)?
+        MorphFillStyle::read(reader)?
     } else {
         let start_color = Rgba::read(reader)?;
         let end_color = Rgba::read(reader)?;
