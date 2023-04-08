@@ -165,9 +165,12 @@ impl EncodedTag {
             TagType::DefineBitsJpeg3 => DefineBitsJpeg3Tag::read(&mut slice_reader)
                 .map(Tag::DefineBitsJpeg3)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineBitsLossless2 => read_define_bits_lossless_2_tag(&mut slice_reader)
-                .map(Tag::DefineBitsLossless2)
-                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
+            TagType::DefineBitsLossless2 => read_define_bits_lossless_2_tag(ReadOptions {
+                reader: &mut slice_reader,
+                swf_version: self.swf_version,
+            })
+            .map(Tag::DefineBitsLossless2)
+            .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineEditText => DefineEditTextTag::read(&mut slice_reader)
                 .map(Tag::DefineEditText)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),

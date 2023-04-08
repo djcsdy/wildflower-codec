@@ -1,4 +1,5 @@
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::read_options::ReadOptions;
 use crate::decode::sized_read::SizedRead;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::bitmaps::bitmap_data::{BitmapData, ReadBitmapDataOptions};
@@ -10,8 +11,11 @@ use inflate::DeflateDecoder;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Read, Result};
 
-pub fn read_define_bits_lossless_2_tag(
-    reader: &mut SwfSliceReader,
+pub fn read_define_bits_lossless_2_tag<R: SizedRead>(
+    ReadOptions {
+        reader,
+        swf_version,
+    }: ReadOptions<R>,
 ) -> Result<DefineBitsLossless2Tag> {
     let character_id = reader.read_u16()?;
     let bitmap_format = BitmapFormat::read(reader)?;
@@ -22,7 +26,6 @@ pub fn read_define_bits_lossless_2_tag(
     } else {
         0
     };
-    let swf_version = reader.swf_version();
     let mut decompressed_bitmap_data = Vec::with_capacity(reader.remaining_bytes() * 2);
     let mut zlib_reader = DeflateDecoder::from_zlib(reader);
     zlib_reader.read_to_end(&mut decompressed_bitmap_data)?;
