@@ -2,13 +2,9 @@ pub mod define_shape;
 pub mod define_shape_2;
 pub mod define_shape_3;
 pub mod define_shape_4;
+pub mod shape;
 
 use crate::decode::tags::styles::fill_style::FillStyle;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct Shape<Color, LineStyle> {
-    pub shape_records: Vec<ShapeRecord<Color, LineStyle>>,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct ShapeWithStyle<Color, LineStyle> {

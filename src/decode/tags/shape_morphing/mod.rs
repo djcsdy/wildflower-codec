@@ -1,8 +1,8 @@
-use super::shapes::Shape;
 use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgba::Rgba;
+use crate::decode::tags::shapes::shape::Shape;
 use crate::decode::tags::styles::cap_style::CapStyle;
 use crate::decode::tags::styles::join_style::JoinStyle;
 

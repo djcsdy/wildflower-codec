@@ -1,6 +1,6 @@
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::shapes::read_shape;
-use crate::decode::tags::shapes::Shape;
+use crate::decode::tags::shapes::shape::Shape;
 use std::io::Result;
 
 #[derive(Clone, PartialEq, Debug)]
