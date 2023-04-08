@@ -11,7 +11,6 @@ use crate::decode::tags::shape_morphing::define_morph_shape_2::DefineMorphShape2
 use crate::decode::tags::shape_morphing::morph_fill_style::MorphFillStyle;
 use crate::decode::tags::shape_morphing::morph_focal_gradient::MorphFocalGradient;
 use crate::decode::tags::shape_morphing::morph_gradient::MorphGradient;
-use crate::decode::tags::shape_morphing::morph_gradient_record::MorphGradientRecord;
 use crate::decode::tags::shape_morphing::morph_line_style::MorphLineStyle;
 use crate::decode::tags::shape_morphing::morph_line_style_2::MorphLineStyle2;
 use crate::decode::tags::styles::cap_style::CapStyle;
@@ -96,7 +95,7 @@ fn read_morph_fill_style<R: BitRead>(reader: &mut R) -> Result<MorphFillStyle> {
         FillStyleType::LinearGradient => {
             let start_matrix = Matrix::read(reader)?;
             let end_matrix = Matrix::read(reader)?;
-            let gradient = read_morph_gradient(reader)?;
+            let gradient = MorphGradient::read(reader)?;
             MorphFillStyle::LinearGradient {
                 start_matrix,
                 end_matrix,
@@ -106,7 +105,7 @@ fn read_morph_fill_style<R: BitRead>(reader: &mut R) -> Result<MorphFillStyle> {
         FillStyleType::RadialGradient => {
             let start_matrix = Matrix::read(reader)?;
             let end_matrix = Matrix::read(reader)?;
-            let gradient = read_morph_gradient(reader)?;
+            let gradient = MorphGradient::read(reader)?;
             MorphFillStyle::RadialGradient {
                 start_matrix,
                 end_matrix,
@@ -166,17 +165,8 @@ fn read_morph_fill_style<R: BitRead>(reader: &mut R) -> Result<MorphFillStyle> {
     })
 }
 
-fn read_morph_gradient<R: Read>(reader: &mut R) -> Result<MorphGradient> {
-    let num_gradients = reader.read_u8()? as usize;
-    let mut gradient_records = Vec::with_capacity(num_gradients);
-    for _ in 0..num_gradients {
-        gradient_records.push(MorphGradientRecord::read(reader)?);
-    }
-    Ok(MorphGradient { gradient_records })
-}
-
 fn read_morph_focal_gradient<R: Read>(reader: &mut R) -> Result<MorphFocalGradient> {
-    let morph_gradient = read_morph_gradient(reader)?;
+    let morph_gradient = MorphGradient::read(reader)?;
     let start_focal_point = Fixed8::read(reader)?;
     let end_focal_point = Fixed8::read(reader)?;
     Ok(MorphFocalGradient {
