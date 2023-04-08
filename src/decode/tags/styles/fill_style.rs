@@ -108,8 +108,7 @@ impl FillStyle<Rgb> {
         let fill_style_count = reader.read_u8()?;
         let mut fill_styles = Vec::with_capacity(fill_style_count as usize);
         for _ in 0..fill_style_count {
-            let read_color = &Rgb::read;
-            fill_styles.push(Self::read(reader, read_color)?);
+            fill_styles.push(Self::read(reader, &Rgb::read)?);
         }
         Ok(fill_styles)
     }

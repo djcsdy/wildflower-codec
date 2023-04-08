@@ -39,8 +39,7 @@ impl LineStyle2 {
             None
         };
         let fill_style = if has_fill {
-            let read_color = &Rgba::read;
-            FillStyle::read(reader, read_color)?
+            FillStyle::read(reader, &Rgba::read)?
         } else {
             FillStyle::Solid(Rgba::read(reader)?)
         };

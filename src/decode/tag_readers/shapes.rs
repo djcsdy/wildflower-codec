@@ -321,10 +321,7 @@ pub fn read_define_shape_3_tag(reader: &mut SwfSliceReader) -> Result<DefineShap
         read_line_style_array: &|reader| {
             read_line_style_array(reader, &|reader| LineStyle::read(reader, &Rgba::read))
         },
-        read_fill_style_array: &|reader| {
-            let read_color = &Rgba::read;
-            FillStyle::read_extended_array(reader, read_color)
-        },
+        read_fill_style_array: &|reader| FillStyle::read_extended_array(reader, &Rgba::read),
     })?;
     Ok(DefineShape3Tag {
         shape_id,
@@ -344,10 +341,7 @@ pub fn read_define_shape_4_tag(reader: &mut SwfSliceReader) -> Result<DefineShap
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
         reader,
         read_line_style_array: &|reader| read_line_style_array(reader, &LineStyle2::read),
-        read_fill_style_array: &|reader| {
-            let read_color = &Rgba::read;
-            FillStyle::read_extended_array(reader, read_color)
-        },
+        read_fill_style_array: &|reader| FillStyle::read_extended_array(reader, &Rgba::read),
     })?;
     Ok(DefineShape4Tag {
         shape_id,
