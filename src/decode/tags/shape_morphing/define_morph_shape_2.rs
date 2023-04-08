@@ -1,6 +1,6 @@
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::shape_morphing::morph_fill_style::MorphFillStyle;
-use crate::decode::tags::shape_morphing::MorphLineStyle2;
+use crate::decode::tags::shape_morphing::morph_line_style_2::MorphLineStyle2;
 use crate::decode::tags::shapes::shape::Shape;
 
 #[derive(Clone, PartialEq, Debug)]

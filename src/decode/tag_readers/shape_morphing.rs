@@ -13,7 +13,7 @@ use crate::decode::tags::shape_morphing::morph_focal_gradient::MorphFocalGradien
 use crate::decode::tags::shape_morphing::morph_gradient::MorphGradient;
 use crate::decode::tags::shape_morphing::morph_gradient_record::MorphGradientRecord;
 use crate::decode::tags::shape_morphing::morph_line_style::MorphLineStyle;
-use crate::decode::tags::shape_morphing::MorphLineStyle2;
+use crate::decode::tags::shape_morphing::morph_line_style_2::MorphLineStyle2;
 use crate::decode::tags::styles::cap_style::CapStyle;
 use crate::decode::tags::styles::fill_style_type::FillStyleType;
 use crate::decode::tags::styles::join_style::JoinStyle;
