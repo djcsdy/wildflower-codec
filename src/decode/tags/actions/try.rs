@@ -2,7 +2,7 @@ use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::actions::register_param::RegisterParam;
-use crate::decode::tags::common::string;
+use crate::decode::tags::common::string::String;
 use std::io::Result;
 
 #[derive(Clone, PartialEq, Debug)]
@@ -37,7 +37,7 @@ impl Try {
         let catch_parameter = if flags.contains(Flags::CATCH_IN_REGISTER) {
             RegisterParam::Register(reader.read_u8()?)
         } else {
-            RegisterParam::Name(string::String::read(reader)?)
+            RegisterParam::Name(String::read(reader)?)
         };
         let try_body = ActionList::read(reader, try_size as usize)?;
         let catch_body = if flags.contains(Flags::HAS_CATCH_BLOCK) {

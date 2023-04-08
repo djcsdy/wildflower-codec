@@ -1,5 +1,5 @@
 use crate::decode::tags::common::rgba::Rgba;
-use crate::decode::tags::common::string;
+use crate::decode::tags::common::string::String;
 use crate::decode::tags::display_list::blend_mode::BlendMode;
 use crate::decode::tags::display_list::filter::Filter;
 use crate::decode::tags::display_list::place_object_2::PlaceObject2Tag;
@@ -20,7 +20,7 @@ pub struct PlaceObject3Tag {
     /// Used instead of character ID when the character was defined in an
     /// external SWF and has not been imported into the character dictionary
     /// of this SWF.
-    pub class_name: Option<string::String>,
+    pub class_name: Option<String>,
 
     /// List of filters applied to this character.
     pub surface_filter_list: Option<Vec<Filter>>,

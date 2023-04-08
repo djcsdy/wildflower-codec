@@ -1,6 +1,6 @@
 use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithAlpha;
 use crate::decode::tags::common::matrix::Matrix;
-use crate::decode::tags::common::string;
+use crate::decode::tags::common::string::String;
 use crate::decode::tags::display_list::clip_actions::ClipActions;
 
 /// Adds a character to the display list.
@@ -39,7 +39,7 @@ pub struct PlaceObject2Tag {
     pub ratio: Option<u16>,
 
     /// Specifies a name for the character.
-    pub name: Option<string::String>,
+    pub name: Option<String>,
 
     /// The top-most depth that will be masked by the character.
     ///
