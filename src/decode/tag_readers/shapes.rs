@@ -146,7 +146,7 @@ fn read_shape_records<
     Ok(shape_records)
 }
 
-pub fn read_define_shape_tag(reader: &mut SwfSliceReader) -> Result<DefineShapeTag> {
+pub fn read_define_shape_tag<R: BitRead + SizedRead>(reader: &mut R) -> Result<DefineShapeTag> {
     let shape_id = reader.read_u16()?;
     let shape_bounds = Rectangle::read(reader)?;
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
