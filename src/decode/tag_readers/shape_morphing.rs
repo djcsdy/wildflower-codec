@@ -115,7 +115,7 @@ fn read_morph_fill_style<R: BitRead>(reader: &mut R) -> Result<MorphFillStyle> {
         FillStyleType::FocalRadialGradient => {
             let start_matrix = Matrix::read(reader)?;
             let end_matrix = Matrix::read(reader)?;
-            let gradient = read_morph_focal_gradient(reader)?;
+            let gradient = MorphFocalGradient::read(reader)?;
             MorphFillStyle::FocalRadialGradient {
                 start_matrix,
                 end_matrix,
@@ -162,17 +162,6 @@ fn read_morph_fill_style<R: BitRead>(reader: &mut R) -> Result<MorphFillStyle> {
                 end_matrix,
             }
         }
-    })
-}
-
-fn read_morph_focal_gradient<R: Read>(reader: &mut R) -> Result<MorphFocalGradient> {
-    let morph_gradient = MorphGradient::read(reader)?;
-    let start_focal_point = Fixed8::read(reader)?;
-    let end_focal_point = Fixed8::read(reader)?;
-    Ok(MorphFocalGradient {
-        gradient_records: morph_gradient.gradient_records,
-        start_focal_point,
-        end_focal_point,
     })
 }
 
