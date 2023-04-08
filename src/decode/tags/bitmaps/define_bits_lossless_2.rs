@@ -1,4 +1,4 @@
-use crate::decode::tags::bitmaps::BitmapData;
+use crate::decode::tags::bitmaps::bitmap_data::BitmapData;
 use crate::decode::tags::common::rgba::Rgba;
 
 #[derive(Clone, PartialEq, Debug)]
