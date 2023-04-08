@@ -228,7 +228,7 @@ pub(crate) fn read_edge_record(reader: &mut SwfSliceReader) -> Result<EdgeRecord
     }
 }
 
-pub fn read_straight_edge_record(reader: &mut SwfSliceReader) -> Result<StraightEdgeRecord> {
+pub fn read_straight_edge_record<R: BitRead>(reader: &mut R) -> Result<StraightEdgeRecord> {
     let num_bits = reader.read_ub8(4)? + 2;
     let is_general_line = reader.read_bit()?;
     let is_vertical_line = if is_general_line {
