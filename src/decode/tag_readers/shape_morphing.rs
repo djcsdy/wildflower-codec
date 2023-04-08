@@ -6,9 +6,10 @@ use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgba::Rgba;
+use crate::decode::tags::shape_morphing::define_morph_shape::DefineMorphShapeTag;
 use crate::decode::tags::shape_morphing::{
-    DefineMorphShape2Tag, DefineMorphShapeTag, MorphFillStyle, MorphFocalGradient, MorphGradient,
-    MorphGradientRecord, MorphLineStyle, MorphLineStyle2,
+    DefineMorphShape2Tag, MorphFillStyle, MorphFocalGradient, MorphGradient, MorphGradientRecord,
+    MorphLineStyle, MorphLineStyle2,
 };
 use crate::decode::tags::styles::cap_style::CapStyle;
 use crate::decode::tags::styles::fill_style_type::FillStyleType;

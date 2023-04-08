@@ -1,3 +1,5 @@
+pub mod define_morph_shape;
+
 use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rectangle::Rectangle;
@@ -5,17 +7,6 @@ use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::shapes::shape::Shape;
 use crate::decode::tags::styles::cap_style::CapStyle;
 use crate::decode::tags::styles::join_style::JoinStyle;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct DefineMorphShapeTag {
-    pub character_id: u16,
-    pub start_bounds: Rectangle,
-    pub end_bounds: Rectangle,
-    pub fill_styles: Vec<MorphFillStyle>,
-    pub line_styles: Vec<MorphLineStyle>,
-    pub start_edges: Shape<(), ()>,
-    pub end_edges: Shape<(), ()>,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineMorphShape2Tag {
