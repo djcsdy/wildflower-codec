@@ -116,7 +116,7 @@ fn read_shape_records<
     let mut shape_records = Vec::new();
     while reader.remaining_bytes() > 0 {
         shape_records.push(
-            match read_shape_record(&mut ReadShapeRecordOptions {
+            match read_shape_record(ReadShapeRecordOptions {
                 reader,
                 num_fill_bits,
                 num_line_bits,
@@ -147,7 +147,7 @@ pub(crate) fn read_shape_record<
     ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
     ReadFillStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<FillStyle<Color>>>,
 >(
-    options: &mut ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
+    options: ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
 ) -> Result<InternalShapeRecord<Color, LineStyle>> {
     let is_edge = options.reader.read_bit()?;
     if is_edge {
@@ -177,41 +177,47 @@ pub(crate) fn read_non_edge_record<
     ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
     ReadFillStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<FillStyle<Color>>>,
 >(
-    options: &mut ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
+    ReadShapeRecordOptions {
+        reader,
+        num_fill_bits,
+        num_line_bits,
+        read_line_style_array,
+        read_fill_style_array,
+    }: ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
 ) -> Result<NonEdgeRecord<Color, LineStyle>> {
-    if options.num_fill_bits > 16 || options.num_line_bits > 16 {
+    if num_fill_bits > 16 || num_line_bits > 16 {
         panic!();
     }
 
-    let has_new_styles = options.reader.read_bit()?;
-    let has_line_style = options.reader.read_bit()?;
-    let has_fill_style_1 = options.reader.read_bit()?;
-    let has_fill_style_0 = options.reader.read_bit()?;
-    let has_move_to = options.reader.read_bit()?;
+    let has_new_styles = reader.read_bit()?;
+    let has_line_style = reader.read_bit()?;
+    let has_fill_style_1 = reader.read_bit()?;
+    let has_fill_style_0 = reader.read_bit()?;
+    let has_move_to = reader.read_bit()?;
 
     if !has_new_styles && !has_line_style && !has_fill_style_1 && !has_fill_style_0 && !has_move_to
     {
         return Ok(NonEdgeRecord::EndShape);
     }
 
-    let move_bits = options.reader.read_ub8(5)?;
-    let move_delta_x = options.reader.read_sb16(move_bits)?;
-    let move_delta_y = options.reader.read_sb16(move_bits)?;
-    let fill_style_0 = options.reader.read_ub16(options.num_fill_bits)?;
-    let fill_style_1 = options.reader.read_ub16(options.num_fill_bits)?;
-    let line_style = options.reader.read_ub16(options.num_line_bits)?;
+    let move_bits = reader.read_ub8(5)?;
+    let move_delta_x = reader.read_sb16(move_bits)?;
+    let move_delta_y = reader.read_sb16(move_bits)?;
+    let fill_style_0 = reader.read_ub16(num_fill_bits)?;
+    let fill_style_1 = reader.read_ub16(num_fill_bits)?;
+    let line_style = reader.read_ub16(num_line_bits)?;
     let fill_styles = if has_new_styles {
-        Some((options.read_fill_style_array)(options.reader)?)
+        Some(read_fill_style_array(reader)?)
     } else {
         None
     };
     let line_styles = if has_new_styles {
-        Some((options.read_line_style_array)(options.reader)?)
+        Some(read_line_style_array(reader)?)
     } else {
         None
     };
-    let num_fill_bits = options.reader.read_ub8(4)?;
-    let num_line_bits = options.reader.read_ub8(4)?;
+    let num_fill_bits = reader.read_ub8(4)?;
+    let num_line_bits = reader.read_ub8(4)?;
     Ok(NonEdgeRecord::StyleChange {
         style_change_record: StyleChangeRecord {
             move_delta: (move_delta_x, move_delta_y),
