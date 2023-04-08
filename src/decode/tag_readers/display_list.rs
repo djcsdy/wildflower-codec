@@ -17,6 +17,7 @@ use crate::decode::tags::display_list::place_object_3::PlaceObject3Tag;
 use std::io::Result;
 
 pub fn read_place_object_2_tag(reader: &mut SwfSliceReader) -> Result<PlaceObject2Tag> {
+    let swf_version = reader.swf_version();
     let has_clip_actions = reader.read_bit()?;
     let has_clip_depth = reader.read_bit()?;
     let has_name = reader.read_bit()?;
@@ -57,7 +58,10 @@ pub fn read_place_object_2_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjec
         None
     };
     let clip_actions = if has_clip_actions {
-        Some(read_clip_actions(reader)?)
+        Some(read_clip_actions(ReadOptions {
+            reader,
+            swf_version,
+        })?)
     } else {
         None
     };
@@ -74,9 +78,13 @@ pub fn read_place_object_2_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjec
     })
 }
 
-fn read_clip_actions(reader: &mut SwfSliceReader) -> Result<ClipActions> {
+fn read_clip_actions(
+    ReadOptions {
+        reader,
+        swf_version,
+    }: ReadOptions<SwfSliceReader>,
+) -> Result<ClipActions> {
     reader.read_u16()?;
-    let swf_version = reader.swf_version();
     let all_event_flags = ClipEventFlags::read(ReadOptions {
         reader,
         swf_version,
@@ -117,6 +125,7 @@ fn read_clip_action_record(reader: &mut SwfSliceReader) -> Result<Option<ClipAct
 }
 
 pub fn read_place_object_3_tag(reader: &mut SwfSliceReader) -> Result<PlaceObject3Tag> {
+    let swf_version = reader.swf_version();
     let has_clip_actions = reader.read_bit()?;
     let has_clip_depth = reader.read_bit()?;
     let has_name = reader.read_bit()?;
@@ -194,7 +203,10 @@ pub fn read_place_object_3_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjec
         None
     };
     let clip_actions = if has_clip_actions {
-        Some(read_clip_actions(reader)?)
+        Some(read_clip_actions(ReadOptions {
+            reader,
+            swf_version,
+        })?)
     } else {
         None
     };
