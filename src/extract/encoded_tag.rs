@@ -1,7 +1,6 @@
 use crate::decode::read_options::ReadOptions;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::swf_version::SwfVersion;
-use crate::decode::tag_readers::control::read_frame_label_tag;
 use crate::decode::tag_readers::display_list::{
     read_place_object_2_tag, read_place_object_3_tag, read_place_object_tag,
     read_remove_object_2_tag, read_remove_object_tag,
@@ -32,6 +31,7 @@ use crate::decode::tags::control::define_scene_and_frame_label_data::DefineScene
 use crate::decode::tags::control::enable_debugger::EnableDebuggerTag;
 use crate::decode::tags::control::enable_debugger_2::EnableDebugger2Tag;
 use crate::decode::tags::control::export_assets::ExportAssetsTag;
+use crate::decode::tags::control::frame_label::FrameLabelTag;
 use crate::decode::tags::control::import_assets::ImportAssetsTag;
 use crate::decode::tags::control::import_assets_2::ImportAssets2Tag;
 use crate::decode::tags::control::metadata::MetadataTag;
@@ -177,7 +177,7 @@ impl EncodedTag {
             TagType::DefineSprite => DefineSpriteTag::read(&mut slice_reader)
                 .map(Tag::DefineSprite)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::FrameLabel => read_frame_label_tag(&mut slice_reader)
+            TagType::FrameLabel => FrameLabelTag::read(&mut slice_reader)
                 .map(Tag::FrameLabel)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::SoundStreamHead2 => SoundStreamHead2Tag::read(&mut slice_reader)
