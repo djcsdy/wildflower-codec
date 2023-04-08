@@ -35,14 +35,13 @@ pub fn read_define_bits_lossless_tag<R: SizedRead>(
     let mut bitmap_data_reader = SwfSliceReader::new(&decompressed_bitmap_data, swf_version.0);
     let bitmap_data = match bitmap_format {
         BitmapFormat::ColorMap8 => {
-            let options = ReadColorMapDataOptions {
+            BitmapData::ColorMap8(ColorMapData::read(ReadColorMapDataOptions {
                 reader: &mut bitmap_data_reader,
                 read_color: &Rgb::read,
                 color_table_size,
                 bitmap_width,
                 bitmap_height,
-            };
-            BitmapData::ColorMap8(ColorMapData::read(options)?)
+            })?)
         }
         BitmapFormat::Rgb15 => BitmapData::read(ReadBitmapDataOptions {
             reader: &mut bitmap_data_reader,
@@ -84,14 +83,13 @@ pub fn read_define_bits_lossless_2_tag(
     let mut bitmap_data_reader = SwfSliceReader::new(&decompressed_bitmap_data, swf_version);
     let bitmap_data = match bitmap_format {
         BitmapFormat::ColorMap8 => {
-            let options = ReadColorMapDataOptions {
+            BitmapData::ColorMap8(ColorMapData::read(ReadColorMapDataOptions {
                 reader: &mut bitmap_data_reader,
                 read_color: &Rgba::read,
                 color_table_size,
                 bitmap_width,
                 bitmap_height,
-            };
-            BitmapData::ColorMap8(ColorMapData::read(options)?)
+            })?)
         }
         BitmapFormat::Rgb15 => return Err(Error::from(InvalidData)),
         BitmapFormat::Rgb24 => BitmapData::read(ReadBitmapDataOptions {
