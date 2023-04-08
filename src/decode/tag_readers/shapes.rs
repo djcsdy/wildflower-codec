@@ -11,11 +11,10 @@ use crate::decode::tags::shapes::define_shape_3::DefineShape3Tag;
 use crate::decode::tags::shapes::define_shape_4::DefineShape4Tag;
 use crate::decode::tags::shapes::edge_record::EdgeRecord;
 use crate::decode::tags::shapes::internal_shape_record::InternalShapeRecord;
-use crate::decode::tags::shapes::non_edge_record::NonEdgeRecord;
+use crate::decode::tags::shapes::non_edge_record::{NonEdgeRecord, ReadNonEdgeRecordOptions};
 use crate::decode::tags::shapes::shape::Shape;
 use crate::decode::tags::shapes::shape_record::ShapeRecord;
 use crate::decode::tags::shapes::shape_with_style::ShapeWithStyle;
-use crate::decode::tags::shapes::style_change_record::StyleChangeRecord;
 use crate::decode::tags::styles::fill_style::FillStyle;
 use crate::decode::tags::styles::line_style::LineStyle;
 use crate::decode::tags::styles::line_style_2::LineStyle2;
@@ -161,7 +160,7 @@ pub(crate) fn read_shape_record<
         })
     } else {
         Ok(
-            match read_non_edge_record(ReadNonEdgeRecordOptions {
+            match NonEdgeRecord::read(ReadNonEdgeRecordOptions {
                 reader,
                 num_fill_bits,
                 num_line_bits,
@@ -181,85 +180,6 @@ pub(crate) fn read_shape_record<
             },
         )
     }
-}
-
-pub(crate) struct ReadNonEdgeRecordOptions<
-    'reader,
-    'read_line_style_array,
-    'read_fill_style_array,
-    Read: BitRead,
-    Color,
-    LineStyle,
-    ReadLineStyleArray: Fn(&mut Read) -> Result<Vec<LineStyle>>,
-    ReadFillStyleArray: Fn(&mut Read) -> Result<Vec<FillStyle<Color>>>,
-> {
-    pub reader: &'reader mut Read,
-    pub num_fill_bits: u8,
-    pub num_line_bits: u8,
-    pub read_line_style_array: &'read_line_style_array ReadLineStyleArray,
-    pub read_fill_style_array: &'read_fill_style_array ReadFillStyleArray,
-}
-
-pub(crate) fn read_non_edge_record<
-    Color,
-    LineStyle,
-    Read: BitRead,
-    ReadLineStyleArray: Fn(&mut Read) -> Result<Vec<LineStyle>>,
-    ReadFillStyleArray: Fn(&mut Read) -> Result<Vec<FillStyle<Color>>>,
->(
-    ReadNonEdgeRecordOptions {
-        reader,
-        num_fill_bits,
-        num_line_bits,
-        read_line_style_array,
-        read_fill_style_array,
-    }: ReadNonEdgeRecordOptions<Read, Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
-) -> Result<NonEdgeRecord<Color, LineStyle>> {
-    if num_fill_bits > 16 || num_line_bits > 16 {
-        panic!();
-    }
-
-    let has_new_styles = reader.read_bit()?;
-    let has_line_style = reader.read_bit()?;
-    let has_fill_style_1 = reader.read_bit()?;
-    let has_fill_style_0 = reader.read_bit()?;
-    let has_move_to = reader.read_bit()?;
-
-    if !has_new_styles && !has_line_style && !has_fill_style_1 && !has_fill_style_0 && !has_move_to
-    {
-        return Ok(NonEdgeRecord::EndShape);
-    }
-
-    let move_bits = reader.read_ub8(5)?;
-    let move_delta_x = reader.read_sb16(move_bits)?;
-    let move_delta_y = reader.read_sb16(move_bits)?;
-    let fill_style_0 = reader.read_ub16(num_fill_bits)?;
-    let fill_style_1 = reader.read_ub16(num_fill_bits)?;
-    let line_style = reader.read_ub16(num_line_bits)?;
-    let fill_styles = if has_new_styles {
-        Some(read_fill_style_array(reader)?)
-    } else {
-        None
-    };
-    let line_styles = if has_new_styles {
-        Some(read_line_style_array(reader)?)
-    } else {
-        None
-    };
-    let num_fill_bits = reader.read_ub8(4)?;
-    let num_line_bits = reader.read_ub8(4)?;
-    Ok(NonEdgeRecord::StyleChange {
-        style_change_record: StyleChangeRecord {
-            move_delta: (move_delta_x, move_delta_y),
-            fill_style_0,
-            fill_style_1,
-            line_style,
-            fill_styles,
-            line_styles,
-        },
-        num_fill_bits,
-        num_line_bits,
-    })
 }
 
 pub fn read_define_shape_tag(reader: &mut SwfSliceReader) -> Result<DefineShapeTag> {
