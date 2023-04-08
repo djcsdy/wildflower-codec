@@ -5,7 +5,6 @@ use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::rgba::Rgba;
-use crate::decode::tags::shapes::curved_edge_record::CurvedEdgeRecord;
 use crate::decode::tags::shapes::define_shape::DefineShapeTag;
 use crate::decode::tags::shapes::define_shape_2::DefineShape2Tag;
 use crate::decode::tags::shapes::define_shape_3::DefineShape3Tag;
@@ -251,20 +250,6 @@ pub fn read_straight_edge_record<R: BitRead>(reader: &mut R) -> Result<StraightE
         0
     };
     Ok(StraightEdgeRecord { delta_x, delta_y })
-}
-
-pub fn read_curved_edge_record<R: BitRead>(reader: &mut R) -> Result<CurvedEdgeRecord> {
-    let num_bits = reader.read_ub8(4)? + 2;
-    let control_delta_x = reader.read_sb(num_bits)?;
-    let control_delta_y = reader.read_sb(num_bits)?;
-    let anchor_delta_x = reader.read_sb(num_bits)?;
-    let anchor_delta_y = reader.read_sb(num_bits)?;
-    Ok(CurvedEdgeRecord {
-        control_delta_x,
-        control_delta_y,
-        anchor_delta_x,
-        anchor_delta_y,
-    })
 }
 
 pub fn read_define_shape_tag(reader: &mut SwfSliceReader) -> Result<DefineShapeTag> {

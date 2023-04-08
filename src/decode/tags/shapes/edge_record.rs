@@ -17,7 +17,7 @@ impl EdgeRecord {
                 reader,
             )?))
         } else {
-            Ok(Self::CurvedEdge(shapes::read_curved_edge_record(reader)?))
+            Ok(Self::CurvedEdge(CurvedEdgeRecord::read(reader)?))
         }
     }
 }
