@@ -65,13 +65,13 @@ use crate::extract::tag_type::TagType;
 
 #[derive(Clone, PartialEq, Eq, Debug, Hash)]
 pub struct EncodedTag {
-    swf_version: u8,
+    swf_version: SwfVersion,
     tag_type: TagType,
     body: Vec<u8>,
 }
 
 impl EncodedTag {
-    pub fn new(swf_version: u8, tag_type: TagType, body: Vec<u8>) -> EncodedTag {
+    pub fn new(swf_version: SwfVersion, tag_type: TagType, body: Vec<u8>) -> EncodedTag {
         EncodedTag {
             swf_version,
             tag_type,
@@ -80,7 +80,7 @@ impl EncodedTag {
     }
 
     pub fn decode(self) -> Tag {
-        let mut slice_reader = SwfSliceReader::new(&self.body, SwfVersion(self.swf_version));
+        let mut slice_reader = SwfSliceReader::new(&self.body, self.swf_version);
         match self.tag_type {
             TagType::End => Tag::Unknown(self.into_unknown()),
             TagType::ShowFrame => Tag::Unknown(self.into_unknown()),
@@ -132,7 +132,7 @@ impl EncodedTag {
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineBitsLossless => read_define_bits_lossless_tag(ReadOptions {
                 reader: &mut slice_reader,
-                swf_version: SwfVersion(self.swf_version),
+                swf_version: self.swf_version,
             })
             .map(Tag::DefineBitsLossless)
             .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
