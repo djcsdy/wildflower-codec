@@ -2,8 +2,8 @@ use crate::decode::read_options::ReadOptions;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::swf_version::SwfVersion;
 use crate::decode::tag_readers::display_list::{
-    read_place_object_2_tag, read_place_object_3_tag, read_place_object_tag,
-    read_remove_object_2_tag, read_remove_object_tag,
+    read_place_object_2_tag, read_place_object_3_tag, read_remove_object_2_tag,
+    read_remove_object_tag,
 };
 use crate::decode::tag_readers::shape_morphing::{
     read_define_morph_shape_2_tag, read_define_morph_shape_tag,
@@ -39,6 +39,7 @@ use crate::decode::tags::control::script_limits::ScriptLimitsTag;
 use crate::decode::tags::control::set_background_color::SetBackgroundColorTag;
 use crate::decode::tags::control::set_tab_index::SetTabIndexTag;
 use crate::decode::tags::control::symbol_class::SymbolClassTag;
+use crate::decode::tags::display_list::place_object::PlaceObjectTag;
 use crate::decode::tags::fonts::define_font::DefineFontTag;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::define_font_3::DefineFont3Tag;
@@ -86,7 +87,7 @@ impl EncodedTag {
             TagType::DefineShape => read_define_shape_tag(&mut slice_reader)
                 .map(Tag::DefineShape)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::PlaceObject => read_place_object_tag(&mut slice_reader)
+            TagType::PlaceObject => PlaceObjectTag::read(&mut slice_reader)
                 .map(Tag::PlaceObject)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::RemoveObject => read_remove_object_tag(&mut slice_reader)

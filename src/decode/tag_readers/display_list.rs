@@ -1,10 +1,8 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::read_options::ReadOptions;
-use crate::decode::sized_read::SizedRead;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::action_list::ActionList;
-use crate::decode::tags::common::color_transform::ColorTransform;
 use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithAlpha;
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgba::Rgba;
@@ -14,30 +12,11 @@ use crate::decode::tags::display_list::clip_action_record::ClipActionRecord;
 use crate::decode::tags::display_list::clip_actions::ClipActions;
 use crate::decode::tags::display_list::clip_event_flags::ClipEventFlags;
 use crate::decode::tags::display_list::filter::Filter;
-use crate::decode::tags::display_list::place_object::PlaceObjectTag;
 use crate::decode::tags::display_list::place_object_2::PlaceObject2Tag;
 use crate::decode::tags::display_list::place_object_3::PlaceObject3Tag;
 use crate::decode::tags::display_list::remove_object::RemoveObjectTag;
 use crate::decode::tags::display_list::remove_object_2::RemoveObject2Tag;
 use std::io::Result;
-
-pub fn read_place_object_tag<R: SizedRead + BitRead>(reader: &mut R) -> Result<PlaceObjectTag> {
-    let character_id = reader.read_u16()?;
-    let depth = reader.read_u16()?;
-    let matrix = Matrix::read(reader)?;
-    let color_transform = if reader.remaining_bytes() > 0 {
-        Some(ColorTransform::read(reader)?)
-    } else {
-        None
-    };
-
-    Ok(PlaceObjectTag {
-        character_id,
-        depth,
-        matrix,
-        color_transform,
-    })
-}
 
 pub fn read_place_object_2_tag(reader: &mut SwfSliceReader) -> Result<PlaceObject2Tag> {
     let has_clip_actions = reader.read_bit()?;
