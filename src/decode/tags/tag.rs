@@ -1,4 +1,3 @@
-use super::metadata::DefineBinaryDataTag;
 use super::shape_morphing::{DefineMorphShape2Tag, DefineMorphShapeTag};
 use super::video::DefineVideoStreamTag;
 use crate::decode::tags::actions::do_abc::DoAbcTag;
@@ -43,6 +42,7 @@ use crate::decode::tags::fonts::define_font_info::DefineFontInfoTag;
 use crate::decode::tags::fonts::define_font_info_2::DefineFontInfo2Tag;
 use crate::decode::tags::fonts::define_font_name::DefineFontNameTag;
 use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
+use crate::decode::tags::metadata::define_binary_data::DefineBinaryDataTag;
 use crate::decode::tags::metadata::enable_telemetry::EnableTelemetryTag;
 use crate::decode::tags::metadata::file_attributes::FileAttributesTag;
 use crate::decode::tags::shapes::define_shape::DefineShapeTag;
