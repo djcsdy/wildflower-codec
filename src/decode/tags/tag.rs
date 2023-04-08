@@ -1,4 +1,3 @@
-use super::video::DefineVideoStreamTag;
 use crate::decode::tags::actions::do_abc::DoAbcTag;
 use crate::decode::tags::actions::do_action::DoActionTag;
 use crate::decode::tags::actions::do_init_action::DoInitActionTag;
@@ -61,6 +60,7 @@ use crate::decode::tags::text::csm_text_settings::CsmTextSettingsTag;
 use crate::decode::tags::text::define_edit_text::DefineEditTextTag;
 use crate::decode::tags::text::define_text::DefineTextTag;
 use crate::decode::tags::text::define_text_2::DefineText2Tag;
+use crate::decode::tags::video::define_video_stream::DefineVideoStreamTag;
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum Tag {
