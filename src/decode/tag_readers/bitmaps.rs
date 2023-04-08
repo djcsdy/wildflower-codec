@@ -1,4 +1,5 @@
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::read_options::ReadOptions;
 use crate::decode::sized_read::SizedRead;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::bitmaps::bitmap_data::BitmapData;
@@ -13,7 +14,12 @@ use inflate::DeflateDecoder;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Read, Result};
 
-pub fn read_define_bits_lossless_tag(reader: &mut SwfSliceReader) -> Result<DefineBitsLosslessTag> {
+pub fn read_define_bits_lossless_tag<R: SizedRead>(
+    ReadOptions {
+        reader,
+        swf_version,
+    }: ReadOptions<R>,
+) -> Result<DefineBitsLosslessTag> {
     let character_id = reader.read_u16()?;
     let bitmap_format = BitmapFormat::read(reader)?;
     let bitmap_width = reader.read_u16()?;
@@ -23,11 +29,10 @@ pub fn read_define_bits_lossless_tag(reader: &mut SwfSliceReader) -> Result<Defi
     } else {
         0
     };
-    let swf_version = reader.swf_version();
     let mut decompressed_bitmap_data = Vec::with_capacity(reader.remaining_bytes() * 2);
     let mut zlib_reader = DeflateDecoder::from_zlib(reader);
     zlib_reader.read_to_end(&mut decompressed_bitmap_data)?;
-    let mut bitmap_data_reader = SwfSliceReader::new(&decompressed_bitmap_data, swf_version);
+    let mut bitmap_data_reader = SwfSliceReader::new(&decompressed_bitmap_data, swf_version.0);
     let bitmap_data = match bitmap_format {
         BitmapFormat::ColorMap8 => {
             let options = ReadColorMapDataOptions {

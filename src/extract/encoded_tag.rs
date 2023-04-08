@@ -1,4 +1,6 @@
+use crate::decode::read_options::ReadOptions;
 use crate::decode::slice_reader::SwfSliceReader;
+use crate::decode::swf_version::SwfVersion;
 use crate::decode::tag_readers::bitmaps::{
     read_define_bits_lossless_2_tag, read_define_bits_lossless_tag,
 };
@@ -128,9 +130,12 @@ impl EncodedTag {
             TagType::SoundStreamBlock => SoundStreamBlockTag::read(&mut slice_reader)
                 .map(Tag::SoundStreamBlock)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineBitsLossless => read_define_bits_lossless_tag(&mut slice_reader)
-                .map(Tag::DefineBitsLossless)
-                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
+            TagType::DefineBitsLossless => read_define_bits_lossless_tag(ReadOptions {
+                reader: &mut slice_reader,
+                swf_version: SwfVersion(self.swf_version),
+            })
+            .map(Tag::DefineBitsLossless)
+            .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineBitsJpeg2 => DefineBitsJpeg2Tag::read(&mut slice_reader)
                 .map(Tag::DefineBitsJpeg2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
