@@ -144,7 +144,7 @@ pub(crate) fn read_shape_record<
 ) -> Result<InternalShapeRecord<Color, LineStyle>> {
     let is_edge = options.reader.read_bit()?;
     if is_edge {
-        Ok(match read_edge_record(options.reader)? {
+        Ok(match EdgeRecord::read(options.reader)? {
             EdgeRecord::StraightEdge(edge) => InternalShapeRecord::StraightEdge(edge),
             EdgeRecord::CurvedEdge(edge) => InternalShapeRecord::CurvedEdge(edge),
         })
@@ -217,15 +217,6 @@ pub(crate) fn read_non_edge_record<
         num_fill_bits,
         num_line_bits,
     })
-}
-
-pub(crate) fn read_edge_record<R: BitRead>(reader: &mut R) -> Result<EdgeRecord> {
-    let is_straight = reader.read_bit()?;
-    if is_straight {
-        Ok(EdgeRecord::StraightEdge(read_straight_edge_record(reader)?))
-    } else {
-        Ok(EdgeRecord::CurvedEdge(read_curved_edge_record(reader)?))
-    }
 }
 
 pub fn read_straight_edge_record<R: BitRead>(reader: &mut R) -> Result<StraightEdgeRecord> {
