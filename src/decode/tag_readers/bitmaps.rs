@@ -14,10 +14,7 @@ use std::io::{Error, Read, Result};
 
 pub fn read_define_bits_lossless_tag(reader: &mut SwfSliceReader) -> Result<DefineBitsLosslessTag> {
     let character_id = reader.read_u16()?;
-    let bitmap_format = reader
-        .read_u8()?
-        .try_into()
-        .map_err(|_| Error::from(InvalidData))?;
+    let bitmap_format = BitmapFormat::read(reader)?;
     let bitmap_width = reader.read_u16()?;
     let bitmap_height = reader.read_u16()?;
     let color_table_size = if bitmap_format == BitmapFormat::ColorMap8 {
@@ -119,10 +116,7 @@ pub fn read_define_bits_lossless_2_tag(
     reader: &mut SwfSliceReader,
 ) -> Result<DefineBitsLossless2Tag> {
     let character_id = reader.read_u16()?;
-    let bitmap_format = reader
-        .read_u8()?
-        .try_into()
-        .map_err(|_| Error::from(InvalidData))?;
+    let bitmap_format = BitmapFormat::read(reader)?;
     let bitmap_width = reader.read_u16()?;
     let bitmap_height = reader.read_u16()?;
     let color_table_size = if bitmap_format == BitmapFormat::ColorMap8 {
