@@ -90,7 +90,10 @@ fn read_clip_actions(
         swf_version,
     })?;
     let mut clip_action_records = Vec::new();
-    while let Some(clip_action_record) = read_clip_action_record(reader)? {
+    while let Some(clip_action_record) = read_clip_action_record(ReadOptions {
+        reader,
+        swf_version,
+    })? {
         clip_action_records.push(clip_action_record);
     }
     Ok(ClipActions {
@@ -99,8 +102,12 @@ fn read_clip_actions(
     })
 }
 
-fn read_clip_action_record(reader: &mut SwfSliceReader) -> Result<Option<ClipActionRecord>> {
-    let swf_version = reader.swf_version();
+fn read_clip_action_record(
+    ReadOptions {
+        reader,
+        swf_version,
+    }: ReadOptions<SwfSliceReader>,
+) -> Result<Option<ClipActionRecord>> {
     let event_flags = ClipEventFlags::read(ReadOptions {
         reader,
         swf_version,
