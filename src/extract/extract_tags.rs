@@ -1,7 +1,6 @@
 use crate::decode::decompressing_reader::DecompressingReader;
 use crate::decode::header::Header;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::swf_version::SwfVersion;
 use crate::extract::encoded_tag::EncodedTag;
 use crate::extract::tag_type::TagType;
 use std::io::{BufRead, Result};
@@ -27,10 +26,6 @@ impl<'reader, R: BufRead> ExtractTagsReader<'reader, R> {
         let mut body = vec![0u8; length];
         self.reader.read_u8_into(&mut body)?;
 
-        Ok(EncodedTag::new(
-            SwfVersion(self.header.version),
-            tag_type,
-            body,
-        ))
+        Ok(EncodedTag::new(self.header.version, tag_type, body))
     }
 }

@@ -2,6 +2,7 @@ use crate::decode::bit_reader::BitReader;
 use crate::decode::compression::Compression;
 use crate::decode::decompressing_reader::DecompressingReader;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::swf_version::SwfVersion;
 use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::common::rectangle::Rectangle;
 use std::io::ErrorKind::InvalidData;
@@ -10,7 +11,7 @@ use std::io::{BufRead, Error, Result};
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash)]
 pub struct Header {
     pub compression: Compression,
-    pub version: u8,
+    pub version: SwfVersion,
     pub file_length: u32,
     pub frame_size: Rectangle,
     pub frame_rate: Fixed8,
@@ -29,7 +30,7 @@ impl Header {
             _ => Err(Error::from(InvalidData)),
         }?;
 
-        let version = reader.read_u8()?;
+        let version = SwfVersion::read(&mut reader)?;
         let file_length = reader.read_u32()?;
 
         let mut bit_reader = BitReader::new(match compression {
