@@ -82,7 +82,7 @@ fn read_morph_fill_style_array(reader: &mut SwfSliceReader) -> Result<Vec<MorphF
     Ok(fill_styles)
 }
 
-fn read_morph_fill_style(reader: &mut SwfSliceReader) -> Result<MorphFillStyle> {
+fn read_morph_fill_style<R: BitRead>(reader: &mut R) -> Result<MorphFillStyle> {
     let fill_style_type = FillStyleType::read(reader)?;
     Ok(match fill_style_type {
         FillStyleType::Solid => {
