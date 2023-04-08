@@ -1,8 +1,8 @@
+use crate::decode::read_ext::SwfTypesReadExt;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
-use std::io::{Error, Read};
 use std::io;
 use std::io::ErrorKind::InvalidData;
-use crate::decode::read_ext::SwfTypesReadExt;
+use std::io::{Error, Read};
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Hash, IntoPrimitive, TryFromPrimitive)]
 #[repr(u8)]

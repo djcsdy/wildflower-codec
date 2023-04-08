@@ -6,5 +6,6 @@ pub mod header;
 pub mod max_length_reader;
 pub mod read_ext;
 pub mod slice_reader;
+pub mod swf_version;
 pub mod tag_readers;
 pub mod tags;
