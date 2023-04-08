@@ -46,12 +46,9 @@ impl DefineFont2Tag {
 
     pub fn read_glyphs_and_code_table_and_layout(
         &self,
-        swf_version: u8,
+        swf_version: SwfVersion,
     ) -> Result<GlyphsAndCodeTableAndLayout> {
-        let mut reader = SwfSliceReader::new(
-            &self.glyphs_and_code_table_and_layout,
-            SwfVersion(swf_version),
-        );
+        let mut reader = SwfSliceReader::new(&self.glyphs_and_code_table_and_layout, swf_version);
         let mut offset_table = Vec::with_capacity(self.num_glyphs as usize + 1);
         for _ in 0..self.num_glyphs + 1 {
             offset_table.push(if self.flags.contains(DefineFontFlags::WIDE_OFFSETS) {
@@ -134,7 +131,7 @@ impl DefineFont2Tag {
         };
         Ok(GlyphsAndCodeTableAndLayout {
             shape_table: GlyphShapeTable {
-                swf_version,
+                swf_version: swf_version.0,
                 offset_table,
                 shape_table,
             },
