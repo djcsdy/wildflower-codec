@@ -199,7 +199,7 @@ fn read_morph_gradient_record<R: Read>(reader: &mut R) -> Result<MorphGradientRe
     })
 }
 
-fn read_morph_line_style(reader: &mut SwfSliceReader) -> Result<MorphLineStyle> {
+fn read_morph_line_style<R: Read>(reader: &mut R) -> Result<MorphLineStyle> {
     let start_width = reader.read_u16()?;
     let end_width = reader.read_u16()?;
     let start_color = Rgba::read(reader)?;
