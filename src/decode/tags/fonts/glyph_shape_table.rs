@@ -6,7 +6,7 @@ use std::io::Result;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct GlyphShapeTable<'define_font> {
-    pub swf_version: u8,
+    pub swf_version: SwfVersion,
     pub offset_table: Vec<usize>,
     pub shape_table: &'define_font [u8],
 }
@@ -53,7 +53,7 @@ impl<'glyph_table, 'define_font> Iterator for GlyphTableIterator<'glyph_table, '
             self.index += 1;
             Some(read_shape(&mut SwfSliceReader::new(
                 &self.table.shape_table[start_offset..end_offset],
-                SwfVersion(self.table.swf_version),
+                self.table.swf_version,
             )))
         }
     }

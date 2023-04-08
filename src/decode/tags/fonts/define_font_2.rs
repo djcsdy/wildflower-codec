@@ -131,7 +131,7 @@ impl DefineFont2Tag {
         };
         Ok(GlyphsAndCodeTableAndLayout {
             shape_table: GlyphShapeTable {
-                swf_version: swf_version.0,
+                swf_version,
                 offset_table,
                 shape_table,
             },
