@@ -163,7 +163,7 @@ pub fn read_define_shape_tag<R: BitRead + SizedRead>(reader: &mut R) -> Result<D
     })
 }
 
-pub fn read_define_shape_2_tag(reader: &mut SwfSliceReader) -> Result<DefineShape2Tag> {
+pub fn read_define_shape_2_tag<R: BitRead + SizedRead>(reader: &mut R) -> Result<DefineShape2Tag> {
     let shape_id = reader.read_u16()?;
     let shape_bounds = Rectangle::read(reader)?;
     let shape = read_shape_with_style(ReadShapeWithStyleOptions {
