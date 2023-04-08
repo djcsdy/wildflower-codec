@@ -135,8 +135,12 @@ fn read_clip_action_record(
     }
 }
 
-pub fn read_place_object_3_tag(reader: &mut SwfSliceReader) -> Result<PlaceObject3Tag> {
-    let swf_version = reader.swf_version();
+pub fn read_place_object_3_tag(
+    ReadOptions {
+        reader,
+        swf_version,
+    }: ReadOptions<SwfSliceReader>,
+) -> Result<PlaceObject3Tag> {
     let has_clip_actions = reader.read_bit()?;
     let has_clip_depth = reader.read_bit()?;
     let has_name = reader.read_bit()?;

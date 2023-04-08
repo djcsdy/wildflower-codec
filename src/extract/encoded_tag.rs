@@ -221,9 +221,12 @@ impl EncodedTag {
             TagType::FileAttributes => FileAttributesTag::read(&mut slice_reader)
                 .map(Tag::FileAttributes)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::PlaceObject3 => read_place_object_3_tag(&mut slice_reader)
-                .map(Tag::PlaceObject3)
-                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
+            TagType::PlaceObject3 => read_place_object_3_tag(ReadOptions {
+                reader: &mut slice_reader,
+                swf_version: self.swf_version,
+            })
+            .map(Tag::PlaceObject3)
+            .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::ImportAssets2 => ImportAssets2Tag::read(&mut slice_reader)
                 .map(Tag::ImportAssets2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
