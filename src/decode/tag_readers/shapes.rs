@@ -9,6 +9,7 @@ use crate::decode::tags::shapes::define_shape::DefineShapeTag;
 use crate::decode::tags::shapes::define_shape_2::DefineShape2Tag;
 use crate::decode::tags::shapes::define_shape_3::DefineShape3Tag;
 use crate::decode::tags::shapes::define_shape_4::DefineShape4Tag;
+use crate::decode::tags::shapes::internal_shape_record::InternalShapeRecord;
 use crate::decode::tags::shapes::shape::Shape;
 use crate::decode::tags::shapes::shape_record::ShapeRecord;
 use crate::decode::tags::shapes::shape_with_style::ShapeWithStyle;
@@ -131,18 +132,7 @@ fn read_shape_records<
     Ok(shape_records)
 }
 
-pub enum InternalShapeRecord<Color, LineStyle> {
-    EndShape,
-    StyleChange {
-        style_change_record: StyleChangeRecord<Color, LineStyle>,
-        num_fill_bits: u8,
-        num_line_bits: u8,
-    },
-    StraightEdge(StraightEdgeRecord),
-    CurvedEdge(CurvedEdgeRecord),
-}
-
-pub fn read_shape_record<
+pub(crate) fn read_shape_record<
     Color,
     LineStyle,
     ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
