@@ -67,26 +67,19 @@ pub fn read_define_bits_lossless_tag<R: SizedRead>(
 
 struct ReadBitmapDataOptions<
     'reader,
-    'buffer,
     'read_color,
+    Read: SizedRead,
     Color,
-    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
+    ReadColor: Fn(&mut Read) -> Result<Color>,
 > {
-    reader: &'reader mut SwfSliceReader<'buffer>,
+    reader: &'reader mut Read,
     read_color: &'read_color ReadColor,
     bitmap_width: u16,
     bitmap_height: u16,
 }
 
-fn read_bitmap_data<
-    'options,
-    'reader,
-    'buffer,
-    'read_color,
-    Color,
-    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
->(
-    options: &'options mut ReadBitmapDataOptions<'reader, 'buffer, 'read_color, Color, ReadColor>,
+fn read_bitmap_data<Read: SizedRead, Color, ReadColor: Fn(&mut Read) -> Result<Color>>(
+    options: &mut ReadBitmapDataOptions<Read, Color, ReadColor>,
 ) -> Result<BitmapData<Color>> {
     let start = options.reader.position();
     let mut pixel_data =
