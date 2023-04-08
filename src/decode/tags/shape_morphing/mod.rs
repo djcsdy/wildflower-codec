@@ -1,54 +1,12 @@
 pub mod define_morph_shape;
 pub mod define_morph_shape_2;
+pub mod morph_fill_style;
 
 use crate::decode::tags::common::fixed_8::Fixed8;
-use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::styles::cap_style::CapStyle;
 use crate::decode::tags::styles::join_style::JoinStyle;
-
-#[derive(Clone, PartialEq, Debug)]
-pub enum MorphFillStyle {
-    Solid {
-        start_color: Rgba,
-        end_color: Rgba,
-    },
-    LinearGradient {
-        start_matrix: Matrix,
-        end_matrix: Matrix,
-        gradient: MorphGradient,
-    },
-    RadialGradient {
-        start_matrix: Matrix,
-        end_matrix: Matrix,
-        gradient: MorphGradient,
-    },
-    FocalRadialGradient {
-        start_matrix: Matrix,
-        end_matrix: Matrix,
-        gradient: MorphFocalGradient,
-    },
-    RepeatingBitmap {
-        bitmap_id: u16,
-        start_matrix: Matrix,
-        end_matrix: Matrix,
-    },
-    ClippedBitmap {
-        bitmap_id: u16,
-        start_matrix: Matrix,
-        end_matrix: Matrix,
-    },
-    NonSmoothedRepeatingBitmap {
-        bitmap_id: u16,
-        start_matrix: Matrix,
-        end_matrix: Matrix,
-    },
-    NonSmoothedClippedBitmap {
-        bitmap_id: u16,
-        start_matrix: Matrix,
-        end_matrix: Matrix,
-    },
-}
+use morph_fill_style::MorphFillStyle;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct MorphGradient {
