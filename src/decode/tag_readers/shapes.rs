@@ -21,7 +21,7 @@ use crate::decode::tags::styles::line_style_2::LineStyle2;
 use crate::decode::tags::styles::line_style_array::read_line_style_array;
 use std::io::Result;
 
-pub fn read_shape(reader: &mut SwfSliceReader) -> Result<Shape<(), ()>> {
+pub fn read_shape<R: BitRead + SizedRead>(reader: &mut R) -> Result<Shape<(), ()>> {
     let num_fill_bits = reader.read_ub8(4)?;
     let num_line_bits = reader.read_ub8(4)?;
     let shape_records = read_shape_records(ReadShapeRecordOptions {
