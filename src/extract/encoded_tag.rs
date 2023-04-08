@@ -147,9 +147,12 @@ impl EncodedTag {
                     .unwrap_or_else(|_| Tag::Invalid(self.into_invalid()))
             }
             TagType::Protect => Tag::Unknown(self.into_unknown()),
-            TagType::PlaceObject2 => read_place_object_2_tag(&mut slice_reader)
-                .map(Tag::PlaceObject2)
-                .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
+            TagType::PlaceObject2 => read_place_object_2_tag(ReadOptions {
+                reader: &mut slice_reader,
+                swf_version: self.swf_version,
+            })
+            .map(Tag::PlaceObject2)
+            .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::RemoveObject2 => RemoveObject2Tag::read(&mut slice_reader)
                 .map(Tag::RemoveObject2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
