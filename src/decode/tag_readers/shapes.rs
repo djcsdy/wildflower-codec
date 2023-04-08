@@ -1,5 +1,6 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::sized_read::SizedRead;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgb::Rgb;
@@ -107,7 +108,7 @@ fn read_shape_records<
     options: &mut ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
 ) -> Result<Vec<ShapeRecord<Color, LineStyle>>> {
     let mut shape_records = Vec::new();
-    while options.reader.bytes_remaining() > 0 {
+    while options.reader.remaining_bytes() > 0 {
         shape_records.push(
             match read_shape_record(&mut ReadShapeRecordOptions {
                 reader: options.reader,

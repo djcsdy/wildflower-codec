@@ -1,4 +1,5 @@
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::sized_read::SizedRead;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::action_pointer::ActionPointer;
 use crate::decode::tags::actions::action_record::ActionRecord;

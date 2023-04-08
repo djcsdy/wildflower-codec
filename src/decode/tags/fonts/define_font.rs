@@ -1,4 +1,5 @@
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::sized_read::SizedRead;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::shapes::read_shape;
 use crate::decode::tags::shapes::shape::Shape;
@@ -13,7 +14,7 @@ pub struct DefineFontTag {
 impl DefineFontTag {
     pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
         let font_id = reader.read_u16()?;
-        let end_offset = reader.bytes_remaining();
+        let end_offset = reader.remaining_bytes();
         let first_offset = reader.read_u16()? as usize;
         let num_glyphs = first_offset / 2;
         let mut length_table = Vec::with_capacity(num_glyphs);

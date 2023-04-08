@@ -1,5 +1,6 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::sized_read::SizedRead;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::fonts::align_zone_record::AlignZoneRecord;
 use crate::decode::tags::fonts::csm_table_hint::CsmTableHint;
@@ -18,7 +19,7 @@ impl DefineFontAlignZonesTag {
         let csm_table_hint = CsmTableHint::read(reader)?;
         reader.read_ub8(6)?;
         let mut zone_table = Vec::new();
-        while reader.bytes_remaining() > 0 {
+        while reader.remaining_bytes() > 0 {
             zone_table.push(AlignZoneRecord::read(reader)?);
         }
         Ok(Self {

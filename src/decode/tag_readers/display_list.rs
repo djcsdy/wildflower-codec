@@ -1,6 +1,7 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::read_options::ReadOptions;
+use crate::decode::sized_read::SizedRead;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::swf_version::SwfVersion;
 use crate::decode::tags::actions::action_list::ActionList;
@@ -25,7 +26,7 @@ pub fn read_place_object_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjectT
     let character_id = reader.read_u16()?;
     let depth = reader.read_u16()?;
     let matrix = Matrix::read(reader)?;
-    let color_transform = if reader.bytes_remaining() > 0 {
+    let color_transform = if reader.remaining_bytes() > 0 {
         Some(ColorTransform::read(reader)?)
     } else {
         None

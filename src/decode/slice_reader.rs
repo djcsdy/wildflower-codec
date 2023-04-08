@@ -1,6 +1,7 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::bit_reader::BitReader;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::sized_read::SizedRead;
 use std::io::{IoSliceMut, Read, Result};
 
 pub struct SwfSliceReader<'buffer> {
@@ -22,14 +23,6 @@ impl<'buffer> SwfSliceReader<'buffer> {
         self.swf_version
     }
 
-    pub fn position(&self) -> usize {
-        self.inner.inner().len() - self.buffer.len()
-    }
-
-    pub fn bytes_remaining(&self) -> usize {
-        self.inner.inner().len()
-    }
-
     pub fn seek(&mut self, position: usize) {
         self.inner = BitReader::new(&self.buffer[position..]);
     }
@@ -39,12 +32,12 @@ impl<'buffer> SwfSliceReader<'buffer> {
     }
 
     pub fn remaining_slice(mut self) -> Self {
-        Self::new(self.inner.slice(self.bytes_remaining()), self.swf_version)
+        Self::new(self.inner.slice(self.remaining_bytes()), self.swf_version)
     }
 
     pub fn read_u16_to_end(&mut self) -> Result<Vec<u16>> {
         let mut buffer = Vec::new();
-        while self.bytes_remaining() > 0 {
+        while self.remaining_bytes() > 0 {
             buffer.push(self.read_u16()?);
         }
         Ok(buffer)
@@ -58,6 +51,20 @@ impl<'buffer> Read for SwfSliceReader<'buffer> {
 
     fn read_vectored(&mut self, bufs: &mut [IoSliceMut<'_>]) -> Result<usize> {
         self.inner.read_vectored(bufs)
+    }
+}
+
+impl<'buffer> SizedRead for SwfSliceReader<'buffer> {
+    fn position(&self) -> usize {
+        self.inner.inner().len() - self.buffer.len()
+    }
+
+    fn length_bytes(&self) -> usize {
+        self.buffer.len()
+    }
+
+    fn remaining_bytes(&self) -> usize {
+        self.inner.inner().len()
     }
 }
 

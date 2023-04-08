@@ -1,4 +1,5 @@
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::sized_read::SizedRead;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::bitmaps::bitmap_data::BitmapData;
 use crate::decode::tags::bitmaps::bitmap_format::BitmapFormat;
@@ -23,7 +24,7 @@ pub fn read_define_bits_lossless_tag(reader: &mut SwfSliceReader) -> Result<Defi
         0
     };
     let swf_version = reader.swf_version();
-    let mut decompressed_bitmap_data = Vec::with_capacity(reader.bytes_remaining() * 2);
+    let mut decompressed_bitmap_data = Vec::with_capacity(reader.remaining_bytes() * 2);
     let mut zlib_reader = DeflateDecoder::from_zlib(reader);
     zlib_reader.read_to_end(&mut decompressed_bitmap_data)?;
     let mut bitmap_data_reader = SwfSliceReader::new(&decompressed_bitmap_data, swf_version);
@@ -109,7 +110,7 @@ pub fn read_define_bits_lossless_2_tag(
         0
     };
     let swf_version = reader.swf_version();
-    let mut decompressed_bitmap_data = Vec::with_capacity(reader.bytes_remaining() * 2);
+    let mut decompressed_bitmap_data = Vec::with_capacity(reader.remaining_bytes() * 2);
     let mut zlib_reader = DeflateDecoder::from_zlib(reader);
     zlib_reader.read_to_end(&mut decompressed_bitmap_data)?;
     let mut bitmap_data_reader = SwfSliceReader::new(&decompressed_bitmap_data, swf_version);
