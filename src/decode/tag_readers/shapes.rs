@@ -1,7 +1,6 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::sized_read::SizedRead;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::rgba::Rgba;
@@ -197,7 +196,7 @@ pub fn read_define_shape_3_tag<R: BitRead + SizedRead>(reader: &mut R) -> Result
     })
 }
 
-pub fn read_define_shape_4_tag(reader: &mut SwfSliceReader) -> Result<DefineShape4Tag> {
+pub fn read_define_shape_4_tag<R: BitRead + SizedRead>(reader: &mut R) -> Result<DefineShape4Tag> {
     let shape_id = reader.read_u16()?;
     let shape_bounds = Rectangle::read(reader)?;
     let edge_bounds = Rectangle::read(reader)?;
