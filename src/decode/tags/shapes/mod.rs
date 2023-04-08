@@ -3,6 +3,7 @@ pub mod define_shape;
 pub mod define_shape_2;
 pub mod define_shape_3;
 pub mod define_shape_4;
+pub(crate) mod edge_record;
 pub(crate) mod internal_shape_record;
 pub(crate) mod non_edge_record;
 pub mod shape;

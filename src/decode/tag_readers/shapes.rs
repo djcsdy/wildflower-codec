@@ -9,6 +9,7 @@ use crate::decode::tags::shapes::define_shape::DefineShapeTag;
 use crate::decode::tags::shapes::define_shape_2::DefineShape2Tag;
 use crate::decode::tags::shapes::define_shape_3::DefineShape3Tag;
 use crate::decode::tags::shapes::define_shape_4::DefineShape4Tag;
+use crate::decode::tags::shapes::edge_record::EdgeRecord;
 use crate::decode::tags::shapes::internal_shape_record::InternalShapeRecord;
 use crate::decode::tags::shapes::non_edge_record::NonEdgeRecord;
 use crate::decode::tags::shapes::shape::Shape;
@@ -218,12 +219,7 @@ pub(crate) fn read_non_edge_record<
     })
 }
 
-pub enum EdgeRecord {
-    StraightEdge(StraightEdgeRecord),
-    CurvedEdge(CurvedEdgeRecord),
-}
-
-pub fn read_edge_record(reader: &mut SwfSliceReader) -> Result<EdgeRecord> {
+pub(crate) fn read_edge_record(reader: &mut SwfSliceReader) -> Result<EdgeRecord> {
     let is_straight = reader.read_bit()?;
     if is_straight {
         Ok(EdgeRecord::StraightEdge(read_straight_edge_record(reader)?))
