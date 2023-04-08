@@ -51,12 +51,12 @@ impl<Color> FillStyle<Color> {
             FillStyleType::Solid => Self::Solid(read_color(reader)?),
             FillStyleType::LinearGradient => {
                 let matrix = Matrix::read(reader)?;
-                let gradient = styles::read_gradient(reader, &read_color)?;
+                let gradient = Gradient::read(reader, &read_color)?;
                 Self::LinearGradient { matrix, gradient }
             }
             FillStyleType::RadialGradient => {
                 let matrix = Matrix::read(reader)?;
-                let gradient = styles::read_gradient(reader, &read_color)?;
+                let gradient = Gradient::read(reader, &read_color)?;
                 Self::RadialGradient { matrix, gradient }
             }
             FillStyleType::FocalRadialGradient => {
