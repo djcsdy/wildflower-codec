@@ -134,4 +134,16 @@ impl MorphFillStyle {
             }
         })
     }
+
+    pub fn read_array<R: BitRead>(reader: &mut R) -> Result<Vec<Self>> {
+        let mut count = reader.read_u8()? as usize;
+        if count == 0xff {
+            count = reader.read_u16()? as usize
+        }
+        let mut fill_styles = Vec::with_capacity(count);
+        for _ in 0..count {
+            fill_styles.push(Self::read(reader)?);
+        }
+        Ok(fill_styles)
+    }
 }

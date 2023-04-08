@@ -21,7 +21,7 @@ pub fn read_define_morph_shape_tag(reader: &mut SwfSliceReader) -> Result<Define
     let start_bounds = Rectangle::read(reader)?;
     let end_bounds = Rectangle::read(reader)?;
     let offset = reader.read_u32()? as usize;
-    let fill_styles = read_morph_fill_style_array(reader)?;
+    let fill_styles = MorphFillStyle::read_array(reader)?;
     let line_styles = read_line_style_array(reader, &read_morph_line_style)?;
     let start_edges = read_shape(&mut reader.slice(offset))?;
     let end_edges = read_shape(reader)?;
@@ -46,7 +46,7 @@ pub fn read_define_morph_shape_2_tag(reader: &mut SwfSliceReader) -> Result<Defi
     let uses_non_scaling_strokes = reader.read_bit()?;
     let uses_scaling_strokes = reader.read_bit()?;
     let offset = reader.read_u32()? as usize;
-    let fill_styles = read_morph_fill_style_array(reader)?;
+    let fill_styles = MorphFillStyle::read_array(reader)?;
     let line_styles = read_line_style_array(reader, &read_morph_line_style_2)?;
     let start_edges = read_shape(&mut reader.slice(offset))?;
     let end_edges = read_shape(reader)?;
@@ -63,18 +63,6 @@ pub fn read_define_morph_shape_2_tag(reader: &mut SwfSliceReader) -> Result<Defi
         start_edges,
         end_edges,
     })
-}
-
-fn read_morph_fill_style_array<R: BitRead>(reader: &mut R) -> Result<Vec<MorphFillStyle>> {
-    let mut count = reader.read_u8()? as usize;
-    if count == 0xff {
-        count = reader.read_u16()? as usize
-    }
-    let mut fill_styles = Vec::with_capacity(count);
-    for _ in 0..count {
-        fill_styles.push(MorphFillStyle::read(reader)?);
-    }
-    Ok(fill_styles)
 }
 
 fn read_morph_line_style<R: Read>(reader: &mut R) -> Result<MorphLineStyle> {
