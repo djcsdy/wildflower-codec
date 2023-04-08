@@ -3,15 +3,9 @@ pub mod define_shape_2;
 pub mod define_shape_3;
 pub mod define_shape_4;
 pub mod shape;
+pub mod shape_with_style;
 
 use crate::decode::tags::styles::fill_style::FillStyle;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct ShapeWithStyle<Color, LineStyle> {
-    pub fill_styles: Vec<FillStyle<Color>>,
-    pub line_styles: Vec<LineStyle>,
-    pub shape_records: Vec<ShapeRecord<Color, LineStyle>>,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum ShapeRecord<Color, LineStyle> {
