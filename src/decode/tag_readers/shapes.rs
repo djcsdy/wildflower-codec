@@ -113,7 +113,7 @@ fn read_shape_records<
     let mut shape_records = Vec::new();
     while reader.remaining_bytes() > 0 {
         shape_records.push(
-            match read_shape_record(ReadShapeRecordOptions {
+            match read_internal_shape_record(ReadInternalShapeRecordOptions {
                 reader,
                 num_fill_bits,
                 num_line_bits,
@@ -138,19 +138,43 @@ fn read_shape_records<
     Ok(shape_records)
 }
 
-pub(crate) fn read_shape_record<
+pub(crate) struct ReadInternalShapeRecordOptions<
+    'reader,
+    'read_line_style_array,
+    'read_fill_style_array,
+    Read: BitRead,
     Color,
     LineStyle,
-    ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
-    ReadFillStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<FillStyle<Color>>>,
+    ReadLineStyleArray: Fn(&mut Read) -> Result<Vec<LineStyle>>,
+    ReadFillStyleArray: Fn(&mut Read) -> Result<Vec<FillStyle<Color>>>,
+> {
+    pub reader: &'reader mut Read,
+    pub num_fill_bits: u8,
+    pub num_line_bits: u8,
+    pub read_line_style_array: &'read_line_style_array ReadLineStyleArray,
+    pub read_fill_style_array: &'read_fill_style_array ReadFillStyleArray,
+}
+
+pub(crate) fn read_internal_shape_record<
+    Read: BitRead,
+    Color,
+    LineStyle,
+    ReadLineStyleArray: Fn(&mut Read) -> Result<Vec<LineStyle>>,
+    ReadFillStyleArray: Fn(&mut Read) -> Result<Vec<FillStyle<Color>>>,
 >(
-    ReadShapeRecordOptions {
+    ReadInternalShapeRecordOptions {
         reader,
         num_fill_bits,
         num_line_bits,
         read_line_style_array,
         read_fill_style_array,
-    }: ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
+    }: ReadInternalShapeRecordOptions<
+        Read,
+        Color,
+        LineStyle,
+        ReadLineStyleArray,
+        ReadFillStyleArray,
+    >,
 ) -> Result<InternalShapeRecord<Color, LineStyle>> {
     let is_edge = reader.read_bit()?;
     if is_edge {
