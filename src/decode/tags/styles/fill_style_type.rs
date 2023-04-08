@@ -16,10 +16,6 @@ pub(crate) enum FillStyleType {
     NonSmoothedClippedBitmap = 0x43,
 }
 
-pub(crate) fn read_fill_style_type<R: Read>(reader: &mut R) -> Result<FillStyleType> {
-    FillStyleType::read(reader)
-}
-
 impl FillStyleType {
     pub(crate) fn read<R: Read>(reader: &mut R) -> Result<FillStyleType> {
         reader

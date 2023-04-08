@@ -3,7 +3,6 @@ use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tag_readers::styles;
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgb::Rgb;
-use crate::decode::tags::styles::fill_style_type;
 use crate::decode::tags::styles::fill_style_type::FillStyleType;
 use crate::decode::tags::styles::focal_gradient::FocalGradient;
 use crate::decode::tags::styles::gradient::Gradient;
@@ -47,7 +46,7 @@ impl<Color> FillStyle<Color> {
         reader: &mut Read,
         read_color: &ReadColor,
     ) -> Result<Self> {
-        let fill_style_type = fill_style_type::read_fill_style_type(reader)?;
+        let fill_style_type = FillStyleType::read(reader)?;
         Ok(match fill_style_type {
             FillStyleType::Solid => Self::Solid(read_color(reader)?),
             FillStyleType::LinearGradient => {

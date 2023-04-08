@@ -11,7 +11,7 @@ use crate::decode::tags::shape_morphing::{
     MorphGradientRecord, MorphLineStyle, MorphLineStyle2,
 };
 use crate::decode::tags::styles::cap_style::CapStyle;
-use crate::decode::tags::styles::fill_style_type::{read_fill_style_type, FillStyleType};
+use crate::decode::tags::styles::fill_style_type::FillStyleType;
 use crate::decode::tags::styles::join_style::JoinStyle;
 use crate::decode::tags::styles::line_style_array::read_line_style_array;
 use std::io::ErrorKind::InvalidData;
@@ -79,7 +79,7 @@ fn read_morph_fill_style_array(reader: &mut SwfSliceReader) -> Result<Vec<MorphF
 }
 
 fn read_morph_fill_style(reader: &mut SwfSliceReader) -> Result<MorphFillStyle> {
-    let fill_style_type = read_fill_style_type(reader)?;
+    let fill_style_type = FillStyleType::read(reader)?;
     Ok(match fill_style_type {
         FillStyleType::Solid => {
             let start_color = Rgba::read(reader)?;
