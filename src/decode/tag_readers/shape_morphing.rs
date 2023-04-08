@@ -19,7 +19,7 @@ use crate::decode::tags::styles::fill_style_type::FillStyleType;
 use crate::decode::tags::styles::join_style::JoinStyle;
 use crate::decode::tags::styles::line_style_array::read_line_style_array;
 use std::io::ErrorKind::InvalidData;
-use std::io::{Error, Result};
+use std::io::{Error, Read, Result};
 
 pub fn read_define_morph_shape_tag(reader: &mut SwfSliceReader) -> Result<DefineMorphShapeTag> {
     let character_id = reader.read_u16()?;
@@ -186,7 +186,7 @@ fn read_morph_focal_gradient(reader: &mut SwfSliceReader) -> Result<MorphFocalGr
     })
 }
 
-fn read_morph_gradient_record(reader: &mut SwfSliceReader) -> Result<MorphGradientRecord> {
+fn read_morph_gradient_record<R: Read>(reader: &mut R) -> Result<MorphGradientRecord> {
     let start_ratio = reader.read_u8()?;
     let start_color = Rgba::read(reader)?;
     let end_ratio = reader.read_u8()?;
