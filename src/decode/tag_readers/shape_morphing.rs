@@ -212,7 +212,7 @@ fn read_morph_line_style<R: Read>(reader: &mut R) -> Result<MorphLineStyle> {
     })
 }
 
-fn read_morph_line_style_2(reader: &mut SwfSliceReader) -> Result<MorphLineStyle2> {
+fn read_morph_line_style_2<R: BitRead>(reader: &mut R) -> Result<MorphLineStyle2> {
     let start_width = reader.read_u16()?;
     let end_width = reader.read_u16()?;
     let start_cap_style = CapStyle::read(reader)?;
