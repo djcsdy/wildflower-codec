@@ -9,8 +9,9 @@ use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::shape_morphing::define_morph_shape::DefineMorphShapeTag;
 use crate::decode::tags::shape_morphing::define_morph_shape_2::DefineMorphShape2Tag;
 use crate::decode::tags::shape_morphing::morph_fill_style::MorphFillStyle;
+use crate::decode::tags::shape_morphing::morph_gradient::MorphGradient;
 use crate::decode::tags::shape_morphing::{
-    MorphFocalGradient, MorphGradient, MorphGradientRecord, MorphLineStyle, MorphLineStyle2,
+    MorphFocalGradient, MorphGradientRecord, MorphLineStyle, MorphLineStyle2,
 };
 use crate::decode::tags::styles::cap_style::CapStyle;
 use crate::decode::tags::styles::fill_style_type::FillStyleType;

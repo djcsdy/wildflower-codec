@@ -1,6 +1,7 @@
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgba::Rgba;
-use crate::decode::tags::shape_morphing::{MorphFocalGradient, MorphGradient};
+use crate::decode::tags::shape_morphing::morph_gradient::MorphGradient;
+use crate::decode::tags::shape_morphing::MorphFocalGradient;
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum MorphFillStyle {
