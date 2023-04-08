@@ -145,36 +145,6 @@ pub(crate) fn read_shape_record<
     ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
     ReadFillStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<FillStyle<Color>>>,
 >(
-    options: ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
-) -> Result<InternalShapeRecord<Color, LineStyle>> {
-    let is_edge = options.reader.read_bit()?;
-    if is_edge {
-        Ok(match EdgeRecord::read(options.reader)? {
-            EdgeRecord::StraightEdge(edge) => InternalShapeRecord::StraightEdge(edge),
-            EdgeRecord::CurvedEdge(edge) => InternalShapeRecord::CurvedEdge(edge),
-        })
-    } else {
-        Ok(match read_non_edge_record(options)? {
-            NonEdgeRecord::EndShape => InternalShapeRecord::EndShape,
-            NonEdgeRecord::StyleChange {
-                style_change_record,
-                num_fill_bits,
-                num_line_bits,
-            } => InternalShapeRecord::StyleChange {
-                style_change_record,
-                num_fill_bits,
-                num_line_bits,
-            },
-        })
-    }
-}
-
-pub(crate) fn read_non_edge_record<
-    Color,
-    LineStyle,
-    ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
-    ReadFillStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<FillStyle<Color>>>,
->(
     ReadShapeRecordOptions {
         reader,
         num_fill_bits,
@@ -182,6 +152,68 @@ pub(crate) fn read_non_edge_record<
         read_line_style_array,
         read_fill_style_array,
     }: ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
+) -> Result<InternalShapeRecord<Color, LineStyle>> {
+    let is_edge = reader.read_bit()?;
+    if is_edge {
+        Ok(match EdgeRecord::read(reader)? {
+            EdgeRecord::StraightEdge(edge) => InternalShapeRecord::StraightEdge(edge),
+            EdgeRecord::CurvedEdge(edge) => InternalShapeRecord::CurvedEdge(edge),
+        })
+    } else {
+        Ok(
+            match read_non_edge_record(ReadNonEdgeRecordOptions {
+                reader,
+                num_fill_bits,
+                num_line_bits,
+                read_line_style_array,
+                read_fill_style_array,
+            })? {
+                NonEdgeRecord::EndShape => InternalShapeRecord::EndShape,
+                NonEdgeRecord::StyleChange {
+                    style_change_record,
+                    num_fill_bits,
+                    num_line_bits,
+                } => InternalShapeRecord::StyleChange {
+                    style_change_record,
+                    num_fill_bits,
+                    num_line_bits,
+                },
+            },
+        )
+    }
+}
+
+pub(crate) struct ReadNonEdgeRecordOptions<
+    'reader,
+    'read_line_style_array,
+    'read_fill_style_array,
+    Read: BitRead,
+    Color,
+    LineStyle,
+    ReadLineStyleArray: Fn(&mut Read) -> Result<Vec<LineStyle>>,
+    ReadFillStyleArray: Fn(&mut Read) -> Result<Vec<FillStyle<Color>>>,
+> {
+    pub reader: &'reader mut Read,
+    pub num_fill_bits: u8,
+    pub num_line_bits: u8,
+    pub read_line_style_array: &'read_line_style_array ReadLineStyleArray,
+    pub read_fill_style_array: &'read_fill_style_array ReadFillStyleArray,
+}
+
+pub(crate) fn read_non_edge_record<
+    Color,
+    LineStyle,
+    Read: BitRead,
+    ReadLineStyleArray: Fn(&mut Read) -> Result<Vec<LineStyle>>,
+    ReadFillStyleArray: Fn(&mut Read) -> Result<Vec<FillStyle<Color>>>,
+>(
+    ReadNonEdgeRecordOptions {
+        reader,
+        num_fill_bits,
+        num_line_bits,
+        read_line_style_array,
+        read_fill_style_array,
+    }: ReadNonEdgeRecordOptions<Read, Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
 ) -> Result<NonEdgeRecord<Color, LineStyle>> {
     if num_fill_bits > 16 || num_line_bits > 16 {
         panic!();
