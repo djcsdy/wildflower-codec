@@ -249,7 +249,7 @@ pub fn read_straight_edge_record<R: BitRead>(reader: &mut R) -> Result<StraightE
     Ok(StraightEdgeRecord { delta_x, delta_y })
 }
 
-pub fn read_curved_edge_record(reader: &mut SwfSliceReader) -> Result<CurvedEdgeRecord> {
+pub fn read_curved_edge_record<R: BitRead>(reader: &mut R) -> Result<CurvedEdgeRecord> {
     let num_bits = reader.read_ub8(4)? + 2;
     let control_delta_x = reader.read_sb(num_bits)?;
     let control_delta_y = reader.read_sb(num_bits)?;
