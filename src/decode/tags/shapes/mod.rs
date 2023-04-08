@@ -1,18 +1,11 @@
 pub mod define_shape;
+pub mod define_shape_2;
 
 use crate::decode::tags::common::rectangle::Rectangle;
-use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::styles::fill_style::FillStyle;
 use crate::decode::tags::styles::line_style::LineStyle;
 use crate::decode::tags::styles::line_style_2::LineStyle2;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct DefineShape2Tag {
-    pub shape_id: u16,
-    pub shape_bounds: Rectangle,
-    pub shape: ShapeWithStyle<Rgb, LineStyle<Rgb>>,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineShape3Tag {
