@@ -28,10 +28,9 @@ impl<Buffer: AsRef<[u8]>> ActionList<Buffer> {
     pub fn read_action(
         &self,
         pointer: ActionPointer,
-        swf_version: u8,
+        swf_version: SwfVersion,
     ) -> Result<(ActionRecord, ActionPointer)> {
-        let mut reader =
-            SwfSliceReader::new(pointer.index_buffer(&self.buffer), SwfVersion(swf_version));
+        let mut reader = SwfSliceReader::new(pointer.index_buffer(&self.buffer), swf_version);
         let action_record = ActionRecord::read(&mut reader)?;
         Ok((action_record, pointer + reader.position().into()))
     }
