@@ -2,7 +2,7 @@ use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::read_options::ReadOptions;
 use crate::decode::sized_read::SizedRead;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tags::bitmaps::bitmap_data::BitmapData;
+use crate::decode::tags::bitmaps::bitmap_data::{BitmapData, ReadBitmapDataOptions};
 use crate::decode::tags::bitmaps::bitmap_format::BitmapFormat;
 use crate::decode::tags::bitmaps::color_map_data::{ColorMapData, ReadColorMapDataOptions};
 use crate::decode::tags::bitmaps::define_bits_lossless::DefineBitsLosslessTag;
@@ -44,13 +44,13 @@ pub fn read_define_bits_lossless_tag<R: SizedRead>(
             };
             BitmapData::ColorMap8(ColorMapData::read(options)?)
         }
-        BitmapFormat::Rgb15 => read_bitmap_data(&mut ReadBitmapDataOptions {
+        BitmapFormat::Rgb15 => BitmapData::read(&mut ReadBitmapDataOptions {
             reader: &mut bitmap_data_reader,
             read_color: &pix15::read_pix15,
             bitmap_width,
             bitmap_height,
         })?,
-        BitmapFormat::Rgb24 => read_bitmap_data(&mut ReadBitmapDataOptions {
+        BitmapFormat::Rgb24 => BitmapData::read(&mut ReadBitmapDataOptions {
             reader: &mut bitmap_data_reader,
             read_color: &pix24::read_pix24,
             bitmap_width,
@@ -63,36 +63,6 @@ pub fn read_define_bits_lossless_tag<R: SizedRead>(
         bitmap_height,
         bitmap_data,
     })
-}
-
-struct ReadBitmapDataOptions<
-    'reader,
-    'read_color,
-    Read: SizedRead,
-    Color,
-    ReadColor: Fn(&mut Read) -> Result<Color>,
-> {
-    reader: &'reader mut Read,
-    read_color: &'read_color ReadColor,
-    bitmap_width: u16,
-    bitmap_height: u16,
-}
-
-fn read_bitmap_data<Read: SizedRead, Color, ReadColor: Fn(&mut Read) -> Result<Color>>(
-    options: &mut ReadBitmapDataOptions<Read, Color, ReadColor>,
-) -> Result<BitmapData<Color>> {
-    let start = options.reader.position();
-    let mut pixel_data =
-        Vec::with_capacity((options.bitmap_height as usize) * (options.bitmap_width as usize));
-    for _ in 0..options.bitmap_height {
-        for _ in 0..options.bitmap_width {
-            pixel_data.push((options.read_color)(options.reader)?);
-        }
-        while (options.reader.position() - start) & 4 != 0 {
-            options.reader.read_u8()?;
-        }
-    }
-    Ok(BitmapData::Rgb(pixel_data))
 }
 
 pub fn read_define_bits_lossless_2_tag(
@@ -124,7 +94,7 @@ pub fn read_define_bits_lossless_2_tag(
             BitmapData::ColorMap8(ColorMapData::read(options)?)
         }
         BitmapFormat::Rgb15 => return Err(Error::from(InvalidData)),
-        BitmapFormat::Rgb24 => read_bitmap_data(&mut ReadBitmapDataOptions {
+        BitmapFormat::Rgb24 => BitmapData::read(&mut ReadBitmapDataOptions {
             reader: &mut bitmap_data_reader,
             read_color: &Rgba::read_argb,
             bitmap_width,
