@@ -36,30 +36,37 @@ pub fn read_shape<R: BitRead + SizedRead>(reader: &mut R) -> Result<Shape<(), ()
 
 pub struct ReadShapeWithStyleOptions<
     'reader,
-    'buffer,
     'read_line_style_array,
     'read_fill_style_array,
+    Read: BitRead + SizedRead,
     Color,
     LineStyle,
-    ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
-    ReadFillStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<FillStyle<Color>>>,
+    ReadLineStyleArray: Fn(&mut Read) -> Result<Vec<LineStyle>>,
+    ReadFillStyleArray: Fn(&mut Read) -> Result<Vec<FillStyle<Color>>>,
 > {
-    pub reader: &'reader mut SwfSliceReader<'buffer>,
+    pub reader: &'reader mut Read,
     pub read_line_style_array: &'read_line_style_array ReadLineStyleArray,
     pub read_fill_style_array: &'read_fill_style_array ReadFillStyleArray,
 }
 
 pub fn read_shape_with_style<
+    Read: BitRead + SizedRead,
     Color,
     LineStyle,
-    ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
-    ReadFillStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<FillStyle<Color>>>,
+    ReadLineStyleArray: Fn(&mut Read) -> Result<Vec<LineStyle>>,
+    ReadFillStyleArray: Fn(&mut Read) -> Result<Vec<FillStyle<Color>>>,
 >(
     ReadShapeWithStyleOptions {
         reader,
         read_line_style_array,
         read_fill_style_array,
-    }: ReadShapeWithStyleOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
+    }: ReadShapeWithStyleOptions<
+        Read,
+        Color,
+        LineStyle,
+        ReadLineStyleArray,
+        ReadFillStyleArray,
+    >,
 ) -> Result<ShapeWithStyle<Color, LineStyle>> {
     let fill_styles = (read_fill_style_array)(reader)?;
     let line_styles = (read_line_style_array)(reader)?;
