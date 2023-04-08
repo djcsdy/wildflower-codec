@@ -7,7 +7,6 @@ use crate::decode::tag_readers::shape_morphing::{
 };
 use crate::decode::tag_readers::shapes::{
     read_define_shape_2_tag, read_define_shape_3_tag, read_define_shape_4_tag,
-    read_define_shape_tag,
 };
 use crate::decode::tags::actions::do_abc::DoAbcTag;
 use crate::decode::tags::actions::do_action::DoActionTag;
@@ -49,6 +48,7 @@ use crate::decode::tags::fonts::define_font_info_2::DefineFontInfo2Tag;
 use crate::decode::tags::fonts::define_font_name::DefineFontNameTag;
 use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
 use crate::decode::tags::metadata::file_attributes::FileAttributesTag;
+use crate::decode::tags::shapes::define_shape::DefineShapeTag;
 use crate::decode::tags::sounds::define_sound::DefineSoundTag;
 use crate::decode::tags::sounds::sound_stream_block::SoundStreamBlockTag;
 use crate::decode::tags::sounds::sound_stream_head::SoundStreamHeadTag;
@@ -83,7 +83,7 @@ impl EncodedTag {
         match self.tag_type {
             TagType::End => Tag::Unknown(self.into_unknown()),
             TagType::ShowFrame => Tag::Unknown(self.into_unknown()),
-            TagType::DefineShape => read_define_shape_tag(&mut slice_reader)
+            TagType::DefineShape => DefineShapeTag::read(&mut slice_reader)
                 .map(Tag::DefineShape)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::PlaceObject => PlaceObjectTag::read(&mut slice_reader)
