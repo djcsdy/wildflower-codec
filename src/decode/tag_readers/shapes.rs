@@ -81,15 +81,15 @@ pub fn read_shape_with_style<
 
 pub struct ReadShapeRecordOptions<
     'reader,
-    'buffer,
     'read_line_style_array,
     'read_fill_style_array,
+    Read: BitRead + SizedRead,
     Color,
     LineStyle,
-    ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
-    ReadFillStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<FillStyle<Color>>>,
+    ReadLineStyleArray: Fn(&mut Read) -> Result<Vec<LineStyle>>,
+    ReadFillStyleArray: Fn(&mut Read) -> Result<Vec<FillStyle<Color>>>,
 > {
-    pub reader: &'reader mut SwfSliceReader<'buffer>,
+    pub reader: &'reader mut Read,
     pub num_fill_bits: u8,
     pub num_line_bits: u8,
     pub read_line_style_array: &'read_line_style_array ReadLineStyleArray,
@@ -97,10 +97,11 @@ pub struct ReadShapeRecordOptions<
 }
 
 fn read_shape_records<
+    Read: BitRead + SizedRead,
     Color,
     LineStyle,
-    ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
-    ReadFillStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<FillStyle<Color>>>,
+    ReadLineStyleArray: Fn(&mut Read) -> Result<Vec<LineStyle>>,
+    ReadFillStyleArray: Fn(&mut Read) -> Result<Vec<FillStyle<Color>>>,
 >(
     ReadShapeRecordOptions {
         reader,
@@ -108,7 +109,7 @@ fn read_shape_records<
         mut num_line_bits,
         read_line_style_array,
         read_fill_style_array,
-    }: ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
+    }: ReadShapeRecordOptions<Read, Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
 ) -> Result<Vec<ShapeRecord<Color, LineStyle>>> {
     let mut shape_records = Vec::new();
     while reader.remaining_bytes() > 0 {
