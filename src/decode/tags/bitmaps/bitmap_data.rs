@@ -11,17 +11,21 @@ pub enum BitmapData<Color> {
 
 impl<Color> BitmapData<Color> {
     pub fn read<Read: SizedRead, ReadColor: Fn(&mut Read) -> Result<Color>>(
-        options: &mut ReadBitmapDataOptions<Read, Color, ReadColor>,
+        ReadBitmapDataOptions {
+            reader,
+            read_color,
+            bitmap_width,
+            bitmap_height,
+        }: ReadBitmapDataOptions<Read, Color, ReadColor>,
     ) -> Result<Self> {
-        let start = options.reader.position();
-        let mut pixel_data =
-            Vec::with_capacity((options.bitmap_height as usize) * (options.bitmap_width as usize));
-        for _ in 0..options.bitmap_height {
-            for _ in 0..options.bitmap_width {
-                pixel_data.push((options.read_color)(options.reader)?);
+        let start = reader.position();
+        let mut pixel_data = Vec::with_capacity((bitmap_height as usize) * (bitmap_width as usize));
+        for _ in 0..bitmap_height {
+            for _ in 0..bitmap_width {
+                pixel_data.push(read_color(reader)?);
             }
-            while (options.reader.position() - start) & 4 != 0 {
-                options.reader.read_u8()?;
+            while (reader.position() - start) & 4 != 0 {
+                reader.read_u8()?;
             }
         }
         Ok(Self::Rgb(pixel_data))

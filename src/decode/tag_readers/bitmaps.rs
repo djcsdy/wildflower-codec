@@ -44,13 +44,13 @@ pub fn read_define_bits_lossless_tag<R: SizedRead>(
             };
             BitmapData::ColorMap8(ColorMapData::read(options)?)
         }
-        BitmapFormat::Rgb15 => BitmapData::read(&mut ReadBitmapDataOptions {
+        BitmapFormat::Rgb15 => BitmapData::read(ReadBitmapDataOptions {
             reader: &mut bitmap_data_reader,
             read_color: &pix15::read_pix15,
             bitmap_width,
             bitmap_height,
         })?,
-        BitmapFormat::Rgb24 => BitmapData::read(&mut ReadBitmapDataOptions {
+        BitmapFormat::Rgb24 => BitmapData::read(ReadBitmapDataOptions {
             reader: &mut bitmap_data_reader,
             read_color: &pix24::read_pix24,
             bitmap_width,
@@ -94,7 +94,7 @@ pub fn read_define_bits_lossless_2_tag(
             BitmapData::ColorMap8(ColorMapData::read(options)?)
         }
         BitmapFormat::Rgb15 => return Err(Error::from(InvalidData)),
-        BitmapFormat::Rgb24 => BitmapData::read(&mut ReadBitmapDataOptions {
+        BitmapFormat::Rgb24 => BitmapData::read(ReadBitmapDataOptions {
             reader: &mut bitmap_data_reader,
             read_color: &Rgba::read_argb,
             bitmap_width,
