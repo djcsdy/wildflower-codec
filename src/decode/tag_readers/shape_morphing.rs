@@ -166,7 +166,7 @@ fn read_morph_fill_style(reader: &mut SwfSliceReader) -> Result<MorphFillStyle> 
     })
 }
 
-fn read_morph_gradient(reader: &mut SwfSliceReader) -> Result<MorphGradient> {
+fn read_morph_gradient<R: Read>(reader: &mut R) -> Result<MorphGradient> {
     let num_gradients = reader.read_u8()? as usize;
     let mut gradient_records = Vec::with_capacity(num_gradients);
     for _ in 0..num_gradients {
