@@ -21,7 +21,7 @@ use crate::decode::tags::display_list::remove_object::RemoveObjectTag;
 use crate::decode::tags::display_list::remove_object_2::RemoveObject2Tag;
 use std::io::Result;
 
-pub fn read_place_object_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjectTag> {
+pub fn read_place_object_tag<R: SizedRead + BitRead>(reader: &mut R) -> Result<PlaceObjectTag> {
     let character_id = reader.read_u16()?;
     let depth = reader.read_u16()?;
     let matrix = Matrix::read(reader)?;
