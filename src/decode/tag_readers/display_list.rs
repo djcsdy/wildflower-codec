@@ -19,7 +19,7 @@ use crate::decode::tags::display_list::place_object_2::PlaceObject2Tag;
 use crate::decode::tags::display_list::place_object_3::PlaceObject3Tag;
 use crate::decode::tags::display_list::remove_object::RemoveObjectTag;
 use crate::decode::tags::display_list::remove_object_2::RemoveObject2Tag;
-use std::io::{Read, Result};
+use std::io::Result;
 
 pub fn read_place_object_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjectTag> {
     let character_id = reader.read_u16()?;
@@ -100,7 +100,7 @@ pub fn read_place_object_2_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjec
 fn read_clip_actions(reader: &mut SwfSliceReader) -> Result<ClipActions> {
     reader.read_u16()?;
     let swf_version = SwfVersion(reader.swf_version());
-    let all_event_flags = read_clip_event_flags(ReadOptions {
+    let all_event_flags = ClipEventFlags::read(ReadOptions {
         reader,
         swf_version,
     })?;
@@ -114,24 +114,9 @@ fn read_clip_actions(reader: &mut SwfSliceReader) -> Result<ClipActions> {
     })
 }
 
-fn read_clip_event_flags<R: Read>(
-    ReadOptions {
-        reader,
-        swf_version,
-    }: ReadOptions<R>,
-) -> Result<ClipEventFlags> {
-    Ok(ClipEventFlags::from_bits_truncate(
-        if swf_version >= SwfVersion(6) {
-            reader.read_u32()?
-        } else {
-            reader.read_u16()? as u32
-        },
-    ))
-}
-
 fn read_clip_action_record(reader: &mut SwfSliceReader) -> Result<Option<ClipActionRecord>> {
     let swf_version = SwfVersion(reader.swf_version());
-    let event_flags = read_clip_event_flags(ReadOptions {
+    let event_flags = ClipEventFlags::read(ReadOptions {
         reader,
         swf_version,
     })?;

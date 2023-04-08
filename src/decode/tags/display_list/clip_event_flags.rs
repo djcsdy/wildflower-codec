@@ -1,3 +1,8 @@
+use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::read_options::ReadOptions;
+use crate::decode::swf_version::SwfVersion;
+use std::io::{Read, Result};
+
 bitflags! {
     pub struct ClipEventFlags: u32 {
         const KEY_UP = 0x8000_0000;
@@ -20,5 +25,20 @@ bitflags! {
         const KEY_PRESS = 0x0000_0200;
         const DRAG_OUT = 0x0000_0100;
         const RESERVED = 0x0000_f8ff;
+    }
+}
+
+impl ClipEventFlags {
+    pub fn read<R: Read>(
+        ReadOptions {
+            reader,
+            swf_version,
+        }: ReadOptions<R>,
+    ) -> Result<Self> {
+        Ok(Self::from_bits_truncate(if swf_version >= SwfVersion(6) {
+            reader.read_u32()?
+        } else {
+            reader.read_u16()? as u32
+        }))
     }
 }
