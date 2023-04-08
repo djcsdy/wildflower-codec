@@ -1,6 +1,5 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::tag_readers::styles;
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::styles::fill_style_type::FillStyleType;
@@ -61,7 +60,7 @@ impl<Color> FillStyle<Color> {
             }
             FillStyleType::FocalRadialGradient => {
                 let matrix = Matrix::read(reader)?;
-                let gradient = styles::read_focal_gradient(reader, &read_color)?;
+                let gradient = FocalGradient::read(reader, &read_color)?;
                 Self::FocalRadialGradient { matrix, gradient }
             }
             FillStyleType::RepeatingBitmap => {
