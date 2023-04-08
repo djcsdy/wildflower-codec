@@ -70,7 +70,7 @@ pub fn read_define_morph_shape_2_tag(reader: &mut SwfSliceReader) -> Result<Defi
     })
 }
 
-fn read_morph_fill_style_array(reader: &mut SwfSliceReader) -> Result<Vec<MorphFillStyle>> {
+fn read_morph_fill_style_array<R: BitRead>(reader: &mut R) -> Result<Vec<MorphFillStyle>> {
     let mut count = reader.read_u8()? as usize;
     if count == 0xff {
         count = reader.read_u16()? as usize
