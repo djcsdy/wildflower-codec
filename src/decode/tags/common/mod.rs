@@ -7,29 +7,10 @@ pub mod rectangle;
 pub mod rgb;
 pub mod rgba;
 pub mod string;
+pub mod twips;
 
 use std::fmt::{Debug, Display, Formatter};
-
-#[derive(Clone, Copy, PartialEq, PartialOrd, Eq, Ord, Hash)]
-pub struct Twips<N>(N);
-
-impl<N> Twips<N> {
-    pub fn new(twips: N) -> Twips<N> {
-        Twips(twips)
-    }
-}
-
-impl<N: Display> Display for Twips<N> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}twpx", self.0)
-    }
-}
-
-impl<N: Display> Debug for Twips<N> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        Display::fmt(self, f)
-    }
-}
+use twips::Twips;
 
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Point<N> {
