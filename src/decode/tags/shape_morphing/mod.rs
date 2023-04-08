@@ -3,19 +3,12 @@ pub mod define_morph_shape_2;
 pub mod morph_fill_style;
 pub mod morph_focal_gradient;
 pub mod morph_gradient;
+pub mod morph_gradient_record;
 
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::styles::cap_style::CapStyle;
 use crate::decode::tags::styles::join_style::JoinStyle;
 use morph_fill_style::MorphFillStyle;
-
-#[derive(Clone, PartialEq, Debug)]
-pub struct MorphGradientRecord {
-    pub start_ratio: u8,
-    pub start_color: Rgba,
-    pub end_ratio: u8,
-    pub end_color: Rgba,
-}
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct MorphLineStyle {

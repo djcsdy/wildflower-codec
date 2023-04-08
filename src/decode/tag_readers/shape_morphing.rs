@@ -11,7 +11,8 @@ use crate::decode::tags::shape_morphing::define_morph_shape_2::DefineMorphShape2
 use crate::decode::tags::shape_morphing::morph_fill_style::MorphFillStyle;
 use crate::decode::tags::shape_morphing::morph_focal_gradient::MorphFocalGradient;
 use crate::decode::tags::shape_morphing::morph_gradient::MorphGradient;
-use crate::decode::tags::shape_morphing::{MorphGradientRecord, MorphLineStyle, MorphLineStyle2};
+use crate::decode::tags::shape_morphing::morph_gradient_record::MorphGradientRecord;
+use crate::decode::tags::shape_morphing::{MorphLineStyle, MorphLineStyle2};
 use crate::decode::tags::styles::cap_style::CapStyle;
 use crate::decode::tags::styles::fill_style_type::FillStyleType;
 use crate::decode::tags::styles::join_style::JoinStyle;
