@@ -170,7 +170,7 @@ fn read_morph_gradient<R: Read>(reader: &mut R) -> Result<MorphGradient> {
     let num_gradients = reader.read_u8()? as usize;
     let mut gradient_records = Vec::with_capacity(num_gradients);
     for _ in 0..num_gradients {
-        gradient_records.push(read_morph_gradient_record(reader)?);
+        gradient_records.push(MorphGradientRecord::read(reader)?);
     }
     Ok(MorphGradient { gradient_records })
 }
@@ -183,19 +183,6 @@ fn read_morph_focal_gradient<R: Read>(reader: &mut R) -> Result<MorphFocalGradie
         gradient_records: morph_gradient.gradient_records,
         start_focal_point,
         end_focal_point,
-    })
-}
-
-fn read_morph_gradient_record<R: Read>(reader: &mut R) -> Result<MorphGradientRecord> {
-    let start_ratio = reader.read_u8()?;
-    let start_color = Rgba::read(reader)?;
-    let end_ratio = reader.read_u8()?;
-    let end_color = Rgba::read(reader)?;
-    Ok(MorphGradientRecord {
-        start_ratio,
-        start_color,
-        end_ratio,
-        end_color,
     })
 }
 
