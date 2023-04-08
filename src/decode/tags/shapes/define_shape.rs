@@ -1,4 +1,3 @@
-use std::io::Result;
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::sized_read::SizedRead;
@@ -8,6 +7,7 @@ use crate::decode::tags::shapes::shape_with_style::{ReadShapeWithStyleOptions, S
 use crate::decode::tags::styles::fill_style::FillStyle;
 use crate::decode::tags::styles::line_style::LineStyle;
 use crate::decode::tags::styles::line_style_array::read_line_style_array;
+use std::io::Result;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineShapeTag {

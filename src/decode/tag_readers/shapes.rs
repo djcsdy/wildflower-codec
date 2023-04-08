@@ -2,9 +2,7 @@ use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::sized_read::SizedRead;
 use crate::decode::tags::common::rectangle::Rectangle;
-use crate::decode::tags::common::rgb::Rgb;
 use crate::decode::tags::common::rgba::Rgba;
-use crate::decode::tags::shapes::define_shape_2::DefineShape2Tag;
 use crate::decode::tags::shapes::define_shape_3::DefineShape3Tag;
 use crate::decode::tags::shapes::define_shape_4::DefineShape4Tag;
 use crate::decode::tags::shapes::shape_with_style::{ReadShapeWithStyleOptions, ShapeWithStyle};
@@ -13,24 +11,6 @@ use crate::decode::tags::styles::line_style::LineStyle;
 use crate::decode::tags::styles::line_style_2::LineStyle2;
 use crate::decode::tags::styles::line_style_array::read_line_style_array;
 use std::io::Result;
-
-pub fn read_define_shape_2_tag<R: BitRead + SizedRead>(reader: &mut R) -> Result<DefineShape2Tag> {
-    let shape_id = reader.read_u16()?;
-    let shape_bounds = Rectangle::read(reader)?;
-    let options = ReadShapeWithStyleOptions {
-        reader,
-        read_line_style_array: &|reader| {
-            read_line_style_array(reader, &|reader| LineStyle::read(reader, &Rgb::read))
-        },
-        read_fill_style_array: &|reader| FillStyle::read_extended_array(reader, &Rgb::read),
-    };
-    let shape = ShapeWithStyle::read(options)?;
-    Ok(DefineShape2Tag {
-        shape_id,
-        shape_bounds,
-        shape,
-    })
-}
 
 pub fn read_define_shape_3_tag<R: BitRead + SizedRead>(reader: &mut R) -> Result<DefineShape3Tag> {
     let shape_id = reader.read_u16()?;
