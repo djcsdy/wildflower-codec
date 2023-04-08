@@ -1,11 +1,10 @@
 use crate::decode::bit_read::BitRead;
-use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::tags::common::fixed_8::Fixed8;
 use crate::decode::tags::styles::focal_gradient::FocalGradient;
 use crate::decode::tags::styles::gradient::Gradient;
 use crate::decode::tags::styles::gradient_record::GradientRecord;
 use std::io::ErrorKind::InvalidData;
-use std::io::{Error, Read, Result};
+use std::io::{Error, Result};
 
 pub fn read_gradient<Read: BitRead, Color, ReadColor: Fn(&mut Read) -> Result<Color>>(
     reader: &mut Read,
@@ -22,7 +21,7 @@ pub fn read_gradient<Read: BitRead, Color, ReadColor: Fn(&mut Read) -> Result<Co
     let num_gradients = reader.read_ub8(4)?;
     let mut gradient_records = Vec::with_capacity(num_gradients as usize);
     for _ in 0..num_gradients {
-        gradient_records.push(read_gradient_record(reader, &read_color)?);
+        gradient_records.push(GradientRecord::read(reader, &read_color)?);
     }
     Ok(Gradient {
         spread_mode,
@@ -43,13 +42,4 @@ pub fn read_focal_gradient<Read: BitRead, Color, ReadColor: Fn(&mut Read) -> Res
         gradient_records: gradient.gradient_records,
         focal_point,
     })
-}
-
-fn read_gradient_record<R: Read, Color, ReadColor: Fn(&mut R) -> Result<Color>>(
-    reader: &mut R,
-    read_color: &ReadColor,
-) -> Result<GradientRecord<Color>> {
-    let ratio = reader.read_u8()?;
-    let color = read_color(reader)?;
-    Ok(GradientRecord { ratio, color })
 }
