@@ -1,4 +1,3 @@
-use super::bitmaps::DefineBitsLossless2Tag;
 use super::metadata::{DefineBinaryDataTag, EnableTelemetryTag};
 use super::shape_morphing::{DefineMorphShape2Tag, DefineMorphShapeTag};
 use super::video::DefineVideoStreamTag;
@@ -10,6 +9,7 @@ use crate::decode::tags::bitmaps::define_bits_jpeg_2::DefineBitsJpeg2Tag;
 use crate::decode::tags::bitmaps::define_bits_jpeg_3::DefineBitsJpeg3Tag;
 use crate::decode::tags::bitmaps::define_bits_jpeg_4::DefineBitsJpeg4Tag;
 use crate::decode::tags::bitmaps::define_bits_lossless::DefineBitsLosslessTag;
+use crate::decode::tags::bitmaps::define_bits_lossless_2::DefineBitsLossless2Tag;
 use crate::decode::tags::bitmaps::jpeg_tables::JpegTablesTag;
 use crate::decode::tags::buttons::define_button::DefineButtonTag;
 use crate::decode::tags::buttons::define_button_2::DefineButton2Tag;
