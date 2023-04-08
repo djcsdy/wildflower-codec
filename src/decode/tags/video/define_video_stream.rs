@@ -1,4 +1,5 @@
-use crate::decode::tags::video::{Codec, Deblocking};
+use crate::decode::tags::video::deblocking::Deblocking;
+use crate::decode::tags::video::Codec;
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineVideoStreamTag {
