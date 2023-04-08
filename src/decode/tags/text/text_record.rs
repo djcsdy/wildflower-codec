@@ -80,7 +80,7 @@ impl<Color> TextRecord<Color> {
             let glyph_count = options.reader.read_u8()?;
             let mut glyph_entries = Vec::with_capacity(glyph_count as usize);
             for _ in 0..glyph_count {
-                glyph_entries.push(GlyphEntry::read(&mut ReadGlyphEntryOptions {
+                glyph_entries.push(GlyphEntry::read(ReadGlyphEntryOptions {
                     reader: options.reader,
                     glyph_bits: options.glyph_bits,
                     advance_bits: options.advance_bits,
