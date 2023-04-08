@@ -27,7 +27,7 @@ use std::io::Result;
 pub fn read_shape(reader: &mut SwfSliceReader) -> Result<Shape<(), ()>> {
     let num_fill_bits = reader.read_ub8(4)?;
     let num_line_bits = reader.read_ub8(4)?;
-    let shape_records = read_shape_records(&mut ReadShapeRecordOptions {
+    let shape_records = read_shape_records(ReadShapeRecordOptions {
         reader,
         num_fill_bits,
         num_line_bits,
@@ -68,7 +68,7 @@ pub fn read_shape_with_style<
     let line_styles = (read_line_style_array)(reader)?;
     let num_fill_bits = reader.read_ub8(4)?;
     let num_line_bits = reader.read_ub8(4)?;
-    let shape_records = read_shape_records(&mut ReadShapeRecordOptions {
+    let shape_records = read_shape_records(ReadShapeRecordOptions {
         reader,
         num_fill_bits,
         num_line_bits,
@@ -105,26 +105,32 @@ fn read_shape_records<
     ReadLineStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<LineStyle>>,
     ReadFillStyleArray: Fn(&mut SwfSliceReader) -> Result<Vec<FillStyle<Color>>>,
 >(
-    options: &mut ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
+    ReadShapeRecordOptions {
+        reader,
+        mut num_fill_bits,
+        mut num_line_bits,
+        read_line_style_array,
+        read_fill_style_array,
+    }: ReadShapeRecordOptions<Color, LineStyle, ReadLineStyleArray, ReadFillStyleArray>,
 ) -> Result<Vec<ShapeRecord<Color, LineStyle>>> {
     let mut shape_records = Vec::new();
-    while options.reader.remaining_bytes() > 0 {
+    while reader.remaining_bytes() > 0 {
         shape_records.push(
             match read_shape_record(&mut ReadShapeRecordOptions {
-                reader: options.reader,
-                num_fill_bits: options.num_fill_bits,
-                num_line_bits: options.num_line_bits,
-                read_line_style_array: &options.read_line_style_array,
-                read_fill_style_array: &options.read_fill_style_array,
+                reader,
+                num_fill_bits,
+                num_line_bits,
+                read_line_style_array,
+                read_fill_style_array,
             })? {
                 InternalShapeRecord::EndShape => ShapeRecord::EndShape,
                 InternalShapeRecord::StyleChange {
                     style_change_record,
-                    num_fill_bits,
-                    num_line_bits,
+                    num_fill_bits: new_num_fill_bits,
+                    num_line_bits: new_num_line_bits,
                 } => {
-                    options.num_fill_bits = num_fill_bits;
-                    options.num_line_bits = num_line_bits;
+                    num_fill_bits = new_num_fill_bits;
+                    num_line_bits = new_num_line_bits;
                     ShapeRecord::StyleChange(style_change_record)
                 }
                 InternalShapeRecord::StraightEdge(edge) => ShapeRecord::StraightEdge(edge),
