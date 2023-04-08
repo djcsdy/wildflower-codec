@@ -16,7 +16,7 @@ use crate::decode::tags::display_list::place_object_2::PlaceObject2Tag;
 use crate::decode::tags::display_list::place_object_3::PlaceObject3Tag;
 use crate::decode::tags::display_list::remove_object::RemoveObjectTag;
 use crate::decode::tags::display_list::remove_object_2::RemoveObject2Tag;
-use std::io::Result;
+use std::io::{Read, Result};
 
 pub fn read_place_object_2_tag(reader: &mut SwfSliceReader) -> Result<PlaceObject2Tag> {
     let has_clip_actions = reader.read_bit()?;
@@ -222,7 +222,7 @@ pub fn read_place_object_3_tag(reader: &mut SwfSliceReader) -> Result<PlaceObjec
     })
 }
 
-pub fn read_remove_object_tag(reader: &mut SwfSliceReader) -> Result<RemoveObjectTag> {
+pub fn read_remove_object_tag<R: Read>(reader: &mut R) -> Result<RemoveObjectTag> {
     let character_id = reader.read_u16()?;
     let depth = reader.read_u16()?;
     Ok(RemoveObjectTag {
