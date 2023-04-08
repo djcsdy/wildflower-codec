@@ -15,7 +15,6 @@ use crate::decode::tags::shapes::non_edge_record::NonEdgeRecord;
 use crate::decode::tags::shapes::shape::Shape;
 use crate::decode::tags::shapes::shape_record::ShapeRecord;
 use crate::decode::tags::shapes::shape_with_style::ShapeWithStyle;
-use crate::decode::tags::shapes::straight_edge_record::StraightEdgeRecord;
 use crate::decode::tags::shapes::style_change_record::StyleChangeRecord;
 use crate::decode::tags::styles::fill_style::FillStyle;
 use crate::decode::tags::styles::line_style::LineStyle;
@@ -229,27 +228,6 @@ pub(crate) fn read_non_edge_record<
         num_fill_bits,
         num_line_bits,
     })
-}
-
-pub fn read_straight_edge_record<R: BitRead>(reader: &mut R) -> Result<StraightEdgeRecord> {
-    let num_bits = reader.read_ub8(4)? + 2;
-    let is_general_line = reader.read_bit()?;
-    let is_vertical_line = if is_general_line {
-        false
-    } else {
-        reader.read_bit()?
-    };
-    let delta_x = if is_general_line || !is_vertical_line {
-        reader.read_sb(num_bits)?
-    } else {
-        0
-    };
-    let delta_y = if is_general_line || is_vertical_line {
-        reader.read_sb(num_bits)?
-    } else {
-        0
-    };
-    Ok(StraightEdgeRecord { delta_x, delta_y })
 }
 
 pub fn read_define_shape_tag(reader: &mut SwfSliceReader) -> Result<DefineShapeTag> {
