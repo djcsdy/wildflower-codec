@@ -2,7 +2,7 @@ use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tag_readers::bitmaps::{
     read_define_bits_lossless_2_tag, read_define_bits_lossless_tag,
 };
-use crate::decode::tag_readers::control::{read_file_attributes_tag, read_frame_label_tag};
+use crate::decode::tag_readers::control::read_frame_label_tag;
 use crate::decode::tag_readers::display_list::{
     read_place_object_2_tag, read_place_object_3_tag, read_place_object_tag,
     read_remove_object_2_tag, read_remove_object_tag,
@@ -47,6 +47,7 @@ use crate::decode::tags::fonts::define_font_info::DefineFontInfoTag;
 use crate::decode::tags::fonts::define_font_info_2::DefineFontInfo2Tag;
 use crate::decode::tags::fonts::define_font_name::DefineFontNameTag;
 use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
+use crate::decode::tags::metadata::file_attributes::FileAttributesTag;
 use crate::decode::tags::sounds::define_sound::DefineSoundTag;
 use crate::decode::tags::sounds::sound_stream_block::SoundStreamBlockTag;
 use crate::decode::tags::sounds::sound_stream_head::SoundStreamHeadTag;
@@ -207,7 +208,7 @@ impl EncodedTag {
             TagType::SetTabIndex => SetTabIndexTag::read(&mut slice_reader)
                 .map(Tag::SetTabIndex)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::FileAttributes => read_file_attributes_tag(&mut slice_reader)
+            TagType::FileAttributes => FileAttributesTag::read(&mut slice_reader)
                 .map(Tag::FileAttributes)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::PlaceObject3 => read_place_object_3_tag(&mut slice_reader)
