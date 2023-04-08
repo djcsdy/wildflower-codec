@@ -1,6 +1,5 @@
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::swf_version::SwfVersion;
-use crate::decode::tag_readers::shapes::read_shape;
 use crate::decode::tags::shapes::shape::Shape;
 use std::io::Result;
 
@@ -51,10 +50,11 @@ impl<'glyph_table, 'define_font> Iterator for GlyphTableIterator<'glyph_table, '
             let start_offset = self.table.offset_table[self.index].into();
             let end_offset = self.table.offset_table[self.index + 1].into();
             self.index += 1;
-            Some(read_shape(&mut SwfSliceReader::new(
+            let reader = &mut SwfSliceReader::new(
                 &self.table.shape_table[start_offset..end_offset],
                 self.table.swf_version,
-            )))
+            );
+            Some(Shape::read(reader))
         }
     }
 }

@@ -1,7 +1,6 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::sized_read::SizedRead;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::shapes::read_shape;
 use crate::decode::tags::shapes::shape::Shape;
 use std::io::Result;
 
@@ -28,7 +27,7 @@ impl DefineFontTag {
         let mut glyph_shapes = Vec::with_capacity(num_glyphs);
         for length in length_table {
             let mut glyph_reader = reader.slice(length);
-            glyph_shapes.push(read_shape(&mut glyph_reader)?);
+            glyph_shapes.push(Shape::read(&mut glyph_reader)?);
         }
         Ok(Self {
             font_id,

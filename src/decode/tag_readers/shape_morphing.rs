@@ -1,13 +1,13 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
-use crate::decode::tag_readers::shapes::read_shape;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::shape_morphing::define_morph_shape::DefineMorphShapeTag;
 use crate::decode::tags::shape_morphing::define_morph_shape_2::DefineMorphShape2Tag;
 use crate::decode::tags::shape_morphing::morph_fill_style::MorphFillStyle;
 use crate::decode::tags::shape_morphing::morph_line_style::MorphLineStyle;
 use crate::decode::tags::shape_morphing::morph_line_style_2::MorphLineStyle2;
+use crate::decode::tags::shapes::shape::Shape;
 use crate::decode::tags::styles::line_style_array::read_line_style_array;
 use std::io::Result;
 
@@ -18,8 +18,9 @@ pub fn read_define_morph_shape_tag(reader: &mut SwfSliceReader) -> Result<Define
     let offset = reader.read_u32()? as usize;
     let fill_styles = MorphFillStyle::read_array(reader)?;
     let line_styles = read_line_style_array(reader, &MorphLineStyle::read)?;
-    let start_edges = read_shape(&mut reader.slice(offset))?;
-    let end_edges = read_shape(reader)?;
+    let reader1 = &mut reader.slice(offset);
+    let start_edges = Shape::read(reader1)?;
+    let end_edges = Shape::read(reader)?;
     Ok(DefineMorphShapeTag {
         character_id,
         start_bounds,
@@ -43,8 +44,9 @@ pub fn read_define_morph_shape_2_tag(reader: &mut SwfSliceReader) -> Result<Defi
     let offset = reader.read_u32()? as usize;
     let fill_styles = MorphFillStyle::read_array(reader)?;
     let line_styles = read_line_style_array(reader, &MorphLineStyle2::read)?;
-    let start_edges = read_shape(&mut reader.slice(offset))?;
-    let end_edges = read_shape(reader)?;
+    let reader1 = &mut reader.slice(offset);
+    let start_edges = Shape::read(reader1)?;
+    let end_edges = Shape::read(reader)?;
     Ok(DefineMorphShape2Tag {
         character_id,
         start_bounds,

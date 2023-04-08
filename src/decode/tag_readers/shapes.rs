@@ -8,7 +8,6 @@ use crate::decode::tags::shapes::define_shape::DefineShapeTag;
 use crate::decode::tags::shapes::define_shape_2::DefineShape2Tag;
 use crate::decode::tags::shapes::define_shape_3::DefineShape3Tag;
 use crate::decode::tags::shapes::define_shape_4::DefineShape4Tag;
-use crate::decode::tags::shapes::shape::Shape;
 use crate::decode::tags::shapes::shape_record::{ReadShapeRecordArrayOptions, ShapeRecord};
 use crate::decode::tags::shapes::shape_with_style::ShapeWithStyle;
 use crate::decode::tags::styles::fill_style::FillStyle;
@@ -16,19 +15,6 @@ use crate::decode::tags::styles::line_style::LineStyle;
 use crate::decode::tags::styles::line_style_2::LineStyle2;
 use crate::decode::tags::styles::line_style_array::read_line_style_array;
 use std::io::Result;
-
-pub fn read_shape<R: BitRead + SizedRead>(reader: &mut R) -> Result<Shape<(), ()>> {
-    let num_fill_bits = reader.read_ub8(4)?;
-    let num_line_bits = reader.read_ub8(4)?;
-    let shape_records = ShapeRecord::read_array(ReadShapeRecordArrayOptions {
-        reader,
-        num_fill_bits,
-        num_line_bits,
-        read_line_style_array: &|_| Ok(vec![]),
-        read_fill_style_array: &|_| Ok(vec![]),
-    })?;
-    Ok(Shape { shape_records })
-}
 
 pub struct ReadShapeWithStyleOptions<
     'reader,
