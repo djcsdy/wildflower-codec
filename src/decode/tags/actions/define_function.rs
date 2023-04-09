@@ -1,8 +1,7 @@
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::common::string::String;
-use std::io::Result;
+use std::io::{Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFunction {
@@ -12,7 +11,7 @@ pub struct DefineFunction {
 }
 
 impl DefineFunction {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         let function_name = String::read(reader)?;
         let num_params = reader.read_u16()?;
         let mut params = Vec::with_capacity(num_params as usize);
