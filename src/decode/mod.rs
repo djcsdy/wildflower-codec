@@ -10,5 +10,4 @@ pub mod sized_read;
 pub mod slice_read;
 pub mod slice_reader;
 pub mod swf_version;
-pub mod tag_readers;
 pub mod tags;

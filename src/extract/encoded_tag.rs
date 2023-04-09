@@ -1,7 +1,6 @@
 use crate::decode::read_options::ReadOptions;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::swf_version::SwfVersion;
-use crate::decode::tag_readers::shape_morphing::read_define_morph_shape_2_tag;
 use crate::decode::tags::actions::do_abc::DoAbcTag;
 use crate::decode::tags::actions::do_action::DoActionTag;
 use crate::decode::tags::actions::do_init_action::DoInitActionTag;
@@ -45,6 +44,7 @@ use crate::decode::tags::fonts::define_font_name::DefineFontNameTag;
 use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
 use crate::decode::tags::metadata::file_attributes::FileAttributesTag;
 use crate::decode::tags::shape_morphing::define_morph_shape::DefineMorphShapeTag;
+use crate::decode::tags::shape_morphing::define_morph_shape_2::DefineMorphShape2Tag;
 use crate::decode::tags::shapes::define_shape::DefineShapeTag;
 use crate::decode::tags::shapes::define_shape_2::DefineShape2Tag;
 use crate::decode::tags::shapes::define_shape_3::DefineShape3Tag;
@@ -248,7 +248,7 @@ impl EncodedTag {
             TagType::DefineShape4 => DefineShape4Tag::read(&mut slice_reader)
                 .map(Tag::DefineShape4)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineMorphShape2 => read_define_morph_shape_2_tag(&mut slice_reader)
+            TagType::DefineMorphShape2 => DefineMorphShape2Tag::read(&mut slice_reader)
                 .map(Tag::DefineMorphShape2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineSceneAndFrameLabelData => {
