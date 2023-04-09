@@ -19,8 +19,7 @@ pub fn read_define_morph_shape_tag(reader: &mut SwfSliceReader) -> Result<Define
     let offset = reader.read_u32()? as usize;
     let fill_styles = MorphFillStyle::read_array(reader)?;
     let line_styles = read_line_style_array(reader, &MorphLineStyle::read)?;
-    let reader1 = &mut reader.slice(offset);
-    let start_edges = Shape::read(reader1)?;
+    let start_edges = Shape::read(&mut reader.slice(offset))?;
     let end_edges = Shape::read(reader)?;
     Ok(DefineMorphShapeTag {
         character_id,
@@ -45,8 +44,7 @@ pub fn read_define_morph_shape_2_tag(reader: &mut SwfSliceReader) -> Result<Defi
     let offset = reader.read_u32()? as usize;
     let fill_styles = MorphFillStyle::read_array(reader)?;
     let line_styles = read_line_style_array(reader, &MorphLineStyle2::read)?;
-    let reader1 = &mut reader.slice(offset);
-    let start_edges = Shape::read(reader1)?;
+    let start_edges = Shape::read(&mut reader.slice(offset))?;
     let end_edges = Shape::read(reader)?;
     Ok(DefineMorphShape2Tag {
         character_id,
