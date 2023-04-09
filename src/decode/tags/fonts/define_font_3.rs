@@ -1,10 +1,9 @@
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::string::String;
 use crate::decode::tags::fonts::define_font_2::DefineFont2Tag;
 use crate::decode::tags::fonts::define_font_flags::DefineFontFlags;
 use crate::decode::tags::fonts::language_code::LanguageCode;
 use std::io::ErrorKind::InvalidData;
-use std::io::{Error, Result};
+use std::io::{Error, Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFont3Tag {
@@ -17,7 +16,7 @@ pub struct DefineFont3Tag {
 }
 
 impl DefineFont3Tag {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         DefineFont2Tag::read(reader).and_then(
             |DefineFont2Tag {
                  font_id,
