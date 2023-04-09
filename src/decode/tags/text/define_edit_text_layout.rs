@@ -1,7 +1,6 @@
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::text::align::Align;
-use std::io::Result;
+use std::io::{Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineEditTextLayout {
@@ -13,7 +12,7 @@ pub struct DefineEditTextLayout {
 }
 
 impl DefineEditTextLayout {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         let align = Align::read(reader)?;
         let left_margin = reader.read_u16()?;
         let right_margin = reader.read_u16()?;
