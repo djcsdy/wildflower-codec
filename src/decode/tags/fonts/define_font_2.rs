@@ -26,7 +26,7 @@ pub struct DefineFont2Tag {
 impl DefineFont2Tag {
     pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
         let font_id = reader.read_u16()?;
-        let flags = DefineFontFlags::from_bits(reader.read_u8()?).unwrap();
+        let flags = DefineFontFlags::read(reader)?;
         let language_code = LanguageCode::read_optional(reader)?;
         let name_len = reader.read_u8()? as usize;
         let font_name = String::read_fixed_length(reader, name_len)?;
