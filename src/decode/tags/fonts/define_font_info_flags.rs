@@ -1,6 +1,5 @@
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
-use std::io::Result;
+use std::io::{Read, Result};
 
 bitflags! {
     pub struct DefineFontInfoFlags: u8 {
@@ -15,7 +14,7 @@ bitflags! {
 }
 
 impl DefineFontInfoFlags {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<DefineFontInfoFlags> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<DefineFontInfoFlags> {
         Ok(DefineFontInfoFlags::from_bits(reader.read_u8()?).unwrap())
     }
 }
