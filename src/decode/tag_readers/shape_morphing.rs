@@ -1,5 +1,6 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::slice_read::SliceRead;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::shape_morphing::define_morph_shape::DefineMorphShapeTag;

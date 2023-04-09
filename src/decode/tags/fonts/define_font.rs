@@ -1,5 +1,6 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::sized_read::SizedRead;
+use crate::decode::slice_read::SliceRead;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::shapes::shape::Shape;
 use std::io::Result;

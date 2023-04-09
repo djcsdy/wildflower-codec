@@ -2,6 +2,7 @@ use crate::decode::bit_read::BitRead;
 use crate::decode::bit_reader::BitReader;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::sized_read::SizedRead;
+use crate::decode::slice_read::SliceRead;
 use std::io::{IoSliceMut, Read, Result};
 
 pub struct SwfSliceReader<'buffer> {
@@ -19,14 +20,6 @@ impl<'buffer> SwfSliceReader<'buffer> {
 
     pub fn seek(&mut self, position: usize) {
         self.inner = BitReader::new(&self.buffer[position..]);
-    }
-
-    pub fn slice(&mut self, length: usize) -> Self {
-        Self::new(self.inner.slice(length))
-    }
-
-    pub fn remaining_slice(mut self) -> Self {
-        Self::new(self.inner.slice(self.remaining_bytes()))
     }
 
     pub fn read_u16_to_end(&mut self) -> Result<Vec<u16>> {
@@ -69,5 +62,15 @@ impl<'buffer> BitRead for SwfSliceReader<'buffer> {
 
     fn read_ub(&mut self, bits: u8) -> Result<u32> {
         self.inner.read_ub(bits)
+    }
+}
+
+impl<'buffer> SliceRead for SwfSliceReader<'buffer> {
+    fn slice(&mut self, length: usize) -> Self {
+        Self::new(self.inner.slice(length))
+    }
+
+    fn remaining_slice(&mut self) -> Self {
+        Self::new(self.inner.slice(self.remaining_bytes()))
     }
 }

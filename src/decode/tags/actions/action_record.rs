@@ -1,4 +1,5 @@
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::slice_read::SliceRead;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::constant_pool::ConstantPool;
 use crate::decode::tags::actions::define_function::DefineFunction;

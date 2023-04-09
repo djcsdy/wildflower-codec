@@ -1,4 +1,5 @@
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::slice_read::SliceRead;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::buttons::button_condition::ButtonCondition;
