@@ -3,6 +3,7 @@ use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::fonts::define_font_info_flags::DefineFontInfoFlags;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Result};
+use crate::decode::sized_read::SizedRead;
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum CodeTable {
