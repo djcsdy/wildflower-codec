@@ -1,5 +1,5 @@
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::buttons::button_record::ButtonRecord;
 use std::io::Result;
@@ -12,7 +12,7 @@ pub struct DefineButtonTag {
 }
 
 impl DefineButtonTag {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: BitRead>(reader: &mut R) -> Result<Self> {
         let button_id = reader.read_u16()?;
         let characters = ButtonRecord::read_list(reader)?;
         let actions = ActionList::read_to_end(reader)?;
