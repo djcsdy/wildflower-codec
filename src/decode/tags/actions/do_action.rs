@@ -1,6 +1,5 @@
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::action_list::ActionList;
-use std::io::Result;
+use std::io::{Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DoActionTag {
@@ -8,7 +7,7 @@ pub struct DoActionTag {
 }
 
 impl DoActionTag {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         let actions = ActionList::read_to_end(reader)?;
         Ok(Self { actions })
     }
