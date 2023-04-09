@@ -1,5 +1,6 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
+use crate::decode::sized_read::SizedRead;
 use crate::decode::slice_read::SliceRead;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::rectangle::Rectangle;
@@ -12,7 +13,9 @@ use crate::decode::tags::shapes::shape::Shape;
 use crate::decode::tags::styles::line_style_array::read_line_style_array;
 use std::io::Result;
 
-pub fn read_define_morph_shape_tag(reader: &mut SwfSliceReader) -> Result<DefineMorphShapeTag> {
+pub fn read_define_morph_shape_tag<R: SliceRead + SizedRead + BitRead>(
+    reader: &mut R,
+) -> Result<DefineMorphShapeTag> {
     let character_id = reader.read_u16()?;
     let start_bounds = Rectangle::read(reader)?;
     let end_bounds = Rectangle::read(reader)?;
