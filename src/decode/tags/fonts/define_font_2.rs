@@ -10,7 +10,7 @@ use crate::decode::tags::fonts::kerning::KerningRecord;
 use crate::decode::tags::fonts::language_code::LanguageCode;
 use crate::decode::tags::fonts::layout::FontLayout;
 use std::io::ErrorKind::InvalidData;
-use std::io::{Error, Result};
+use std::io::{Error, Read, Result};
 use std::mem::size_of;
 
 #[derive(Clone, PartialEq, Debug)]
@@ -24,7 +24,7 @@ pub struct DefineFont2Tag {
 }
 
 impl DefineFont2Tag {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         let font_id = reader.read_u16()?;
         let flags = DefineFontFlags::read(reader)?;
         let language_code = LanguageCode::read_optional(reader)?;
