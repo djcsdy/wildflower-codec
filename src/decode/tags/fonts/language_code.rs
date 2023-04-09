@@ -1,5 +1,4 @@
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::io::{Error, ErrorKind::InvalidData, Read, Result};
 
@@ -14,7 +13,7 @@ pub enum LanguageCode {
 }
 
 impl LanguageCode {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         Self::read_optional(reader)?.ok_or_else(|| Error::from(InvalidData))
     }
 
