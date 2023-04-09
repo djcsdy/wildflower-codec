@@ -1,6 +1,5 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::actions::register_param::RegisterParam;
 use crate::decode::tags::common::string::String;
@@ -24,7 +23,7 @@ pub struct DefineFunction2 {
 }
 
 impl DefineFunction2 {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: BitRead>(reader: &mut R) -> Result<Self> {
         let function_name = String::read(reader)?;
         let num_params = reader.read_u16()?;
         let register_count = reader.read_u8()?;
