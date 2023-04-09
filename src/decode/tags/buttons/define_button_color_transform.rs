@@ -1,5 +1,5 @@
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::color_transform::ColorTransform;
 use std::io::Result;
 
@@ -10,7 +10,7 @@ pub struct DefineButtonColorTransformTag {
 }
 
 impl DefineButtonColorTransformTag {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: BitRead>(reader: &mut R) -> Result<Self> {
         let button_id = reader.read_u16()?;
         let button_color_transform = ColorTransform::read(reader)?;
         Ok(Self {
