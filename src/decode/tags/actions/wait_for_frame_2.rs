@@ -1,6 +1,5 @@
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
-use std::io::Result;
+use std::io::{Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct WaitForFrame2 {
@@ -8,7 +7,7 @@ pub struct WaitForFrame2 {
 }
 
 impl WaitForFrame2 {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         let skip_count = reader.read_u8()?;
         Ok(Self { skip_count })
     }
