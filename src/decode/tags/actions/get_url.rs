@@ -1,6 +1,5 @@
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::string::String;
-use std::io::Result;
+use std::io::{Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct GetUrl {
@@ -9,7 +8,7 @@ pub struct GetUrl {
 }
 
 impl GetUrl {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         let url = String::read(reader)?;
         let target = String::read(reader)?;
         Ok(Self { url, target })
