@@ -1,5 +1,4 @@
 use crate::decode::bit_read::BitRead;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::buttons::button_record::ButtonRecord;
 use crate::decode::tags::buttons::button_record_flags::ButtonRecordFlags;
 use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithAlpha;
@@ -46,7 +45,7 @@ impl ButtonRecord2 {
         }
     }
 
-    pub fn read_list(reader: &mut SwfSliceReader) -> Result<Vec<Self>> {
+    pub fn read_list<R: BitRead>(reader: &mut R) -> Result<Vec<Self>> {
         let mut list = Vec::new();
         while let Some(record) = ButtonRecord2::read(reader)? {
             list.push(record);
