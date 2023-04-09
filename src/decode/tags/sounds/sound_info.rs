@@ -1,8 +1,7 @@
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::sounds::sound_envelope_point::SoundEnvelopePoint;
 use crate::decode::tags::sounds::sound_info_flags::SoundInfoFlags;
-use std::io::Result;
+use std::io::{Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct SoundInfo {
@@ -14,7 +13,7 @@ pub struct SoundInfo {
 }
 
 impl SoundInfo {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         let flags = SoundInfoFlags::read(reader)?;
         let in_point = if flags.contains(SoundInfoFlags::HAS_IN_POINT) {
             reader.read_u32()?
