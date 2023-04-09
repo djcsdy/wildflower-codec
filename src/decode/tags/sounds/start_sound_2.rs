@@ -1,7 +1,6 @@
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::string::String;
 use crate::decode::tags::sounds::sound_info::SoundInfo;
-use std::io::Result;
+use std::io::{Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct StartSound2Tag {
@@ -10,7 +9,7 @@ pub struct StartSound2Tag {
 }
 
 impl StartSound2Tag {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         let sound_class_name = String::read(reader)?;
         let sound_info = SoundInfo::read(reader)?;
         Ok(Self {
