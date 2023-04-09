@@ -17,11 +17,11 @@ use crate::decode::tags::display_list::place_object_2::PlaceObject2Tag;
 use crate::decode::tags::display_list::place_object_3::PlaceObject3Tag;
 use std::io::Result;
 
-pub fn read_place_object_2_tag(
+pub fn read_place_object_2_tag<R: BitRead + SliceRead>(
     ReadOptions {
         reader,
         swf_version,
-    }: ReadOptions<SwfSliceReader>,
+    }: ReadOptions<R>,
 ) -> Result<PlaceObject2Tag> {
     let has_clip_actions = reader.read_bit()?;
     let has_clip_depth = reader.read_bit()?;
