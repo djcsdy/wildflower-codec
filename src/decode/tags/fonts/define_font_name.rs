@@ -1,7 +1,6 @@
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::string::String;
-use std::io::Result;
+use std::io::{Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct DefineFontNameTag {
@@ -11,7 +10,7 @@ pub struct DefineFontNameTag {
 }
 
 impl DefineFontNameTag {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         let font_id = reader.read_u16()?;
         let font_name = String::read(reader)?;
         let font_copyright = String::read(reader)?;
