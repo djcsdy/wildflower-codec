@@ -1,3 +1,4 @@
+use crate::decode::bit_read::BitRead;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::buttons::button_record::ButtonRecord;
 use crate::decode::tags::buttons::button_record_flags::ButtonRecordFlags;
@@ -15,7 +16,7 @@ pub struct ButtonRecord2 {
 }
 
 impl ButtonRecord2 {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Option<Self>> {
+    pub fn read<R: BitRead>(reader: &mut R) -> Result<Option<Self>> {
         if let Some(button_record) = ButtonRecord::read(reader)? {
             let color_transform = ColorTransformWithAlpha::read(reader)?;
             let filter_list = if button_record
