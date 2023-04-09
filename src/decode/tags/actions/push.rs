@@ -1,9 +1,8 @@
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::push_value::PushValue;
 use crate::decode::tags::common::string::String;
 use std::io::ErrorKind::InvalidData;
-use std::io::{Error, Result};
+use std::io::{Error, Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct Push {
@@ -11,7 +10,7 @@ pub struct Push {
 }
 
 impl Push {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         let value_type = reader.read_u8()?;
         let value = match value_type {
             0 => PushValue::String(String::read(reader)?),
