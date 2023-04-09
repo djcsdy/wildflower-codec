@@ -1,6 +1,5 @@
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::string::String;
-use std::io::Result;
+use std::io::{Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct GoToLabel {
@@ -8,7 +7,7 @@ pub struct GoToLabel {
 }
 
 impl GoToLabel {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         let label = String::read(reader)?;
         Ok(Self { label })
     }
