@@ -1,5 +1,4 @@
 use crate::decode::bit_read::BitRead;
-use crate::decode::slice_reader::SwfSliceReader;
 use num_enum::{IntoPrimitive, TryFromPrimitive};
 use std::io::Result;
 
@@ -13,7 +12,7 @@ pub enum SamplingRate {
 }
 
 impl SamplingRate {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: BitRead>(reader: &mut R) -> Result<Self> {
         Ok(Self::try_from(reader.read_ub8(2)?).unwrap())
     }
 }
