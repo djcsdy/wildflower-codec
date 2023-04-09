@@ -11,7 +11,7 @@ pub struct ActionList<Buffer: AsRef<[u8]>> {
 }
 
 impl ActionList<Vec<u8>> {
-    pub fn read(reader: &mut SwfSliceReader, length: usize) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R, length: usize) -> Result<Self> {
         let mut buffer = vec![0u8; length];
         reader.read_u8_into(&mut buffer)?;
         Ok(Self { buffer })
