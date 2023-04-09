@@ -1,6 +1,5 @@
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_read::SliceRead;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::buttons::button_condition::ButtonCondition;
 use std::io::Result;
@@ -24,7 +23,7 @@ impl ButtonConditionActionList {
         }
     }
 
-    pub fn read_list(reader: &mut SwfSliceReader) -> Result<Vec<Self>> {
+    pub fn read_list<R: SliceRead>(reader: &mut R) -> Result<Vec<Self>> {
         let mut actions = Vec::new();
         while let Some(action) = Self::read(reader)? {
             actions.push(action);
