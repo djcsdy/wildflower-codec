@@ -1,6 +1,5 @@
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
-use std::io::Result;
+use std::io::{Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct SoundEnvelopePoint {
@@ -10,7 +9,7 @@ pub struct SoundEnvelopePoint {
 }
 
 impl SoundEnvelopePoint {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         let pos_samples_44 = reader.read_u32()?;
         let left_level = reader.read_u16()?;
         let right_level = reader.read_u16()?;
