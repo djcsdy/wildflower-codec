@@ -1,8 +1,8 @@
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::text::glyph_entry::{GlyphEntry, ReadGlyphEntryOptions};
 use crate::decode::tags::text::text_record_font::TextRecordFont;
-use std::io::Result;
+use std::io::{Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct TextRecord<Color> {
@@ -13,13 +13,8 @@ pub struct TextRecord<Color> {
     pub glyph_entries: Vec<GlyphEntry>,
 }
 
-pub struct ReadTextRecordOptions<
-    'reader,
-    'buffer,
-    Color,
-    ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
-> {
-    pub reader: &'reader mut SwfSliceReader<'buffer>,
+pub struct ReadTextRecordOptions<'reader, R: Read, Color, ReadColor: Fn(&mut R) -> Result<Color>> {
+    pub reader: &'reader mut R,
     pub glyph_bits: u8,
     pub advance_bits: u8,
     pub read_color: ReadColor,
@@ -36,19 +31,19 @@ bitflags! {
 }
 
 impl Flags {
-    fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    fn read<R: Read>(reader: &mut R) -> Result<Self> {
         Ok(Self::from_bits(reader.read_u8()?).unwrap())
     }
 }
 
 impl<Color> TextRecord<Color> {
-    pub fn read<'reader, 'buffer, ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>>(
+    pub fn read<Read: BitRead, ReadColor: Fn(&mut Read) -> Result<Color>>(
         ReadTextRecordOptions {
             reader,
             glyph_bits,
             advance_bits,
             read_color,
-        }: ReadTextRecordOptions<'reader, 'buffer, Color, ReadColor>,
+        }: ReadTextRecordOptions<Read, Color, ReadColor>,
     ) -> Result<Option<Self>> {
         let flags = Flags::read(reader)?;
         Ok(if flags.is_empty() {
@@ -101,17 +96,13 @@ impl<Color> TextRecord<Color> {
         })
     }
 
-    pub fn read_all<
-        'reader,
-        'buffer,
-        ReadColor: Fn(&mut SwfSliceReader<'buffer>) -> Result<Color>,
-    >(
+    pub fn read_all<Read: BitRead, ReadColor: Fn(&mut Read) -> Result<Color>>(
         ReadTextRecordOptions {
             reader,
             glyph_bits,
             advance_bits,
             read_color,
-        }: ReadTextRecordOptions<'reader, 'buffer, Color, ReadColor>,
+        }: ReadTextRecordOptions<Read, Color, ReadColor>,
     ) -> Result<Vec<Self>> {
         let mut records = Vec::new();
         while let Some(record) = Self::read(ReadTextRecordOptions {
