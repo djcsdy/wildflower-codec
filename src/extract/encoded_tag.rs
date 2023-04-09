@@ -1,9 +1,7 @@
 use crate::decode::read_options::ReadOptions;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::swf_version::SwfVersion;
-use crate::decode::tag_readers::shape_morphing::{
-    read_define_morph_shape_2_tag, read_define_morph_shape_tag,
-};
+use crate::decode::tag_readers::shape_morphing::read_define_morph_shape_2_tag;
 use crate::decode::tags::actions::do_abc::DoAbcTag;
 use crate::decode::tags::actions::do_action::DoActionTag;
 use crate::decode::tags::actions::do_init_action::DoInitActionTag;
@@ -46,6 +44,7 @@ use crate::decode::tags::fonts::define_font_info_2::DefineFontInfo2Tag;
 use crate::decode::tags::fonts::define_font_name::DefineFontNameTag;
 use crate::decode::tags::invalid::{InvalidTag, UnknownTag};
 use crate::decode::tags::metadata::file_attributes::FileAttributesTag;
+use crate::decode::tags::shape_morphing::define_morph_shape::DefineMorphShapeTag;
 use crate::decode::tags::shapes::define_shape::DefineShapeTag;
 use crate::decode::tags::shapes::define_shape_2::DefineShape2Tag;
 use crate::decode::tags::shapes::define_shape_3::DefineShape3Tag;
@@ -181,7 +180,7 @@ impl EncodedTag {
             TagType::SoundStreamHead2 => SoundStreamHead2Tag::read(&mut slice_reader)
                 .map(Tag::SoundStreamHead2)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
-            TagType::DefineMorphShape => read_define_morph_shape_tag(&mut slice_reader)
+            TagType::DefineMorphShape => DefineMorphShapeTag::read(&mut slice_reader)
                 .map(Tag::DefineMorphShape)
                 .unwrap_or_else(|_| Tag::Invalid(self.into_invalid())),
             TagType::DefineFont2 => DefineFont2Tag::read(&mut slice_reader)
