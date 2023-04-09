@@ -1,6 +1,5 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use std::io::Result;
 
 #[derive(Clone, PartialEq, Debug)]
@@ -10,7 +9,7 @@ pub struct GoToFrame2 {
 }
 
 impl GoToFrame2 {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: BitRead>(reader: &mut R) -> Result<Self> {
         reader.read_ub8(6)?;
         let scene_bias_flag = reader.read_bit()?;
         let play = reader.read_bit()?;
