@@ -1,6 +1,6 @@
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_read::SliceRead;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::constant_pool::ConstantPool;
 use crate::decode::tags::actions::define_function::DefineFunction;
 use crate::decode::tags::actions::define_function_2::DefineFunction2;
@@ -125,7 +125,7 @@ pub enum ActionRecord {
 }
 
 impl ActionRecord {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: SliceRead + BitRead>(reader: &mut R) -> Result<Self> {
         let action_code = reader.read_u8()?;
         let length = if action_code >= 0x80 {
             reader.read_u16()?
