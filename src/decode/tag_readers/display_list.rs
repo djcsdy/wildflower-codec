@@ -2,7 +2,6 @@ use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::read_options::ReadOptions;
 use crate::decode::slice_read::SliceRead;
-use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithAlpha;
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgba::Rgba;
@@ -94,7 +93,7 @@ fn read_clip_actions<R: SliceRead>(
         swf_version,
     })?;
     let mut clip_action_records = Vec::new();
-    while let Some(clip_action_record) = read_clip_action_record(ReadOptions {
+    while let Some(clip_action_record) = ClipActionRecord::read(ReadOptions {
         reader,
         swf_version,
     })? {
@@ -104,35 +103,6 @@ fn read_clip_actions<R: SliceRead>(
         all_event_flags,
         clip_action_records,
     })
-}
-
-fn read_clip_action_record<R: SliceRead>(
-    ReadOptions {
-        reader,
-        swf_version,
-    }: ReadOptions<R>,
-) -> Result<Option<ClipActionRecord>> {
-    let event_flags = ClipEventFlags::read(ReadOptions {
-        reader,
-        swf_version,
-    })?;
-    if event_flags.is_empty() {
-        Ok(None)
-    } else {
-        let action_record_size = reader.read_u32()?;
-        let mut action_record_reader = reader.slice(action_record_size as usize);
-        let key_code = if event_flags.contains(ClipEventFlags::KEY_PRESS) {
-            Some(action_record_reader.read_u8()?)
-        } else {
-            None
-        };
-        let actions = ActionList::read_to_end(&mut action_record_reader)?;
-        Ok(Some(ClipActionRecord {
-            event_flags,
-            key_code,
-            actions,
-        }))
-    }
 }
 
 pub fn read_place_object_3_tag<R: BitRead + SliceRead>(
