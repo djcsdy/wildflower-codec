@@ -7,6 +7,7 @@ pub mod max_length_reader;
 pub mod read_ext;
 pub mod read_options;
 pub mod sized_read;
+pub mod slice_read;
 pub mod slice_reader;
 pub mod swf_version;
 pub mod tag_readers;
