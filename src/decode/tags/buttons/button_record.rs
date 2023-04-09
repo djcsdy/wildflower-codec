@@ -1,3 +1,4 @@
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::buttons::button_record_flags::ButtonRecordFlags;
@@ -13,7 +14,7 @@ pub struct ButtonRecord {
 }
 
 impl ButtonRecord {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Option<Self>> {
+    pub fn read<R: BitRead>(reader: &mut R) -> Result<Option<Self>> {
         let flags = ButtonRecordFlags::read(reader)?;
         Ok(if flags.is_empty() {
             None
