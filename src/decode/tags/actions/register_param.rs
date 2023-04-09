@@ -1,7 +1,6 @@
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::string::String;
-use std::io::Result;
+use std::io::{Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum RegisterParam {
@@ -10,7 +9,7 @@ pub enum RegisterParam {
 }
 
 impl RegisterParam {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         let register = reader.read_u8()?;
         let name = String::read(reader)?;
         Ok(if register == 0 {
