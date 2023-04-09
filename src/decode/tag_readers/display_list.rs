@@ -2,7 +2,6 @@ use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::read_options::ReadOptions;
 use crate::decode::slice_read::SliceRead;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::common::color_transform_with_alpha::ColorTransformWithAlpha;
 use crate::decode::tags::common::matrix::Matrix;
@@ -136,11 +135,11 @@ fn read_clip_action_record<R: SliceRead>(
     }
 }
 
-pub fn read_place_object_3_tag(
+pub fn read_place_object_3_tag<R: BitRead + SliceRead>(
     ReadOptions {
         reader,
         swf_version,
-    }: ReadOptions<SwfSliceReader>,
+    }: ReadOptions<R>,
 ) -> Result<PlaceObject3Tag> {
     let has_clip_actions = reader.read_bit()?;
     let has_clip_depth = reader.read_bit()?;
