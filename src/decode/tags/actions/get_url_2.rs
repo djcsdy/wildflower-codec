@@ -1,5 +1,4 @@
 use crate::decode::bit_read::BitRead;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::load_target::LoadTarget;
 use crate::decode::tags::actions::send_vars_method::SendVarsMethod;
 use std::io::ErrorKind::InvalidData;
@@ -13,7 +12,7 @@ pub struct GetUrl2 {
 }
 
 impl GetUrl2 {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: BitRead>(reader: &mut R) -> Result<Self> {
         let send_vars_method = reader
             .read_ub8(2)?
             .try_into()
