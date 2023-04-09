@@ -1,6 +1,5 @@
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
-use std::io::Result;
+use std::io::{Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct SoundStreamBlockTag {
@@ -8,7 +7,7 @@ pub struct SoundStreamBlockTag {
 }
 
 impl SoundStreamBlockTag {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         Ok(Self {
             stream_sound_data: reader.read_u8_to_end()?,
         })
