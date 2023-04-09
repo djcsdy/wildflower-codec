@@ -1,9 +1,8 @@
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::action_list::ActionList;
 use crate::decode::tags::actions::register_param::RegisterParam;
 use crate::decode::tags::common::string::String;
-use std::io::Result;
+use std::io::{Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct Try {
@@ -23,13 +22,13 @@ bitflags! {
 }
 
 impl Flags {
-    fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    fn read<R: Read>(reader: &mut R) -> Result<Self> {
         Ok(Self::from_bits(reader.read_u8()?).unwrap())
     }
 }
 
 impl Try {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         let flags = Flags::read(reader)?;
         let try_size = reader.read_u16()?;
         let catch_size = reader.read_u16()?;
