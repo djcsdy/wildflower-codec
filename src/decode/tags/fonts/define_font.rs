@@ -1,7 +1,7 @@
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::sized_read::SizedRead;
 use crate::decode::slice_read::SliceRead;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::shapes::shape::Shape;
 use std::io::Result;
 
@@ -12,7 +12,7 @@ pub struct DefineFontTag {
 }
 
 impl DefineFontTag {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: SliceRead + SizedRead + BitRead>(reader: &mut R) -> Result<Self> {
         let font_id = reader.read_u16()?;
         let end_offset = reader.remaining_bytes();
         let first_offset = reader.read_u16()? as usize;
