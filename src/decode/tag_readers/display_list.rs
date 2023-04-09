@@ -83,11 +83,11 @@ pub fn read_place_object_2_tag(
     })
 }
 
-fn read_clip_actions(
+fn read_clip_actions<R: SliceRead>(
     ReadOptions {
         reader,
         swf_version,
-    }: ReadOptions<SwfSliceReader>,
+    }: ReadOptions<R>,
 ) -> Result<ClipActions> {
     reader.read_u16()?;
     let all_event_flags = ClipEventFlags::read(ReadOptions {
