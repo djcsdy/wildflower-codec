@@ -1,6 +1,5 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::buttons::button_record_flags::ButtonRecordFlags;
 use crate::decode::tags::common::matrix::Matrix;
 use std::io::Result;
@@ -31,7 +30,7 @@ impl ButtonRecord {
         })
     }
 
-    pub fn read_list(reader: &mut SwfSliceReader) -> Result<Vec<Self>> {
+    pub fn read_list<R: BitRead>(reader: &mut R) -> Result<Vec<Self>> {
         let mut list = Vec::new();
         while let Some(record) = ButtonRecord::read(reader)? {
             list.push(record);
