@@ -81,7 +81,7 @@ impl EncodedTag {
     pub fn decode(self) -> Tag {
         let mut slice_reader = SwfSliceReader::new(&self.body);
         match self.tag_type {
-            TagType::End => Tag::Unknown(self.into_unknown()),
+            TagType::End => Tag::End,
             TagType::ShowFrame => Tag::Unknown(self.into_unknown()),
             TagType::DefineShape => DefineShapeTag::read(&mut slice_reader)
                 .map(Tag::DefineShape)
