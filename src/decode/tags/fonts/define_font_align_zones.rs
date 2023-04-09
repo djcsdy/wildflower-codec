@@ -1,7 +1,6 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::sized_read::SizedRead;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::fonts::align_zone_record::AlignZoneRecord;
 use crate::decode::tags::fonts::csm_table_hint::CsmTableHint;
 use std::io::Result;
@@ -14,7 +13,7 @@ pub struct DefineFontAlignZonesTag {
 }
 
 impl DefineFontAlignZonesTag {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: SizedRead + BitRead>(reader: &mut R) -> Result<Self> {
         let font_id = reader.read_u16()?;
         let csm_table_hint = CsmTableHint::read(reader)?;
         reader.read_ub8(6)?;
