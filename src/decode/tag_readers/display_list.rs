@@ -107,11 +107,11 @@ fn read_clip_actions(
     })
 }
 
-fn read_clip_action_record(
+fn read_clip_action_record<R: SliceRead>(
     ReadOptions {
         reader,
         swf_version,
-    }: ReadOptions<SwfSliceReader>,
+    }: ReadOptions<R>,
 ) -> Result<Option<ClipActionRecord>> {
     let event_flags = ClipEventFlags::read(ReadOptions {
         reader,
