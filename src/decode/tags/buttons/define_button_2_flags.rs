@@ -1,6 +1,5 @@
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
-use std::io::Result;
+use std::io::{Read, Result};
 
 bitflags! {
     pub struct DefineButton2Flags: u8 {
@@ -10,7 +9,7 @@ bitflags! {
 }
 
 impl DefineButton2Flags {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         Ok(DefineButton2Flags::from_bits(reader.read_u8()?).unwrap())
     }
 }
