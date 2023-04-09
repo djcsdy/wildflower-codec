@@ -1,6 +1,5 @@
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
-use std::io::Result;
+use std::io::{Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct KerningRecord<CharacterCode> {
@@ -10,8 +9,8 @@ pub struct KerningRecord<CharacterCode> {
 }
 
 impl<CharacterCode> KerningRecord<CharacterCode> {
-    pub fn read<ReadCharacterCode: Fn(&mut SwfSliceReader) -> Result<CharacterCode>>(
-        reader: &mut SwfSliceReader,
+    pub fn read<R: Read, ReadCharacterCode: Fn(&mut R) -> Result<CharacterCode>>(
+        reader: &mut R,
         read_character_code: ReadCharacterCode,
     ) -> Result<Self> {
         let left_character_code = read_character_code(reader)?;
