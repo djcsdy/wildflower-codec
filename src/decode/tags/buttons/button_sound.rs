@@ -1,7 +1,6 @@
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::sounds::sound_info::SoundInfo;
-use std::io::Result;
+use std::io::{Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct ButtonSound {
@@ -10,7 +9,7 @@ pub struct ButtonSound {
 }
 
 impl ButtonSound {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Option<Self>> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Option<Self>> {
         let sound_id = reader.read_u16()?;
         Ok(if sound_id == 0 {
             None
