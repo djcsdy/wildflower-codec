@@ -1,6 +1,6 @@
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_read::SliceRead;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::buttons::button_condition_action_list::ButtonConditionActionList;
 use crate::decode::tags::buttons::button_record_2::ButtonRecord2;
 use crate::decode::tags::buttons::define_button_2_flags::DefineButton2Flags;
@@ -16,7 +16,7 @@ pub struct DefineButton2Tag {
 }
 
 impl DefineButton2Tag {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: SliceRead + BitRead>(reader: &mut R) -> Result<Self> {
         let button_id = reader.read_u16()?;
         let flags = DefineButton2Flags::read(reader)?;
         let action_offset = reader.read_u16()? as usize - size_of::<u16>();
