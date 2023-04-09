@@ -1,6 +1,5 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::sounds::sampling_bits::SamplingBits;
 use crate::decode::tags::sounds::sampling_rate::SamplingRate;
 use crate::decode::tags::sounds::sound_channels::SoundChannels;
@@ -21,7 +20,7 @@ pub struct SoundStreamHead2Tag {
 }
 
 impl SoundStreamHead2Tag {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: BitRead>(reader: &mut R) -> Result<Self> {
         reader.read_ub8(4)?;
         let playback_sound_rate = SamplingRate::read(reader)?;
         let playback_bits = SamplingBits::read(reader)?;
