@@ -1,5 +1,4 @@
 use crate::decode::bit_read::BitRead;
-use crate::decode::slice_reader::SwfSliceReader;
 use std::io::Result;
 
 bitflags! {
@@ -24,7 +23,7 @@ bitflags! {
 }
 
 impl DefineEditTextFlags {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: BitRead>(reader: &mut R) -> Result<Self> {
         Ok(Self::from_bits(reader.read_ub16(16)?).unwrap())
     }
 }
