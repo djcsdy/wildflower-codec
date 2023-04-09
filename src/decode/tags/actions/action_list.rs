@@ -3,7 +3,7 @@ use crate::decode::sized_read::SizedRead;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::actions::action_pointer::ActionPointer;
 use crate::decode::tags::actions::action_record::ActionRecord;
-use std::io::Result;
+use std::io::{Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct ActionList<Buffer: AsRef<[u8]>> {
@@ -17,7 +17,7 @@ impl ActionList<Vec<u8>> {
         Ok(Self { buffer })
     }
 
-    pub fn read_to_end(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read_to_end<R: Read>(reader: &mut R) -> Result<Self> {
         let buffer = reader.read_u8_to_end()?;
         Ok(Self { buffer })
     }
