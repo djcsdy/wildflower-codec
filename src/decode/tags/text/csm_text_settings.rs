@@ -1,6 +1,5 @@
 use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::text::grid_fit::GridFit;
 use crate::decode::tags::text::text_renderer::TextRenderer;
 use std::io::Result;
@@ -15,7 +14,7 @@ pub struct CsmTextSettingsTag {
 }
 
 impl CsmTextSettingsTag {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: BitRead>(reader: &mut R) -> Result<Self> {
         let text_id = reader.read_u16()?;
         let text_renderer = TextRenderer::read(reader)?;
         let grid_fit = GridFit::read(reader)?;
