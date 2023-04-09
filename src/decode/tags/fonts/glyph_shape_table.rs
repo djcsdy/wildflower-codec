@@ -48,9 +48,9 @@ impl<'glyph_table, 'define_font> Iterator for GlyphTableIterator<'glyph_table, '
             let start_offset = self.table.offset_table[self.index].into();
             let end_offset = self.table.offset_table[self.index + 1].into();
             self.index += 1;
-            let reader =
-                &mut SwfSliceReader::new(&self.table.shape_table[start_offset..end_offset]);
-            Some(Shape::read(reader))
+            Some(Shape::read(&mut SwfSliceReader::new(
+                &self.table.shape_table[start_offset..end_offset],
+            )))
         }
     }
 }
