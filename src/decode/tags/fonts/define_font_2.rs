@@ -168,11 +168,12 @@ impl PartialFontLayout {
     }
 
     fn read_kerning_table<
+        R: Read,
         CharacterCode,
-        ReadCharacterCode: Fn(&mut SwfSliceReader) -> Result<CharacterCode>,
+        ReadCharacterCode: Fn(&mut R) -> Result<CharacterCode>,
     >(
         self,
-        reader: &mut SwfSliceReader,
+        reader: &mut R,
         read_character_code: &ReadCharacterCode,
         num_glyphs: usize,
     ) -> Result<FontLayout<CharacterCode>> {
