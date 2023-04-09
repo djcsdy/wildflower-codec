@@ -1,3 +1,4 @@
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
 use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::rectangle::Rectangle;
@@ -145,7 +146,7 @@ struct PartialFontLayout {
 }
 
 impl PartialFontLayout {
-    fn read(reader: &mut SwfSliceReader, num_glyphs: usize) -> Result<PartialFontLayout> {
+    fn read<R: BitRead>(reader: &mut R, num_glyphs: usize) -> Result<PartialFontLayout> {
         let ascent = reader.read_u16()?;
         let descent = reader.read_u16()?;
         let leading = reader.read_i16()?;
