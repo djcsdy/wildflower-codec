@@ -7,9 +7,7 @@ use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rgba::Rgba;
 use crate::decode::tags::common::string::String;
 use crate::decode::tags::display_list::blend_mode::BlendMode;
-use crate::decode::tags::display_list::clip_action_record::ClipActionRecord;
 use crate::decode::tags::display_list::clip_actions::ClipActions;
-use crate::decode::tags::display_list::clip_event_flags::ClipEventFlags;
 use crate::decode::tags::display_list::filter::Filter;
 use crate::decode::tags::display_list::place_object_2::PlaceObject2Tag;
 use crate::decode::tags::display_list::place_object_3::PlaceObject3Tag;
@@ -61,7 +59,7 @@ pub fn read_place_object_2_tag<R: BitRead + SliceRead>(
         None
     };
     let clip_actions = if has_clip_actions {
-        Some(read_clip_actions(ReadOptions {
+        Some(ClipActions::read(ReadOptions {
             reader,
             swf_version,
         })?)
@@ -78,30 +76,6 @@ pub fn read_place_object_2_tag<R: BitRead + SliceRead>(
         name,
         clip_depth,
         clip_actions,
-    })
-}
-
-fn read_clip_actions<R: SliceRead>(
-    ReadOptions {
-        reader,
-        swf_version,
-    }: ReadOptions<R>,
-) -> Result<ClipActions> {
-    reader.read_u16()?;
-    let all_event_flags = ClipEventFlags::read(ReadOptions {
-        reader,
-        swf_version,
-    })?;
-    let mut clip_action_records = Vec::new();
-    while let Some(clip_action_record) = ClipActionRecord::read(ReadOptions {
-        reader,
-        swf_version,
-    })? {
-        clip_action_records.push(clip_action_record);
-    }
-    Ok(ClipActions {
-        all_event_flags,
-        clip_action_records,
     })
 }
 
@@ -188,7 +162,7 @@ pub fn read_place_object_3_tag<R: BitRead + SliceRead>(
         None
     };
     let clip_actions = if has_clip_actions {
-        Some(read_clip_actions(ReadOptions {
+        Some(ClipActions::read(ReadOptions {
             reader,
             swf_version,
         })?)
