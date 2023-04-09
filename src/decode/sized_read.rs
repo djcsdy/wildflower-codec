@@ -1,5 +1,5 @@
-use std::io::{Read, Result};
 use crate::decode::read_ext::SwfTypesReadExt;
+use std::io::{Read, Result};
 
 pub trait SizedRead: Read {
     fn position(&self) -> usize;

@@ -1,9 +1,8 @@
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
+use crate::decode::sized_read::SizedRead;
 use crate::decode::tags::fonts::define_font_info_flags::DefineFontInfoFlags;
 use std::io::ErrorKind::InvalidData;
 use std::io::{Error, Result};
-use crate::decode::sized_read::SizedRead;
 
 #[derive(Clone, PartialEq, Debug)]
 pub enum CodeTable {
@@ -14,7 +13,7 @@ pub enum CodeTable {
 }
 
 impl CodeTable {
-    pub fn read(reader: &mut SwfSliceReader, flags: DefineFontInfoFlags) -> Result<Self> {
+    pub fn read<R: SizedRead>(reader: &mut R, flags: DefineFontInfoFlags) -> Result<Self> {
         if flags.contains(DefineFontInfoFlags::WIDE_CODES) {
             if flags.contains(DefineFontInfoFlags::SHIFT_JIS) {
                 Ok(CodeTable::ShiftJis(reader.read_u16_to_end()?))
