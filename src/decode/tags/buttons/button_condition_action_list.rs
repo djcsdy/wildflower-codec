@@ -12,7 +12,7 @@ pub struct ButtonConditionActionList {
 }
 
 impl ButtonConditionActionList {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Option<Self>> {
+    pub fn read<R: SliceRead>(reader: &mut R) -> Result<Option<Self>> {
         let size = reader.read_u16()?;
         if size == 0 {
             Ok(None)
