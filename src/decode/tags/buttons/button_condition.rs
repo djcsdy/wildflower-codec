@@ -1,7 +1,6 @@
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::buttons::button_condition_key_press::ButtonConditionKeyPress;
-use std::io::Result;
+use std::io::{Read, Result};
 
 #[derive(Clone, PartialEq, Debug)]
 pub struct ButtonCondition {
@@ -9,7 +8,7 @@ pub struct ButtonCondition {
 }
 
 impl ButtonCondition {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: Read>(reader: &mut R) -> Result<Self> {
         let flags = reader.read_u16()?;
         Ok(Self { flags })
     }
