@@ -1,5 +1,5 @@
+use crate::decode::bit_read::BitRead;
 use crate::decode::read_ext::SwfTypesReadExt;
-use crate::decode::slice_reader::SwfSliceReader;
 use crate::decode::tags::common::matrix::Matrix;
 use crate::decode::tags::common::rectangle::Rectangle;
 use crate::decode::tags::common::rgb::Rgb;
@@ -15,7 +15,7 @@ pub struct DefineTextTag {
 }
 
 impl DefineTextTag {
-    pub fn read(reader: &mut SwfSliceReader) -> Result<Self> {
+    pub fn read<R: BitRead>(reader: &mut R) -> Result<Self> {
         let character_id = reader.read_u16()?;
         let text_bounds = Rectangle::read(reader)?;
         let text_matrix = Matrix::read(reader)?;
